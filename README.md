@@ -4,7 +4,7 @@ Panda Seasons creates interactive, date-controlled calendars for WordPress. Its 
 
 The web calendar works on its own. Email-calendar subscriptions and daily delivery require the free ContactPanda plugin.
 
-## Version 0.3.1
+## Version 0.3.2
 
 - Multiple parallel calendars
 - Calendar and door editors

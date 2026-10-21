@@ -102,7 +102,7 @@ final class Panda_Seasons_Updater {
 			'version'      => $version,
 			'requires'     => (string) ( $data['requires'] ?? '6.4' ),
 			'requires_php' => (string) ( $data['requires_php'] ?? '7.4' ),
-			tested'       => (string) ( $data['tested'] ?? '' ),
+			'tested'       => (string) ( $data['tested'] ?? '' ),
 			'sha256'      => $data['sha256'],
 			'asset_id'    => absint( $zip['id'] ),
 			'size'        => absint( $zip['size'] ),
