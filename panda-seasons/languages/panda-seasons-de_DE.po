@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.2\n"
+"Project-Id-Version: Panda Seasons 0.3.3\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -498,3 +498,66 @@ msgstr "Newsletter abonnieren"
 
 msgid "None"
 msgstr "Keine"
+
+msgid "Email delivery and signups"
+msgstr "E-Mail-Versand und Anmeldungen"
+
+msgid "Door opening effect"
+msgstr "Öffnungseffekt der Türchen"
+
+msgid "No effect"
+msgstr "Kein Effekt"
+
+msgid "Door opens to the left"
+msgstr "Tür öffnet nach links"
+
+msgid "Door opens to the right"
+msgstr "Tür öffnet nach rechts"
+
+msgid "Turn page"
+msgstr "Umblättern"
+
+msgid "Used for every door unless a door has its own setting."
+msgstr "Gilt für alle Türchen, sofern dort keine eigene Einstellung gewählt wurde."
+
+msgid "Animation speed"
+msgstr "Animationsgeschwindigkeit"
+
+msgid "Fast"
+msgstr "Schnell"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Slow"
+msgstr "Langsam"
+
+msgid "Visitors who prefer reduced motion will see no animation."
+msgstr "Bei bevorzugt reduzierter Bewegung wird keine Animation gezeigt."
+
+msgid "Time"
+msgstr "Uhrzeit"
+
+msgid "Drag an image, video or audio file here or select it from the media library."
+msgstr "Bild, Video oder Audiodatei hierher ziehen oder aus der Mediathek auswählen."
+
+msgid "Opening effect"
+msgstr "Öffnungseffekt"
+
+msgid "Use calendar setting"
+msgstr "Kalendereinstellung verwenden"
+
+msgid "Daily calendar email"
+msgstr "Täglicher Kalender-Versand"
+
+msgid "Sends the newly opened door to registered calendar subscribers at the selected time."
+msgstr "Sendet das neu geöffnete Türchen zur gewählten Uhrzeit an angemeldete Kalender-Abonnenten."
+
+msgid "Enable daily delivery"
+msgstr "Täglichen Versand aktivieren"
+
+msgid "This separate signup can be published weeks before the first door opens."
+msgstr "Diese separate Anmeldung kann bereits Wochen vor dem ersten Türchen veröffentlicht werden."
+
+msgid "Optionally show a link or an existing form. Newsletter consent remains separate from calendar consent."
+msgstr "Optional einen Link oder ein bestehendes Formular anzeigen. Die Newsletter-Einwilligung bleibt von der Kalender-Einwilligung getrennt."

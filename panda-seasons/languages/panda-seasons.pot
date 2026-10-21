@@ -1,11 +1,74 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.2\n"
+"Project-Id-Version: Panda Seasons 0.3.3\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Panda Seasons"
+msgstr ""
+
+msgid "Email delivery and signups"
+msgstr ""
+
+msgid "Door opening effect"
+msgstr ""
+
+msgid "No effect"
+msgstr ""
+
+msgid "Door opens to the left"
+msgstr ""
+
+msgid "Door opens to the right"
+msgstr ""
+
+msgid "Turn page"
+msgstr ""
+
+msgid "Used for every door unless a door has its own setting."
+msgstr ""
+
+msgid "Animation speed"
+msgstr ""
+
+msgid "Fast"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Slow"
+msgstr ""
+
+msgid "Visitors who prefer reduced motion will see no animation."
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Drag an image, video or audio file here or select it from the media library."
+msgstr ""
+
+msgid "Opening effect"
+msgstr ""
+
+msgid "Use calendar setting"
+msgstr ""
+
+msgid "Daily calendar email"
+msgstr ""
+
+msgid "Sends the newly opened door to registered calendar subscribers at the selected time."
+msgstr ""
+
+msgid "Enable daily delivery"
+msgstr ""
+
+msgid "This separate signup can be published weeks before the first door opens."
+msgstr ""
+
+msgid "Optionally show a link or an existing form. Newsletter consent remains separate from calendar consent."
 msgstr ""
 
 msgid "Calendar"

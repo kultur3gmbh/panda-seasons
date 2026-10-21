@@ -41,7 +41,8 @@
 
 	function safeUrl(value) {
 		try {
-			var parsed = new URL(value, window.location.href);
+			if (!/^https?:\/\//i.test(String(value || ''))) return '';
+			var parsed = new URL(value);
 			return ['http:', 'https:'].indexOf(parsed.protocol) !== -1 ? parsed.href : '';
 		} catch (ignore) { return ''; }
 	}
@@ -62,7 +63,8 @@
 		if (mediaBox) {
 			var mediaUrl = modal.querySelector('[data-door-field="mediaUrl"]').value;
 			var mediaType = modal.querySelector('[data-door-field="mediaType"]').value;
-			mediaBox.querySelector('[data-door-asset-preview]').innerHTML = mediaMarkup(mediaUrl, mediaType);
+			var mediaMarkupValue = mediaMarkup(mediaUrl, mediaType);
+			mediaBox.querySelector('[data-door-asset-preview]').innerHTML = mediaMarkupValue || '<span class="panda-seasons-door-modal__drop-hint">' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.mediaDropHint ? pandaSeasonsAdmin.mediaDropHint : 'Drag an image, video or audio file here or select it from the media library.') + '</span>';
 			mediaBox.querySelector('[data-remove-door-media]').hidden = !mediaUrl;
 		}
 		if (downloadBox) {
@@ -203,6 +205,7 @@
 				closedOpacity: 100,
 				openOpacity: 100,
 				shape: 'rounded',
+				openEffect: 'inherit',
 				closedImageId: 0,
 				closedImageUrl: '',
 				openImageId: 0,

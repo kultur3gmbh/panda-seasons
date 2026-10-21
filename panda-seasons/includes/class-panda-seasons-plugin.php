@@ -93,7 +93,7 @@ final class Panda_Seasons_Plugin {
 
 	public static function meta_boxes() {
 		add_meta_box( 'panda-seasons-design', __( 'Visual calendar editor', 'panda-seasons' ), array( __CLASS__, 'calendar_design_box' ), self::CALENDAR_POST_TYPE, 'normal', 'high' );
-		add_meta_box( 'panda-seasons-email', __( 'Email calendar', 'panda-seasons' ), array( __CLASS__, 'calendar_email_box' ), self::CALENDAR_POST_TYPE, 'normal' );
+		add_meta_box( 'panda-seasons-email', __( 'Email delivery and signups', 'panda-seasons' ), array( __CLASS__, 'calendar_email_box' ), self::CALENDAR_POST_TYPE, 'side', 'high' );
 		add_meta_box( 'panda-seasons-shortcode', __( 'Embed calendar', 'panda-seasons' ), array( __CLASS__, 'calendar_shortcode_box' ), self::CALENDAR_POST_TYPE, 'side' );
 		add_meta_box( 'panda-seasons-door', __( 'Door settings', 'panda-seasons' ), array( __CLASS__, 'door_box' ), self::DOOR_POST_TYPE, 'side', 'high' );
 	}
@@ -110,6 +110,8 @@ final class Panda_Seasons_Plugin {
 		$editor_doors = array();
 		$products     = self::product_options();
 		$events       = self::event_options();
+		$open_effect  = (string) get_post_meta( $post->ID, '_ps_open_effect', true ) ?: 'door-left';
+		$effect_speed = (string) get_post_meta( $post->ID, '_ps_effect_speed', true ) ?: 'normal';
 
 		foreach ( $doors as $index => $door ) {
 			$editor_doors[] = array(
@@ -150,6 +152,7 @@ final class Panda_Seasons_Plugin {
 				'quizCorrect'   => absint( get_post_meta( $door->ID, '_ps_quiz_correct', true ) ),
 				'quizSuccess'   => (string) get_post_meta( $door->ID, '_ps_quiz_success', true ),
 				'quizFailure'   => (string) get_post_meta( $door->ID, '_ps_quiz_failure', true ),
+				'openEffect'    => (string) get_post_meta( $door->ID, '_ps_open_effect', true ) ?: 'inherit',
 				'desktop'       => self::door_position( $door->ID, 'desktop', $index, count( $doors ) ),
 				'mobile'        => self::door_position( $door->ID, 'mobile', $index, count( $doors ) ),
 			);
@@ -161,6 +164,8 @@ final class Panda_Seasons_Plugin {
 			<?php self::media_field( 'panda_seasons_cover_mobile', __( 'Mobile cover image', 'panda-seasons' ), $mobile_id, $mobile ); ?>
 			<label><span><?php esc_html_e( 'Desktop width-to-height ratio', 'panda-seasons' ); ?></span><input type="number" min="0.4" max="3" step="0.05" name="panda_seasons_aspect_ratio" value="<?php echo esc_attr( $ratio ); ?>" data-editor-ratio="desktop"></label>
 			<label><span><?php esc_html_e( 'Mobile width-to-height ratio', 'panda-seasons' ); ?></span><input type="number" min="0.35" max="2" step="0.05" name="panda_seasons_mobile_aspect_ratio" value="<?php echo esc_attr( $mobile_ratio ); ?>" data-editor-ratio="mobile"></label>
+			<label><span><?php esc_html_e( 'Door opening effect', 'panda-seasons' ); ?></span><select name="panda_seasons_open_effect"><option value="none" <?php selected( $open_effect, 'none' ); ?>><?php esc_html_e( 'No effect', 'panda-seasons' ); ?></option><option value="door-left" <?php selected( $open_effect, 'door-left' ); ?>><?php esc_html_e( 'Door opens to the left', 'panda-seasons' ); ?></option><option value="door-right" <?php selected( $open_effect, 'door-right' ); ?>><?php esc_html_e( 'Door opens to the right', 'panda-seasons' ); ?></option><option value="page" <?php selected( $open_effect, 'page' ); ?>><?php esc_html_e( 'Turn page', 'panda-seasons' ); ?></option></select><small><?php esc_html_e( 'Used for every door unless a door has its own setting.', 'panda-seasons' ); ?></small></label>
+			<label><span><?php esc_html_e( 'Animation speed', 'panda-seasons' ); ?></span><select name="panda_seasons_effect_speed"><option value="fast" <?php selected( $effect_speed, 'fast' ); ?>><?php esc_html_e( 'Fast', 'panda-seasons' ); ?></option><option value="normal" <?php selected( $effect_speed, 'normal' ); ?>><?php esc_html_e( 'Normal', 'panda-seasons' ); ?></option><option value="slow" <?php selected( $effect_speed, 'slow' ); ?>><?php esc_html_e( 'Slow', 'panda-seasons' ); ?></option></select><small><?php esc_html_e( 'Visitors who prefer reduced motion will see no animation.', 'panda-seasons' ); ?></small></label>
 		</div>
 
 		<div class="panda-seasons-editor-layout">
@@ -202,8 +207,7 @@ final class Panda_Seasons_Plugin {
 							<summary><?php esc_html_e( 'Door basics', 'panda-seasons' ); ?></summary>
 							<div class="panda-seasons-door-modal__section-grid">
 								<label><span><?php esc_html_e( 'Door number', 'panda-seasons' ); ?></span><input type="number" min="1" max="366" data-door-field="number"></label>
-								<label><span><?php esc_html_e( 'Unlock date', 'panda-seasons' ); ?></span><input type="date" data-door-field="unlockDate"></label>
-								<label><span><?php esc_html_e( 'Optional unlock time', 'panda-seasons' ); ?></span><input type="time" data-door-field="unlockTime"></label>
+								<div class="is-wide panda-seasons-door-modal__date-time"><label><span><?php esc_html_e( 'Unlock date', 'panda-seasons' ); ?></span><input type="date" data-door-field="unlockDate"></label><label><span><?php esc_html_e( 'Time', 'panda-seasons' ); ?></span><input type="time" data-door-field="unlockTime"></label></div>
 								<label class="is-wide"><span><?php esc_html_e( 'Title', 'panda-seasons' ); ?></span><input type="text" data-door-field="title"></label>
 							</div>
 						</details>
@@ -214,7 +218,7 @@ final class Panda_Seasons_Plugin {
 								<div class="is-wide panda-seasons-door-modal__content-editor"><strong><?php esc_html_e( 'Text', 'panda-seasons' ); ?></strong><?php wp_editor( '', 'panda_seasons_door_content_editor', array( 'textarea_name' => 'panda_seasons_door_content_editor', 'textarea_rows' => 10, 'media_buttons' => true, 'teeny' => false, 'quicktags' => true ) ); ?></div>
 								<div class="is-wide panda-seasons-door-modal__asset" data-door-asset="media">
 									<strong><?php esc_html_e( 'Image, video or audio', 'panda-seasons' ); ?></strong>
-									<div class="panda-seasons-door-modal__asset-preview" data-door-asset-preview></div>
+									<div class="panda-seasons-door-modal__asset-preview panda-seasons-door-modal__dropzone" data-door-asset-preview data-select-door-media role="button" tabindex="0"><span class="panda-seasons-door-modal__drop-hint"><?php esc_html_e( 'Drag an image, video or audio file here or select it from the media library.', 'panda-seasons' ); ?></span></div>
 									<input type="hidden" data-door-field="mediaId"><input type="hidden" data-door-field="mediaUrl"><input type="hidden" data-door-field="mediaType">
 									<div><button type="button" class="button" data-select-door-media><?php esc_html_e( 'Select media', 'panda-seasons' ); ?></button> <button type="button" class="button-link-delete" data-remove-door-media><?php esc_html_e( 'Remove', 'panda-seasons' ); ?></button></div>
 								</div>
@@ -260,6 +264,7 @@ final class Panda_Seasons_Plugin {
 								<label><span><?php esc_html_e( 'Background after opening', 'panda-seasons' ); ?></span><input type="color" data-door-field="openBg" value="#334fe8"></label>
 								<label><span><?php esc_html_e( 'Text color after opening', 'panda-seasons' ); ?></span><input type="color" data-door-field="openColor" value="#ffffff"></label>
 								<label><span><?php esc_html_e( 'Door shape', 'panda-seasons' ); ?></span><select data-door-field="shape"><option value="square"><?php esc_html_e( 'Square', 'panda-seasons' ); ?></option><option value="rounded"><?php esc_html_e( 'Rounded', 'panda-seasons' ); ?></option><option value="round"><?php esc_html_e( 'Round', 'panda-seasons' ); ?></option></select></label>
+								<label><span><?php esc_html_e( 'Opening effect', 'panda-seasons' ); ?></span><select data-door-field="openEffect"><option value="inherit"><?php esc_html_e( 'Use calendar setting', 'panda-seasons' ); ?></option><option value="none"><?php esc_html_e( 'No effect', 'panda-seasons' ); ?></option><option value="door-left"><?php esc_html_e( 'Door opens to the left', 'panda-seasons' ); ?></option><option value="door-right"><?php esc_html_e( 'Door opens to the right', 'panda-seasons' ); ?></option><option value="page"><?php esc_html_e( 'Turn page', 'panda-seasons' ); ?></option></select></label>
 								<label><span><?php esc_html_e( 'Closed background opacity', 'panda-seasons' ); ?></span><input type="range" min="0" max="100" step="1" data-door-field="closedOpacity"><output data-opacity-output="closedOpacity"></output></label>
 								<label><span><?php esc_html_e( 'Open background opacity', 'panda-seasons' ); ?></span><input type="range" min="0" max="100" step="1" data-door-field="openOpacity"><output data-opacity-output="openOpacity"></output></label>
 								<div class="is-wide panda-seasons-door-modal__asset" data-door-asset="closedImage"><strong><?php esc_html_e( 'Optional image on the closed door', 'panda-seasons' ); ?></strong><div class="panda-seasons-door-modal__asset-preview" data-door-asset-preview></div><input type="hidden" data-door-field="closedImageId"><input type="hidden" data-door-field="closedImageUrl"><div><button type="button" class="button" data-select-door-image="closedImage"><?php esc_html_e( 'Select image', 'panda-seasons' ); ?></button> <button type="button" class="button-link-delete" data-remove-door-image="closedImage"><?php esc_html_e( 'Remove', 'panda-seasons' ); ?></button></div></div>
@@ -383,31 +388,34 @@ final class Panda_Seasons_Plugin {
 		$signup_text  = (string) get_post_meta( $post->ID, '_ps_signup_text', true );
 		$newsletter_mode = (string) get_post_meta( $post->ID, '_ps_newsletter_mode', true ) ?: 'none';
 		?>
+		<div class="panda-seasons-email-settings">
 		<?php if ( ! $available ) : ?>
 			<div class="notice notice-warning inline"><p><?php esc_html_e( 'The free ContactPanda plugin must be installed and active to use email calendars. The web calendar remains fully available.', 'panda-seasons' ); ?></p></div>
 		<?php endif; ?>
-		<p><label><input type="checkbox" name="panda_seasons_email_enabled" value="1" <?php checked( $enabled ); ?> <?php disabled( ! $available ); ?>> <?php esc_html_e( 'Send this calendar by email', 'panda-seasons' ); ?></label></p>
+		<section><h3><?php esc_html_e( 'Daily calendar email', 'panda-seasons' ); ?></h3><p class="description"><?php esc_html_e( 'Sends the newly opened door to registered calendar subscribers at the selected time.', 'panda-seasons' ); ?></p>
+		<p><label><input type="checkbox" name="panda_seasons_email_enabled" value="1" <?php checked( $enabled ); ?> <?php disabled( ! $available ); ?>> <?php esc_html_e( 'Enable daily delivery', 'panda-seasons' ); ?></label></p>
 		<div class="panda-seasons-admin-grid">
 			<label><span><?php esc_html_e( 'Daily delivery time', 'panda-seasons' ); ?></span><input type="time" name="panda_seasons_email_time" value="<?php echo esc_attr( $time ); ?>"></label>
 			<label><span><?php esc_html_e( 'Subject template', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_email_subject" value="<?php echo esc_attr( $subject ); ?>"><small><?php esc_html_e( 'Available: {calendar}, {day}, {first_name}', 'panda-seasons' ); ?></small></label>
-		</div>
-		<h3><?php esc_html_e( 'Email-calendar signup', 'panda-seasons' ); ?></h3>
-		<p><?php esc_html_e( 'The signup works independently of the doors and may be published weeks before the calendar starts.', 'panda-seasons' ); ?></p>
+		</div></section>
+		<section><h3><?php esc_html_e( 'Email-calendar signup', 'panda-seasons' ); ?></h3>
+		<p class="description"><?php esc_html_e( 'This separate signup can be published weeks before the first door opens.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-admin-grid">
 			<label><span><?php esc_html_e( 'Signup heading', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_signup_title" value="<?php echo esc_attr( $signup_title ); ?>"></label>
 			<label><span><?php esc_html_e( 'Signup description', 'panda-seasons' ); ?></span><textarea name="panda_seasons_signup_text" rows="3"><?php echo esc_textarea( $signup_text ); ?></textarea></label>
 		</div>
-		<p><code>[panda_seasons_subscribe id="<?php echo esc_html( $post->ID ); ?>"]</code></p>
-		<h3><?php esc_html_e( 'General newsletter signup', 'panda-seasons' ); ?></h3>
-		<p><?php esc_html_e( 'Newsletter consent remains separate from the email-calendar consent.', 'panda-seasons' ); ?></p>
+		<p class="panda-seasons-shortcode"><code>[panda_seasons_subscribe id="<?php echo esc_html( $post->ID ); ?>"]</code></p></section>
+		<section><h3><?php esc_html_e( 'General newsletter signup', 'panda-seasons' ); ?></h3>
+		<p class="description"><?php esc_html_e( 'Optionally show a link or an existing form. Newsletter consent remains separate from calendar consent.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-admin-grid">
 			<label><span><?php esc_html_e( 'Signup type', 'panda-seasons' ); ?></span><select name="panda_seasons_newsletter_mode"><option value="none" <?php selected( $newsletter_mode, 'none' ); ?>><?php esc_html_e( 'None', 'panda-seasons' ); ?></option><option value="link" <?php selected( $newsletter_mode, 'link' ); ?>><?php esc_html_e( 'Link or button', 'panda-seasons' ); ?></option><option value="shortcode" <?php selected( $newsletter_mode, 'shortcode' ); ?>><?php esc_html_e( 'Form shortcode', 'panda-seasons' ); ?></option><option value="contactpanda" <?php selected( $newsletter_mode, 'contactpanda' ); ?> <?php disabled( ! $available ); ?>><?php esc_html_e( 'Simple ContactPanda form', 'panda-seasons' ); ?></option></select></label>
 			<label><span><?php esc_html_e( 'Heading', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_newsletter_title" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ps_newsletter_title', true ) ); ?>"></label>
 			<label><span><?php esc_html_e( 'Link text', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_newsletter_link_label" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ps_newsletter_link_label', true ) ); ?>"></label>
 			<label><span><?php esc_html_e( 'Link URL', 'panda-seasons' ); ?></span><input type="url" name="panda_seasons_newsletter_link_url" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ps_newsletter_link_url', true ) ); ?>"></label>
 			<label class="is-wide"><span><?php esc_html_e( 'Form shortcode', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_newsletter_shortcode" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ps_newsletter_shortcode', true ) ); ?>" placeholder="[contact-form-7 id=&quot;123&quot;]"></label>
+		</div></section>
+		<p class="description"><?php esc_html_e( 'Verified ContactPanda contacts are enrolled immediately. All other addresses receive a double opt-in email. Calendar consent is stored separately from general marketing consent.', 'panda-seasons' ); ?></p>
 		</div>
-		<p><?php esc_html_e( 'Verified ContactPanda contacts are enrolled immediately. All other addresses receive a double opt-in email. Calendar consent is stored separately from general marketing consent.', 'panda-seasons' ); ?></p>
 		<?php
 	}
 
@@ -440,6 +448,10 @@ final class Panda_Seasons_Plugin {
 		update_post_meta( $post_id, '_ps_aspect_ratio', min( 3, max( 0.4, $ratio ) ) );
 		$mobile_ratio = (float) ( $_POST['panda_seasons_mobile_aspect_ratio'] ?? 0.75 );
 		update_post_meta( $post_id, '_ps_mobile_aspect_ratio', min( 2, max( 0.35, $mobile_ratio ) ) );
+		$open_effect = sanitize_key( wp_unslash( $_POST['panda_seasons_open_effect'] ?? 'door-left' ) );
+		update_post_meta( $post_id, '_ps_open_effect', in_array( $open_effect, array( 'none', 'door-left', 'door-right', 'page' ), true ) ? $open_effect : 'door-left' );
+		$effect_speed = sanitize_key( wp_unslash( $_POST['panda_seasons_effect_speed'] ?? 'normal' ) );
+		update_post_meta( $post_id, '_ps_effect_speed', in_array( $effect_speed, array( 'fast', 'normal', 'slow' ), true ) ? $effect_speed : 'normal' );
 		if ( self::contactpanda_available() ) update_post_meta( $post_id, '_ps_email_enabled', ! empty( $_POST['panda_seasons_email_enabled'] ) ? 1 : 0 );
 		$time = sanitize_text_field( wp_unslash( $_POST['panda_seasons_email_time'] ?? '09:00' ) );
 		update_post_meta( $post_id, '_ps_email_time', preg_match( '/^(?:[01]\d|2[0-3]):[0-5]\d$/', $time ) ? $time : '09:00' );
@@ -518,6 +530,8 @@ final class Panda_Seasons_Plugin {
 			update_post_meta( $door_id, '_ps_open_opacity', min( 100, max( 0, absint( $item['openOpacity'] ?? 100 ) ) ) );
 			$shape = sanitize_key( (string) ( $item['shape'] ?? 'rounded' ) );
 			update_post_meta( $door_id, '_ps_shape', in_array( $shape, array( 'square', 'rounded', 'round' ), true ) ? $shape : 'rounded' );
+			$open_effect = sanitize_key( (string) ( $item['openEffect'] ?? 'inherit' ) );
+			update_post_meta( $door_id, '_ps_open_effect', in_array( $open_effect, array( 'inherit', 'none', 'door-left', 'door-right', 'page' ), true ) ? $open_effect : 'inherit' );
 			self::update_attachment_meta( $door_id, '_ps_closed_image_id', $item['closedImageId'] ?? 0 );
 			self::update_attachment_meta( $door_id, '_ps_open_image_id', $item['openImageId'] ?? 0 );
 			$answers = $item['quizAnswers'] ?? array();
@@ -590,6 +604,7 @@ final class Panda_Seasons_Plugin {
 				'selectMedia'    => __( 'Select image, video or audio', 'panda-seasons' ),
 				'selectImage'    => __( 'Select image', 'panda-seasons' ),
 				'selectDownload' => __( 'Select download file', 'panda-seasons' ),
+				'mediaDropHint'   => __( 'Drag an image, video or audio file here or select it from the media library.', 'panda-seasons' ),
 			)
 		);
 	}
@@ -717,13 +732,17 @@ final class Panda_Seasons_Plugin {
 		$mobile_ratio = (float) get_post_meta( $id, '_ps_mobile_aspect_ratio', true ) ?: 0.75;
 		$desktop      = wp_get_attachment_image_url( absint( get_post_meta( $id, '_ps_cover_desktop', true ) ), 'full' );
 		$mobile       = wp_get_attachment_image_url( absint( get_post_meta( $id, '_ps_cover_mobile', true ) ), 'full' ) ?: $desktop;
+		$open_effect  = (string) get_post_meta( $id, '_ps_open_effect', true ) ?: 'door-left';
+		$effect_speed = (string) get_post_meta( $id, '_ps_effect_speed', true ) ?: 'normal';
+		if ( ! in_array( $open_effect, array( 'none', 'door-left', 'door-right', 'page' ), true ) ) $open_effect = 'door-left';
+		if ( ! in_array( $effect_speed, array( 'fast', 'normal', 'slow' ), true ) ) $effect_speed = 'normal';
 		$style        = '--ps-ratio:' . $ratio . ';--ps-mobile-ratio:' . $mobile_ratio . ';';
 		if ( $desktop ) $style .= '--ps-cover-desktop:url("' . esc_url_raw( $desktop ) . '");';
 		if ( $mobile ) $style .= '--ps-cover-mobile:url("' . esc_url_raw( $mobile ) . '");';
 
 		ob_start();
 		?>
-		<section class="panda-seasons" id="panda-seasons-<?php echo esc_attr( $id ); ?>" style="<?php echo esc_attr( $style ); ?>" data-calendar="<?php echo esc_attr( $id ); ?>">
+		<section class="panda-seasons panda-seasons--speed-<?php echo esc_attr( $effect_speed ); ?>" id="panda-seasons-<?php echo esc_attr( $id ); ?>" style="<?php echo esc_attr( $style ); ?>" data-calendar="<?php echo esc_attr( $id ); ?>" data-open-effect="<?php echo esc_attr( $open_effect ); ?>">
 			<header class="panda-seasons__header"><h2><?php echo esc_html( get_the_title( $id ) ); ?></h2><?php echo wp_kses_post( wpautop( $post->post_content ) ); ?></header>
 			<div class="panda-seasons__canvas" role="list">
 				<?php foreach ( $doors as $index => $door ) :
@@ -745,8 +764,10 @@ final class Panda_Seasons_Plugin {
 					if ( $open_image ) $item_style .= '--ps-open-image:url("' . esc_url_raw( $open_image ) . '");';
 					$shape = get_post_meta( $door->ID, '_ps_shape', true );
 					if ( ! in_array( $shape, array( 'square', 'rounded', 'round' ), true ) ) $shape = 'rounded';
+					$door_effect = (string) get_post_meta( $door->ID, '_ps_open_effect', true );
+					if ( ! in_array( $door_effect, array( 'none', 'door-left', 'door-right', 'page' ), true ) ) $door_effect = $open_effect;
 					?>
-					<article class="panda-seasons__door panda-seasons__door--<?php echo esc_attr( $shape ); ?><?php echo $available ? ' is-available' : ' is-locked'; ?>" role="listitem" style="<?php echo esc_attr( $item_style ); ?>" id="panda-season-door-<?php echo esc_attr( $door->ID ); ?>">
+					<article class="panda-seasons__door panda-seasons__door--<?php echo esc_attr( $shape ); ?><?php echo $available ? ' is-available' : ' is-locked'; ?>" role="listitem" style="<?php echo esc_attr( $item_style ); ?>" id="panda-season-door-<?php echo esc_attr( $door->ID ); ?>" data-door-effect="<?php echo esc_attr( $door_effect ); ?>">
 						<button type="button" class="panda-seasons__door-face" aria-haspopup="dialog" aria-controls="panda-season-content-<?php echo esc_attr( $door->ID ); ?>" <?php disabled( ! $available ); ?>>
 							<span class="panda-seasons__door-number"><?php echo esc_html( $available ? $open_label : $closed_label ); ?></span>
 							<span class="screen-reader-text"><?php echo esc_html( $available ? sprintf( __( 'Open door %d', 'panda-seasons' ), $number ) : sprintf( __( 'Door %1$d opens on %2$s', 'panda-seasons' ), $number, $unlock_at ? wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $unlock_at->getTimestamp(), wp_timezone() ) : '' ) ); ?></span>

@@ -21,10 +21,21 @@
 			var modal = calendar.querySelector('[data-season-modal]');
 			if (!template || !modal) return;
 			lastTrigger = button;
-			modal.querySelector('[data-season-modal-content]').appendChild(template.content.cloneNode(true));
-			modal.hidden = false;
-			document.body.classList.add('panda-seasons-has-open-modal');
-			modal.querySelector('.panda-seasons__modal-close').focus();
+			var effect = door.dataset.doorEffect || calendar.dataset.openEffect || 'none';
+			var duration = calendar.classList.contains('panda-seasons--speed-fast') ? 320 : (calendar.classList.contains('panda-seasons--speed-slow') ? 850 : 560);
+			var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			var showContent = function () {
+				modal.querySelector('[data-season-modal-content]').appendChild(template.content.cloneNode(true));
+				modal.hidden = false;
+				document.body.classList.add('panda-seasons-has-open-modal');
+				modal.querySelector('.panda-seasons__modal-close').focus();
+				window.setTimeout(function () { door.classList.remove('is-opening'); }, 80);
+			};
+			if ('none' === effect || reducedMotion) showContent();
+			else {
+				door.classList.add('is-opening', 'effect-' + effect);
+				window.setTimeout(showContent, duration);
+			}
 			return;
 		}
 
