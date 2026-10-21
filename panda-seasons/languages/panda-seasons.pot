@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.1.0\n"
+"Project-Id-Version: Panda Seasons 0.2.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -219,4 +219,64 @@ msgid "Manage or unsubscribe from calendar emails"
 msgstr ""
 
 msgid "WordPress could not send this email."
+msgstr ""
+
+msgid "Choose the calendar image and place every door directly on it. Click a door to edit its date and content."
+msgstr ""
+
+msgid "Desktop width-to-height ratio"
+msgstr ""
+
+msgid "Mobile width-to-height ratio"
+msgstr ""
+
+msgid "Preview size"
+msgstr ""
+
+msgid "Desktop"
+msgstr ""
+
+msgid "Mobile"
+msgstr ""
+
+msgid "Align to grid"
+msgstr ""
+
+msgid "Drag doors to move them. Use the handle at the bottom right to resize them. Desktop and mobile positions are saved separately."
+msgstr ""
+
+msgid "Add a door to start designing your calendar."
+msgstr ""
+
+msgid "Door changes are stored when you update the calendar."
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Insert image"
+msgstr ""
+
+msgid "Move door to trash"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Apply door"
+msgstr ""
+
+msgid "Move this door to the trash? You can restore it from the door list."
+msgstr ""
+
+msgid "Calendar door"
+msgstr ""
+
+msgid "Visual calendar editor"
 msgstr ""

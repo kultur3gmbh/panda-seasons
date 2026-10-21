@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.1.0\n"
+"Project-Id-Version: Panda Seasons 0.2.0\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -222,3 +222,63 @@ msgstr "Kalender-E-Mails verwalten oder abmelden"
 
 msgid "WordPress could not send this email."
 msgstr "WordPress konnte diese E-Mail nicht versenden."
+
+msgid "Choose the calendar image and place every door directly on it. Click a door to edit its date and content."
+msgstr "Wählen Sie das Kalenderbild und platzieren Sie jedes Türchen direkt darauf. Klicken Sie auf ein Türchen, um Datum und Inhalt zu bearbeiten."
+
+msgid "Desktop width-to-height ratio"
+msgstr "Seitenverhältnis für Desktop"
+
+msgid "Mobile width-to-height ratio"
+msgstr "Seitenverhältnis für Mobilgeräte"
+
+msgid "Preview size"
+msgstr "Vorschaugröße"
+
+msgid "Desktop"
+msgstr "Desktop"
+
+msgid "Mobile"
+msgstr "Mobil"
+
+msgid "Align to grid"
+msgstr "Am Raster ausrichten"
+
+msgid "Drag doors to move them. Use the handle at the bottom right to resize them. Desktop and mobile positions are saved separately."
+msgstr "Ziehen Sie Türchen, um sie zu verschieben. Mit dem Griff rechts unten ändern Sie ihre Größe. Positionen für Desktop und Mobilgeräte werden getrennt gespeichert."
+
+msgid "Add a door to start designing your calendar."
+msgstr "Fügen Sie ein Türchen hinzu, um Ihren Kalender zu gestalten."
+
+msgid "Door changes are stored when you update the calendar."
+msgstr "Änderungen an den Türchen werden gespeichert, sobald Sie den Kalender aktualisieren."
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Content"
+msgstr "Inhalt"
+
+msgid "Insert image"
+msgstr "Bild einfügen"
+
+msgid "Move door to trash"
+msgstr "Türchen in den Papierkorb verschieben"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Apply door"
+msgstr "Türchen übernehmen"
+
+msgid "Move this door to the trash? You can restore it from the door list."
+msgstr "Dieses Türchen in den Papierkorb verschieben? Sie können es in der Türchenliste wiederherstellen."
+
+msgid "Calendar door"
+msgstr "Kalendertürchen"
+
+msgid "Visual calendar editor"
+msgstr "Visueller Kalender-Editor"
