@@ -1,0 +1,222 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Panda Seasons 0.1.0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Panda Seasons"
+msgstr ""
+
+msgid "Calendar"
+msgstr ""
+
+msgid "Calendars"
+msgstr ""
+
+msgid "Add calendar"
+msgstr ""
+
+msgid "Edit calendar"
+msgstr ""
+
+msgid "Door"
+msgstr ""
+
+msgid "Doors"
+msgstr ""
+
+msgid "Add door"
+msgstr ""
+
+msgid "Edit door"
+msgstr ""
+
+msgid "Calendar design"
+msgstr ""
+
+msgid "Email calendar"
+msgstr ""
+
+msgid "Embed calendar"
+msgstr ""
+
+msgid "Door settings"
+msgstr ""
+
+msgid "Every five minutes"
+msgstr ""
+
+msgid "Build the doors first, then place one continuous image over the complete calendar. Separate images can be used for desktop and mobile."
+msgstr ""
+
+msgid "Desktop cover image"
+msgstr ""
+
+msgid "Mobile cover image"
+msgstr ""
+
+msgid "Select image"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Desktop columns"
+msgstr ""
+
+msgid "Mobile columns"
+msgstr ""
+
+msgid "Calendar width-to-height ratio"
+msgstr ""
+
+msgid "The free ContactPanda plugin must be installed and active to use email calendars. The web calendar remains fully available."
+msgstr ""
+
+msgid "Send this calendar by email"
+msgstr ""
+
+msgid "Daily delivery time"
+msgstr ""
+
+msgid "Subject template"
+msgstr ""
+
+msgid "Available: {calendar}, {day}, {first_name}"
+msgstr ""
+
+msgid "Verified ContactPanda contacts are enrolled immediately. All other addresses receive a double opt-in email. Calendar consent is stored separately from general marketing consent."
+msgstr ""
+
+msgid "{calendar}: Door {day} is open"
+msgstr ""
+
+msgid "Select calendar"
+msgstr ""
+
+msgid "Door number"
+msgstr ""
+
+msgid "Number"
+msgstr ""
+
+msgid "Unlock date"
+msgstr ""
+
+msgid "Email subject override"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Shortcode"
+msgstr ""
+
+msgid "This calendar does not have any doors yet."
+msgstr ""
+
+msgid "Open door %d"
+msgstr ""
+
+msgid "Door %1$d opens on %2$s"
+msgstr ""
+
+msgid "Door %d"
+msgstr ""
+
+msgid "Email delivery requires the free ContactPanda plugin."
+msgstr ""
+
+msgid "Receive this calendar by email"
+msgstr ""
+
+msgid "You are registered for this email calendar."
+msgstr ""
+
+msgid "Please check your inbox and confirm your email address. Also check your spam folder."
+msgstr ""
+
+msgid "The registration could not be completed. Please try again."
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "Email address"
+msgstr ""
+
+msgid "I would like to receive the daily emails for “%s”. I can unsubscribe at any time."
+msgstr ""
+
+msgid "Register for email calendar"
+msgstr ""
+
+msgid "Confirm your registration for %s"
+msgstr ""
+
+msgid "Hello %s,"
+msgstr ""
+
+msgid "Please confirm that you would like to receive this email calendar."
+msgstr ""
+
+msgid "Confirm email calendar"
+msgstr ""
+
+msgid "This confirmation link is invalid."
+msgstr ""
+
+msgid "Registration confirmed"
+msgstr ""
+
+msgid "You will now receive the emails for “%s”."
+msgstr ""
+
+msgid "This unsubscribe link is invalid."
+msgstr ""
+
+msgid "What would you like to unsubscribe from?"
+msgstr ""
+
+msgid "Only “%s”"
+msgstr ""
+
+msgid "All email calendars, but keep other mailings"
+msgstr ""
+
+msgid "All email mailings"
+msgstr ""
+
+msgid "Finally unsubscribe"
+msgstr ""
+
+msgid "Please select what you want to unsubscribe from."
+msgstr ""
+
+msgid "Finally unsubscribed"
+msgstr ""
+
+msgid "You have been finally unsubscribed from this calendar."
+msgstr ""
+
+msgid "You have been finally unsubscribed from all email calendars."
+msgstr ""
+
+msgid "You have been finally unsubscribed from all email mailings."
+msgstr ""
+
+msgid "Open calendar"
+msgstr ""
+
+msgid "Manage or unsubscribe from calendar emails"
+msgstr ""
+
+msgid "WordPress could not send this email."
+msgstr ""
