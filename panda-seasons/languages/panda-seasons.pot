@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.2.0\n"
+"Project-Id-Version: Panda Seasons 0.3.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -279,4 +279,106 @@ msgid "Calendar door"
 msgstr ""
 
 msgid "Visual calendar editor"
+msgstr ""
+
+msgid "Door basics"
+msgstr ""
+
+msgid "Optional unlock time"
+msgstr ""
+
+msgid "Door content and media"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Image, video or audio"
+msgstr ""
+
+msgid "Select media"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Select download file"
+msgstr ""
+
+msgid "Download link text"
+msgstr ""
+
+msgid "Download file"
+msgstr ""
+
+msgid "Button and related content"
+msgstr ""
+
+msgid "Button text"
+msgstr ""
+
+msgid "Button link"
+msgstr ""
+
+msgid "WooCommerce product"
+msgstr ""
+
+msgid "No product"
+msgstr ""
+
+msgid "Event"
+msgstr ""
+
+msgid "No event"
+msgstr ""
+
+msgid "Calendar email"
+msgstr ""
+
+msgid "Email content"
+msgstr ""
+
+msgid "Leave empty to use the regular door content."
+msgstr ""
+
+msgid "Appearance before and after opening"
+msgstr ""
+
+msgid "Label before opening"
+msgstr ""
+
+msgid "Label after opening"
+msgstr ""
+
+msgid "Background before opening"
+msgstr ""
+
+msgid "Text color before opening"
+msgstr ""
+
+msgid "Background after opening"
+msgstr ""
+
+msgid "Text color after opening"
+msgstr ""
+
+msgid "Preview content before it opens"
+msgstr ""
+
+msgid "Door preview"
+msgstr ""
+
+msgid "Select image, video or audio"
+msgstr ""
+
+msgid "Play video"
+msgstr ""
+
+msgid "Play audio"
+msgstr ""
+
+msgid "View product"
+msgstr ""
+
+msgid "View event"
 msgstr ""

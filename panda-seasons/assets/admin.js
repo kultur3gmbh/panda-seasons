@@ -21,22 +21,55 @@
 		return element.innerHTML;
 	}
 
-	function setEditorContent(value) {
-		var textarea = document.getElementById('panda_seasons_door_content_editor');
+	function setEditorContent(editorId, value) {
+		var textarea = document.getElementById(editorId);
 		if (textarea) textarea.value = value || '';
 		if (window.tinymce) {
-			var editor = window.tinymce.get('panda_seasons_door_content_editor');
+			var editor = window.tinymce.get(editorId);
 			if (editor) editor.setContent(value || '');
 		}
 	}
 
-	function getEditorContent() {
+	function getEditorContent(editorId) {
 		if (window.tinymce) {
-			var editor = window.tinymce.get('panda_seasons_door_content_editor');
+			var editor = window.tinymce.get(editorId);
 			if (editor && !editor.isHidden()) return editor.getContent();
 		}
-		var textarea = document.getElementById('panda_seasons_door_content_editor');
+		var textarea = document.getElementById(editorId);
 		return textarea ? textarea.value : '';
+	}
+
+	function safeUrl(value) {
+		try {
+			var parsed = new URL(value, window.location.href);
+			return ['http:', 'https:'].indexOf(parsed.protocol) !== -1 ? parsed.href : '';
+		} catch (ignore) { return ''; }
+	}
+
+	function mediaMarkup(url, type) {
+		url = safeUrl(url);
+		if (!url) return '';
+		if (type === 'image') return '<img src="' + escapeHtml(url) + '" alt="">';
+		if (type === 'video') return '<video src="' + escapeHtml(url) + '" controls></video>';
+		if (type === 'audio') return '<audio src="' + escapeHtml(url) + '" controls></audio>';
+		return '<a href="' + escapeHtml(url) + '">' + escapeHtml(url.split('/').pop()) + '</a>';
+	}
+
+	function updateDoorAssets() {
+		if (!modal) return;
+		var mediaBox = modal.querySelector('[data-door-asset="media"]');
+		var downloadBox = modal.querySelector('[data-door-asset="download"]');
+		if (mediaBox) {
+			var mediaUrl = modal.querySelector('[data-door-field="mediaUrl"]').value;
+			var mediaType = modal.querySelector('[data-door-field="mediaType"]').value;
+			mediaBox.querySelector('[data-door-asset-preview]').innerHTML = mediaMarkup(mediaUrl, mediaType);
+			mediaBox.querySelector('[data-remove-door-media]').hidden = !mediaUrl;
+		}
+		if (downloadBox) {
+			var downloadUrl = modal.querySelector('[data-door-field="downloadUrl"]').value;
+			downloadBox.querySelector('[data-door-asset-preview]').innerHTML = downloadUrl ? '<span class="dashicons dashicons-download" aria-hidden="true"></span> ' + escapeHtml(downloadUrl.split('/').pop()) : '';
+			downloadBox.querySelector('[data-remove-door-download]').hidden = !downloadUrl;
+		}
 	}
 
 	function composerController(root) {
@@ -129,7 +162,25 @@
 				content: '',
 				number: doorNumber,
 				unlockDate: '',
+				unlockTime: '',
 				emailSubject: '',
+				emailContent: '',
+				mediaId: 0,
+				mediaUrl: '',
+				mediaType: '',
+				downloadId: 0,
+				downloadUrl: '',
+				downloadLabel: '',
+				buttonLabel: '',
+				buttonUrl: '',
+				productId: 0,
+				eventId: 0,
+				closedLabel: '',
+				openLabel: '',
+				closedBg: '#1f2937',
+				closedColor: '#ffffff',
+				openBg: '#334fe8',
+				openColor: '#ffffff',
 				desktop: cleanPosition(null, 4 + (sequence % 6) * 15, 5 + Math.floor(sequence / 6) * 21, 'desktop'),
 				mobile: cleanPosition(null, 5 + (sequence % 3) * 31, 5 + Math.floor(sequence / 3) * 21, 'mobile')
 			};
@@ -252,10 +303,17 @@
 		if (!modal) return;
 		activeDoor = door;
 		returnFocus = trigger || document.activeElement;
+		var colorDefaults = { closedBg: '#1f2937', closedColor: '#ffffff', openBg: '#334fe8', openColor: '#ffffff' };
 		modal.querySelectorAll('[data-door-field]').forEach(function (field) {
-			field.value = door[field.dataset.doorField] == null ? '' : door[field.dataset.doorField];
+			var value = door[field.dataset.doorField];
+			if ((value == null || value === '') && field.type === 'color') value = colorDefaults[field.dataset.doorField] || '#ffffff';
+			field.value = value == null ? '' : value;
 		});
-		setEditorContent(door.content || '');
+		setEditorContent('panda_seasons_door_content_editor', door.content || '');
+		setEditorContent('panda_seasons_door_email_editor', door.emailContent || '');
+		updateDoorAssets();
+		var preview = modal.querySelector('[data-door-preview]');
+		if (preview) { preview.hidden = true; preview.innerHTML = ''; }
 		modal.hidden = false;
 		document.body.classList.add('panda-seasons-modal-open');
 		modal.querySelector('[data-door-field="number"]').focus();
@@ -275,7 +333,68 @@
 
 	if (composer) composerController(composer);
 
+	function selectDoorAttachment(kind) {
+		var config = kind === 'media' ? { type: ['image', 'video', 'audio'] } : {};
+		var frame = wp.media({
+			title: kind === 'media' ? (window.pandaSeasonsAdmin && pandaSeasonsAdmin.selectMedia ? pandaSeasonsAdmin.selectMedia : 'Select media') : (window.pandaSeasonsAdmin && pandaSeasonsAdmin.selectDownload ? pandaSeasonsAdmin.selectDownload : 'Select download file'),
+			library: config,
+			multiple: false
+		});
+		frame.on('select', function () {
+			var attachment = frame.state().get('selection').first().toJSON();
+			if (kind === 'media') {
+				modal.querySelector('[data-door-field="mediaId"]').value = attachment.id || 0;
+				modal.querySelector('[data-door-field="mediaUrl"]').value = attachment.url || '';
+				modal.querySelector('[data-door-field="mediaType"]').value = attachment.type || '';
+			} else {
+				modal.querySelector('[data-door-field="downloadId"]').value = attachment.id || 0;
+				modal.querySelector('[data-door-field="downloadUrl"]').value = attachment.url || '';
+				var label = modal.querySelector('[data-door-field="downloadLabel"]');
+				if (label && !label.value) label.value = attachment.title || attachment.filename || '';
+			}
+			updateDoorAssets();
+		});
+		frame.open();
+	}
+
+	function clearDoorAttachment(kind) {
+		var prefix = kind === 'media' ? 'media' : 'download';
+		modal.querySelector('[data-door-field="' + prefix + 'Id"]').value = '';
+		modal.querySelector('[data-door-field="' + prefix + 'Url"]').value = '';
+		if (kind === 'media') modal.querySelector('[data-door-field="mediaType"]').value = '';
+		updateDoorAssets();
+	}
+
+	function previewDoor() {
+		var preview = modal.querySelector('[data-door-preview]');
+		if (!preview) return;
+		var value = function (name) {
+			var field = modal.querySelector('[data-door-field="' + name + '"]');
+			return field ? field.value : '';
+		};
+		var title = value('title') || (window.pandaSeasonsAdmin && pandaSeasonsAdmin.untitledPreview ? pandaSeasonsAdmin.untitledPreview : 'Door preview');
+		var html = '<div class="panda-seasons-door-preview__card"><h3>' + escapeHtml(title) + '</h3>';
+		html += mediaMarkup(value('mediaUrl'), value('mediaType'));
+		html += '<div class="panda-seasons-door-preview__content">' + getEditorContent('panda_seasons_door_content_editor') + '</div>';
+		if (value('downloadUrl')) html += '<p><a href="' + escapeHtml(safeUrl(value('downloadUrl'))) + '">' + escapeHtml(value('downloadLabel') || value('downloadUrl').split('/').pop()) + '</a></p>';
+		if (value('buttonUrl') && value('buttonLabel')) html += '<p><a class="button button-primary" href="' + escapeHtml(safeUrl(value('buttonUrl'))) + '">' + escapeHtml(value('buttonLabel')) + '</a></p>';
+		['productId', 'eventId'].forEach(function (name) {
+			var select = modal.querySelector('[data-door-field="' + name + '"]');
+			if (select && select.value) html += '<p class="panda-seasons-door-preview__related"><strong>' + escapeHtml(select.options[select.selectedIndex].text) + '</strong></p>';
+		});
+		html += '</div>';
+		preview.innerHTML = html;
+		preview.hidden = false;
+		preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+	}
+
 	document.addEventListener('click', function (event) {
+		if (event.target.closest('[data-select-door-media]')) { selectDoorAttachment('media'); return; }
+		if (event.target.closest('[data-select-door-download]')) { selectDoorAttachment('download'); return; }
+		if (event.target.closest('[data-remove-door-media]')) { clearDoorAttachment('media'); return; }
+		if (event.target.closest('[data-remove-door-download]')) { clearDoorAttachment('download'); return; }
+		if (event.target.closest('[data-preview-door]')) { previewDoor(); return; }
+
 		var select = event.target.closest('[data-select-media]');
 		var remove = event.target.closest('[data-remove-media]');
 		if (select || remove) {
@@ -307,9 +426,11 @@
 
 		if (event.target.closest('[data-save-door]') && activeDoor) {
 			modal.querySelectorAll('[data-door-field]').forEach(function (field) {
-				activeDoor[field.dataset.doorField] = field.dataset.doorField === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : field.value;
+				var name = field.dataset.doorField;
+				activeDoor[name] = name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value);
 			});
-			activeDoor.content = getEditorContent();
+			activeDoor.content = getEditorContent('panda_seasons_door_content_editor');
+			activeDoor.emailContent = getEditorContent('panda_seasons_door_email_editor');
 			activeDoor.isDraft = false;
 			if (composer && composer.renderDoors) composer.renderDoors();
 			closeDoorModal();

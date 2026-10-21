@@ -16,6 +16,7 @@ final class Panda_Seasons_Mailer {
 		$doors = Panda_Seasons_Plugin::doors( $calendar->ID );
 		foreach ( $doors as $door ) {
 			if ( get_post_meta( $door->ID, '_ps_unlock_date', true ) !== $now->format( 'Y-m-d' ) ) continue;
+			if ( ! Panda_Seasons_Plugin::door_is_available( $door->ID ) ) continue;
 			self::deliver_door( $calendar, $door );
 		}
 	}
@@ -37,7 +38,10 @@ final class Panda_Seasons_Mailer {
 			$subject = strtr( $subject, array( '{calendar}' => $calendar->post_title, '{day}' => (string) $number, '{first_name}' => $subscription['first_name'] ) );
 			$calendar_url = apply_filters( 'panda_seasons_calendar_url', home_url( '/' ), $calendar->ID );
 			$unsubscribe = Panda_Seasons_Subscriptions::unsubscribe_url( $subscription['id'] );
-			$html = '<h1>' . esc_html( $door->post_title ?: sprintf( __( 'Door %d', 'panda-seasons' ), $number ) ) . '</h1>' . apply_filters( 'the_content', $door->post_content );
+			$email_content = (string) get_post_meta( $door->ID, '_ps_email_content', true );
+			if ( '' === trim( $email_content ) ) $email_content = $door->post_content;
+			$html = '<h1>' . esc_html( $door->post_title ?: sprintf( __( 'Door %d', 'panda-seasons' ), $number ) ) . '</h1>' . apply_filters( 'the_content', $email_content );
+			$html .= Panda_Seasons_Plugin::door_content_markup( $door, 'email' );
 			$html .= '<p><a href="' . esc_url( $calendar_url . '#panda-season-door-' . $door->ID ) . '">' . esc_html__( 'Open calendar', 'panda-seasons' ) . '</a></p>';
 			$html .= '<hr><p><a href="' . esc_url( $unsubscribe ) . '">' . esc_html__( 'Manage or unsubscribe from calendar emails', 'panda-seasons' ) . '</a></p>';
 			$payload = apply_filters( 'panda_seasons_door_email', array( 'email' => $subscription['email'], 'subject' => $subject, 'html' => $html ), $calendar, $door, $subscription );

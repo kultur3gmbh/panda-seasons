@@ -21,6 +21,19 @@ if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin:
 for composer_contract in ("_ps_position_desktop", "_ps_position_mobile", "data-door-modal", "panda-seasons__canvas"):
     if composer_contract not in plugin:
         raise SystemExit(f"Missing visual composer contract {composer_contract}")
+for content_contract in (
+    "_ps_unlock_time",
+    "_ps_media_id",
+    "_ps_download_id",
+    "_ps_button_url",
+    "_ps_product_id",
+    "_ps_event_id",
+    "_ps_email_content",
+    "_ps_closed_background",
+    "data-preview-door",
+):
+    if content_contract not in plugin:
+        raise SystemExit(f"Missing door content contract {content_contract}")
 for scope in ("calendar", "all_calendars", "all_mailings"):
     if scope not in subscriptions:
         raise SystemExit(f"Missing unsubscribe scope {scope}")

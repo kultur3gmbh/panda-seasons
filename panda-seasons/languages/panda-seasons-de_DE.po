@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.2.0\n"
+"Project-Id-Version: Panda Seasons 0.3.0\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -282,3 +282,105 @@ msgstr "Kalendertürchen"
 
 msgid "Visual calendar editor"
 msgstr "Visueller Kalender-Editor"
+
+msgid "Door basics"
+msgstr "Grunddaten des Türchens"
+
+msgid "Optional unlock time"
+msgstr "Optionale Öffnungszeit"
+
+msgid "Door content and media"
+msgstr "Türcheninhalt und Medien"
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Image, video or audio"
+msgstr "Bild, Video oder Audio"
+
+msgid "Select media"
+msgstr "Medium auswählen"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Select download file"
+msgstr "Download-Datei auswählen"
+
+msgid "Download link text"
+msgstr "Text des Download-Links"
+
+msgid "Download file"
+msgstr "Datei herunterladen"
+
+msgid "Button and related content"
+msgstr "Button und verknüpfte Inhalte"
+
+msgid "Button text"
+msgstr "Button-Text"
+
+msgid "Button link"
+msgstr "Button-Link"
+
+msgid "WooCommerce product"
+msgstr "WooCommerce-Produkt"
+
+msgid "No product"
+msgstr "Kein Produkt"
+
+msgid "Event"
+msgstr "Event"
+
+msgid "No event"
+msgstr "Kein Event"
+
+msgid "Calendar email"
+msgstr "Kalender-E-Mail"
+
+msgid "Email content"
+msgstr "Inhalt der E-Mail"
+
+msgid "Leave empty to use the regular door content."
+msgstr "Leer lassen, um den normalen Türcheninhalt zu verwenden."
+
+msgid "Appearance before and after opening"
+msgstr "Darstellung vor und nach dem Öffnen"
+
+msgid "Label before opening"
+msgstr "Beschriftung vor dem Öffnen"
+
+msgid "Label after opening"
+msgstr "Beschriftung nach dem Öffnen"
+
+msgid "Background before opening"
+msgstr "Hintergrund vor dem Öffnen"
+
+msgid "Text color before opening"
+msgstr "Textfarbe vor dem Öffnen"
+
+msgid "Background after opening"
+msgstr "Hintergrund nach dem Öffnen"
+
+msgid "Text color after opening"
+msgstr "Textfarbe nach dem Öffnen"
+
+msgid "Preview content before it opens"
+msgstr "Inhalt schon vorab in der Verwaltung ansehen"
+
+msgid "Door preview"
+msgstr "Türchenvorschau"
+
+msgid "Select image, video or audio"
+msgstr "Bild, Video oder Audio auswählen"
+
+msgid "Play video"
+msgstr "Video abspielen"
+
+msgid "Play audio"
+msgstr "Audio abspielen"
+
+msgid "View product"
+msgstr "Produkt ansehen"
+
+msgid "View event"
+msgstr "Event ansehen"
