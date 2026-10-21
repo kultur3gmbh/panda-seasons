@@ -70,6 +70,17 @@
 			downloadBox.querySelector('[data-door-asset-preview]').innerHTML = downloadUrl ? '<span class="dashicons dashicons-download" aria-hidden="true"></span> ' + escapeHtml(downloadUrl.split('/').pop()) : '';
 			downloadBox.querySelector('[data-remove-door-download]').hidden = !downloadUrl;
 		}
+		['closedImage', 'openImage'].forEach(function (kind) {
+			var box = modal.querySelector('[data-door-asset="' + kind + '"]');
+			if (!box) return;
+			var url = modal.querySelector('[data-door-field="' + kind + 'Url"]').value;
+			box.querySelector('[data-door-asset-preview]').innerHTML = url ? '<img src="' + escapeHtml(safeUrl(url)) + '" alt="">' : '';
+			box.querySelector('[data-remove-door-image="' + kind + '"]').hidden = !url;
+		});
+		modal.querySelectorAll('[data-opacity-output]').forEach(function (output) {
+			var field = modal.querySelector('[data-door-field="' + output.dataset.opacityOutput + '"]');
+			output.textContent = (field ? field.value : 100) + '%';
+		});
 	}
 
 	function composerController(root) {
@@ -79,6 +90,7 @@
 		var images = { desktop: '', mobile: '' };
 		var doors = [];
 		var view = 'desktop';
+		var previewState = 'actual';
 		var pointerState = null;
 		var dragged = false;
 
@@ -126,7 +138,8 @@
 			currentDoors().forEach(function (door) {
 				var position = door[view];
 				var element = document.createElement('div');
-				element.className = 'panda-seasons-composer__door';
+				var isOpen = previewState === 'open' || (previewState === 'actual' && (!door.unlockDate || new Date(door.unlockDate + 'T' + (door.unlockTime || '00:00')) <= new Date()));
+				element.className = 'panda-seasons-composer__door is-' + (isOpen ? 'open' : 'closed') + ' shape-' + (door.shape || 'rounded');
 				element.dataset.editorDoor = door.id || door.clientId;
 				element.setAttribute('role', 'button');
 				element.setAttribute('tabindex', '0');
@@ -135,7 +148,13 @@
 				element.style.top = position.y + '%';
 				element.style.width = position.w + '%';
 				element.style.height = position.h + '%';
-				element.innerHTML = '<span class="panda-seasons-composer__door-number">' + escapeHtml(door.number) + '</span><span class="panda-seasons-composer__door-title">' + escapeHtml(door.title || '') + '</span><span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
+				element.style.setProperty('--ps-door-bg', isOpen ? (door.openBg || '#334fe8') : (door.closedBg || '#1f2937'));
+				element.style.setProperty('--ps-door-color', isOpen ? (door.openColor || '#ffffff') : (door.closedColor || '#ffffff'));
+				element.style.setProperty('--ps-door-opacity', number(isOpen ? door.openOpacity : door.closedOpacity, 100) + '%');
+				var stateImage = isOpen ? door.openImageUrl : door.closedImageUrl;
+				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
+				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
+				element.innerHTML = '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span><span class="panda-seasons-composer__door-title">' + escapeHtml(door.title || '') + '</span><span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
 				stage.appendChild(element);
 			});
 			empty.hidden = currentDoors().length > 0;
@@ -181,6 +200,19 @@
 				closedColor: '#ffffff',
 				openBg: '#334fe8',
 				openColor: '#ffffff',
+				closedOpacity: 100,
+				openOpacity: 100,
+				shape: 'rounded',
+				closedImageId: 0,
+				closedImageUrl: '',
+				openImageId: 0,
+				openImageUrl: '',
+				quizEnabled: false,
+				quizQuestion: '',
+				quizAnswers: [],
+				quizCorrect: 1,
+				quizSuccess: '',
+				quizFailure: '',
 				desktop: cleanPosition(null, 4 + (sequence % 6) * 15, 5 + Math.floor(sequence / 6) * 21, 'desktop'),
 				mobile: cleanPosition(null, 5 + (sequence % 3) * 31, 5 + Math.floor(sequence / 3) * 21, 'mobile')
 			};
@@ -276,6 +308,14 @@
 		});
 
 		root.addEventListener('click', function (event) {
+			var stateButton = event.target.closest('[data-preview-state]');
+			if (stateButton) {
+				previewState = stateButton.dataset.previewState;
+				root.dataset.previewState = previewState;
+				root.querySelectorAll('[data-preview-state]').forEach(function (button) { button.classList.toggle('button-primary', button === stateButton); });
+				render();
+				return;
+			}
 			var viewButton = event.target.closest('[data-editor-view]');
 			if (viewButton) {
 				view = viewButton.dataset.editorView;
@@ -307,7 +347,9 @@
 		modal.querySelectorAll('[data-door-field]').forEach(function (field) {
 			var value = door[field.dataset.doorField];
 			if ((value == null || value === '') && field.type === 'color') value = colorDefaults[field.dataset.doorField] || '#ffffff';
-			field.value = value == null ? '' : value;
+			if (field.type === 'checkbox') field.checked = Boolean(value);
+			else if (field.dataset.doorField === 'quizAnswers' && Array.isArray(value)) field.value = value.join('\n');
+			else field.value = value == null ? '' : value;
 		});
 		setEditorContent('panda_seasons_door_content_editor', door.content || '');
 		setEditorContent('panda_seasons_door_email_editor', door.emailContent || '');
@@ -315,7 +357,7 @@
 		var preview = modal.querySelector('[data-door-preview]');
 		if (preview) { preview.hidden = true; preview.innerHTML = ''; }
 		modal.hidden = false;
-		document.body.classList.add('panda-seasons-modal-open');
+		composer.classList.add('has-active-door');
 		modal.querySelector('[data-door-field="number"]').focus();
 	}
 
@@ -326,7 +368,7 @@
 			if (composer && composer.renderDoors) composer.renderDoors();
 		}
 		modal.hidden = true;
-		document.body.classList.remove('panda-seasons-modal-open');
+		if (composer) composer.classList.remove('has-active-door');
 		activeDoor = null;
 		if (returnFocus && document.contains(returnFocus)) returnFocus.focus();
 	}
@@ -365,6 +407,23 @@
 		updateDoorAssets();
 	}
 
+	function selectDoorStateImage(kind) {
+		var frame = wp.media({ title: window.pandaSeasonsAdmin && pandaSeasonsAdmin.selectImage ? pandaSeasonsAdmin.selectImage : 'Select image', library: { type: 'image' }, multiple: false });
+		frame.on('select', function () {
+			var attachment = frame.state().get('selection').first().toJSON();
+			modal.querySelector('[data-door-field="' + kind + 'Id"]').value = attachment.id || 0;
+			modal.querySelector('[data-door-field="' + kind + 'Url"]').value = attachment.url || '';
+			updateDoorAssets();
+		});
+		frame.open();
+	}
+
+	function clearDoorStateImage(kind) {
+		modal.querySelector('[data-door-field="' + kind + 'Id"]').value = '';
+		modal.querySelector('[data-door-field="' + kind + 'Url"]').value = '';
+		updateDoorAssets();
+	}
+
 	function previewDoor() {
 		var preview = modal.querySelector('[data-door-preview]');
 		if (!preview) return;
@@ -389,6 +448,10 @@
 	}
 
 	document.addEventListener('click', function (event) {
+		var selectStateImage = event.target.closest('[data-select-door-image]');
+		if (selectStateImage) { selectDoorStateImage(selectStateImage.dataset.selectDoorImage); return; }
+		var removeStateImage = event.target.closest('[data-remove-door-image]');
+		if (removeStateImage) { clearDoorStateImage(removeStateImage.dataset.removeDoorImage); return; }
 		if (event.target.closest('[data-select-door-media]')) { selectDoorAttachment('media'); return; }
 		if (event.target.closest('[data-select-door-download]')) { selectDoorAttachment('download'); return; }
 		if (event.target.closest('[data-remove-door-media]')) { clearDoorAttachment('media'); return; }
@@ -427,7 +490,9 @@
 		if (event.target.closest('[data-save-door]') && activeDoor) {
 			modal.querySelectorAll('[data-door-field]').forEach(function (field) {
 				var name = field.dataset.doorField;
-				activeDoor[name] = name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value);
+				if (field.type === 'checkbox') activeDoor[name] = field.checked;
+				else if (name === 'quizAnswers') activeDoor[name] = field.value.split(/\r?\n/).map(function (answer) { return answer.trim(); }).filter(Boolean);
+				else activeDoor[name] = name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value);
 			});
 			activeDoor.content = getEditorContent('panda_seasons_door_content_editor');
 			activeDoor.emailContent = getEditorContent('panda_seasons_door_email_editor');
@@ -444,6 +509,12 @@
 			closeDoorModal();
 		}
 
+	});
+
+	document.addEventListener('input', function (event) {
+		if (!event.target.matches('[data-door-field="closedOpacity"],[data-door-field="openOpacity"]')) return;
+		var output = modal.querySelector('[data-opacity-output="' + event.target.dataset.doorField + '"]');
+		if (output) output.textContent = event.target.value + '%';
 	});
 
 	document.addEventListener('keydown', function (event) {

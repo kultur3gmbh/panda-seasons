@@ -37,4 +37,17 @@
 		var modal = document.querySelector('[data-season-modal]:not([hidden])');
 		if (modal) closeModal(modal);
 	});
+
+	document.addEventListener('submit', function (event) {
+		var quiz = event.target.closest('[data-season-quiz]');
+		if (!quiz) return;
+		event.preventDefault();
+		var selected = quiz.querySelector('input[type="radio"]:checked');
+		if (!selected) return;
+		var correct = String(selected.value) === String(quiz.dataset.correct);
+		var result = quiz.querySelector('[data-quiz-result]');
+		result.textContent = correct ? quiz.dataset.success : quiz.dataset.failure;
+		result.classList.toggle('is-correct', correct);
+		result.classList.toggle('is-wrong', !correct);
+	});
 }());

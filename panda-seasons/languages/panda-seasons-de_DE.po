@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.0\n"
+"Project-Id-Version: Panda Seasons 0.3.1\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -384,3 +384,117 @@ msgstr "Produkt ansehen"
 
 msgid "View event"
 msgstr "Event ansehen"
+
+msgid "Door state preview"
+msgstr "Vorschau des Türchenzustands"
+
+msgid "Actual"
+msgstr "Tatsächlich"
+
+msgid "All closed"
+msgstr "Alle geschlossen"
+
+msgid "All open"
+msgstr "Alle geöffnet"
+
+msgid "Door shape"
+msgstr "Türchenform"
+
+msgid "Square"
+msgstr "Eckig"
+
+msgid "Rounded"
+msgstr "Abgerundet"
+
+msgid "Round"
+msgstr "Rund"
+
+msgid "Closed background opacity"
+msgstr "Deckkraft des geschlossenen Hintergrunds"
+
+msgid "Open background opacity"
+msgstr "Deckkraft des geöffneten Hintergrunds"
+
+msgid "Optional image on the closed door"
+msgstr "Optionales Bild auf dem geschlossenen Türchen"
+
+msgid "Optional image on the open door"
+msgstr "Optionales Bild auf dem geöffneten Türchen"
+
+msgid "Quiz"
+msgstr "Quiz"
+
+msgid "Enable a quiz for this door"
+msgstr "Quiz für dieses Türchen aktivieren"
+
+msgid "Question"
+msgstr "Frage"
+
+msgid "Answers (one per line)"
+msgstr "Antworten (eine pro Zeile)"
+
+msgid "Correct answer number"
+msgstr "Nummer der richtigen Antwort"
+
+msgid "Message for a correct answer"
+msgstr "Meldung bei richtiger Antwort"
+
+msgid "Message for a wrong answer"
+msgstr "Meldung bei falscher Antwort"
+
+msgid "In standalone mode answers are checked only in the visitor’s browser and no personal data is stored."
+msgstr "Im Standalone-Betrieb werden Antworten nur im Browser geprüft und keine personenbezogenen Daten gespeichert."
+
+msgid "Correct!"
+msgstr "Richtig!"
+
+msgid "That is not correct yet."
+msgstr "Das ist noch nicht richtig."
+
+msgid "Check answer"
+msgstr "Antwort prüfen"
+
+msgid "Email-calendar signup"
+msgstr "Anmeldung zum E-Mail-Kalender"
+
+msgid "The signup works independently of the doors and may be published weeks before the calendar starts."
+msgstr "Die Anmeldung funktioniert unabhängig von den Türchen und kann bereits Wochen vor Kalenderbeginn veröffentlicht werden."
+
+msgid "Signup heading"
+msgstr "Überschrift der Anmeldung"
+
+msgid "Signup description"
+msgstr "Beschreibung der Anmeldung"
+
+msgid "General newsletter signup"
+msgstr "Allgemeine Newsletter-Anmeldung"
+
+msgid "Newsletter consent remains separate from the email-calendar consent."
+msgstr "Die Newsletter-Einwilligung bleibt von der Einwilligung zum E-Mail-Kalender getrennt."
+
+msgid "Signup type"
+msgstr "Art der Anmeldung"
+
+msgid "Link or button"
+msgstr "Link oder Button"
+
+msgid "Form shortcode"
+msgstr "Formular-Shortcode"
+
+msgid "Simple ContactPanda form"
+msgstr "Einfaches ContactPanda-Formular"
+
+msgid "Heading"
+msgstr "Überschrift"
+
+msgid "Link text"
+msgstr "Linktext"
+
+msgid "Link URL"
+msgstr "Link-URL"
+
+msgid "Subscribe to newsletter"
+msgstr "Newsletter abonnieren"
+
+msgid "None"
+msgstr "Keine"

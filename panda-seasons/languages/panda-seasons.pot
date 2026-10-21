@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.0\n"
+"Project-Id-Version: Panda Seasons 0.3.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -381,4 +381,118 @@ msgid "View product"
 msgstr ""
 
 msgid "View event"
+msgstr ""
+
+msgid "Door state preview"
+msgstr ""
+
+msgid "Actual"
+msgstr ""
+
+msgid "All closed"
+msgstr ""
+
+msgid "All open"
+msgstr ""
+
+msgid "Door shape"
+msgstr ""
+
+msgid "Square"
+msgstr ""
+
+msgid "Rounded"
+msgstr ""
+
+msgid "Round"
+msgstr ""
+
+msgid "Closed background opacity"
+msgstr ""
+
+msgid "Open background opacity"
+msgstr ""
+
+msgid "Optional image on the closed door"
+msgstr ""
+
+msgid "Optional image on the open door"
+msgstr ""
+
+msgid "Quiz"
+msgstr ""
+
+msgid "Enable a quiz for this door"
+msgstr ""
+
+msgid "Question"
+msgstr ""
+
+msgid "Answers (one per line)"
+msgstr ""
+
+msgid "Correct answer number"
+msgstr ""
+
+msgid "Message for a correct answer"
+msgstr ""
+
+msgid "Message for a wrong answer"
+msgstr ""
+
+msgid "In standalone mode answers are checked only in the visitor’s browser and no personal data is stored."
+msgstr ""
+
+msgid "Correct!"
+msgstr ""
+
+msgid "That is not correct yet."
+msgstr ""
+
+msgid "Check answer"
+msgstr ""
+
+msgid "Email-calendar signup"
+msgstr ""
+
+msgid "The signup works independently of the doors and may be published weeks before the calendar starts."
+msgstr ""
+
+msgid "Signup heading"
+msgstr ""
+
+msgid "Signup description"
+msgstr ""
+
+msgid "General newsletter signup"
+msgstr ""
+
+msgid "Newsletter consent remains separate from the email-calendar consent."
+msgstr ""
+
+msgid "Signup type"
+msgstr ""
+
+msgid "Link or button"
+msgstr ""
+
+msgid "Form shortcode"
+msgstr ""
+
+msgid "Simple ContactPanda form"
+msgstr ""
+
+msgid "Heading"
+msgstr ""
+
+msgid "Link text"
+msgstr ""
+
+msgid "Link URL"
+msgstr ""
+
+msgid "Subscribe to newsletter"
+msgstr ""
+
+msgid "None"
 msgstr ""

@@ -13,9 +13,7 @@ final class Panda_Seasons_Subscriptions {
 	}
 
 	public static function form( $calendar_id ) {
-		if ( ! Panda_Seasons_Plugin::contactpanda_available() ) {
-			return '<div class="panda-seasons__notice">' . esc_html__( 'Email delivery requires the free ContactPanda plugin.', 'panda-seasons' ) . '</div>';
-		}
+		if ( ! Panda_Seasons_Plugin::contactpanda_available() ) return '';
 		$message = sanitize_key( wp_unslash( $_GET['panda_seasons_message'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only status.
 		$messages = array(
 			'active'  => __( 'You are registered for this email calendar.', 'panda-seasons' ),
@@ -25,7 +23,8 @@ final class Panda_Seasons_Subscriptions {
 		ob_start();
 		?>
 		<div class="panda-seasons__subscription">
-			<h3><?php esc_html_e( 'Receive this calendar by email', 'panda-seasons' ); ?></h3>
+			<h3><?php echo esc_html( get_post_meta( $calendar_id, '_ps_signup_title', true ) ?: __( 'Receive this calendar by email', 'panda-seasons' ) ); ?></h3>
+			<?php if ( get_post_meta( $calendar_id, '_ps_signup_text', true ) ) : ?><p><?php echo esc_html( get_post_meta( $calendar_id, '_ps_signup_text', true ) ); ?></p><?php endif; ?>
 			<?php if ( isset( $messages[ $message ] ) ) : ?><p class="panda-seasons__notice" role="status"><?php echo esc_html( $messages[ $message ] ); ?></p><?php endif; ?>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="panda_seasons_subscribe">
