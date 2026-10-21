@@ -1,0 +1,224 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Panda Seasons 0.1.0\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Panda Seasons"
+msgstr "Panda Seasons"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Calendars"
+msgstr "Kalender"
+
+msgid "Add calendar"
+msgstr "Kalender hinzufügen"
+
+msgid "Edit calendar"
+msgstr "Kalender bearbeiten"
+
+msgid "Door"
+msgstr "Türchen"
+
+msgid "Doors"
+msgstr "Türchen"
+
+msgid "Add door"
+msgstr "Türchen hinzufügen"
+
+msgid "Edit door"
+msgstr "Türchen bearbeiten"
+
+msgid "Calendar design"
+msgstr "Kalendergestaltung"
+
+msgid "Email calendar"
+msgstr "E-Mail-Kalender"
+
+msgid "Embed calendar"
+msgstr "Kalender einfügen"
+
+msgid "Door settings"
+msgstr "Türcheneinstellungen"
+
+msgid "Every five minutes"
+msgstr "Alle fünf Minuten"
+
+msgid "Build the doors first, then place one continuous image over the complete calendar. Separate images can be used for desktop and mobile."
+msgstr "Bauen Sie zuerst die Türchen und legen Sie anschließend ein durchgehendes Bild über den vollständigen Kalender. Für Desktop und Mobilgeräte können unterschiedliche Bilder verwendet werden."
+
+msgid "Desktop cover image"
+msgstr "Gesamtbild für Desktop"
+
+msgid "Mobile cover image"
+msgstr "Gesamtbild für Mobilgeräte"
+
+msgid "Select image"
+msgstr "Bild auswählen"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Desktop columns"
+msgstr "Spalten am Desktop"
+
+msgid "Mobile columns"
+msgstr "Spalten auf Mobilgeräten"
+
+msgid "Calendar width-to-height ratio"
+msgstr "Seitenverhältnis des Kalenders"
+
+msgid "The free ContactPanda plugin must be installed and active to use email calendars. The web calendar remains fully available."
+msgstr "Für E-Mail-Kalender muss das kostenlose ContactPanda-Plugin installiert und aktiv sein. Der Webkalender bleibt vollständig verfügbar."
+
+msgid "Send this calendar by email"
+msgstr "Diesen Kalender per E-Mail versenden"
+
+msgid "Daily delivery time"
+msgstr "Tägliche Versandzeit"
+
+msgid "Subject template"
+msgstr "Betreffvorlage"
+
+msgid "Available: {calendar}, {day}, {first_name}"
+msgstr "Verfügbar: {calendar}, {day}, {first_name}"
+
+msgid "Verified ContactPanda contacts are enrolled immediately. All other addresses receive a double opt-in email. Calendar consent is stored separately from general marketing consent."
+msgstr "Bestätigte ContactPanda-Kontakte werden sofort angemeldet. Alle anderen Adressen erhalten eine Double-Opt-in-E-Mail. Die Kalendereinwilligung wird getrennt von der allgemeinen Marketingeinwilligung gespeichert."
+
+msgid "{calendar}: Door {day} is open"
+msgstr "{calendar}: Türchen {day} ist geöffnet"
+
+msgid "Select calendar"
+msgstr "Kalender auswählen"
+
+msgid "Door number"
+msgstr "Türchennummer"
+
+msgid "Number"
+msgstr "Nummer"
+
+msgid "Unlock date"
+msgstr "Öffnungsdatum"
+
+msgid "Email subject override"
+msgstr "Abweichender E-Mail-Betreff"
+
+msgid "Enabled"
+msgstr "Aktiviert"
+
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "This calendar does not have any doors yet."
+msgstr "Dieser Kalender hat noch keine Türchen."
+
+msgid "Open door %d"
+msgstr "Türchen %d öffnen"
+
+msgid "Door %1$d opens on %2$s"
+msgstr "Türchen %1$d öffnet am %2$s"
+
+msgid "Door %d"
+msgstr "Türchen %d"
+
+msgid "Email delivery requires the free ContactPanda plugin."
+msgstr "Der E-Mail-Versand benötigt das kostenlose ContactPanda-Plugin."
+
+msgid "Receive this calendar by email"
+msgstr "Diesen Kalender per E-Mail erhalten"
+
+msgid "You are registered for this email calendar."
+msgstr "Sie sind für diesen E-Mail-Kalender angemeldet."
+
+msgid "Please check your inbox and confirm your email address. Also check your spam folder."
+msgstr "Bitte überprüfen Sie Ihren Posteingang und bestätigen Sie Ihre E-Mail-Adresse. Sehen Sie bitte auch im Spamordner nach."
+
+msgid "The registration could not be completed. Please try again."
+msgstr "Die Anmeldung konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut."
+
+msgid "First name"
+msgstr "Vorname"
+
+msgid "Last name"
+msgstr "Nachname"
+
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+msgid "I would like to receive the daily emails for “%s”. I can unsubscribe at any time."
+msgstr "Ich möchte die täglichen E-Mails für „%s“ erhalten. Ich kann mich jederzeit wieder abmelden."
+
+msgid "Register for email calendar"
+msgstr "Für E-Mail-Kalender anmelden"
+
+msgid "Confirm your registration for %s"
+msgstr "Bitte bestätigen Sie Ihre Anmeldung für %s"
+
+msgid "Hello %s,"
+msgstr "Hallo %s,"
+
+msgid "Please confirm that you would like to receive this email calendar."
+msgstr "Bitte bestätigen Sie, dass Sie diesen E-Mail-Kalender erhalten möchten."
+
+msgid "Confirm email calendar"
+msgstr "E-Mail-Kalender bestätigen"
+
+msgid "This confirmation link is invalid."
+msgstr "Dieser Bestätigungslink ist ungültig."
+
+msgid "Registration confirmed"
+msgstr "Anmeldung bestätigt"
+
+msgid "You will now receive the emails for “%s”."
+msgstr "Sie erhalten ab jetzt die E-Mails für „%s“."
+
+msgid "This unsubscribe link is invalid."
+msgstr "Dieser Abmeldelink ist ungültig."
+
+msgid "What would you like to unsubscribe from?"
+msgstr "Wovon möchten Sie sich abmelden?"
+
+msgid "Only “%s”"
+msgstr "Nur „%s“"
+
+msgid "All email calendars, but keep other mailings"
+msgstr "Alle E-Mail-Kalender, andere Zusendungen jedoch weiterhin erhalten"
+
+msgid "All email mailings"
+msgstr "Alle E-Mail-Zusendungen"
+
+msgid "Finally unsubscribe"
+msgstr "Endgültig abmelden"
+
+msgid "Please select what you want to unsubscribe from."
+msgstr "Bitte wählen Sie aus, wovon Sie sich abmelden möchten."
+
+msgid "Finally unsubscribed"
+msgstr "Endgültig abgemeldet"
+
+msgid "You have been finally unsubscribed from this calendar."
+msgstr "Sie wurden endgültig von diesem Kalender abgemeldet."
+
+msgid "You have been finally unsubscribed from all email calendars."
+msgstr "Sie wurden endgültig von allen E-Mail-Kalendern abgemeldet."
+
+msgid "You have been finally unsubscribed from all email mailings."
+msgstr "Sie wurden endgültig von allen E-Mail-Zusendungen abgemeldet."
+
+msgid "Open calendar"
+msgstr "Kalender öffnen"
+
+msgid "Manage or unsubscribe from calendar emails"
+msgstr "Kalender-E-Mails verwalten oder abmelden"
+
+msgid "WordPress could not send this email."
+msgstr "WordPress konnte diese E-Mail nicht versenden."
