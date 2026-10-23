@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 repo_dir="$(cd "$(dirname "$0")/.." && pwd)"
-version="${1:-0.3.8}"
+version="${1:-0.3.9}"
 archive="$repo_dir/dist/panda-seasons-$version.zip"
 cd "$repo_dir"
 rm -f "$archive"

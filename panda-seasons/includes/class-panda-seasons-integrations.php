@@ -1,0 +1,80 @@
+<?php
+
+defined( 'ABSPATH' ) || exit;
+
+final class Panda_Seasons_Integrations {
+	public static function boot() {
+		add_action( 'init', array( __CLASS__, 'register_block' ), 30 );
+		add_action( 'elementor/widgets/register', array( __CLASS__, 'register_elementor_widget' ) );
+		add_action( 'et_builder_ready', array( __CLASS__, 'register_divi_module' ) );
+		add_action( 'fusion_builder_before_init', array( __CLASS__, 'register_avada_element' ) );
+	}
+
+	private static function calendars() {
+		$choices = array( '' => __( 'Select a calendar', 'panda-seasons' ) );
+		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => 'publish', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC' ) ) as $calendar ) {
+			$choices[ (string) $calendar->ID ] = $calendar->post_title ?: sprintf( __( 'Calendar #%d', 'panda-seasons' ), $calendar->ID );
+		}
+		return $choices;
+	}
+
+	public static function render( $attributes ) {
+		$id = absint( $attributes['id'] ?? 0 );
+		return $id ? Panda_Seasons_Plugin::shortcode( array( 'id' => $id ) ) : '';
+	}
+
+	public static function register_block() {
+		wp_register_script( 'panda-seasons-block-editor', PANDA_SEASONS_URL . 'assets/block-editor.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-server-side-render' ), PANDA_SEASONS_VERSION, true );
+		$calendars = array();
+		foreach ( self::calendars() as $value => $label ) $calendars[] = array( 'value' => $value, 'label' => $label );
+		wp_localize_script( 'panda-seasons-block-editor', 'pandaSeasonsBlock', array( 'calendars' => $calendars, 'title' => __( 'Panda Seasons calendar', 'panda-seasons' ), 'selectLabel' => __( 'Calendar', 'panda-seasons' ) ) );
+		register_block_type( 'panda-seasons/calendar', array(
+			'api_version'     => 2,
+			'editor_script'   => 'panda-seasons-block-editor',
+			'attributes'      => array( 'id' => array( 'type' => 'integer', 'default' => 0 ) ),
+			'render_callback' => array( __CLASS__, 'render' ),
+		) );
+	}
+
+	public static function register_elementor_widget( $widgets_manager ) {
+		if ( ! class_exists( '\Elementor\Widget_Base' ) ) return;
+		$widgets_manager->register( new class() extends \Elementor\Widget_Base {
+			public function get_name() { return 'panda_seasons_calendar'; }
+			public function get_title() { return __( 'Panda Seasons calendar', 'panda-seasons' ); }
+			public function get_icon() { return 'eicon-calendar'; }
+			public function get_categories() { return array( 'general' ); }
+			protected function register_controls() {
+				$this->start_controls_section( 'calendar_section', array( 'label' => __( 'Calendar', 'panda-seasons' ) ) );
+				$this->add_control( 'calendar_id', array( 'label' => __( 'Select calendar', 'panda-seasons' ), 'type' => \Elementor\Controls_Manager::SELECT, 'options' => array_slice( Panda_Seasons_Integrations::elementor_choices(), 1, null, true ) ) );
+				$this->end_controls_section();
+			}
+			protected function render() {
+				$settings = $this->get_settings_for_display();
+				echo Panda_Seasons_Integrations::render( array( 'id' => $settings['calendar_id'] ?? 0 ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+		} );
+	}
+
+	public static function elementor_choices() { return self::calendars(); }
+
+	public static function register_divi_module() {
+		if ( ! class_exists( 'ET_Builder_Module' ) ) return;
+		new class() extends ET_Builder_Module {
+			public $slug = 'panda_seasons_divi';
+			public $vb_support = 'on';
+			public function init() { $this->name = __( 'Panda Seasons calendar', 'panda-seasons' ); }
+			public function get_fields() { return array( 'calendar_id' => array( 'label' => __( 'Select calendar', 'panda-seasons' ), 'type' => 'select', 'options' => Panda_Seasons_Integrations::elementor_choices(), 'toggle_slug' => 'main_content' ) ); }
+			public function render( $attrs, $content = null, $render_slug = '' ) { return Panda_Seasons_Integrations::render( array( 'id' => $this->props['calendar_id'] ?? 0 ) ); }
+		};
+	}
+
+	public static function register_avada_element() {
+		if ( ! function_exists( 'fusion_builder_map' ) ) return;
+		fusion_builder_map( array(
+			'name'       => __( 'Panda Seasons calendar', 'panda-seasons' ),
+			'shortcode'  => 'panda_seasons',
+			'icon'       => 'fusiona-calendar',
+			'params'     => array( array( 'type' => 'select', 'heading' => __( 'Select calendar', 'panda-seasons' ), 'param_name' => 'id', 'value' => self::calendars() ) ),
+		) );
+	}
+}

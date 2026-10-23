@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.8\n"
+"Project-Id-Version: Panda Seasons 0.3.9\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -834,3 +834,33 @@ msgstr "Öffnungseffekt als Vorschau anzeigen"
 
 msgid "Click the sample door to preview the opening effect."
 msgstr "Klicken Sie auf das Mustertürchen, um den Öffnungseffekt anzusehen."
+
+msgid "Opening preview"
+msgstr "Vorschau des Öffnungseffekts"
+
+msgid "Panda Seasons calendar"
+msgstr "Panda-Seasons-Kalender"
+
+msgid "Select a calendar"
+msgstr "Wählen Sie einen Kalender aus"
+
+msgid "Calendar #%d"
+msgstr "Kalender Nr. %d"
+
+msgid "Calendar shortcode"
+msgstr "Kalender-Shortcode"
+
+msgid "Signup shortcode"
+msgstr "Anmelde-Shortcode"
+
+msgid "Copy"
+msgstr "Kopieren"
+
+msgid "Background color"
+msgstr "Hintergrundfarbe"
+
+msgid "Label color"
+msgstr "Beschriftungsfarbe"
+
+msgid "Border color"
+msgstr "Rahmenfarbe"

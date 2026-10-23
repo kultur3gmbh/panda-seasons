@@ -9,14 +9,17 @@ required = [
     "includes/class-panda-seasons-subscriptions.php",
     "includes/class-panda-seasons-mailer.php",
     "includes/class-panda-seasons-updater.php",
+	"includes/class-panda-seasons-integrations.php",
     "assets/frontend.css",
     "assets/frontend.js",
+	"assets/block-editor.js",
 ]
 for filename in required:
     if not (root / filename).exists():
         raise SystemExit(f"Missing {filename}")
 plugin = (root / "includes/class-panda-seasons-plugin.php").read_text(encoding="utf-8")
 updater = (root / "includes/class-panda-seasons-updater.php").read_text(encoding="utf-8")
+integrations = (root / "includes/class-panda-seasons-integrations.php").read_text(encoding="utf-8")
 subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_text(encoding="utf-8")
 if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin:
     raise SystemExit("Calendar contract missing")
@@ -47,3 +50,6 @@ for scope in ("calendar", "all_calendars", "all_mailings"):
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")
+for integration_contract in ("register_block_type", "elementor/widgets/register", "et_builder_ready", "fusion_builder_map"):
+    if integration_contract not in integrations:
+        raise SystemExit(f"Missing builder integration contract {integration_contract}")

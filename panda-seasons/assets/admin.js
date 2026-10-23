@@ -17,6 +17,11 @@
 		var publishToggle = publishBox.querySelector('.handlediv');
 		if (publishToggle) publishToggle.setAttribute('aria-expanded', 'true');
 	}
+	var shortcodeBox = document.getElementById('panda-seasons-shortcode');
+	if (publishPanel && shortcodeBox) {
+		publishPanel.appendChild(shortcodeBox);
+		shortcodeBox.classList.remove('closed');
+	}
 
 	function number(value, fallback) {
 		var parsed = parseFloat(value);
@@ -550,6 +555,13 @@
 	}
 
 	document.addEventListener('click', function (event) {
+		var copyShortcode = event.target.closest('[data-copy-shortcode]');
+		if (copyShortcode) {
+			var copyInput = copyShortcode.parentNode.querySelector('input');
+			if (copyInput && navigator.clipboard) navigator.clipboard.writeText(copyInput.value);
+			else if (copyInput) { copyInput.select(); document.execCommand('copy'); }
+			return;
+		}
 		var stateTab = event.target.closest('[data-door-state-tab]');
 		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); button.setAttribute('aria-selected',button===stateTab?'true':'false'); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); if(composer&&composer.setPreviewState)composer.setPreviewState(stateTab.dataset.doorStateTab); return; }
 		if (event.target.closest('[data-add-quiz-question]')) { var questions = collectQuizQuestions(); questions.push({ question: '', answers: ['', ''], correct: 1 }); renderQuizQuestions(questions); return; }
