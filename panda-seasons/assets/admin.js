@@ -46,7 +46,7 @@
 		var pickerLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.openColorPicker||'Open color picker', themeLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColors||'Global theme colors', themeTooltip=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColorsTooltip||'Global color settings', alphaLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.alpha||'Transparency';
 		var control=document.createElement('div');
 		control.className='panda-seasons-color-control';
-		control.innerHTML='<div class="panda-seasons-color-control__head"><button type="button" class="panda-seasons-color-control__preview" data-toggle-color-picker aria-label="'+escapeHtml(pickerLabel)+'" aria-expanded="false"></button><input type="text" class="panda-seasons-color-control__code" aria-label="'+escapeHtml(labelText)+'"><button type="button" class="button-link panda-seasons-color-control__icon" data-toggle-theme-colors aria-label="'+escapeHtml(themeTooltip)+'" title="'+escapeHtml(themeTooltip)+'" aria-expanded="false"><span class="dashicons dashicons-admin-site-alt3"></span></button></div><div class="panda-seasons-color-control__picker" hidden><input type="text" data-iris-color value="'+parts.hex+'"><div class="panda-seasons-color-control__alpha"><input type="range" aria-label="'+escapeHtml(alphaLabel)+'" min="0" max="1" step="0.01" value="'+parts.alpha+'"></div></div><div class="panda-seasons-color-control__themes" hidden><strong>'+escapeHtml(themeLabel)+'</strong><div data-theme-color-list></div></div>';
+		control.innerHTML='<div class="panda-seasons-color-control__head"><button type="button" class="panda-seasons-color-control__preview" data-toggle-color-picker aria-label="'+escapeHtml(pickerLabel)+'" aria-expanded="false"></button><div class="panda-seasons-color-control__code-wrap"><input type="text" class="panda-seasons-color-control__code" aria-label="'+escapeHtml(labelText)+'"><button type="button" class="button-link panda-seasons-color-control__icon" data-toggle-theme-colors aria-label="'+escapeHtml(themeTooltip)+'" title="'+escapeHtml(themeTooltip)+'" aria-expanded="false"><span class="dashicons dashicons-admin-site-alt3"></span></button></div></div><div class="panda-seasons-color-control__picker" hidden><input type="text" data-iris-color value="'+parts.hex+'"><div class="panda-seasons-color-control__alpha"><input type="range" aria-label="'+escapeHtml(alphaLabel)+'" min="0" max="1" step="0.01" value="'+parts.alpha+'"></div></div><div class="panda-seasons-color-control__themes" hidden><strong>'+escapeHtml(themeLabel)+'</strong><div data-theme-color-list></div></div>';
 		field.parentNode.insertBefore(control,field);
 		field.classList.add('panda-seasons-color-control__rgba');
 		control.appendChild(field);
@@ -230,7 +230,7 @@
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
 				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
 				var labelVisible = isOpen ? door.openLabelVisible !== false : door.closedLabelVisible !== false;
-				element.innerHTML = (labelVisible ? '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span>' : '') + '<span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
+				element.innerHTML = '<span class="panda-seasons-composer__door-actions"><button type="button" data-duplicate-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '"><span class="dashicons dashicons-admin-page" aria-hidden="true"></span></button><button type="button" data-delete-stage-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '"><span class="dashicons dashicons-trash" aria-hidden="true"></span></button></span>' + (labelVisible ? '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span>' : '') + '<span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
 				stage.appendChild(element);
 			});
 			empty.hidden = currentDoors().length > 0;
@@ -239,6 +239,23 @@
 
 		function findDoor(key) {
 			return doors.find(function (door) { return String(door.id || door.clientId) === String(key); });
+		}
+
+		function duplicateDoor(door) {
+			var copy = JSON.parse(JSON.stringify(door));
+			copy.id = 0;
+			copy.clientId = 'new-' + Date.now();
+			copy.isDraft = true;
+			copy.deleted = false;
+			copy.number = nextNumber();
+			copy.title = (window.pandaSeasonsAdmin && pandaSeasonsAdmin.untitledDoor ? pandaSeasonsAdmin.untitledDoor : 'Door %d').replace('%d', copy.number);
+			['desktop', 'mobile'].forEach(function (mode) {
+				copy[mode].x = clamp(copy[mode].x + 2, 0, 100 - copy[mode].w);
+				copy[mode].y = clamp(copy[mode].y + 2, 0, 100 - copy[mode].h);
+			});
+			doors.push(copy);
+			render();
+			openDoorModal(copy, stage.querySelector('[data-editor-door="' + CSS.escape(copy.clientId) + '"]'));
 		}
 
 		function nextNumber() {
@@ -353,7 +370,7 @@
 
 		stage.addEventListener('pointerdown', function (event) {
 			var element = event.target.closest('[data-editor-door]');
-			if (!element) return;
+			if (!element || event.target.closest('.panda-seasons-composer__door-actions')) return;
 			startPointer(event, element, Boolean(event.target.closest('[data-resize-door]')));
 		});
 		stage.addEventListener('pointermove', movePointer);
@@ -364,6 +381,12 @@
 			var element = event.target.closest('[data-editor-door]');
 			if (!element || event.target.closest('[data-resize-door]') || dragged) return;
 			var door = findDoor(element.dataset.editorDoor);
+			if (event.target.closest('[data-duplicate-door]')) { event.stopPropagation(); if (door) duplicateDoor(door); return; }
+			if (event.target.closest('[data-delete-stage-door]')) {
+				event.stopPropagation();
+				if (door && window.confirm(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteConfirm ? pandaSeasonsAdmin.deleteConfirm : 'Move this door to the trash?')) { door.deleted = true; render(); }
+				return;
+			}
 			if (door) openDoorModal(door, element);
 		});
 
@@ -455,6 +478,7 @@
 		composer.classList.add('has-active-door');
 		modal.querySelector('[data-door-field="number"]').focus();
 		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('change',{bubbles:true}));});
+		modal.querySelectorAll('[data-door-field$="LabelWidthMode"]').forEach(updateLabelWidthVisibility);
 	}
 
 	function closeDoorModal(applyChanges) {
@@ -646,10 +670,19 @@
 	});
 	document.addEventListener('change', function (event) {
 		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();
+		if (event.target.matches('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]')) updateLabelWidthVisibility(event.target);
 		if (event.target.matches('[data-default-door-color]') && composer) composer.dataset['default' + (event.target.dataset.defaultDoorColor === 'closed' ? 'Closed' : 'Open')] = event.target.value;
 		if (event.target.matches('[data-default-door-setting]') && composer) composer.dataset['default' + event.target.dataset.defaultDoorSetting.charAt(0).toUpperCase() + event.target.dataset.defaultDoorSetting.slice(1)] = event.target.type === 'checkbox' ? (event.target.checked ? '1' : '0') : event.target.value;
 		if (event.target.matches('[data-default-door-shape]') && composer) composer.dataset.defaultShape = event.target.value;
 	});
+	function updateLabelWidthVisibility(select) {
+		var row = select && select.closest('.panda-seasons-label-size-row');
+		if (!row) return;
+		var widthField = row.querySelector('[data-door-field$="LabelWidth"], [data-default-door-setting="labelWidth"]');
+		var label = widthField && widthField.closest('label');
+		if (label) label.hidden = select.value !== 'percent';
+	}
+	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
 
 	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
