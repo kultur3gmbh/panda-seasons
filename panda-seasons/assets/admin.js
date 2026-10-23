@@ -4,7 +4,11 @@
 	var composer = document.querySelector('[data-panda-seasons-composer]');
 	var modal = document.querySelector('[data-door-modal]');
 	var activeDoor = null;
+	var activeDoorSnapshot = null;
 	var returnFocus = null;
+	var designBox = document.getElementById('panda-seasons-design');
+	var postBody = document.getElementById('post-body');
+	if (designBox && postBody) postBody.insertBefore(designBox, postBody.firstChild);
 
 	function number(value, fallback) {
 		var parsed = parseFloat(value);
@@ -212,9 +216,9 @@
 				eventId: 0,
 				closedLabel: '',
 				openLabel: '',
-				closedBg: 'rgba(31, 41, 55, 1)',
+				closedBg: root.dataset.defaultClosed || 'rgba(99, 99, 99, 0.2)',
 				closedColor: '#ffffff',
-				openBg: 'rgba(51, 79, 232, 1)',
+				openBg: root.dataset.defaultOpen || 'rgba(51, 79, 232, 1)',
 				openColor: '#ffffff',
 				shape: 'rounded',
 				openEffect: 'inherit',
@@ -326,7 +330,7 @@
 		});
 
 		root.addEventListener('click', function (event) {
-			var stateButton = event.target.closest('[data-preview-state]');
+			var stateButton = event.target.closest('button[data-preview-state]');
 			if (stateButton) {
 				previewState = stateButton.dataset.previewState;
 				root.dataset.previewState = previewState;
@@ -340,6 +344,7 @@
 				root.querySelectorAll('[data-editor-view]').forEach(function (button) { button.classList.toggle('button-primary', button === viewButton); });
 				setStageAppearance();
 				render();
+				return;
 			}
 			if (event.target.closest('[data-add-door]')) addDoor();
 		});
@@ -368,6 +373,7 @@
 	function openDoorModal(door, trigger) {
 		if (!modal) return;
 		activeDoor = door;
+		activeDoorSnapshot = JSON.parse(JSON.stringify(door));
 		returnFocus = trigger || document.activeElement;
 		var colorDefaults = { closedBg: '#1f2937', closedColor: '#ffffff', openBg: '#334fe8', openColor: '#ffffff' };
 		modal.querySelectorAll('[data-door-field]').forEach(function (field) {
@@ -384,20 +390,39 @@
 		var preview = modal.querySelector('[data-door-preview]');
 		if (preview) { preview.hidden = true; preview.innerHTML = ''; }
 		modal.hidden = false;
+		var emptyPanel = document.querySelector('[data-door-editor-empty-panel]');
+		if (emptyPanel) emptyPanel.hidden = true;
 		composer.classList.add('has-active-door');
 		modal.querySelector('[data-door-field="number"]').focus();
 	}
 
-	function closeDoorModal() {
+	function closeDoorModal(applyChanges) {
 		if (!modal) return;
-		if (activeDoor && activeDoor.isDraft) {
-			activeDoor.deleted = true;
-			if (composer && composer.renderDoors) composer.renderDoors();
+		if (activeDoor && !applyChanges && activeDoorSnapshot) {
+			Object.keys(activeDoor).forEach(function (key) { delete activeDoor[key]; });
+			Object.assign(activeDoor, activeDoorSnapshot);
 		}
+		if (activeDoor && activeDoor.isDraft && !applyChanges) {
+			activeDoor.deleted = true;
+		}
+		if (composer && composer.renderDoors) composer.renderDoors();
 		modal.hidden = true;
+		var emptyPanel = document.querySelector('[data-door-editor-empty-panel]');
+		if (emptyPanel) emptyPanel.hidden = false;
 		if (composer) composer.classList.remove('has-active-door');
 		activeDoor = null;
+		activeDoorSnapshot = null;
 		if (returnFocus && document.contains(returnFocus)) returnFocus.focus();
+	}
+
+	function syncDoorPreview() {
+		if (!activeDoor || !modal) return;
+		['number', 'unlockDate', 'unlockTime', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
+			var field = modal.querySelector('[data-door-field="' + name + '"]');
+			if (!field) return;
+			activeDoor[name] = name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value);
+		});
+		if (composer && composer.renderDoors) composer.renderDoors();
 	}
 
 	if (composer) composerController(composer);
@@ -422,6 +447,7 @@
 				if (label && !label.value) label.value = attachment.title || attachment.filename || '';
 			}
 			updateDoorAssets();
+			syncDoorPreview();
 		});
 		frame.open();
 	}
@@ -432,6 +458,7 @@
 		modal.querySelector('[data-door-field="' + prefix + 'Url"]').value = '';
 		if (kind === 'media') modal.querySelector('[data-door-field="mediaType"]').value = '';
 		updateDoorAssets();
+		syncDoorPreview();
 	}
 
 	function selectDoorStateImage(kind) {
@@ -441,6 +468,7 @@
 			modal.querySelector('[data-door-field="' + kind + 'Id"]').value = attachment.id || 0;
 			modal.querySelector('[data-door-field="' + kind + 'Url"]').value = attachment.url || '';
 			updateDoorAssets();
+			syncDoorPreview();
 		});
 		frame.open();
 	}
@@ -449,6 +477,7 @@
 		modal.querySelector('[data-door-field="' + kind + 'Id"]').value = '';
 		modal.querySelector('[data-door-field="' + kind + 'Url"]').value = '';
 		updateDoorAssets();
+		syncDoorPreview();
 	}
 
 	function previewDoor() {
@@ -531,7 +560,7 @@
 			activeDoor.quizQuestions = collectQuizQuestions();
 			activeDoor.isDraft = false;
 			if (composer && composer.renderDoors) composer.renderDoors();
-			closeDoorModal();
+			activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
 		}
 
 		if (event.target.closest('[data-delete-door]') && activeDoor) {
@@ -539,9 +568,28 @@
 			if (!window.confirm(warning)) return;
 			activeDoor.deleted = true;
 			if (composer && composer.renderDoors) composer.renderDoors();
-			closeDoorModal();
+			closeDoorModal(true);
 		}
 
+	});
+
+	document.addEventListener('input', function (event) {
+		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();
+	});
+	document.addEventListener('change', function (event) {
+		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();
+		if (event.target.matches('[data-default-door-color]') && composer) composer.dataset['default' + (event.target.dataset.defaultDoorColor === 'closed' ? 'Closed' : 'Open')] = event.target.value;
+	});
+
+	var activeDefaultColorField = document.querySelector('[data-default-door-color="closed"]');
+	document.addEventListener('focusin', function (event) {
+		if (event.target.matches('[data-default-door-color]')) activeDefaultColorField = event.target;
+	});
+	document.addEventListener('click', function (event) {
+		var swatch = event.target.closest('[data-theme-door-color]');
+		if (!swatch || !activeDefaultColorField) return;
+		activeDefaultColorField.value = swatch.dataset.themeDoorColor;
+		activeDefaultColorField.dispatchEvent(new Event('change', { bubbles: true }));
 	});
 
 	document.addEventListener('keydown', function (event) {

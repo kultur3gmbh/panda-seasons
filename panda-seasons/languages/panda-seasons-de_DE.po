@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.4\n"
+"Project-Id-Version: Panda Seasons 0.3.6\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -609,3 +609,84 @@ msgstr "ContactPanda kostenlos erhalten"
 
 msgid "Upload plugin ZIP"
 msgstr "Plugin-ZIP hochladen"
+
+msgid "Select a door"
+msgstr "Türchen auswählen"
+
+msgid "Click a door in the calendar to edit its settings here. Changes are shown immediately in the preview."
+msgstr "Klicken Sie im Kalender auf ein Türchen, um dessen Einstellungen hier zu bearbeiten. Änderungen werden sofort in der Vorschau angezeigt."
+
+msgid "Default door colors"
+msgstr "Standardfarben für Türchen"
+
+msgid "These colors are used only for newly created doors. Existing doors keep their individual settings."
+msgstr "Diese Farben werden nur für neu angelegte Türchen verwendet. Bestehende Türchen behalten ihre individuellen Einstellungen."
+
+msgid "Default color when closed (RGBA)"
+msgstr "Standardfarbe bei geschlossenem Türchen (RGBA)"
+
+msgid "Default color when opened (RGBA)"
+msgstr "Standardfarbe bei geöffnetem Türchen (RGBA)"
+
+msgid "Theme colors"
+msgstr "Theme-Farben"
+
+msgid "First select the closed or opened color field, then choose a theme color."
+msgstr "Wählen Sie zuerst das Farbfeld für das geschlossene oder geöffnete Türchen und anschließend eine Theme-Farbe aus."
+
+msgid "Apply settings"
+msgstr "Einstellungen übernehmen"
+
+msgid "Check for updates"
+msgstr "Nach Aktualisierungen suchen"
+
+msgid "No valid published update was found."
+msgstr "Es wurde keine gültige veröffentlichte Aktualisierung gefunden."
+
+msgid "The published update metadata is invalid."
+msgstr "Die veröffentlichten Metadaten der Aktualisierung sind ungültig."
+
+msgid "The update archive has an invalid folder."
+msgstr "Das Aktualisierungsarchiv enthält einen ungültigen Ordner."
+
+msgid "The update archive has an invalid structure."
+msgstr "Das Aktualisierungsarchiv besitzt eine ungültige Struktur."
+
+msgid "The update archive version is invalid."
+msgstr "Die Version des Aktualisierungsarchivs ist ungültig."
+
+msgid "The update download could not be followed safely."
+msgstr "Der Download der Aktualisierung konnte nicht sicher weitergeleitet werden."
+
+msgid "The update download is invalid."
+msgstr "Der Download der Aktualisierung ist ungültig."
+
+msgid "The update manifest is invalid."
+msgstr "Das Aktualisierungsmanifest ist ungültig."
+
+msgid "The update package could not be stored temporarily."
+msgstr "Das Aktualisierungspaket konnte nicht vorübergehend gespeichert werden."
+
+msgid "The update package could not be verified."
+msgstr "Das Aktualisierungspaket konnte nicht überprüft werden."
+
+msgid "The update package failed its integrity check."
+msgstr "Das Aktualisierungspaket hat die Integritätsprüfung nicht bestanden."
+
+msgid "The update package is incomplete."
+msgstr "Das Aktualisierungspaket ist unvollständig."
+
+msgid "The update service could not be reached."
+msgstr "Der Aktualisierungsdienst konnte nicht erreicht werden."
+
+msgid "The update source is invalid."
+msgstr "Die Aktualisierungsquelle ist ungültig."
+
+msgid "Updates are disabled for Panda Seasons."
+msgstr "Aktualisierungen sind für Panda Seasons deaktiviert."
+
+msgid "You are not allowed to check for updates."
+msgstr "Sie sind nicht berechtigt, nach Aktualisierungen zu suchen."
+
+msgid "You are not allowed to install updates."
+msgstr "Sie sind nicht berechtigt, Aktualisierungen zu installieren."

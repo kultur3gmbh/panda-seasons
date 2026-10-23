@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.4\n"
+"Project-Id-Version: Panda Seasons 0.3.6\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -606,4 +606,85 @@ msgid "Get ContactPanda free"
 msgstr ""
 
 msgid "Upload plugin ZIP"
+msgstr ""
+
+msgid "Select a door"
+msgstr ""
+
+msgid "Click a door in the calendar to edit its settings here. Changes are shown immediately in the preview."
+msgstr ""
+
+msgid "Default door colors"
+msgstr ""
+
+msgid "These colors are used only for newly created doors. Existing doors keep their individual settings."
+msgstr ""
+
+msgid "Default color when closed (RGBA)"
+msgstr ""
+
+msgid "Default color when opened (RGBA)"
+msgstr ""
+
+msgid "Theme colors"
+msgstr ""
+
+msgid "First select the closed or opened color field, then choose a theme color."
+msgstr ""
+
+msgid "Apply settings"
+msgstr ""
+
+msgid "Check for updates"
+msgstr ""
+
+msgid "No valid published update was found."
+msgstr ""
+
+msgid "The published update metadata is invalid."
+msgstr ""
+
+msgid "The update archive has an invalid folder."
+msgstr ""
+
+msgid "The update archive has an invalid structure."
+msgstr ""
+
+msgid "The update archive version is invalid."
+msgstr ""
+
+msgid "The update download could not be followed safely."
+msgstr ""
+
+msgid "The update download is invalid."
+msgstr ""
+
+msgid "The update manifest is invalid."
+msgstr ""
+
+msgid "The update package could not be stored temporarily."
+msgstr ""
+
+msgid "The update package could not be verified."
+msgstr ""
+
+msgid "The update package failed its integrity check."
+msgstr ""
+
+msgid "The update package is incomplete."
+msgstr ""
+
+msgid "The update service could not be reached."
+msgstr ""
+
+msgid "The update source is invalid."
+msgstr ""
+
+msgid "Updates are disabled for Panda Seasons."
+msgstr ""
+
+msgid "You are not allowed to check for updates."
+msgstr ""
+
+msgid "You are not allowed to install updates."
 msgstr ""
