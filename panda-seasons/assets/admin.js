@@ -9,6 +9,14 @@
 	var designBox = document.getElementById('panda-seasons-design');
 	var postBody = document.getElementById('post-body');
 	if (designBox && postBody) postBody.insertBefore(designBox, postBody.firstChild);
+	var publishPanel = document.querySelector('[data-panda-seasons-publish-panel]');
+	var publishBox = document.getElementById('submitdiv');
+	if (publishPanel && publishBox) {
+		publishPanel.appendChild(publishBox);
+		publishBox.classList.remove('closed');
+		var publishToggle = publishBox.querySelector('.handlediv');
+		if (publishToggle) publishToggle.setAttribute('aria-expanded', 'true');
+	}
 
 	function number(value, fallback) {
 		var parsed = parseFloat(value);
@@ -23,6 +31,33 @@
 		var element = document.createElement('div');
 		element.textContent = String(value == null ? '' : value);
 		return element.innerHTML;
+	}
+	function rgbaParts(value) { var m=String(value||'').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/i); if(m)return {hex:'#'+[m[1],m[2],m[3]].map(function(v){return Math.max(0,Math.min(255,+v)).toString(16).padStart(2,'0');}).join(''),alpha:m[4]==null?1:Math.max(0,Math.min(1,+m[4]))}; return {hex:/^#[0-9a-f]{6}$/i.test(value)?value:'#636363',alpha:1}; }
+	function enhanceColorField(field){
+		if(!field||field.dataset.rgbaEnhanced)return;
+		field.dataset.rgbaEnhanced='1';
+		var parts=rgbaParts(field.value), label=field.closest('label'), labelNode=label&&label.querySelector(':scope > span'), labelText=labelNode ? labelNode.textContent : '';
+		if(labelNode)labelNode.hidden=true;
+		var pickerLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.openColorPicker||'Open color picker', themeLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColors||'Global theme colors', alphaLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.alpha||'Transparency';
+		var control=document.createElement('div');
+		control.className='panda-seasons-color-control';
+		control.innerHTML='<div class="panda-seasons-color-control__head"><button type="button" class="panda-seasons-color-control__preview" data-toggle-color-picker aria-label="'+escapeHtml(pickerLabel)+'" aria-expanded="false"></button><strong>'+escapeHtml(labelText)+'</strong><span class="panda-seasons-color-control__value"></span><button type="button" class="button-link panda-seasons-color-control__icon" data-toggle-color-picker aria-label="'+escapeHtml(pickerLabel)+'"><span class="dashicons dashicons-admin-appearance"></span></button><button type="button" class="button-link panda-seasons-color-control__icon" data-toggle-theme-colors aria-label="'+escapeHtml(themeLabel)+'" aria-expanded="false"><span class="dashicons dashicons-admin-site-alt3"></span></button></div><div class="panda-seasons-color-control__picker" hidden><input type="text" data-iris-color value="'+parts.hex+'"><div class="panda-seasons-color-control__alpha"><span>'+escapeHtml(alphaLabel)+'</span><input type="range" min="0" max="1" step="0.01" value="'+parts.alpha+'"></div></div><div class="panda-seasons-color-control__themes" hidden></div>';
+		field.parentNode.insertBefore(control,field);
+		field.classList.add('panda-seasons-color-control__rgba');
+		control.querySelector('.panda-seasons-color-control__picker').appendChild(field);
+		var preview=control.querySelector('.panda-seasons-color-control__preview'), valueText=control.querySelector('.panda-seasons-color-control__value'), alpha=control.querySelector('[type=range]'), iris=control.querySelector('[data-iris-color]'), themes=control.querySelector('.panda-seasons-color-control__themes'), syncing=false;
+		var themeButtons=document.querySelectorAll('.panda-seasons-theme-colors [data-theme-door-color]');
+		themeButtons.forEach(function(button){var copy=button.cloneNode(true);copy.removeAttribute('data-theme-door-color');copy.addEventListener('click',function(){setHex(button.dataset.themeDoorColor);themes.hidden=true;});themes.appendChild(copy);});
+		if(!themeButtons.length)control.querySelector('[data-toggle-theme-colors]').hidden=true;
+		function rgbaValue(hex,a){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return 'rgba('+r+', '+g+', '+b+', '+Number(a.toFixed(2))+')';}
+		function paint(){var current=rgbaParts(field.value);preview.style.setProperty('--ps-selected-color',field.value);valueText.textContent=field.value;alpha.value=current.alpha;}
+		function setHex(hex){if(syncing)return;parts.hex=rgbaParts(hex).hex;field.value=rgbaValue(parts.hex,+alpha.value);paint();syncing=true;field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}));syncing=false;}
+		alpha.addEventListener('input',function(){field.value=rgbaValue(parts.hex,+alpha.value);paint();syncing=true;field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}));syncing=false;});
+		field.addEventListener('change',function(){parts=rgbaParts(field.value);if(!syncing&&window.jQuery&&jQuery.fn.wpColorPicker){syncing=true;jQuery(iris).wpColorPicker('color',parts.hex);syncing=false;}paint();});
+		control.querySelectorAll('[data-toggle-color-picker]').forEach(function(button){button.addEventListener('click',function(){var panel=control.querySelector('.panda-seasons-color-control__picker'),open=panel.hidden;panel.hidden=!open;themes.hidden=true;control.querySelectorAll('[data-toggle-color-picker]').forEach(function(item){item.setAttribute('aria-expanded',open?'true':'false');});});});
+		control.querySelector('[data-toggle-theme-colors]').addEventListener('click',function(event){var open=themes.hidden;themes.hidden=!open;control.querySelector('.panda-seasons-color-control__picker').hidden=true;event.currentTarget.setAttribute('aria-expanded',open?'true':'false');});
+		if(window.jQuery&&jQuery.fn.wpColorPicker)jQuery(iris).wpColorPicker({palettes:false,change:function(event,ui){setHex(ui.color.toString());},clear:function(){setHex('#000000');alpha.value=0;alpha.dispatchEvent(new Event('input',{bubbles:true}));}});else{iris.type='color';iris.addEventListener('input',function(){setHex(iris.value);});}
+		paint();
 	}
 
 	function setEditorContent(editorId, value) {
@@ -171,10 +206,18 @@
 				element.style.height = position.h + '%';
 				element.style.setProperty('--ps-door-bg', isOpen ? (door.openBg || '#334fe8') : (door.closedBg || '#1f2937'));
 				element.style.setProperty('--ps-door-color', isOpen ? (door.openColor || '#ffffff') : (door.closedColor || '#ffffff'));
+				element.style.setProperty('--ps-door-font', isOpen ? (door.openFont || 'inherit') : (door.closedFont || 'inherit'));
+				element.style.setProperty('--ps-door-font-size', (isOpen ? (door.openFontSize || 20) : (door.closedFontSize || 20)) + 'px');
+				element.style.setProperty('--ps-door-font-weight', isOpen ? (door.openFontWeight || '700') : (door.closedFontWeight || '700'));
+				element.style.setProperty('--ps-door-text-align', isOpen ? (door.openTextAlign || 'center') : (door.closedTextAlign || 'center'));
+				element.style.setProperty('--ps-door-border-color', isOpen ? (door.openBorderColor || 'rgba(255,255,255,.9)') : (door.closedBorderColor || 'rgba(255,255,255,.9)'));
+				element.style.setProperty('--ps-door-border-width', (isOpen ? (door.openBorderWidth == null ? 2 : door.openBorderWidth) : (door.closedBorderWidth == null ? 2 : door.closedBorderWidth)) + 'px');
+				element.style.setProperty('--ps-door-border-style', isOpen ? (door.openBorderStyle || 'dashed') : (door.closedBorderStyle || 'dashed'));
 				var stateImage = isOpen ? door.openImageUrl : door.closedImageUrl;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
 				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
-				element.innerHTML = '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span><span class="panda-seasons-composer__door-title">' + escapeHtml(door.title || '') + '</span><span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
+				var labelVisible = isOpen ? door.openLabelVisible !== false : door.closedLabelVisible !== false;
+				element.innerHTML = (labelVisible ? '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span>' : '') + '<span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
 				stage.appendChild(element);
 			});
 			empty.hidden = currentDoors().length > 0;
@@ -213,14 +256,15 @@
 				buttonLabel: '',
 				buttonUrl: '',
 				productId: 0,
+				couponId: 0, ctaEnabled: false, ctaTitle: '', ctaText: '', ctaType: 'link', ctaLabel: '', ctaUrl: '', ctaShortcode: '',
 				eventId: 0,
 				closedLabel: '',
 				openLabel: '',
 				closedBg: root.dataset.defaultClosed || 'rgba(99, 99, 99, 0.2)',
-				closedColor: '#ffffff',
+				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed',
 				openBg: root.dataset.defaultOpen || 'rgba(51, 79, 232, 1)',
-				openColor: '#ffffff',
-				shape: 'rounded',
+				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed',
+				shape: root.dataset.defaultShape || 'rounded',
 				openEffect: 'inherit',
 				closedImageId: 0,
 				closedImageUrl: '',
@@ -366,6 +410,7 @@
 			setStageAppearance();
 		};
 		root.renderDoors = render;
+		root.setPreviewState = function(state){previewState=state;root.dataset.previewState=state;root.querySelectorAll('button[data-preview-state]').forEach(function(button){button.classList.toggle('button-primary',button.dataset.previewState===state);});render();};
 		setStageAppearance();
 		render();
 	}
@@ -375,7 +420,7 @@
 		activeDoor = door;
 		activeDoorSnapshot = JSON.parse(JSON.stringify(door));
 		returnFocus = trigger || document.activeElement;
-		var colorDefaults = { closedBg: '#1f2937', closedColor: '#ffffff', openBg: '#334fe8', openColor: '#ffffff' };
+		var colorDefaults = { closedBg: '#1f2937', closedColor: 'rgba(255, 255, 255, 1)', openBg: '#334fe8', openColor: 'rgba(255, 255, 255, 1)' };
 		modal.querySelectorAll('[data-door-field]').forEach(function (field) {
 			var value = door[field.dataset.doorField];
 			if ((value == null || value === '') && field.type === 'color') value = colorDefaults[field.dataset.doorField] || '#ffffff';
@@ -394,6 +439,7 @@
 		if (emptyPanel) emptyPanel.hidden = true;
 		composer.classList.add('has-active-door');
 		modal.querySelector('[data-door-field="number"]').focus();
+		modal.querySelectorAll('[data-door-field="closedBg"],[data-door-field="openBg"],[data-door-field="closedColor"],[data-door-field="openColor"],[data-door-field="closedBorderColor"],[data-door-field="openBorderColor"]').forEach(enhanceColorField);
 	}
 
 	function closeDoorModal(applyChanges) {
@@ -417,10 +463,10 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'unlockDate', 'unlockTime', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
+		['number', 'unlockDate', 'unlockTime', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
-			activeDoor[name] = name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value);
+			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
 		});
 		if (composer && composer.renderDoors) composer.renderDoors();
 	}
@@ -505,7 +551,7 @@
 
 	document.addEventListener('click', function (event) {
 		var stateTab = event.target.closest('[data-door-state-tab]');
-		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); return; }
+		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); button.setAttribute('aria-selected',button===stateTab?'true':'false'); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); if(composer&&composer.setPreviewState)composer.setPreviewState(stateTab.dataset.doorStateTab); return; }
 		if (event.target.closest('[data-add-quiz-question]')) { var questions = collectQuizQuestions(); questions.push({ question: '', answers: ['', ''], correct: 1 }); renderQuizQuestions(questions); return; }
 		var removeQuestion = event.target.closest('[data-remove-quiz-question]');
 		if (removeQuestion) { var remaining = collectQuizQuestions(); remaining.splice(Array.prototype.indexOf.call(modal.querySelectorAll('[data-quiz-question-editor]'), removeQuestion.closest('[data-quiz-question-editor]')), 1); renderQuizQuestions(remaining); return; }
@@ -579,11 +625,39 @@
 	document.addEventListener('change', function (event) {
 		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();
 		if (event.target.matches('[data-default-door-color]') && composer) composer.dataset['default' + (event.target.dataset.defaultDoorColor === 'closed' ? 'Closed' : 'Open')] = event.target.value;
+		if (event.target.matches('[data-default-door-setting]') && composer) composer.dataset['default' + event.target.dataset.defaultDoorSetting.charAt(0).toUpperCase() + event.target.dataset.defaultDoorSetting.slice(1)] = event.target.type === 'checkbox' ? (event.target.checked ? '1' : '0') : event.target.value;
+		if (event.target.matches('[data-default-door-shape]') && composer) composer.dataset.defaultShape = event.target.value;
 	});
 
+	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"]').forEach(enhanceColorField);
+	var defaultPreview=document.querySelector('[data-default-door-preview]');
+	function defaultValue(name,fallback){var input=document.querySelector('[name="'+name+'"]');return input ? (input.type==='checkbox' ? input.checked : input.value) : fallback;}
+	function updateDefaultPreview(){
+		if(!defaultPreview)return;
+		var state=defaultPreview.dataset.state||'closed', prefix=state==='open'?'open':'closed';
+		defaultPreview.style.setProperty('--ps-sample-bg',defaultValue('panda_seasons_default_'+prefix+'_background','#636363'));
+		defaultPreview.style.setProperty('--ps-sample-color',defaultValue('panda_seasons_default_'+prefix+'_text_color','#fff'));
+		defaultPreview.style.setProperty('--ps-sample-border-color',defaultValue('panda_seasons_default_'+prefix+'_border_color','#fff'));
+		defaultPreview.style.setProperty('--ps-sample-border-width',defaultValue('panda_seasons_default_border_width','2')+'px');
+		defaultPreview.style.setProperty('--ps-sample-border-style',defaultValue('panda_seasons_default_border_style','dashed'));
+		defaultPreview.style.setProperty('--ps-sample-font',defaultValue('panda_seasons_default_label_font','inherit'));
+		defaultPreview.style.setProperty('--ps-sample-font-size',defaultValue('panda_seasons_default_label_font_size','20')+'px');
+		defaultPreview.style.setProperty('--ps-sample-font-weight',defaultValue('panda_seasons_default_label_font_weight','700'));
+		defaultPreview.querySelector('span').hidden=!defaultValue('panda_seasons_default_'+prefix+'_label_visible',true);
+		defaultPreview.classList.remove('shape-square','shape-rounded','shape-round');
+		defaultPreview.classList.add('shape-'+defaultValue('panda_seasons_default_shape','rounded'));
+	}
+	document.addEventListener('click',function(event){
+		var tab=event.target.closest('[data-default-state-tab]');
+		if(tab){var state=tab.dataset.defaultStateTab;document.querySelectorAll('[data-default-state-tab]').forEach(function(button){var active=button===tab;button.classList.toggle('button-primary',active);button.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-default-state-panel]').forEach(function(panel){panel.hidden=panel.dataset.defaultStatePanel!==state;});if(defaultPreview){defaultPreview.dataset.state=state;updateDefaultPreview();}return;}
+		if(event.target.closest('[data-default-door-preview]')){var effect=defaultValue('panda_seasons_open_effect','door-left'),speed=defaultValue('panda_seasons_effect_speed','normal');defaultPreview.className=defaultPreview.className.replace(/\bis-animating\b|\beffect-\S+|\bspeed-\S+/g,'').trim();void defaultPreview.offsetWidth;defaultPreview.classList.add('is-animating','effect-'+effect,'speed-'+speed);}
+	});
+	document.addEventListener('input',function(event){if(event.target.closest('.panda-seasons-default-colors')||event.target.name==='panda_seasons_open_effect'||event.target.name==='panda_seasons_effect_speed')updateDefaultPreview();});
+	document.addEventListener('change',function(event){if(event.target.closest('.panda-seasons-default-colors')||event.target.name==='panda_seasons_open_effect'||event.target.name==='panda_seasons_effect_speed')updateDefaultPreview();});
+	updateDefaultPreview();
 	var activeDefaultColorField = document.querySelector('[data-default-door-color="closed"]');
 	document.addEventListener('focusin', function (event) {
-		if (event.target.matches('[data-default-door-color]')) activeDefaultColorField = event.target;
+		if (event.target.matches('[data-default-door-color],[data-default-door-setting$="Color"],[data-door-field="closedBg"],[data-door-field="openBg"],[data-door-field="closedColor"],[data-door-field="openColor"],[data-door-field="closedBorderColor"],[data-door-field="openBorderColor"]')) activeDefaultColorField = event.target;
 	});
 	document.addEventListener('click', function (event) {
 		var swatch = event.target.closest('[data-theme-door-color]');

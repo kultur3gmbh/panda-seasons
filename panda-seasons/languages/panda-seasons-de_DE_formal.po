@@ -690,3 +690,123 @@ msgstr "Sie sind nicht berechtigt, nach Aktualisierungen zu suchen."
 
 msgid "You are not allowed to install updates."
 msgstr "Sie sind nicht berechtigt, Aktualisierungen zu installieren."
+
+msgid "Default label color when closed (RGBA)"
+msgstr "Standard-Beschriftungsfarbe geschlossen (RGBA)"
+
+msgid "Default label color when opened (RGBA)"
+msgstr "Standard-Beschriftungsfarbe geöffnet (RGBA)"
+
+msgid "Default border color when closed (RGBA)"
+msgstr "Standard-Rahmenfarbe geschlossen (RGBA)"
+
+msgid "Default border color when opened (RGBA)"
+msgstr "Standard-Rahmenfarbe geöffnet (RGBA)"
+
+msgid "Default label font"
+msgstr "Standard-Schriftart der Beschriftung"
+
+msgid "Show door label"
+msgstr "Türchenbeschriftung anzeigen"
+
+msgid "Label color (RGBA)"
+msgstr "Beschriftungsfarbe (RGBA)"
+
+msgid "Label font"
+msgstr "Schriftart der Beschriftung"
+
+msgid "Theme font"
+msgstr "Theme-Schriftart"
+
+msgid "Sans serif"
+msgstr "Serifenlos"
+
+msgid "Serif"
+msgstr "Mit Serifen"
+
+msgid "Monospace"
+msgstr "Nichtproportional"
+
+msgid "Font size (px)"
+msgstr "Schriftgröße (px)"
+
+msgid "Font weight"
+msgstr "Schriftstärke"
+
+msgid "Semi-bold"
+msgstr "Halbfett"
+
+msgid "Bold"
+msgstr "Fett"
+
+msgid "Extra bold"
+msgstr "Extrafett"
+
+msgid "Text alignment"
+msgstr "Textausrichtung"
+
+msgid "Left"
+msgstr "Links"
+
+msgid "Centered"
+msgstr "Zentriert"
+
+msgid "Right"
+msgstr "Rechts"
+
+msgid "Border color (RGBA)"
+msgstr "Rahmenfarbe (RGBA)"
+
+msgid "Border width (px)"
+msgstr "Rahmenbreite (px)"
+
+msgid "Border style"
+msgstr "Rahmenart"
+
+msgid "No border"
+msgstr "Kein Rahmen"
+
+msgid "Solid"
+msgstr "Durchgehend"
+
+msgid "Dashed"
+msgstr "Gestrichelt"
+
+msgid "Dotted"
+msgstr "Gepunktet"
+
+msgid "Default font size (px)"
+msgstr "Standard-Schriftgröße (px)"
+
+msgid "Default font weight"
+msgstr "Standard-Schriftstärke"
+
+msgid "Default border width (px)"
+msgstr "Standard-Rahmenbreite (px)"
+
+msgid "Default border style"
+msgstr "Standard-Rahmenart"
+
+msgid "Show label when closed by default"
+msgstr "Beschriftung bei geschlossenen Türchen standardmäßig anzeigen"
+
+msgid "Show label when opened by default"
+msgstr "Beschriftung bei geöffneten Türchen standardmäßig anzeigen"
+
+msgid "Transparency"
+msgstr "Transparenz"
+
+msgid "Open color picker"
+msgstr "Farbwähler öffnen"
+
+msgid "Global theme colors"
+msgstr "Globale Theme-Farben"
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Preview opening effect"
+msgstr "Öffnungseffekt als Vorschau anzeigen"
+
+msgid "Click the sample door to preview the opening effect."
+msgstr "Klicken Sie auf das Mustertürchen, um den Öffnungseffekt anzusehen."

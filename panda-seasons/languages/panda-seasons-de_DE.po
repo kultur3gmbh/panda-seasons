@@ -1,11 +1,35 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.6\n"
+"Project-Id-Version: Panda Seasons 0.3.7\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Call to action"
+msgstr "Call-to-Action"
+msgid "Enable call to action"
+msgstr "Call-to-Action aktivieren"
+msgid "CTA heading"
+msgstr "CTA-Überschrift"
+msgid "CTA text"
+msgstr "CTA-Text"
+msgid "CTA type"
+msgstr "CTA-Typ"
+msgid "ContactPanda newsletter form"
+msgstr "ContactPanda-Newsletterformular"
+msgid "WooCommerce coupon"
+msgstr "WooCommerce-Gutschein"
+msgid "No coupon"
+msgstr "Kein Gutschein"
+msgid "Coupon code:"
+msgstr "Gutscheincode:"
+msgid "Default door shape"
+msgstr "Standardform der Türchen"
+
+msgid "This text is shown on the door. Leave it empty to display the door number automatically. You may use a different label for the closed and opened state."
+msgstr "Dieser Text wird auf dem Türchen angezeigt. Lassen Sie das Feld leer, um automatisch die Türchennummer zu verwenden. Für den geschlossenen und geöffneten Zustand können Sie unterschiedliche Beschriftungen festlegen."
 
 msgid "Panda Seasons"
 msgstr "Panda Seasons"
@@ -690,3 +714,123 @@ msgstr "Sie sind nicht berechtigt, nach Aktualisierungen zu suchen."
 
 msgid "You are not allowed to install updates."
 msgstr "Sie sind nicht berechtigt, Aktualisierungen zu installieren."
+
+msgid "Default label color when closed (RGBA)"
+msgstr "Standard-Beschriftungsfarbe geschlossen (RGBA)"
+
+msgid "Default label color when opened (RGBA)"
+msgstr "Standard-Beschriftungsfarbe geöffnet (RGBA)"
+
+msgid "Default border color when closed (RGBA)"
+msgstr "Standard-Rahmenfarbe geschlossen (RGBA)"
+
+msgid "Default border color when opened (RGBA)"
+msgstr "Standard-Rahmenfarbe geöffnet (RGBA)"
+
+msgid "Default label font"
+msgstr "Standard-Schriftart der Beschriftung"
+
+msgid "Show door label"
+msgstr "Türchenbeschriftung anzeigen"
+
+msgid "Label color (RGBA)"
+msgstr "Beschriftungsfarbe (RGBA)"
+
+msgid "Label font"
+msgstr "Schriftart der Beschriftung"
+
+msgid "Theme font"
+msgstr "Theme-Schriftart"
+
+msgid "Sans serif"
+msgstr "Serifenlos"
+
+msgid "Serif"
+msgstr "Mit Serifen"
+
+msgid "Monospace"
+msgstr "Nichtproportional"
+
+msgid "Font size (px)"
+msgstr "Schriftgröße (px)"
+
+msgid "Font weight"
+msgstr "Schriftstärke"
+
+msgid "Semi-bold"
+msgstr "Halbfett"
+
+msgid "Bold"
+msgstr "Fett"
+
+msgid "Extra bold"
+msgstr "Extrafett"
+
+msgid "Text alignment"
+msgstr "Textausrichtung"
+
+msgid "Left"
+msgstr "Links"
+
+msgid "Centered"
+msgstr "Zentriert"
+
+msgid "Right"
+msgstr "Rechts"
+
+msgid "Border color (RGBA)"
+msgstr "Rahmenfarbe (RGBA)"
+
+msgid "Border width (px)"
+msgstr "Rahmenbreite (px)"
+
+msgid "Border style"
+msgstr "Rahmenart"
+
+msgid "No border"
+msgstr "Kein Rahmen"
+
+msgid "Solid"
+msgstr "Durchgehend"
+
+msgid "Dashed"
+msgstr "Gestrichelt"
+
+msgid "Dotted"
+msgstr "Gepunktet"
+
+msgid "Default font size (px)"
+msgstr "Standard-Schriftgröße (px)"
+
+msgid "Default font weight"
+msgstr "Standard-Schriftstärke"
+
+msgid "Default border width (px)"
+msgstr "Standard-Rahmenbreite (px)"
+
+msgid "Default border style"
+msgstr "Standard-Rahmenart"
+
+msgid "Show label when closed by default"
+msgstr "Beschriftung bei geschlossenen Türchen standardmäßig anzeigen"
+
+msgid "Show label when opened by default"
+msgstr "Beschriftung bei geöffneten Türchen standardmäßig anzeigen"
+
+msgid "Transparency"
+msgstr "Transparenz"
+
+msgid "Open color picker"
+msgstr "Farbwähler öffnen"
+
+msgid "Global theme colors"
+msgstr "Globale Theme-Farben"
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Preview opening effect"
+msgstr "Öffnungseffekt als Vorschau anzeigen"
+
+msgid "Click the sample door to preview the opening effect."
+msgstr "Klicken Sie auf das Mustertürchen, um den Öffnungseffekt anzusehen."

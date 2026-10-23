@@ -1,9 +1,33 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.6\n"
+"Project-Id-Version: Panda Seasons 0.3.7\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "Call to action"
+msgstr ""
+msgid "Enable call to action"
+msgstr ""
+msgid "CTA heading"
+msgstr ""
+msgid "CTA text"
+msgstr ""
+msgid "CTA type"
+msgstr ""
+msgid "ContactPanda newsletter form"
+msgstr ""
+msgid "WooCommerce coupon"
+msgstr ""
+msgid "No coupon"
+msgstr ""
+msgid "Coupon code:"
+msgstr ""
+msgid "Default door shape"
+msgstr ""
+
+msgid "This text is shown on the door. Leave it empty to display the door number automatically. You may use a different label for the closed and opened state."
+msgstr ""
 
 msgid "Panda Seasons"
 msgstr ""
@@ -687,4 +711,124 @@ msgid "You are not allowed to check for updates."
 msgstr ""
 
 msgid "You are not allowed to install updates."
+msgstr ""
+
+msgid "Default label color when closed (RGBA)"
+msgstr ""
+
+msgid "Default label color when opened (RGBA)"
+msgstr ""
+
+msgid "Default border color when closed (RGBA)"
+msgstr ""
+
+msgid "Default border color when opened (RGBA)"
+msgstr ""
+
+msgid "Default label font"
+msgstr ""
+
+msgid "Show door label"
+msgstr ""
+
+msgid "Label color (RGBA)"
+msgstr ""
+
+msgid "Label font"
+msgstr ""
+
+msgid "Theme font"
+msgstr ""
+
+msgid "Sans serif"
+msgstr ""
+
+msgid "Serif"
+msgstr ""
+
+msgid "Monospace"
+msgstr ""
+
+msgid "Font size (px)"
+msgstr ""
+
+msgid "Font weight"
+msgstr ""
+
+msgid "Semi-bold"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Extra bold"
+msgstr ""
+
+msgid "Text alignment"
+msgstr ""
+
+msgid "Left"
+msgstr ""
+
+msgid "Centered"
+msgstr ""
+
+msgid "Right"
+msgstr ""
+
+msgid "Border color (RGBA)"
+msgstr ""
+
+msgid "Border width (px)"
+msgstr ""
+
+msgid "Border style"
+msgstr ""
+
+msgid "No border"
+msgstr ""
+
+msgid "Solid"
+msgstr ""
+
+msgid "Dashed"
+msgstr ""
+
+msgid "Dotted"
+msgstr ""
+
+msgid "Default font size (px)"
+msgstr ""
+
+msgid "Default font weight"
+msgstr ""
+
+msgid "Default border width (px)"
+msgstr ""
+
+msgid "Default border style"
+msgstr ""
+
+msgid "Show label when closed by default"
+msgstr ""
+
+msgid "Show label when opened by default"
+msgstr ""
+
+msgid "Transparency"
+msgstr ""
+
+msgid "Open color picker"
+msgstr ""
+
+msgid "Global theme colors"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Preview opening effect"
+msgstr ""
+
+msgid "Click the sample door to preview the opening effect."
 msgstr ""
