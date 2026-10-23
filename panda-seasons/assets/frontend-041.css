@@ -1,0 +1,1 @@
+.panda-seasons__modal{display:grid;place-items:center;padding:20px;box-sizing:border-box}.panda-seasons__modal[hidden]{display:none}.panda-seasons__modal-dialog{max-height:calc(100vh - 40px);margin:0}.panda-seasons__modal-backdrop{z-index:-1}

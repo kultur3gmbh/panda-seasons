@@ -46,7 +46,7 @@
 		var pickerLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.openColorPicker||'Open color picker', themeLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColors||'Global theme colors', alphaLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.alpha||'Transparency';
 		var control=document.createElement('div');
 		control.className='panda-seasons-color-control';
-		control.innerHTML='<div class="panda-seasons-color-control__head"><button type="button" class="panda-seasons-color-control__preview" data-toggle-color-picker aria-label="'+escapeHtml(pickerLabel)+'" aria-expanded="false"></button><strong>'+escapeHtml(labelText)+'</strong><span class="panda-seasons-color-control__value"></span><button type="button" class="button-link panda-seasons-color-control__icon" data-toggle-color-picker aria-label="'+escapeHtml(pickerLabel)+'"><span class="dashicons dashicons-admin-appearance"></span></button><button type="button" class="button-link panda-seasons-color-control__icon" data-toggle-theme-colors aria-label="'+escapeHtml(themeLabel)+'" aria-expanded="false"><span class="dashicons dashicons-admin-site-alt3"></span></button></div><div class="panda-seasons-color-control__picker" hidden><input type="text" data-iris-color value="'+parts.hex+'"><div class="panda-seasons-color-control__alpha"><span>'+escapeHtml(alphaLabel)+'</span><input type="range" min="0" max="1" step="0.01" value="'+parts.alpha+'"></div></div><div class="panda-seasons-color-control__themes" hidden></div>';
+		control.innerHTML='<div class="panda-seasons-color-control__head"><button type="button" class="panda-seasons-color-control__preview" data-toggle-color-picker aria-label="'+escapeHtml(pickerLabel)+'" aria-expanded="false"></button><strong>'+escapeHtml(labelText)+'</strong><span class="panda-seasons-color-control__value"></span><button type="button" class="button-link panda-seasons-color-control__clear">'+escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.clear ? pandaSeasonsAdmin.clear : 'Clear')+'</button><button type="button" class="button-link panda-seasons-color-control__icon" data-toggle-theme-colors aria-label="'+escapeHtml(themeLabel)+'" aria-expanded="false"><span class="dashicons dashicons-admin-site-alt3"></span></button></div><div class="panda-seasons-color-control__picker" hidden><input type="text" data-iris-color value="'+parts.hex+'"><div class="panda-seasons-color-control__alpha"><input type="range" aria-label="'+escapeHtml(alphaLabel)+'" min="0" max="1" step="0.01" value="'+parts.alpha+'"></div></div><div class="panda-seasons-color-control__themes" hidden></div>';
 		field.parentNode.insertBefore(control,field);
 		field.classList.add('panda-seasons-color-control__rgba');
 		control.querySelector('.panda-seasons-color-control__picker').appendChild(field);
@@ -55,12 +55,13 @@
 		themeButtons.forEach(function(button){var copy=button.cloneNode(true);copy.removeAttribute('data-theme-door-color');copy.addEventListener('click',function(){setHex(button.dataset.themeDoorColor);themes.hidden=true;});themes.appendChild(copy);});
 		if(!themeButtons.length)control.querySelector('[data-toggle-theme-colors]').hidden=true;
 		function rgbaValue(hex,a){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return 'rgba('+r+', '+g+', '+b+', '+Number(a.toFixed(2))+')';}
-		function paint(){var current=rgbaParts(field.value);preview.style.setProperty('--ps-selected-color',field.value);valueText.textContent=field.value;alpha.value=current.alpha;}
+		function paint(){var current=rgbaParts(field.value);preview.style.setProperty('--ps-selected-color',field.value);valueText.textContent=current.alpha>=1?current.hex:field.value;alpha.value=current.alpha;}
 		function setHex(hex){if(syncing)return;parts.hex=rgbaParts(hex).hex;field.value=rgbaValue(parts.hex,+alpha.value);paint();syncing=true;field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}));syncing=false;}
 		alpha.addEventListener('input',function(){field.value=rgbaValue(parts.hex,+alpha.value);paint();syncing=true;field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}));syncing=false;});
 		field.addEventListener('change',function(){parts=rgbaParts(field.value);if(!syncing&&window.jQuery&&jQuery.fn.wpColorPicker){syncing=true;jQuery(iris).wpColorPicker('color',parts.hex);syncing=false;}paint();});
 		control.querySelectorAll('[data-toggle-color-picker]').forEach(function(button){button.addEventListener('click',function(){var panel=control.querySelector('.panda-seasons-color-control__picker'),open=panel.hidden;panel.hidden=!open;themes.hidden=true;control.querySelectorAll('[data-toggle-color-picker]').forEach(function(item){item.setAttribute('aria-expanded',open?'true':'false');});});});
 		control.querySelector('[data-toggle-theme-colors]').addEventListener('click',function(event){var open=themes.hidden;themes.hidden=!open;control.querySelector('.panda-seasons-color-control__picker').hidden=true;event.currentTarget.setAttribute('aria-expanded',open?'true':'false');});
+		control.querySelector('.panda-seasons-color-control__clear').addEventListener('click',function(){alpha.value=0;field.value='rgba(0, 0, 0, 0)';parts=rgbaParts(field.value);paint();field.dispatchEvent(new Event('input',{bubbles:true}));field.dispatchEvent(new Event('change',{bubbles:true}));});
 		if(window.jQuery&&jQuery.fn.wpColorPicker)jQuery(iris).wpColorPicker({palettes:false,change:function(event,ui){setHex(ui.color.toString());},clear:function(){setHex('#000000');alpha.value=0;alpha.dispatchEvent(new Event('input',{bubbles:true}));}});else{iris.type='color';iris.addEventListener('input',function(){setHex(iris.value);});}
 		paint();
 	}
@@ -251,6 +252,7 @@
 				unlockDate: '',
 				unlockTime: '',
 				unlockBehavior: 'auto-open',
+				availabilityWindow: 'from-date',
 				emailSubject: '',
 				emailContent: '',
 				mediaId: 0,
@@ -469,7 +471,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'unlockDate', 'unlockTime', 'unlockBehavior', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
+		['number', 'unlockDate', 'unlockTime', 'unlockBehavior', 'availabilityWindow', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -643,6 +645,8 @@
 	});
 
 	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"]').forEach(enhanceColorField);
+	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
+	if(defaultsPanel){var motion=document.createElement('div');motion.className='panda-seasons-default-motion is-wide';var effectField=document.querySelector('[name="panda_seasons_open_effect"]'),speedField=document.querySelector('[name="panda_seasons_effect_speed"]'),sampleField=document.querySelector('.panda-seasons-default-preview');if(effectField)motion.appendChild(effectField.closest('label'));if(speedField)motion.appendChild(speedField.closest('label'));if(sampleField)motion.appendChild(sampleField);defaultsPanel.insertBefore(motion,defaultsPanel.children[1]||null);}
 	var defaultPreview=document.querySelector('[data-default-door-preview]');
 	function defaultValue(name,fallback){var input=document.querySelector('[name="'+name+'"]');return input ? (input.type==='checkbox' ? input.checked : input.value) : fallback;}
 	function updateDefaultPreview(){
@@ -663,7 +667,7 @@
 	document.addEventListener('click',function(event){
 		var tab=event.target.closest('[data-default-state-tab]');
 		if(tab){var state=tab.dataset.defaultStateTab;document.querySelectorAll('[data-default-state-tab]').forEach(function(button){var active=button===tab;button.classList.toggle('button-primary',active);button.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-default-state-panel]').forEach(function(panel){panel.hidden=panel.dataset.defaultStatePanel!==state;});if(defaultPreview){defaultPreview.dataset.state=state;updateDefaultPreview();}return;}
-		if(event.target.closest('[data-default-door-preview]')){var effect=defaultValue('panda_seasons_open_effect','door-left'),speed=defaultValue('panda_seasons_effect_speed','normal');defaultPreview.className=defaultPreview.className.replace(/\bis-animating\b|\beffect-\S+|\bspeed-\S+/g,'').trim();void defaultPreview.offsetWidth;defaultPreview.classList.add('is-animating','effect-'+effect,'speed-'+speed);}
+		if(event.target.closest('[data-default-door-preview]')){var effect=defaultValue('panda_seasons_open_effect','door-left'),speed=defaultValue('panda_seasons_effect_speed','normal'),sample=defaultPreview.querySelector('button'),duration={fast:350,normal:700,slow:1200}[speed]||700,turn=effect==='door-right'?'rotateY(78deg)':effect==='page'?'rotateY(-120deg) scale(.92)':effect==='none'?'scale(1.04)':'rotateY(-78deg)';sample.style.transformOrigin=effect==='door-right'?'right center':'left center';if(sample.animate){sample.animate([{transform:'perspective(500px) rotateY(0)'},{transform:'perspective(500px) '+turn},{transform:'perspective(500px) rotateY(0)'}],{duration:duration,easing:'ease-in-out'});}else{defaultPreview.className=defaultPreview.className.replace(/\bis-animating\b|\beffect-\S+|\bspeed-\S+/g,'').trim();void defaultPreview.offsetWidth;defaultPreview.classList.add('is-animating','effect-'+effect,'speed-'+speed);}}
 	});
 	document.addEventListener('input',function(event){if(event.target.closest('.panda-seasons-default-colors')||event.target.name==='panda_seasons_open_effect'||event.target.name==='panda_seasons_effect_speed')updateDefaultPreview();});
 	document.addEventListener('change',function(event){if(event.target.closest('.panda-seasons-default-colors')||event.target.name==='panda_seasons_open_effect'||event.target.name==='panda_seasons_effect_speed')updateDefaultPreview();});
@@ -681,5 +685,14 @@
 
 	document.addEventListener('keydown', function (event) {
 		if (event.key === 'Escape' && modal && !modal.hidden) closeDoorModal();
+		var calendarPreview=document.querySelector('[data-calendar-preview]');
+		if(event.key==='Escape'&&calendarPreview&&!calendarPreview.hidden)closeCalendarPreview(calendarPreview);
+	});
+	function closeCalendarPreview(preview){preview.hidden=true;preview.querySelector('iframe').src='about:blank';document.body.classList.remove('panda-seasons-preview-open');}
+	document.addEventListener('click',function(event){
+		var opener=event.target.closest('[data-open-calendar-preview]');
+		if(opener){var preview=document.querySelector('[data-calendar-preview]');if(!preview)return;preview.hidden=false;preview.classList.remove('is-mobile');preview.querySelector('iframe').src=opener.dataset.previewUrl;document.body.classList.add('panda-seasons-preview-open');return;}
+		var close=event.target.closest('[data-close-calendar-preview]');if(close){closeCalendarPreview(close.closest('[data-calendar-preview]'));return;}
+		var size=event.target.closest('[data-calendar-preview-size]');if(size){var shell=size.closest('[data-calendar-preview]');shell.classList.toggle('is-mobile',size.dataset.calendarPreviewSize==='mobile');shell.querySelectorAll('[data-calendar-preview-size]').forEach(function(button){button.classList.toggle('button-primary',button===size);});}
 	});
 }());
