@@ -79,9 +79,24 @@
 			box.querySelector('[data-door-asset-preview]').innerHTML = url ? '<img src="' + escapeHtml(safeUrl(url)) + '" alt="">' : '';
 			box.querySelector('[data-remove-door-image="' + kind + '"]').hidden = !url;
 		});
-		modal.querySelectorAll('[data-opacity-output]').forEach(function (output) {
-			var field = modal.querySelector('[data-door-field="' + output.dataset.opacityOutput + '"]');
-			output.textContent = (field ? field.value : 100) + '%';
+	}
+
+	function renderQuizQuestions(questions) {
+		var container = modal && modal.querySelector('[data-quiz-questions]');
+		if (!container) return;
+		questions = Array.isArray(questions) && questions.length ? questions : [{ question: '', answers: ['', ''], correct: 1 }];
+		container.innerHTML = questions.map(function (item, index) {
+			return '<div class="panda-seasons-quiz-question" data-quiz-question-editor>' +
+				'<div class="panda-seasons-quiz-question__header"><strong>' + escapeHtml((window.pandaSeasonsAdmin && pandaSeasonsAdmin.questionLabel || 'Question') + ' ' + (index + 1)) + '</strong><button type="button" class="button-link-delete" data-remove-quiz-question>' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.remove || 'Remove') + '</button></div>' +
+				'<label><span>' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.questionLabel || 'Question') + '</span><input type="text" data-quiz-question-text value="' + escapeHtml(item.question || '') + '"></label>' +
+				'<label><span>' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.answersLabel || 'Answers (one per line)') + '</span><textarea rows="4" data-quiz-question-answers>' + escapeHtml((item.answers || []).join('\n')) + '</textarea></label>' +
+				'<label><span>' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.correctLabel || 'Correct answer number') + '</span><input type="number" min="1" max="20" data-quiz-question-correct value="' + escapeHtml(item.correct || 1) + '"></label></div>';
+		}).join('');
+	}
+
+	function collectQuizQuestions() {
+		return Array.prototype.map.call(modal.querySelectorAll('[data-quiz-question-editor]'), function (row) {
+			return { question: row.querySelector('[data-quiz-question-text]').value.trim(), answers: row.querySelector('[data-quiz-question-answers]').value.split(/\r?\n/).map(function (answer) { return answer.trim(); }).filter(Boolean), correct: Math.max(1, parseInt(row.querySelector('[data-quiz-question-correct]').value, 10) || 1) };
 		});
 	}
 
@@ -152,7 +167,6 @@
 				element.style.height = position.h + '%';
 				element.style.setProperty('--ps-door-bg', isOpen ? (door.openBg || '#334fe8') : (door.closedBg || '#1f2937'));
 				element.style.setProperty('--ps-door-color', isOpen ? (door.openColor || '#ffffff') : (door.closedColor || '#ffffff'));
-				element.style.setProperty('--ps-door-opacity', number(isOpen ? door.openOpacity : door.closedOpacity, 100) + '%');
 				var stateImage = isOpen ? door.openImageUrl : door.closedImageUrl;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
 				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
@@ -171,7 +185,7 @@
 			return currentDoors().reduce(function (highest, door) { return Math.max(highest, parseInt(door.number, 10) || 0); }, 0) + 1;
 		}
 
-		function addDoor() {
+		function addDoor(position) {
 			var sequence = currentDoors().length;
 			var doorNumber = nextNumber();
 			var label = (window.pandaSeasonsAdmin && pandaSeasonsAdmin.untitledDoor ? pandaSeasonsAdmin.untitledDoor : 'Door %d').replace('%d', doorNumber);
@@ -198,12 +212,10 @@
 				eventId: 0,
 				closedLabel: '',
 				openLabel: '',
-				closedBg: '#1f2937',
+				closedBg: 'rgba(31, 41, 55, 1)',
 				closedColor: '#ffffff',
-				openBg: '#334fe8',
+				openBg: 'rgba(51, 79, 232, 1)',
 				openColor: '#ffffff',
-				closedOpacity: 100,
-				openOpacity: 100,
 				shape: 'rounded',
 				openEffect: 'inherit',
 				closedImageId: 0,
@@ -211,14 +223,17 @@
 				openImageId: 0,
 				openImageUrl: '',
 				quizEnabled: false,
-				quizQuestion: '',
-				quizAnswers: [],
-				quizCorrect: 1,
+				quizQuestions: [{ question: '', answers: ['', ''], correct: 1 }],
 				quizSuccess: '',
 				quizFailure: '',
 				desktop: cleanPosition(null, 4 + (sequence % 6) * 15, 5 + Math.floor(sequence / 6) * 21, 'desktop'),
 				mobile: cleanPosition(null, 5 + (sequence % 3) * 31, 5 + Math.floor(sequence / 3) * 21, 'mobile')
 			};
+			if (position) {
+				var size = door[view];
+				size.x = clamp(position.x - size.w / 2, 0, 100 - size.w);
+				size.y = clamp(position.y - size.h / 2, 0, 100 - size.h);
+			}
 			doors.push(door);
 			render();
 			openDoorModal(door, root.querySelector('[data-add-door]'));
@@ -329,6 +344,14 @@
 			if (event.target.closest('[data-add-door]')) addDoor();
 		});
 
+		var addButton = root.querySelector('[data-add-door]');
+		if (addButton) {
+			addButton.draggable = true;
+			addButton.addEventListener('dragstart', function (event) { event.dataTransfer.setData('text/panda-seasons-door', 'new'); event.dataTransfer.effectAllowed = 'copy'; });
+			stage.addEventListener('dragover', function (event) { if (Array.prototype.indexOf.call(event.dataTransfer.types, 'text/panda-seasons-door') !== -1) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; } });
+			stage.addEventListener('drop', function (event) { if (!event.dataTransfer.getData('text/panda-seasons-door')) return; event.preventDefault(); var rect = stage.getBoundingClientRect(); addDoor({ x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }); });
+		}
+
 		document.querySelectorAll('[data-editor-ratio]').forEach(function (input) {
 			input.addEventListener('input', function () { if (input.dataset.editorRatio === view) setStageAppearance(); });
 		});
@@ -356,6 +379,7 @@
 		});
 		setEditorContent('panda_seasons_door_content_editor', door.content || '');
 		setEditorContent('panda_seasons_door_email_editor', door.emailContent || '');
+		renderQuizQuestions(door.quizQuestions);
 		updateDoorAssets();
 		var preview = modal.querySelector('[data-door-preview]');
 		if (preview) { preview.hidden = true; preview.innerHTML = ''; }
@@ -451,6 +475,11 @@
 	}
 
 	document.addEventListener('click', function (event) {
+		var stateTab = event.target.closest('[data-door-state-tab]');
+		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); return; }
+		if (event.target.closest('[data-add-quiz-question]')) { var questions = collectQuizQuestions(); questions.push({ question: '', answers: ['', ''], correct: 1 }); renderQuizQuestions(questions); return; }
+		var removeQuestion = event.target.closest('[data-remove-quiz-question]');
+		if (removeQuestion) { var remaining = collectQuizQuestions(); remaining.splice(Array.prototype.indexOf.call(modal.querySelectorAll('[data-quiz-question-editor]'), removeQuestion.closest('[data-quiz-question-editor]')), 1); renderQuizQuestions(remaining); return; }
 		var selectStateImage = event.target.closest('[data-select-door-image]');
 		if (selectStateImage) { selectDoorStateImage(selectStateImage.dataset.selectDoorImage); return; }
 		var removeStateImage = event.target.closest('[data-remove-door-image]');
@@ -499,6 +528,7 @@
 			});
 			activeDoor.content = getEditorContent('panda_seasons_door_content_editor');
 			activeDoor.emailContent = getEditorContent('panda_seasons_door_email_editor');
+			activeDoor.quizQuestions = collectQuizQuestions();
 			activeDoor.isDraft = false;
 			if (composer && composer.renderDoors) composer.renderDoors();
 			closeDoorModal();
@@ -512,12 +542,6 @@
 			closeDoorModal();
 		}
 
-	});
-
-	document.addEventListener('input', function (event) {
-		if (!event.target.matches('[data-door-field="closedOpacity"],[data-door-field="openOpacity"]')) return;
-		var output = modal.querySelector('[data-opacity-output="' + event.target.dataset.doorField + '"]');
-		if (output) output.textContent = event.target.value + '%';
 	});
 
 	document.addEventListener('keydown', function (event) {

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.3\n"
+"Project-Id-Version: Panda Seasons 0.3.4\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -561,3 +561,51 @@ msgstr "Diese separate Anmeldung kann bereits Wochen vor dem ersten Türchen ver
 
 msgid "Optionally show a link or an existing form. Newsletter consent remains separate from calendar consent."
 msgstr "Optional einen Link oder ein bestehendes Formular anzeigen. Die Newsletter-Einwilligung bleibt von der Kalender-Einwilligung getrennt."
+
+msgid "Unlock time"
+msgstr "Freischaltzeit"
+
+msgid "Door closed"
+msgstr "Tür geschlossen"
+
+msgid "Door opened"
+msgstr "Tür geöffnet"
+
+msgid "Door label"
+msgstr "Türbeschriftung"
+
+msgid "Background color (RGBA)"
+msgstr "Hintergrundfarbe (RGBA)"
+
+msgid "Background image"
+msgstr "Hintergrundbild"
+
+msgid "Text color"
+msgstr "Textfarbe"
+
+msgid "Enable quiz"
+msgstr "Quiz aktivieren"
+
+msgid "Add question"
+msgstr "Frage hinzufügen"
+
+msgid "Check answers"
+msgstr "Antworten prüfen"
+
+msgid "Click Add door or drag the button directly onto the calendar. Drag doors to move them and use the bottom-right handle to resize them."
+msgstr "Klicken Sie auf „Türchen hinzufügen“ oder ziehen Sie die Schaltfläche direkt auf den Kalender. Ziehen Sie Türchen zum Verschieben und verwenden Sie den Griff unten rechts zum Ändern der Größe."
+
+msgid "Add email and newsletter features for free"
+msgstr "E-Mail- und Newsletter-Funktionen kostenlos ergänzen"
+
+msgid "Install the free ContactPanda plugin to send calendar doors by email, collect advance calendar registrations and use the integrated newsletter signup. The standalone web calendar remains fully available without it."
+msgstr "Installieren Sie das kostenlose ContactPanda-Plugin, um Kalendertürchen per E-Mail zu versenden, frühzeitige Kalenderanmeldungen zu erfassen und die integrierte Newsletter-Anmeldung zu nutzen. Der eigenständige Webkalender bleibt auch ohne ContactPanda vollständig verfügbar."
+
+msgid "Activate ContactPanda"
+msgstr "ContactPanda aktivieren"
+
+msgid "Get ContactPanda free"
+msgstr "ContactPanda kostenlos erhalten"
+
+msgid "Upload plugin ZIP"
+msgstr "Plugin-ZIP hochladen"

@@ -53,9 +53,19 @@
 		var quiz = event.target.closest('[data-season-quiz]');
 		if (!quiz) return;
 		event.preventDefault();
-		var selected = quiz.querySelector('input[type="radio"]:checked');
-		if (!selected) return;
-		var correct = String(selected.value) === String(quiz.dataset.correct);
+		var questions = quiz.querySelectorAll('[data-quiz-question]');
+		var correct;
+		if (questions.length) {
+			correct = true;
+			questions.forEach(function (question) {
+				var selected = question.querySelector('input[type="radio"]:checked');
+				if (!selected || String(selected.value) !== String(question.dataset.correct)) correct = false;
+			});
+		} else {
+			var selected = quiz.querySelector('input[type="radio"]:checked');
+			if (!selected) return;
+			correct = String(selected.value) === String(quiz.dataset.correct);
+		}
 		var result = quiz.querySelector('[data-quiz-result]');
 		result.textContent = correct ? quiz.dataset.success : quiz.dataset.failure;
 		result.classList.toggle('is-correct', correct);
