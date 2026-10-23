@@ -1,0 +1,692 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Panda Seasons 0.3.6\n"
+"Language: de_DE_formal\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Panda Seasons"
+msgstr "Panda Seasons"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Calendars"
+msgstr "Kalender"
+
+msgid "Add calendar"
+msgstr "Kalender hinzufügen"
+
+msgid "Edit calendar"
+msgstr "Kalender bearbeiten"
+
+msgid "Door"
+msgstr "Türchen"
+
+msgid "Doors"
+msgstr "Türchen"
+
+msgid "Add door"
+msgstr "Türchen hinzufügen"
+
+msgid "Edit door"
+msgstr "Türchen bearbeiten"
+
+msgid "Calendar design"
+msgstr "Kalendergestaltung"
+
+msgid "Email calendar"
+msgstr "E-Mail-Kalender"
+
+msgid "Embed calendar"
+msgstr "Kalender einfügen"
+
+msgid "Door settings"
+msgstr "Türcheneinstellungen"
+
+msgid "Every five minutes"
+msgstr "Alle fünf Minuten"
+
+msgid "Build the doors first, then place one continuous image over the complete calendar. Separate images can be used for desktop and mobile."
+msgstr "Bauen Sie zuerst die Türchen und legen Sie anschließend ein durchgehendes Bild über den vollständigen Kalender. Für Desktop und Mobilgeräte können unterschiedliche Bilder verwendet werden."
+
+msgid "Desktop cover image"
+msgstr "Gesamtbild für Desktop"
+
+msgid "Mobile cover image"
+msgstr "Gesamtbild für Mobilgeräte"
+
+msgid "Select image"
+msgstr "Bild auswählen"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Desktop columns"
+msgstr "Spalten am Desktop"
+
+msgid "Mobile columns"
+msgstr "Spalten auf Mobilgeräten"
+
+msgid "Calendar width-to-height ratio"
+msgstr "Seitenverhältnis des Kalenders"
+
+msgid "The free ContactPanda plugin must be installed and active to use email calendars. The web calendar remains fully available."
+msgstr "Für E-Mail-Kalender muss das kostenlose ContactPanda-Plugin installiert und aktiv sein. Der Webkalender bleibt vollständig verfügbar."
+
+msgid "Send this calendar by email"
+msgstr "Diesen Kalender per E-Mail versenden"
+
+msgid "Daily delivery time"
+msgstr "Tägliche Versandzeit"
+
+msgid "Subject template"
+msgstr "Betreffvorlage"
+
+msgid "Available: {calendar}, {day}, {first_name}"
+msgstr "Verfügbar: {calendar}, {day}, {first_name}"
+
+msgid "Verified ContactPanda contacts are enrolled immediately. All other addresses receive a double opt-in email. Calendar consent is stored separately from general marketing consent."
+msgstr "Bestätigte ContactPanda-Kontakte werden sofort angemeldet. Alle anderen Adressen erhalten eine Double-Opt-in-E-Mail. Die Kalendereinwilligung wird getrennt von der allgemeinen Marketingeinwilligung gespeichert."
+
+msgid "{calendar}: Door {day} is open"
+msgstr "{calendar}: Türchen {day} ist geöffnet"
+
+msgid "Select calendar"
+msgstr "Kalender auswählen"
+
+msgid "Door number"
+msgstr "Türchennummer"
+
+msgid "Number"
+msgstr "Nummer"
+
+msgid "Unlock date"
+msgstr "Öffnungsdatum"
+
+msgid "Email subject override"
+msgstr "Abweichender E-Mail-Betreff"
+
+msgid "Enabled"
+msgstr "Aktiviert"
+
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "This calendar does not have any doors yet."
+msgstr "Dieser Kalender hat noch keine Türchen."
+
+msgid "Open door %d"
+msgstr "Türchen %d öffnen"
+
+msgid "Door %1$d opens on %2$s"
+msgstr "Türchen %1$d öffnet am %2$s"
+
+msgid "Door %d"
+msgstr "Türchen %d"
+
+msgid "Email delivery requires the free ContactPanda plugin."
+msgstr "Der E-Mail-Versand benötigt das kostenlose ContactPanda-Plugin."
+
+msgid "Receive this calendar by email"
+msgstr "Diesen Kalender per E-Mail erhalten"
+
+msgid "You are registered for this email calendar."
+msgstr "Sie sind für diesen E-Mail-Kalender angemeldet."
+
+msgid "Please check your inbox and confirm your email address. Also check your spam folder."
+msgstr "Bitte überprüfen Sie Ihren Posteingang und bestätigen Sie Ihre E-Mail-Adresse. Sehen Sie bitte auch im Spamordner nach."
+
+msgid "The registration could not be completed. Please try again."
+msgstr "Die Anmeldung konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut."
+
+msgid "First name"
+msgstr "Vorname"
+
+msgid "Last name"
+msgstr "Nachname"
+
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+msgid "I would like to receive the daily emails for “%s”. I can unsubscribe at any time."
+msgstr "Ich möchte die täglichen E-Mails für „%s“ erhalten. Ich kann mich jederzeit wieder abmelden."
+
+msgid "Register for email calendar"
+msgstr "Für E-Mail-Kalender anmelden"
+
+msgid "Confirm your registration for %s"
+msgstr "Bitte bestätigen Sie Ihre Anmeldung für %s"
+
+msgid "Hello %s,"
+msgstr "Hallo %s,"
+
+msgid "Please confirm that you would like to receive this email calendar."
+msgstr "Bitte bestätigen Sie, dass Sie diesen E-Mail-Kalender erhalten möchten."
+
+msgid "Confirm email calendar"
+msgstr "E-Mail-Kalender bestätigen"
+
+msgid "This confirmation link is invalid."
+msgstr "Dieser Bestätigungslink ist ungültig."
+
+msgid "Registration confirmed"
+msgstr "Anmeldung bestätigt"
+
+msgid "You will now receive the emails for “%s”."
+msgstr "Sie erhalten ab jetzt die E-Mails für „%s“."
+
+msgid "This unsubscribe link is invalid."
+msgstr "Dieser Abmeldelink ist ungültig."
+
+msgid "What would you like to unsubscribe from?"
+msgstr "Wovon möchten Sie sich abmelden?"
+
+msgid "Only “%s”"
+msgstr "Nur „%s“"
+
+msgid "All email calendars, but keep other mailings"
+msgstr "Alle E-Mail-Kalender, andere Zusendungen jedoch weiterhin erhalten"
+
+msgid "All email mailings"
+msgstr "Alle E-Mail-Zusendungen"
+
+msgid "Finally unsubscribe"
+msgstr "Endgültig abmelden"
+
+msgid "Please select what you want to unsubscribe from."
+msgstr "Bitte wählen Sie aus, wovon Sie sich abmelden möchten."
+
+msgid "Finally unsubscribed"
+msgstr "Endgültig abgemeldet"
+
+msgid "You have been finally unsubscribed from this calendar."
+msgstr "Sie wurden endgültig von diesem Kalender abgemeldet."
+
+msgid "You have been finally unsubscribed from all email calendars."
+msgstr "Sie wurden endgültig von allen E-Mail-Kalendern abgemeldet."
+
+msgid "You have been finally unsubscribed from all email mailings."
+msgstr "Sie wurden endgültig von allen E-Mail-Zusendungen abgemeldet."
+
+msgid "Open calendar"
+msgstr "Kalender öffnen"
+
+msgid "Manage or unsubscribe from calendar emails"
+msgstr "Kalender-E-Mails verwalten oder abmelden"
+
+msgid "WordPress could not send this email."
+msgstr "WordPress konnte diese E-Mail nicht versenden."
+
+msgid "Choose the calendar image and place every door directly on it. Click a door to edit its date and content."
+msgstr "Wählen Sie das Kalenderbild und platzieren Sie jedes Türchen direkt darauf. Klicken Sie auf ein Türchen, um Datum und Inhalt zu bearbeiten."
+
+msgid "Desktop width-to-height ratio"
+msgstr "Seitenverhältnis für Desktop"
+
+msgid "Mobile width-to-height ratio"
+msgstr "Seitenverhältnis für Mobilgeräte"
+
+msgid "Preview size"
+msgstr "Vorschaugröße"
+
+msgid "Desktop"
+msgstr "Desktop"
+
+msgid "Mobile"
+msgstr "Mobil"
+
+msgid "Align to grid"
+msgstr "Am Raster ausrichten"
+
+msgid "Drag doors to move them. Use the handle at the bottom right to resize them. Desktop and mobile positions are saved separately."
+msgstr "Ziehen Sie Türchen, um sie zu verschieben. Mit dem Griff rechts unten ändern Sie ihre Größe. Positionen für Desktop und Mobilgeräte werden getrennt gespeichert."
+
+msgid "Add a door to start designing your calendar."
+msgstr "Fügen Sie ein Türchen hinzu, um Ihren Kalender zu gestalten."
+
+msgid "Door changes are stored when you update the calendar."
+msgstr "Änderungen an den Türchen werden gespeichert, sobald Sie den Kalender aktualisieren."
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Content"
+msgstr "Inhalt"
+
+msgid "Insert image"
+msgstr "Bild einfügen"
+
+msgid "Move door to trash"
+msgstr "Türchen in den Papierkorb verschieben"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Apply door"
+msgstr "Türchen übernehmen"
+
+msgid "Move this door to the trash? You can restore it from the door list."
+msgstr "Dieses Türchen in den Papierkorb verschieben? Sie können es in der Türchenliste wiederherstellen."
+
+msgid "Calendar door"
+msgstr "Kalendertürchen"
+
+msgid "Visual calendar editor"
+msgstr "Visueller Kalender-Editor"
+
+msgid "Door basics"
+msgstr "Grunddaten des Türchens"
+
+msgid "Optional unlock time"
+msgstr "Optionale Öffnungszeit"
+
+msgid "Door content and media"
+msgstr "Türcheninhalt und Medien"
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Image, video or audio"
+msgstr "Bild, Video oder Audio"
+
+msgid "Select media"
+msgstr "Medium auswählen"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Select download file"
+msgstr "Download-Datei auswählen"
+
+msgid "Download link text"
+msgstr "Text des Download-Links"
+
+msgid "Download file"
+msgstr "Datei herunterladen"
+
+msgid "Button and related content"
+msgstr "Button und verknüpfte Inhalte"
+
+msgid "Button text"
+msgstr "Button-Text"
+
+msgid "Button link"
+msgstr "Button-Link"
+
+msgid "WooCommerce product"
+msgstr "WooCommerce-Produkt"
+
+msgid "No product"
+msgstr "Kein Produkt"
+
+msgid "Event"
+msgstr "Event"
+
+msgid "No event"
+msgstr "Kein Event"
+
+msgid "Calendar email"
+msgstr "Kalender-E-Mail"
+
+msgid "Email content"
+msgstr "Inhalt der E-Mail"
+
+msgid "Leave empty to use the regular door content."
+msgstr "Leer lassen, um den normalen Türcheninhalt zu verwenden."
+
+msgid "Appearance before and after opening"
+msgstr "Darstellung vor und nach dem Öffnen"
+
+msgid "Label before opening"
+msgstr "Beschriftung vor dem Öffnen"
+
+msgid "Label after opening"
+msgstr "Beschriftung nach dem Öffnen"
+
+msgid "Background before opening"
+msgstr "Hintergrund vor dem Öffnen"
+
+msgid "Text color before opening"
+msgstr "Textfarbe vor dem Öffnen"
+
+msgid "Background after opening"
+msgstr "Hintergrund nach dem Öffnen"
+
+msgid "Text color after opening"
+msgstr "Textfarbe nach dem Öffnen"
+
+msgid "Preview content before it opens"
+msgstr "Inhalt schon vorab in der Verwaltung ansehen"
+
+msgid "Door preview"
+msgstr "Türchenvorschau"
+
+msgid "Select image, video or audio"
+msgstr "Bild, Video oder Audio auswählen"
+
+msgid "Play video"
+msgstr "Video abspielen"
+
+msgid "Play audio"
+msgstr "Audio abspielen"
+
+msgid "View product"
+msgstr "Produkt ansehen"
+
+msgid "View event"
+msgstr "Event ansehen"
+
+msgid "Door state preview"
+msgstr "Vorschau des Türchenzustands"
+
+msgid "Actual"
+msgstr "Tatsächlich"
+
+msgid "All closed"
+msgstr "Alle geschlossen"
+
+msgid "All open"
+msgstr "Alle geöffnet"
+
+msgid "Door shape"
+msgstr "Türchenform"
+
+msgid "Square"
+msgstr "Eckig"
+
+msgid "Rounded"
+msgstr "Abgerundet"
+
+msgid "Round"
+msgstr "Rund"
+
+msgid "Closed background opacity"
+msgstr "Deckkraft des geschlossenen Hintergrunds"
+
+msgid "Open background opacity"
+msgstr "Deckkraft des geöffneten Hintergrunds"
+
+msgid "Optional image on the closed door"
+msgstr "Optionales Bild auf dem geschlossenen Türchen"
+
+msgid "Optional image on the open door"
+msgstr "Optionales Bild auf dem geöffneten Türchen"
+
+msgid "Quiz"
+msgstr "Quiz"
+
+msgid "Enable a quiz for this door"
+msgstr "Quiz für dieses Türchen aktivieren"
+
+msgid "Question"
+msgstr "Frage"
+
+msgid "Answers (one per line)"
+msgstr "Antworten (eine pro Zeile)"
+
+msgid "Correct answer number"
+msgstr "Nummer der richtigen Antwort"
+
+msgid "Message for a correct answer"
+msgstr "Meldung bei richtiger Antwort"
+
+msgid "Message for a wrong answer"
+msgstr "Meldung bei falscher Antwort"
+
+msgid "In standalone mode answers are checked only in the visitor’s browser and no personal data is stored."
+msgstr "Im Standalone-Betrieb werden Antworten nur im Browser geprüft und keine personenbezogenen Daten gespeichert."
+
+msgid "Correct!"
+msgstr "Richtig!"
+
+msgid "That is not correct yet."
+msgstr "Das ist noch nicht richtig."
+
+msgid "Check answer"
+msgstr "Antwort prüfen"
+
+msgid "Email-calendar signup"
+msgstr "Anmeldung zum E-Mail-Kalender"
+
+msgid "The signup works independently of the doors and may be published weeks before the calendar starts."
+msgstr "Die Anmeldung funktioniert unabhängig von den Türchen und kann bereits Wochen vor Kalenderbeginn veröffentlicht werden."
+
+msgid "Signup heading"
+msgstr "Überschrift der Anmeldung"
+
+msgid "Signup description"
+msgstr "Beschreibung der Anmeldung"
+
+msgid "General newsletter signup"
+msgstr "Allgemeine Newsletter-Anmeldung"
+
+msgid "Newsletter consent remains separate from the email-calendar consent."
+msgstr "Die Newsletter-Einwilligung bleibt von der Einwilligung zum E-Mail-Kalender getrennt."
+
+msgid "Signup type"
+msgstr "Art der Anmeldung"
+
+msgid "Link or button"
+msgstr "Link oder Button"
+
+msgid "Form shortcode"
+msgstr "Formular-Shortcode"
+
+msgid "Simple ContactPanda form"
+msgstr "Einfaches ContactPanda-Formular"
+
+msgid "Heading"
+msgstr "Überschrift"
+
+msgid "Link text"
+msgstr "Linktext"
+
+msgid "Link URL"
+msgstr "Link-URL"
+
+msgid "Subscribe to newsletter"
+msgstr "Newsletter abonnieren"
+
+msgid "None"
+msgstr "Keine"
+
+msgid "Email delivery and signups"
+msgstr "E-Mail-Versand und Anmeldungen"
+
+msgid "Door opening effect"
+msgstr "Öffnungseffekt der Türchen"
+
+msgid "No effect"
+msgstr "Kein Effekt"
+
+msgid "Door opens to the left"
+msgstr "Tür öffnet nach links"
+
+msgid "Door opens to the right"
+msgstr "Tür öffnet nach rechts"
+
+msgid "Turn page"
+msgstr "Umblättern"
+
+msgid "Used for every door unless a door has its own setting."
+msgstr "Gilt für alle Türchen, sofern dort keine eigene Einstellung gewählt wurde."
+
+msgid "Animation speed"
+msgstr "Animationsgeschwindigkeit"
+
+msgid "Fast"
+msgstr "Schnell"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Slow"
+msgstr "Langsam"
+
+msgid "Visitors who prefer reduced motion will see no animation."
+msgstr "Bei bevorzugt reduzierter Bewegung wird keine Animation gezeigt."
+
+msgid "Time"
+msgstr "Uhrzeit"
+
+msgid "Drag an image, video or audio file here or select it from the media library."
+msgstr "Bild, Video oder Audiodatei hierher ziehen oder aus der Mediathek auswählen."
+
+msgid "Opening effect"
+msgstr "Öffnungseffekt"
+
+msgid "Use calendar setting"
+msgstr "Kalendereinstellung verwenden"
+
+msgid "Daily calendar email"
+msgstr "Täglicher Kalender-Versand"
+
+msgid "Sends the newly opened door to registered calendar subscribers at the selected time."
+msgstr "Sendet das neu geöffnete Türchen zur gewählten Uhrzeit an angemeldete Kalender-Abonnenten."
+
+msgid "Enable daily delivery"
+msgstr "Täglichen Versand aktivieren"
+
+msgid "This separate signup can be published weeks before the first door opens."
+msgstr "Diese separate Anmeldung kann bereits Wochen vor dem ersten Türchen veröffentlicht werden."
+
+msgid "Optionally show a link or an existing form. Newsletter consent remains separate from calendar consent."
+msgstr "Optional einen Link oder ein bestehendes Formular anzeigen. Die Newsletter-Einwilligung bleibt von der Kalender-Einwilligung getrennt."
+
+msgid "Unlock time"
+msgstr "Freischaltzeit"
+
+msgid "Door closed"
+msgstr "Tür geschlossen"
+
+msgid "Door opened"
+msgstr "Tür geöffnet"
+
+msgid "Door label"
+msgstr "Türbeschriftung"
+
+msgid "Background color (RGBA)"
+msgstr "Hintergrundfarbe (RGBA)"
+
+msgid "Background image"
+msgstr "Hintergrundbild"
+
+msgid "Text color"
+msgstr "Textfarbe"
+
+msgid "Enable quiz"
+msgstr "Quiz aktivieren"
+
+msgid "Add question"
+msgstr "Frage hinzufügen"
+
+msgid "Check answers"
+msgstr "Antworten prüfen"
+
+msgid "Click Add door or drag the button directly onto the calendar. Drag doors to move them and use the bottom-right handle to resize them."
+msgstr "Klicken Sie auf „Türchen hinzufügen“ oder ziehen Sie die Schaltfläche direkt auf den Kalender. Ziehen Sie Türchen zum Verschieben und verwenden Sie den Griff unten rechts zum Ändern der Größe."
+
+msgid "Add email and newsletter features for free"
+msgstr "E-Mail- und Newsletter-Funktionen kostenlos ergänzen"
+
+msgid "Install the free ContactPanda plugin to send calendar doors by email, collect advance calendar registrations and use the integrated newsletter signup. The standalone web calendar remains fully available without it."
+msgstr "Installieren Sie das kostenlose ContactPanda-Plugin, um Kalendertürchen per E-Mail zu versenden, frühzeitige Kalenderanmeldungen zu erfassen und die integrierte Newsletter-Anmeldung zu nutzen. Der eigenständige Webkalender bleibt auch ohne ContactPanda vollständig verfügbar."
+
+msgid "Activate ContactPanda"
+msgstr "ContactPanda aktivieren"
+
+msgid "Get ContactPanda free"
+msgstr "ContactPanda kostenlos erhalten"
+
+msgid "Upload plugin ZIP"
+msgstr "Plugin-ZIP hochladen"
+
+msgid "Select a door"
+msgstr "Türchen auswählen"
+
+msgid "Click a door in the calendar to edit its settings here. Changes are shown immediately in the preview."
+msgstr "Klicken Sie im Kalender auf ein Türchen, um dessen Einstellungen hier zu bearbeiten. Änderungen werden sofort in der Vorschau angezeigt."
+
+msgid "Default door colors"
+msgstr "Standardfarben für Türchen"
+
+msgid "These colors are used only for newly created doors. Existing doors keep their individual settings."
+msgstr "Diese Farben werden nur für neu angelegte Türchen verwendet. Bestehende Türchen behalten ihre individuellen Einstellungen."
+
+msgid "Default color when closed (RGBA)"
+msgstr "Standardfarbe bei geschlossenem Türchen (RGBA)"
+
+msgid "Default color when opened (RGBA)"
+msgstr "Standardfarbe bei geöffnetem Türchen (RGBA)"
+
+msgid "Theme colors"
+msgstr "Theme-Farben"
+
+msgid "First select the closed or opened color field, then choose a theme color."
+msgstr "Wählen Sie zuerst das Farbfeld für das geschlossene oder geöffnete Türchen und anschließend eine Theme-Farbe aus."
+
+msgid "Apply settings"
+msgstr "Einstellungen übernehmen"
+
+msgid "Check for updates"
+msgstr "Nach Aktualisierungen suchen"
+
+msgid "No valid published update was found."
+msgstr "Es wurde keine gültige veröffentlichte Aktualisierung gefunden."
+
+msgid "The published update metadata is invalid."
+msgstr "Die veröffentlichten Metadaten der Aktualisierung sind ungültig."
+
+msgid "The update archive has an invalid folder."
+msgstr "Das Aktualisierungsarchiv enthält einen ungültigen Ordner."
+
+msgid "The update archive has an invalid structure."
+msgstr "Das Aktualisierungsarchiv besitzt eine ungültige Struktur."
+
+msgid "The update archive version is invalid."
+msgstr "Die Version des Aktualisierungsarchivs ist ungültig."
+
+msgid "The update download could not be followed safely."
+msgstr "Der Download der Aktualisierung konnte nicht sicher weitergeleitet werden."
+
+msgid "The update download is invalid."
+msgstr "Der Download der Aktualisierung ist ungültig."
+
+msgid "The update manifest is invalid."
+msgstr "Das Aktualisierungsmanifest ist ungültig."
+
+msgid "The update package could not be stored temporarily."
+msgstr "Das Aktualisierungspaket konnte nicht vorübergehend gespeichert werden."
+
+msgid "The update package could not be verified."
+msgstr "Das Aktualisierungspaket konnte nicht überprüft werden."
+
+msgid "The update package failed its integrity check."
+msgstr "Das Aktualisierungspaket hat die Integritätsprüfung nicht bestanden."
+
+msgid "The update package is incomplete."
+msgstr "Das Aktualisierungspaket ist unvollständig."
+
+msgid "The update service could not be reached."
+msgstr "Der Aktualisierungsdienst konnte nicht erreicht werden."
+
+msgid "The update source is invalid."
+msgstr "Die Aktualisierungsquelle ist ungültig."
+
+msgid "Updates are disabled for Panda Seasons."
+msgstr "Aktualisierungen sind für Panda Seasons deaktiviert."
+
+msgid "You are not allowed to check for updates."
+msgstr "Sie sind nicht berechtigt, nach Aktualisierungen zu suchen."
+
+msgid "You are not allowed to install updates."
+msgstr "Sie sind nicht berechtigt, Aktualisierungen zu installieren."
