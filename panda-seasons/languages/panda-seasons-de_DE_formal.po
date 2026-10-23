@@ -1,11 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.4.3\n"
+"Project-Id-Version: Panda Seasons 0.4.4\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "This text is shown on the door. Leave it empty to display the door number automatically. You may use a different label for the closed and opened state."
+msgstr "Dieser Text wird auf der Türe angezeigt. Lassen Sie das Feld leer, um automatisch die Nummer der Türe zu verwenden. Für den geschlossenen und geöffneten Zustand können Sie unterschiedliche Beschriftungen festlegen."
 
 msgid "Panda Seasons"
 msgstr "Panda Seasons"
@@ -266,19 +269,19 @@ msgid "Insert image"
 msgstr "Bild einfügen"
 
 msgid "Move door to trash"
-msgstr "Türchen in den Papierkorb verschieben"
+msgstr "Türe in den Papierkorb verschieben"
 
 msgid "Cancel"
 msgstr "Abbrechen"
 
 msgid "Apply door"
-msgstr "Türchen übernehmen"
+msgstr "Einstellungen übernehmen"
 
 msgid "Move this door to the trash? You can restore it from the door list."
-msgstr "Dieses Türchen in den Papierkorb verschieben? Sie können es in der Türchenliste wiederherstellen."
+msgstr "Diese Türe in den Papierkorb verschieben? Sie können sie in der Türenliste wiederherstellen."
 
 msgid "Calendar door"
-msgstr "Kalendertürchen"
+msgstr "Kalendertüre"
 
 msgid "Visual calendar editor"
 msgstr "Visueller Kalender-Editor"
@@ -503,7 +506,7 @@ msgid "Email delivery and signups"
 msgstr "E-Mail-Versand und Anmeldungen"
 
 msgid "Door opening effect"
-msgstr "Öffnungseffekt der Türchen"
+msgstr "Öffnungseffekt der Türe"
 
 msgid "No effect"
 msgstr "Kein Effekt"

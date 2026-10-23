@@ -496,10 +496,17 @@ final class Panda_Seasons_Plugin {
 		if ( empty( $contactpanda_settings['theme_styles'] ) ) return array();
 		$selected_theme = strtolower( sanitize_text_field( (string) ( $contactpanda_settings['theme_stylesheet'] ?? $contactpanda_settings['theme_name'] ?? '' ) ) );
 		if ( ! $selected_theme ) return array();
+		$colors = array();
+
+		// Use the exact palette ContactPanda already detected and displays in its
+		// appearance settings. This keeps both modules in sync instead of trying to
+		// interpret a page builder's evolving option structure twice.
+		if ( class_exists( 'ContactPanda_Basic_Newsletters' ) && is_callable( array( 'ContactPanda_Basic_Newsletters', 'detected_theme_colors' ) ) ) {
+			self::append_theme_palette( $colors, ContactPanda_Basic_Newsletters::detected_theme_colors(), 'ContactPanda' );
+		}
 
 		$settings = function_exists( 'wp_get_global_settings' ) ? wp_get_global_settings() : array();
 		$palettes = $settings['color']['palette'] ?? array();
-		$colors   = array();
 		foreach ( array( 'theme', 'default', 'custom' ) as $group ) {
 			foreach ( (array) ( $palettes[ $group ] ?? array() ) as $item ) {
 				$color = sanitize_hex_color( $item['color'] ?? '' );

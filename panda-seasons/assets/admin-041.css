@@ -4,8 +4,13 @@
 .panda-seasons-color-control__icon{display:grid!important;place-items:center;width:46px!important;height:46px!important;color:#50575e!important}.panda-seasons-color-control__icon .dashicons{width:24px;height:24px;font-size:24px}
 .panda-seasons-color-control__rgba{display:none!important}.panda-seasons-color-control__picker{margin:0;padding:12px 16px;border:1px solid #d4d7dc;border-radius:7px;background:#fff;box-shadow:0 5px 18px rgba(0,0,0,.1)}
 .panda-seasons-color-control__picker:not([hidden]){display:grid;grid-template-columns:auto 48px;align-items:stretch;gap:14px;width:max-content;max-width:100%;overflow:auto}.panda-seasons-color-control__picker>input[data-iris-color]{display:none!important}.panda-seasons-color-control__picker .iris-picker{display:block!important;margin:0!important;border:0!important}.panda-seasons-color-control__picker .iris-square{margin-right:14px!important}.panda-seasons-color-control__picker .iris-strip{width:48px!important}
-.panda-seasons-color-control__alpha{grid-column:2;width:48px;height:100%;min-height:250px;padding:0;border:0;border-radius:4px;background:linear-gradient(#000,#fff);box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
-.panda-seasons-color-control__alpha input[type=range]{width:48px!important;height:100%!important;min-height:250px;margin:0;writing-mode:vertical-lr;direction:rtl;appearance:slider-vertical;background:transparent}
+.panda-seasons-color-control__alpha{grid-column:2;width:48px;height:var(--ps-color-picker-height,250px);min-height:0;padding:0;border:0;border-radius:4px;background:transparent;box-shadow:none}
+.panda-seasons-color-control__alpha input[type=range]{display:block;width:48px!important;height:var(--ps-color-picker-height,250px)!important;min-height:0;margin:0;padding:0;border:0;border-radius:4px;background:linear-gradient(to bottom,#000 0%,#fff 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);writing-mode:vertical-lr;direction:rtl;-webkit-appearance:none;appearance:none;cursor:pointer}
+.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-runnable-track{width:48px;height:100%;border:0;border-radius:4px;background:transparent}
+.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-thumb{width:56px;height:14px;margin-left:-4px;border:2px solid #a7aaad;border-radius:4px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.35);-webkit-appearance:none;appearance:none}
+.panda-seasons-color-control__alpha input[type=range]::-moz-range-track{width:48px;height:100%;border:0;border-radius:4px;background:linear-gradient(to bottom,#000 0%,#fff 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.panda-seasons-color-control__alpha input[type=range]::-moz-range-progress{background:transparent}
+.panda-seasons-color-control__alpha input[type=range]::-moz-range-thumb{width:52px;height:10px;border:2px solid #a7aaad;border-radius:4px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.35)}
 .panda-seasons-color-control__themes{display:block;margin:0 12px 12px;padding:18px 20px;border:1px solid #d4d7dc;border-radius:7px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.1)}.panda-seasons-color-control__themes[hidden]{display:none}.panda-seasons-color-control__themes>strong{display:block;margin-bottom:16px;color:#8c939d;font-size:14px;text-transform:uppercase}.panda-seasons-color-control__themes>[data-theme-color-list]{display:flex;flex-wrap:wrap;gap:12px}.panda-seasons-color-control__themes button{width:42px;height:42px;padding:0;border:2px solid #fff;border-radius:7px;background:var(--ps-theme-color);box-shadow:0 0 0 1px #d1d5db;cursor:pointer}.panda-seasons-color-control__themes button:hover,.panda-seasons-color-control__themes button:focus{outline:2px solid #2271b1;outline-offset:2px}
 .panda-seasons-default-motion{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;border:1px solid #dcdcde;border-radius:7px;background:#f6f7f7}
 .panda-seasons-default-motion .panda-seasons-default-preview{grid-column:1/-1!important;grid-row:auto;flex-direction:row;justify-content:center}
@@ -16,3 +21,36 @@
 .panda-seasons-calendar-preview header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-bottom:1px solid #dcdcde}.panda-seasons-calendar-preview header>div{display:flex;align-items:center;gap:6px}.panda-seasons-calendar-preview iframe{flex:1;width:100%;border:0;background:#fff}
 @media(max-width:782px){.panda-seasons-default-motion{grid-template-columns:1fr}}
 .panda-seasons-inline-pair{display:grid;grid-template-columns:minmax(0,2fr) minmax(110px,1fr);gap:12px}.panda-seasons-inline-pair>label,.panda-seasons-label-size-row>label{display:flex;flex-direction:column;gap:6px}.panda-seasons-label-size-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(90px,.7fr) minmax(90px,.7fr);gap:12px}.panda-seasons-label-visibility-row{display:flex;flex-wrap:wrap;gap:10px 22px;padding:10px 12px;border:1px solid #dcdcde;border-radius:7px;background:#f6f7f7}.panda-seasons-label-visibility-row label{margin:0}.panda-seasons-default-state-panel>.panda-seasons-inline-pair,.panda-seasons-default-state-panel>.panda-seasons-label-size-row,.panda-seasons-door-state-panel>.panda-seasons-inline-pair,.panda-seasons-door-state-panel>.panda-seasons-label-size-row{grid-column:1/-1}.panda-seasons-composer__door-number{box-sizing:border-box;width:var(--ps-door-label-width,auto);height:auto;min-width:0;min-height:0;padding:var(--ps-door-label-padding,4px);border:var(--ps-door-label-border-width,1px) solid var(--ps-door-label-border-color,#fff);background:var(--ps-door-label-bg,rgba(10,18,30,.76));color:var(--ps-door-color,#fff)}@media(max-width:782px){.panda-seasons-inline-pair,.panda-seasons-label-size-row{grid-template-columns:1fr}.panda-seasons-label-visibility-row{display:grid}}
+
+/* Compact color controls: keep the code, icon and expanded picker balanced. */
+.panda-seasons-color-control__head{grid-template-columns:46px minmax(0,1fr) 40px;gap:10px;min-height:60px;padding:7px 9px}
+.panda-seasons-color-control__preview{width:42px;height:42px;background-size:auto,10px 10px,10px 10px,10px 10px,10px 10px}
+.panda-seasons-color-control__code{height:42px!important;padding:0 13px!important;font-size:14px!important}
+.panda-seasons-color-control__icon{width:38px!important;height:38px!important}.panda-seasons-color-control__icon .dashicons{width:20px;height:20px;font-size:20px}
+.panda-seasons-color-control__picker{padding:9px 12px;border-radius:6px}
+.panda-seasons-color-control__picker:not([hidden]){grid-template-columns:auto 38px;gap:10px}.panda-seasons-color-control__picker .iris-square{margin-right:10px!important}.panda-seasons-color-control__picker .iris-strip{width:38px!important}
+.panda-seasons-color-control__alpha{width:38px;height:var(--ps-color-picker-height,195px)}
+.panda-seasons-color-control__alpha input[type=range]{width:38px!important;height:var(--ps-color-picker-height,195px)!important}
+.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-runnable-track{width:38px}
+.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-thumb{width:46px;height:12px}
+.panda-seasons-color-control__alpha input[type=range]::-moz-range-track{width:38px}
+.panda-seasons-color-control__alpha input[type=range]::-moz-range-thumb{width:42px;height:8px}
+.panda-seasons-color-control__themes{margin:0 9px 9px;padding:13px 15px;border-radius:6px}.panda-seasons-color-control__themes>strong{margin-bottom:11px;font-size:14px}.panda-seasons-color-control__themes>[data-theme-color-list]{gap:9px}.panda-seasons-color-control__themes button{width:33px;height:33px;border-radius:6px}
+
+/* Keep label-visibility checkboxes compact even when a theme styles admin inputs. */
+.panda-seasons-label-toggle{display:inline-flex!important;align-items:center!important;gap:8px;min-height:24px;margin:0 0 2px!important;line-height:1.4}
+.panda-seasons-label-toggle input[type=checkbox]{box-sizing:border-box!important;flex:0 0 16px!important;width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;max-width:16px!important;max-height:16px!important;margin:0!important;padding:0!important;border-width:1px!important;border-radius:3px!important;vertical-align:middle!important}
+.panda-seasons-label-toggle input[type=checkbox]:checked::before{width:18px!important;height:18px!important;margin:-3px 0 0 -4px!important}
+.panda-seasons-label-toggle>span{font-size:14px;line-height:1.4}
+
+/* The inspector for an individual door is deliberately single-column. */
+.panda-seasons-door-state-panel{grid-template-columns:minmax(0,1fr)!important;gap:14px}
+.panda-seasons-door-state-panel>.panda-seasons-door-frame-row,
+.panda-seasons-door-state-panel>.panda-seasons-label-typography-row,
+.panda-seasons-door-state-panel>.panda-seasons-label-size-row,
+.panda-seasons-door-state-panel>.panda-seasons-label-colors-row{display:grid;grid-template-columns:minmax(0,1fr)!important;grid-column:1/-1!important;gap:12px}
+.panda-seasons-door-state-panel>label,
+.panda-seasons-door-state-panel>h3,
+.panda-seasons-door-state-panel>.panda-seasons-door-modal__asset{grid-column:1/-1!important;width:100%;min-width:0;box-sizing:border-box}
+.panda-seasons-door-state-panel input,
+.panda-seasons-door-state-panel select{max-width:100%}

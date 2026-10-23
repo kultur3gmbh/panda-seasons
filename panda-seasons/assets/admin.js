@@ -62,7 +62,12 @@
 		field.addEventListener('change',function(){parts=rgbaParts(field.value);if(!syncing&&window.jQuery&&jQuery.fn.iris){syncing=true;jQuery(iris).iris('color',parts.hex);syncing=false;}paint();});
 		control.querySelector('[data-toggle-color-picker]').addEventListener('click',function(event){var panel=control.querySelector('.panda-seasons-color-control__picker'),open=panel.hidden;panel.hidden=!open;themes.hidden=true;event.currentTarget.setAttribute('aria-expanded',open?'true':'false');});
 		control.querySelector('[data-toggle-theme-colors]').addEventListener('click',function(event){var open=themes.hidden;themes.hidden=!open;control.querySelector('.panda-seasons-color-control__picker').hidden=true;event.currentTarget.setAttribute('aria-expanded',open?'true':'false');});
-		if(window.jQuery&&jQuery.fn.iris)jQuery(iris).iris({hide:false,palettes:false,width:440,change:function(event,ui){setHex(ui.color.toString());}});else{iris.type='color';iris.addEventListener('input',function(){setHex(iris.value);});}
+		if(window.jQuery&&jQuery.fn.iris){
+			jQuery(iris).iris({hide:false,palettes:false,width:340,change:function(event,ui){setHex(ui.color.toString());}});
+			var syncPickerHeight=function(){var picker=control.querySelector('.iris-picker');if(picker&&picker.offsetHeight)control.style.setProperty('--ps-color-picker-height',picker.offsetHeight+'px');};
+			window.requestAnimationFrame(syncPickerHeight);
+			if(window.ResizeObserver){var pickerObserver=new ResizeObserver(syncPickerHeight),pickerElement=control.querySelector('.iris-picker');if(pickerElement)pickerObserver.observe(pickerElement);}
+		}else{iris.type='color';iris.addEventListener('input',function(){setHex(iris.value);});}
 		paint();
 	}
 
@@ -370,7 +375,11 @@
 
 		stage.addEventListener('pointerdown', function (event) {
 			var element = event.target.closest('[data-editor-door]');
-			if (!element || event.target.closest('.panda-seasons-composer__door-actions')) return;
+			if (!element) return;
+			if (event.target.closest('.panda-seasons-composer__door-actions')) {
+				dragged = false;
+				return;
+			}
 			startPointer(event, element, Boolean(event.target.closest('[data-resize-door]')));
 		});
 		stage.addEventListener('pointermove', movePointer);
@@ -379,14 +388,19 @@
 
 		stage.addEventListener('click', function (event) {
 			var element = event.target.closest('[data-editor-door]');
-			if (!element || event.target.closest('[data-resize-door]') || dragged) return;
+			if (!element) return;
 			var door = findDoor(element.dataset.editorDoor);
 			if (event.target.closest('[data-duplicate-door]')) { event.stopPropagation(); if (door) duplicateDoor(door); return; }
 			if (event.target.closest('[data-delete-stage-door]')) {
 				event.stopPropagation();
-				if (door && window.confirm(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteConfirm ? pandaSeasonsAdmin.deleteConfirm : 'Move this door to the trash?')) { door.deleted = true; render(); }
+				if (door && window.confirm(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteConfirm ? pandaSeasonsAdmin.deleteConfirm : 'Move this door to the trash?')) {
+					door.deleted = true;
+					if (activeDoor === door) closeDoorModal(true);
+					render();
+				}
 				return;
 			}
+			if (event.target.closest('[data-resize-door]') || dragged) return;
 			if (door) openDoorModal(door, element);
 		});
 
