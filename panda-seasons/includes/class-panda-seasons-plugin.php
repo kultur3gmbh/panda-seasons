@@ -31,7 +31,7 @@ final class Panda_Seasons_Plugin {
 
 	public static function normalize_german_door_terms( $translation, $text, $domain ) {
 		if ( 'panda-seasons' !== $domain || 0 !== strpos( determine_locale(), 'de_' ) ) return $translation;
-		$new_strings = array( 'Availability' => 'Verfügbarkeit', 'Available permanently from the release date' => 'Ab dem Freigabedatum dauerhaft verfügbar', 'Available only on the release day' => 'Nur am Freigabetag verfügbar', 'Clear' => 'Leeren' );
+		$new_strings = array( 'Availability' => 'Verfügbarkeit', 'Available permanently from the release date' => 'Ab dem Freigabedatum dauerhaft verfügbar', 'Available only on the release day' => 'Nur am Freigabetag verfügbar', 'Clear' => 'Leeren', 'Global color settings' => 'Globale Farbeinstellungen' );
 		if ( isset( $new_strings[ $text ] ) ) return $new_strings[ $text ];
 		if ( false === strpos( $translation, 'Türchen' ) ) return $translation;
 		$map = array( 'Türchenbeschriftung' => 'Türenbeschriftung', 'Türchennummer' => 'Türnummer', 'Türcheneinstellungen' => 'Türeinstellungen', 'Türcheninhalt' => 'Türeninhalt', 'Türchenvorschau' => 'Türvorschau', 'Türchenform' => 'Türform', 'Mustertürchen' => 'Mustertüre', 'Kalendertürchen' => 'Kalendertüre', 'Türchen' => 'Türe' );
@@ -462,8 +462,7 @@ final class Panda_Seasons_Plugin {
 	}
 
 	private static function theme_colors() {
-		if ( ! function_exists( 'wp_get_global_settings' ) ) return array();
-		$settings = wp_get_global_settings();
+		$settings = function_exists( 'wp_get_global_settings' ) ? wp_get_global_settings() : array();
 		$palettes = $settings['color']['palette'] ?? array();
 		$colors   = array();
 		foreach ( array( 'theme', 'default', 'custom' ) as $group ) {
@@ -473,7 +472,44 @@ final class Panda_Seasons_Plugin {
 				$colors[ strtolower( $color ) ] = array( 'color' => $color, 'name' => sanitize_text_field( $item['name'] ?? $color ) );
 			}
 		}
-		return array_values( $colors );
+
+		$fusion = (array) get_option( 'fusion_options', array() );
+		foreach ( array( 'global_colors_palette', 'fusion_global_colors', 'color_palette' ) as $key ) {
+			self::append_theme_palette( $colors, $fusion[ $key ] ?? array(), 'Avada' );
+		}
+
+		$kit_id = absint( get_option( 'elementor_active_kit' ) );
+		$kit    = $kit_id ? (array) get_post_meta( $kit_id, '_elementor_page_settings', true ) : array();
+		self::append_theme_palette( $colors, $kit['system_colors'] ?? array(), 'Elementor' );
+		self::append_theme_palette( $colors, $kit['custom_colors'] ?? array(), 'Elementor' );
+
+		$divi = (array) get_option( 'et_divi', array() );
+		foreach ( array( 'accent_color', 'header_color', 'font_color', 'primary_nav_font_color', 'secondary_nav_font_color', 'footer_bg' ) as $key ) {
+			if ( ! empty( $divi[ $key ] ) ) self::append_theme_palette( $colors, array( array( 'name' => ucwords( str_replace( '_', ' ', $key ) ), 'color' => $divi[ $key ] ) ), 'Divi' );
+		}
+
+		return array_values( apply_filters( 'panda_seasons_theme_colors', $colors ) );
+	}
+
+	private static function append_theme_palette( &$colors, $palette, $source ) {
+		if ( is_string( $palette ) ) {
+			$decoded = json_decode( $palette, true );
+			if ( is_array( $decoded ) ) $palette = $decoded;
+		}
+		foreach ( (array) $palette as $key => $item ) {
+			if ( is_array( $item ) ) {
+				$color = sanitize_hex_color( $item['color'] ?? $item['value'] ?? '' );
+				$name  = sanitize_text_field( $item['name'] ?? $item['title'] ?? $item['_id'] ?? $key );
+				if ( ! $color ) {
+					self::append_theme_palette( $colors, $item, $source );
+					continue;
+				}
+			} else {
+				$color = sanitize_hex_color( $item );
+				$name  = sanitize_text_field( is_string( $key ) ? $key : $color );
+			}
+			if ( $color ) $colors[ strtolower( $color ) ] = array( 'color' => $color, 'name' => trim( $source . ' – ' . $name, ' –' ) );
+		}
 	}
 
 	private static function door_position( $door_id, $view, $index, $total ) {
@@ -837,6 +873,7 @@ final class Panda_Seasons_Plugin {
 				'alpha'           => __( 'Transparency', 'panda-seasons' ),
 				'openColorPicker' => __( 'Open color picker', 'panda-seasons' ),
 				'globalColors'    => __( 'Global theme colors', 'panda-seasons' ),
+				'globalColorsTooltip' => __( 'Global color settings', 'panda-seasons' ),
 				'clear'           => __( 'Clear', 'panda-seasons' ),
 			)
 		);
