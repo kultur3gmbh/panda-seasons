@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.3.9\n"
+"Project-Id-Version: Panda Seasons 0.4.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -861,4 +861,28 @@ msgid "Label color"
 msgstr ""
 
 msgid "Border color"
+msgstr ""
+
+msgid "Interactive preview"
+msgstr ""
+
+msgid "Behavior after unlock"
+msgstr ""
+
+msgid "Show automatically as opened"
+msgstr ""
+
+msgid "Highlight as current until clicked"
+msgstr ""
+
+msgid "Keep closed until clicked"
+msgstr ""
+
+msgid "Active door border color"
+msgstr ""
+
+msgid "Preview mode – unlock dates are ignored and actions are disabled."
+msgstr ""
+
+msgid "You are not allowed to preview this calendar."
 msgstr ""
