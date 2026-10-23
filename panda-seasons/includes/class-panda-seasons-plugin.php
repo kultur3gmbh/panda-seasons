@@ -12,10 +12,13 @@ final class Panda_Seasons_Plugin {
 		Panda_Seasons_Schema::maybe_upgrade();
 		add_action( 'init', array( __CLASS__, 'register_post_types' ) );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'meta_boxes' ) );
+		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
 		add_action( 'save_post_' . self::CALENDAR_POST_TYPE, array( __CLASS__, 'save_calendar' ) );
 		add_action( 'save_post_' . self::DOOR_POST_TYPE, array( __CLASS__, 'save_door' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_assets' ) );
 		add_action( 'admin_post_panda_seasons_preview', array( __CLASS__, 'preview_page' ) );
+		add_action( 'admin_post_panda_seasons_export_template', array( __CLASS__, 'export_template' ) );
+		add_action( 'admin_post_panda_seasons_import_template', array( __CLASS__, 'import_template' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_frontend_assets' ) );
 		add_filter( 'manage_' . self::CALENDAR_POST_TYPE . '_posts_columns', array( __CLASS__, 'calendar_columns' ) );
 		add_action( 'manage_' . self::CALENDAR_POST_TYPE . '_posts_custom_column', array( __CLASS__, 'calendar_column' ), 10, 2 );
@@ -113,6 +116,158 @@ final class Panda_Seasons_Plugin {
 		add_meta_box( 'panda-seasons-email', __( 'Email delivery and signups', 'panda-seasons' ), array( __CLASS__, 'calendar_email_box' ), self::CALENDAR_POST_TYPE, 'normal', 'default' );
 		add_meta_box( 'panda-seasons-shortcode', __( 'Embed calendar', 'panda-seasons' ), array( __CLASS__, 'calendar_shortcode_box' ), self::CALENDAR_POST_TYPE, 'side' );
 		add_meta_box( 'panda-seasons-door', __( 'Door settings', 'panda-seasons' ), array( __CLASS__, 'door_box' ), self::DOOR_POST_TYPE, 'side', 'high' );
+	}
+
+	public static function admin_menu() {
+		add_submenu_page(
+			'edit.php?post_type=' . self::CALENDAR_POST_TYPE,
+			__( 'Calendar templates', 'panda-seasons' ),
+			__( 'Templates', 'panda-seasons' ),
+			'edit_posts',
+			'panda-seasons-templates',
+			array( __CLASS__, 'templates_page' )
+		);
+	}
+
+	public static function templates_page() {
+		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to manage calendar templates.', 'panda-seasons' ) );
+		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'orderby' => 'title', 'order' => 'ASC' ) );
+		?>
+		<div class="wrap panda-seasons-templates-page">
+			<h1><?php esc_html_e( 'Calendar templates', 'panda-seasons' ); ?></h1>
+			<?php if ( ! empty( $_GET['panda_seasons_imported'] ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'The template was imported as a new calendar draft.', 'panda-seasons' ); ?></p></div><?php endif; ?>
+			<?php if ( ! empty( $_GET['panda_seasons_error'] ) ) : ?><div class="notice notice-error"><p><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['panda_seasons_error'] ) ) ); ?></p></div><?php endif; ?>
+			<div class="panda-seasons-template-grid">
+				<section class="card">
+					<h2><?php esc_html_e( 'Export template', 'panda-seasons' ); ?></h2>
+					<p><?php esc_html_e( 'Exports settings, doors, positions, content and media references. Installation-specific product, coupon and event assignments are not transferred.', 'panda-seasons' ); ?></p>
+					<?php if ( $calendars ) : ?>
+						<form method="get" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+							<input type="hidden" name="action" value="panda_seasons_export_template">
+							<?php wp_nonce_field( 'panda_seasons_export_template', '_wpnonce', false ); ?>
+							<label><span><?php esc_html_e( 'Calendar', 'panda-seasons' ); ?></span><select name="calendar_id" required><?php foreach ( $calendars as $calendar ) : ?><option value="<?php echo esc_attr( $calendar->ID ); ?>"><?php echo esc_html( $calendar->post_title ?: sprintf( __( 'Calendar #%d', 'panda-seasons' ), $calendar->ID ) ); ?></option><?php endforeach; ?></select></label>
+							<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Download template', 'panda-seasons' ); ?></button></p>
+						</form>
+					<?php else : ?><p><?php esc_html_e( 'Create a calendar before exporting a template.', 'panda-seasons' ); ?></p><?php endif; ?>
+				</section>
+				<section class="card">
+					<h2><?php esc_html_e( 'Import template', 'panda-seasons' ); ?></h2>
+					<p><?php esc_html_e( 'Imports the template as a new draft. Media files are downloaded into this WordPress installation when their source is reachable.', 'panda-seasons' ); ?></p>
+					<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+						<input type="hidden" name="action" value="panda_seasons_import_template">
+						<?php wp_nonce_field( 'panda_seasons_import_template' ); ?>
+						<label><span><?php esc_html_e( 'Template file', 'panda-seasons' ); ?></span><input type="file" name="panda_seasons_template" accept="application/json,.json" required></label>
+						<p><button type="submit" class="button button-primary"><?php esc_html_e( 'Import as new calendar', 'panda-seasons' ); ?></button></p>
+					</form>
+				</section>
+			</div>
+		</div>
+		<?php
+	}
+
+	private static function template_meta( $post_id, $media_keys = array() ) {
+		$result = array();
+		$media  = array();
+		$excluded = array( '_ps_product_id', '_ps_coupon_id', '_ps_event_id', '_ps_calendar_id' );
+		foreach ( array_keys( get_post_meta( $post_id ) ) as $key ) {
+			if ( 0 !== strpos( $key, '_ps_' ) || in_array( $key, $excluded, true ) ) continue;
+			if ( in_array( $key, $media_keys, true ) ) {
+				$attachment_id = absint( get_post_meta( $post_id, $key, true ) );
+				$media[ $key ] = $attachment_id ? wp_get_attachment_url( $attachment_id ) : '';
+				continue;
+			}
+			$result[ $key ] = get_post_meta( $post_id, $key, true );
+		}
+		return array( 'meta' => $result, 'media' => $media );
+	}
+
+	public static function export_template() {
+		$calendar_id = absint( $_GET['calendar_id'] ?? 0 );
+		check_admin_referer( 'panda_seasons_export_template' );
+		if ( ! $calendar_id || self::CALENDAR_POST_TYPE !== get_post_type( $calendar_id ) || ! current_user_can( 'edit_post', $calendar_id ) ) wp_die( esc_html__( 'The selected calendar cannot be exported.', 'panda-seasons' ) );
+		$calendar = get_post( $calendar_id );
+		$calendar_data = self::template_meta( $calendar_id, array( '_ps_cover_desktop', '_ps_cover_mobile' ) );
+		$doors = array();
+		foreach ( self::doors( $calendar_id, 'any' ) as $door ) {
+			$door_data = self::template_meta( $door->ID, array( '_ps_media_id', '_ps_download_id', '_ps_closed_image_id', '_ps_open_image_id' ) );
+			$doors[] = array( 'title' => $door->post_title, 'content' => $door->post_content, 'excerpt' => $door->post_excerpt, 'meta' => $door_data['meta'], 'media' => $door_data['media'] );
+		}
+		$template = array(
+			'format' => 'panda-seasons-template',
+			'format_version' => 1,
+			'plugin_version' => PANDA_SEASONS_VERSION,
+			'exported_at' => gmdate( 'c' ),
+			'calendar' => array( 'title' => $calendar->post_title, 'content' => $calendar->post_content, 'excerpt' => $calendar->post_excerpt, 'meta' => $calendar_data['meta'], 'media' => $calendar_data['media'] ),
+			'doors' => $doors,
+			'not_transferred' => array( 'product_assignments', 'coupon_assignments', 'event_assignments' ),
+		);
+		$filename = sanitize_file_name( ( $calendar->post_title ?: 'panda-seasons' ) . '-template.json' );
+		nocache_headers();
+		header( 'Content-Type: application/json; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+		echo wp_json_encode( $template, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		exit;
+	}
+
+	private static function sanitize_template_value( $value ) {
+		if ( is_array( $value ) ) return array_map( array( __CLASS__, 'sanitize_template_value' ), $value );
+		if ( is_bool( $value ) || is_int( $value ) || is_float( $value ) ) return $value;
+		return wp_kses_post( (string) $value );
+	}
+
+	private static function import_template_media( $url, $post_id ) {
+		$url = esc_url_raw( (string) $url );
+		if ( ! $url ) return 0;
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+		$tmp = download_url( $url, 20 );
+		if ( is_wp_error( $tmp ) ) return 0;
+		$path = (string) wp_parse_url( $url, PHP_URL_PATH );
+		$file = array( 'name' => sanitize_file_name( basename( $path ) ?: 'panda-seasons-media' ), 'tmp_name' => $tmp );
+		$attachment_id = media_handle_sideload( $file, $post_id );
+		if ( is_wp_error( $attachment_id ) ) { @unlink( $tmp ); return 0; }
+		return absint( $attachment_id );
+	}
+
+	private static function import_template_meta( $post_id, $meta, $media ) {
+		foreach ( (array) $meta as $key => $value ) {
+			$key = sanitize_key( $key );
+			if ( 0 !== strpos( $key, '_ps_' ) || in_array( $key, array( '_ps_product_id', '_ps_coupon_id', '_ps_event_id', '_ps_calendar_id' ), true ) ) continue;
+			update_post_meta( $post_id, $key, self::sanitize_template_value( $value ) );
+		}
+		foreach ( (array) $media as $key => $url ) {
+			$key = sanitize_key( $key );
+			if ( ! in_array( $key, array( '_ps_cover_desktop', '_ps_cover_mobile', '_ps_media_id', '_ps_download_id', '_ps_closed_image_id', '_ps_open_image_id' ), true ) ) continue;
+			update_post_meta( $post_id, $key, self::import_template_media( $url, $post_id ) );
+		}
+	}
+
+	public static function import_template() {
+		check_admin_referer( 'panda_seasons_import_template' );
+		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to import calendar templates.', 'panda-seasons' ) );
+		$redirect = admin_url( 'edit.php?post_type=' . self::CALENDAR_POST_TYPE . '&page=panda-seasons-templates' );
+		$file = $_FILES['panda_seasons_template'] ?? array();
+		if ( empty( $file['tmp_name'] ) || ! empty( $file['error'] ) || (int) ( $file['size'] ?? 0 ) > 5 * MB_IN_BYTES ) {
+			wp_safe_redirect( add_query_arg( 'panda_seasons_error', __( 'Please select a valid template file up to 5 MB.', 'panda-seasons' ), $redirect ) ); exit;
+		}
+		$template = json_decode( (string) file_get_contents( $file['tmp_name'] ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( ! is_array( $template ) || 'panda-seasons-template' !== ( $template['format'] ?? '' ) || 1 !== absint( $template['format_version'] ?? 0 ) || empty( $template['calendar'] ) ) {
+			wp_safe_redirect( add_query_arg( 'panda_seasons_error', __( 'The selected file is not a supported Panda Seasons template.', 'panda-seasons' ), $redirect ) ); exit;
+		}
+		$calendar_data = (array) $template['calendar'];
+		$calendar_id = wp_insert_post( wp_slash( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => 'draft', 'post_title' => sanitize_text_field( (string) ( $calendar_data['title'] ?? __( 'Imported calendar', 'panda-seasons' ) ) ), 'post_content' => wp_kses_post( (string) ( $calendar_data['content'] ?? '' ) ), 'post_excerpt' => sanitize_textarea_field( (string) ( $calendar_data['excerpt'] ?? '' ) ) ) ), true );
+		if ( is_wp_error( $calendar_id ) ) { wp_safe_redirect( add_query_arg( 'panda_seasons_error', $calendar_id->get_error_message(), $redirect ) ); exit; }
+		self::import_template_meta( $calendar_id, $calendar_data['meta'] ?? array(), $calendar_data['media'] ?? array() );
+		foreach ( (array) ( $template['doors'] ?? array() ) as $door_data ) {
+			if ( ! is_array( $door_data ) ) continue;
+			$door_id = wp_insert_post( wp_slash( array( 'post_type' => self::DOOR_POST_TYPE, 'post_status' => 'publish', 'post_parent' => $calendar_id, 'post_title' => sanitize_text_field( (string) ( $door_data['title'] ?? __( 'Imported door', 'panda-seasons' ) ) ), 'post_content' => wp_kses_post( (string) ( $door_data['content'] ?? '' ) ), 'post_excerpt' => sanitize_textarea_field( (string) ( $door_data['excerpt'] ?? '' ) ) ) ), true );
+			if ( is_wp_error( $door_id ) ) continue;
+			self::import_template_meta( $door_id, $door_data['meta'] ?? array(), $door_data['media'] ?? array() );
+			update_post_meta( $door_id, '_ps_calendar_id', $calendar_id );
+		}
+		wp_safe_redirect( add_query_arg( 'panda_seasons_imported', 1, get_edit_post_link( $calendar_id, 'url' ) ) );
+		exit;
 	}
 
 	public static function calendar_design_box( $post ) {

@@ -42,7 +42,7 @@
 		if(!field||field.dataset.rgbaEnhanced)return;
 		field.dataset.rgbaEnhanced='1';
 		var parts=rgbaParts(field.value), label=field.closest('label'), labelNode=label&&label.querySelector(':scope > span'), labelText=labelNode ? labelNode.textContent : '';
-		if(labelNode)labelNode.hidden=true;
+		if(labelNode)labelNode.classList.add('panda-seasons-color-control__label');
 		var pickerLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.openColorPicker||'Open color picker', themeLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColors||'Global theme colors', themeTooltip=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColorsTooltip||'Global color settings', alphaLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.alpha||'Transparency';
 		var control=document.createElement('div');
 		control.className='panda-seasons-color-control';
@@ -63,7 +63,7 @@
 		control.querySelector('[data-toggle-color-picker]').addEventListener('click',function(event){var panel=control.querySelector('.panda-seasons-color-control__picker'),open=panel.hidden;panel.hidden=!open;themes.hidden=true;event.currentTarget.setAttribute('aria-expanded',open?'true':'false');});
 		control.querySelector('[data-toggle-theme-colors]').addEventListener('click',function(event){var open=themes.hidden;themes.hidden=!open;control.querySelector('.panda-seasons-color-control__picker').hidden=true;event.currentTarget.setAttribute('aria-expanded',open?'true':'false');});
 		if(window.jQuery&&jQuery.fn.iris){
-			jQuery(iris).iris({hide:false,palettes:false,width:340,change:function(event,ui){setHex(ui.color.toString());}});
+			jQuery(iris).iris({hide:false,palettes:false,width:238,change:function(event,ui){setHex(ui.color.toString());}});
 			var syncPickerHeight=function(){var picker=control.querySelector('.iris-picker');if(picker&&picker.offsetHeight)control.style.setProperty('--ps-color-picker-height',picker.offsetHeight+'px');};
 			window.requestAnimationFrame(syncPickerHeight);
 			if(window.ResizeObserver){var pickerObserver=new ResizeObserver(syncPickerHeight),pickerElement=control.querySelector('.iris-picker');if(pickerElement)pickerObserver.observe(pickerElement);}

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.4.4\n"
+"Project-Id-Version: Panda Seasons 0.4.5\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -931,3 +931,62 @@ msgstr ""
 
 msgid "Delete door"
 msgstr ""
+
+
+msgid "Calendar templates"
+msgstr ""
+
+msgid "Templates"
+msgstr ""
+
+msgid "You are not allowed to manage calendar templates."
+msgstr ""
+
+msgid "The template was imported as a new calendar draft."
+msgstr ""
+
+msgid "Export template"
+msgstr ""
+
+msgid "Exports settings, doors, positions, content and media references. Installation-specific product, coupon and event assignments are not transferred."
+msgstr ""
+
+msgid "Calendar #%d"
+msgstr ""
+
+msgid "Download template"
+msgstr ""
+
+msgid "Create a calendar before exporting a template."
+msgstr ""
+
+msgid "Import template"
+msgstr ""
+
+msgid "Imports the template as a new draft. Media files are downloaded into this WordPress installation when their source is reachable."
+msgstr ""
+
+msgid "Template file"
+msgstr ""
+
+msgid "Import as new calendar"
+msgstr ""
+
+msgid "The selected calendar cannot be exported."
+msgstr ""
+
+msgid "You are not allowed to import calendar templates."
+msgstr ""
+
+msgid "Please select a valid template file up to 5 MB."
+msgstr ""
+
+msgid "The selected file is not a supported Panda Seasons template."
+msgstr ""
+
+msgid "Imported calendar"
+msgstr ""
+
+msgid "Imported door"
+msgstr ""
+

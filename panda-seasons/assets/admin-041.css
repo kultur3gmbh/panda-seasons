@@ -23,19 +23,20 @@
 .panda-seasons-inline-pair{display:grid;grid-template-columns:minmax(0,2fr) minmax(110px,1fr);gap:12px}.panda-seasons-inline-pair>label,.panda-seasons-label-size-row>label{display:flex;flex-direction:column;gap:6px}.panda-seasons-label-size-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(90px,.7fr) minmax(90px,.7fr);gap:12px}.panda-seasons-label-visibility-row{display:flex;flex-wrap:wrap;gap:10px 22px;padding:10px 12px;border:1px solid #dcdcde;border-radius:7px;background:#f6f7f7}.panda-seasons-label-visibility-row label{margin:0}.panda-seasons-default-state-panel>.panda-seasons-inline-pair,.panda-seasons-default-state-panel>.panda-seasons-label-size-row,.panda-seasons-door-state-panel>.panda-seasons-inline-pair,.panda-seasons-door-state-panel>.panda-seasons-label-size-row{grid-column:1/-1}.panda-seasons-composer__door-number{box-sizing:border-box;width:var(--ps-door-label-width,auto);height:auto;min-width:0;min-height:0;padding:var(--ps-door-label-padding,4px);border:var(--ps-door-label-border-width,1px) solid var(--ps-door-label-border-color,#fff);background:var(--ps-door-label-bg,rgba(10,18,30,.76));color:var(--ps-door-color,#fff)}@media(max-width:782px){.panda-seasons-inline-pair,.panda-seasons-label-size-row{grid-template-columns:1fr}.panda-seasons-label-visibility-row{display:grid}}
 
 /* Compact color controls: keep the code, icon and expanded picker balanced. */
-.panda-seasons-color-control__head{grid-template-columns:46px minmax(0,1fr) 40px;gap:10px;min-height:60px;padding:7px 9px}
-.panda-seasons-color-control__preview{width:42px;height:42px;background-size:auto,10px 10px,10px 10px,10px 10px,10px 10px}
-.panda-seasons-color-control__code{height:42px!important;padding:0 13px!important;font-size:14px!important}
-.panda-seasons-color-control__icon{width:38px!important;height:38px!important}.panda-seasons-color-control__icon .dashicons{width:20px;height:20px;font-size:20px}
-.panda-seasons-color-control__picker{padding:9px 12px;border-radius:6px}
-.panda-seasons-color-control__picker:not([hidden]){grid-template-columns:auto 38px;gap:10px}.panda-seasons-color-control__picker .iris-square{margin-right:10px!important}.panda-seasons-color-control__picker .iris-strip{width:38px!important}
-.panda-seasons-color-control__alpha{width:38px;height:var(--ps-color-picker-height,195px)}
-.panda-seasons-color-control__alpha input[type=range]{width:38px!important;height:var(--ps-color-picker-height,195px)!important}
-.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-runnable-track{width:38px}
-.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-thumb{width:46px;height:12px}
-.panda-seasons-color-control__alpha input[type=range]::-moz-range-track{width:38px}
-.panda-seasons-color-control__alpha input[type=range]::-moz-range-thumb{width:42px;height:8px}
-.panda-seasons-color-control__themes{margin:0 9px 9px;padding:13px 15px;border-radius:6px}.panda-seasons-color-control__themes>strong{margin-bottom:11px;font-size:14px}.panda-seasons-color-control__themes>[data-theme-color-list]{gap:9px}.panda-seasons-color-control__themes button{width:33px;height:33px;border-radius:6px}
+.panda-seasons-color-control__label{display:block!important;margin:0 0 5px;font-size:13px;font-weight:600;line-height:1.35}
+.panda-seasons-color-control__head{grid-template-columns:33px minmax(0,1fr) 30px;gap:7px;min-height:44px;padding:4px 6px}
+.panda-seasons-color-control__preview{width:30px;height:30px;background-size:auto,8px 8px,8px 8px,8px 8px,8px 8px}
+.panda-seasons-color-control__code{height:30px!important;padding:0 9px!important;font-size:12px!important}
+.panda-seasons-color-control__icon{width:28px!important;height:28px!important}.panda-seasons-color-control__icon .dashicons{width:12px;height:12px;font-size:12px;line-height:12px}
+.panda-seasons-color-control__picker{padding:7px 12px 7px 8px;border-radius:5px;overflow:visible}
+.panda-seasons-color-control__picker:not([hidden]){grid-template-columns:auto 27px;gap:9px;overflow:visible}.panda-seasons-color-control__picker .iris-square{margin-right:7px!important}.panda-seasons-color-control__picker .iris-strip{width:27px!important}
+.panda-seasons-color-control__alpha{width:27px;height:var(--ps-color-picker-height,137px);overflow:visible}
+.panda-seasons-color-control__alpha input[type=range]{width:27px!important;height:var(--ps-color-picker-height,137px)!important;overflow:visible}
+.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-runnable-track{width:27px}
+.panda-seasons-color-control__alpha input[type=range]::-webkit-slider-thumb{width:33px;height:10px;margin-left:-3px}
+.panda-seasons-color-control__alpha input[type=range]::-moz-range-track{width:27px}
+.panda-seasons-color-control__alpha input[type=range]::-moz-range-thumb{width:31px;height:7px}
+.panda-seasons-color-control__themes{margin:0 6px 6px;padding:9px 11px;border-radius:5px}.panda-seasons-color-control__themes>strong{margin-bottom:8px;font-size:12px}.panda-seasons-color-control__themes>[data-theme-color-list]{gap:6px}.panda-seasons-color-control__themes button{width:23px;height:23px;border-radius:4px}
 
 /* Keep label-visibility checkboxes compact even when a theme styles admin inputs. */
 .panda-seasons-label-toggle{display:inline-flex!important;align-items:center!important;gap:8px;min-height:24px;margin:0 0 2px!important;line-height:1.4}
