@@ -219,6 +219,13 @@
 				element.style.setProperty('--ps-door-border-color', isOpen ? (door.openBorderColor || 'rgba(255,255,255,.9)') : (door.closedBorderColor || 'rgba(255,255,255,.9)'));
 				element.style.setProperty('--ps-door-border-width', (isOpen ? (door.openBorderWidth == null ? 2 : door.openBorderWidth) : (door.closedBorderWidth == null ? 2 : door.closedBorderWidth)) + 'px');
 				element.style.setProperty('--ps-door-border-style', isOpen ? (door.openBorderStyle || 'dashed') : (door.closedBorderStyle || 'dashed'));
+				element.style.setProperty('--ps-door-label-bg', isOpen ? (door.openLabelBg || 'rgba(10,18,30,.76)') : (door.closedLabelBg || 'rgba(10,18,30,.76)'));
+				element.style.setProperty('--ps-door-label-border-color', isOpen ? (door.openLabelBorderColor || '#fff') : (door.closedLabelBorderColor || '#fff'));
+				element.style.setProperty('--ps-door-label-border-width', (isOpen ? (door.openLabelBorderWidth == null ? 1 : door.openLabelBorderWidth) : (door.closedLabelBorderWidth == null ? 1 : door.closedLabelBorderWidth)) + 'px');
+				var labelWidthMode = isOpen ? door.openLabelWidthMode : door.closedLabelWidthMode;
+				var labelWidth = isOpen ? door.openLabelWidth : door.closedLabelWidth;
+				element.style.setProperty('--ps-door-label-width', labelWidthMode === 'percent' ? (labelWidth || 60) + '%' : 'auto');
+				element.style.setProperty('--ps-door-label-padding', (isOpen ? (door.openLabelPadding == null ? 4 : door.openLabelPadding) : (door.closedLabelPadding == null ? 4 : door.closedLabelPadding)) + 'px');
 				var stateImage = isOpen ? door.openImageUrl : door.closedImageUrl;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
 				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
@@ -269,9 +276,9 @@
 				closedLabel: '',
 				openLabel: '',
 				closedBg: root.dataset.defaultClosed || 'rgba(99, 99, 99, 0.2)',
-				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed',
+				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: +(root.dataset.defaultLabelPadding || 4),
 				openBg: root.dataset.defaultOpen || 'rgba(51, 79, 232, 1)',
-				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed',
+				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: +(root.dataset.defaultLabelPadding || 4),
 				shape: root.dataset.defaultShape || 'rounded',
 				openEffect: 'inherit',
 				closedImageId: 0,
@@ -447,7 +454,7 @@
 		if (emptyPanel) emptyPanel.hidden = true;
 		composer.classList.add('has-active-door');
 		modal.querySelector('[data-door-field="number"]').focus();
-		modal.querySelectorAll('[data-door-field="closedBg"],[data-door-field="openBg"],[data-door-field="closedColor"],[data-door-field="openColor"],[data-door-field="closedBorderColor"],[data-door-field="openBorderColor"]').forEach(enhanceColorField);
+		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('change',{bubbles:true}));});
 	}
 
 	function closeDoorModal(applyChanges) {
@@ -471,7 +478,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'unlockDate', 'unlockTime', 'unlockBehavior', 'availabilityWindow', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
+		['number', 'unlockDate', 'unlockTime', 'unlockBehavior', 'availabilityWindow', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -644,7 +651,7 @@
 		if (event.target.matches('[data-default-door-shape]') && composer) composer.dataset.defaultShape = event.target.value;
 	});
 
-	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"]').forEach(enhanceColorField);
+	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
 	if(defaultsPanel){var motion=document.createElement('div');motion.className='panda-seasons-default-motion is-wide';var effectField=document.querySelector('[name="panda_seasons_open_effect"]'),speedField=document.querySelector('[name="panda_seasons_effect_speed"]'),sampleField=document.querySelector('.panda-seasons-default-preview');if(effectField)motion.appendChild(effectField.closest('label'));if(speedField)motion.appendChild(speedField.closest('label'));if(sampleField)motion.appendChild(sampleField);defaultsPanel.insertBefore(motion,defaultsPanel.children[1]||null);}
 	var defaultPreview=document.querySelector('[data-default-door-preview]');
@@ -655,12 +662,20 @@
 		defaultPreview.style.setProperty('--ps-sample-bg',defaultValue('panda_seasons_default_'+prefix+'_background','#636363'));
 		defaultPreview.style.setProperty('--ps-sample-color',defaultValue('panda_seasons_default_'+prefix+'_text_color','#fff'));
 		defaultPreview.style.setProperty('--ps-sample-border-color',defaultValue('panda_seasons_default_'+prefix+'_border_color','#fff'));
-		defaultPreview.style.setProperty('--ps-sample-border-width',defaultValue('panda_seasons_default_border_width','2')+'px');
+		defaultPreview.style.setProperty('--ps-sample-border-width',defaultValue('panda_seasons_default_'+prefix+'_border_width','2')+'px');
 		defaultPreview.style.setProperty('--ps-sample-border-style',defaultValue('panda_seasons_default_border_style','dashed'));
 		defaultPreview.style.setProperty('--ps-sample-font',defaultValue('panda_seasons_default_label_font','inherit'));
 		defaultPreview.style.setProperty('--ps-sample-font-size',defaultValue('panda_seasons_default_label_font_size','20')+'px');
 		defaultPreview.style.setProperty('--ps-sample-font-weight',defaultValue('panda_seasons_default_label_font_weight','700'));
-		defaultPreview.querySelector('span').hidden=!defaultValue('panda_seasons_default_'+prefix+'_label_visible',true);
+		var sampleLabel=defaultPreview.querySelector('span');
+		sampleLabel.hidden=!defaultValue('panda_seasons_default_'+prefix+'_label_visible',true);
+		sampleLabel.style.background=defaultValue('panda_seasons_default_'+prefix+'_label_background','rgba(10,18,30,.76)');
+		sampleLabel.style.borderColor=defaultValue('panda_seasons_default_'+prefix+'_label_border_color','#fff');
+		sampleLabel.style.borderWidth=defaultValue('panda_seasons_default_'+prefix+'_label_border_width','1')+'px';
+		sampleLabel.style.borderStyle='solid';
+		sampleLabel.style.padding=defaultValue('panda_seasons_default_label_padding','4')+'px';
+		sampleLabel.style.width=defaultValue('panda_seasons_default_label_width_mode','content')==='percent'?defaultValue('panda_seasons_default_label_width','60')+'%':'auto';
+		sampleLabel.style.boxSizing='border-box';
 		defaultPreview.classList.remove('shape-square','shape-rounded','shape-round');
 		defaultPreview.classList.add('shape-'+defaultValue('panda_seasons_default_shape','rounded'));
 	}
@@ -674,7 +689,7 @@
 	updateDefaultPreview();
 	var activeDefaultColorField = document.querySelector('[data-default-door-color="closed"]');
 	document.addEventListener('focusin', function (event) {
-		if (event.target.matches('[data-default-door-color],[data-default-door-setting$="Color"],[data-door-field="closedBg"],[data-door-field="openBg"],[data-door-field="closedColor"],[data-door-field="openColor"],[data-door-field="closedBorderColor"],[data-door-field="openBorderColor"]')) activeDefaultColorField = event.target;
+		if (event.target.matches('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-door-field$="Bg"],[data-door-field$="Color"]')) activeDefaultColorField = event.target;
 	});
 	document.addEventListener('click', function (event) {
 		var swatch = event.target.closest('[data-theme-door-color]');

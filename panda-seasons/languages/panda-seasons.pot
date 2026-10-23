@@ -889,3 +889,36 @@ msgstr ""
 
 msgid "Global color settings"
 msgstr ""
+
+msgid "Label background"
+msgstr ""
+
+msgid "Label border color"
+msgstr ""
+
+msgid "Label border width (px)"
+msgstr ""
+
+msgid "Label width"
+msgstr ""
+
+msgid "Fit content"
+msgstr ""
+
+msgid "Fixed width in percent"
+msgstr ""
+
+msgid "Width (%)"
+msgstr ""
+
+msgid "Padding (px)"
+msgstr ""
+
+msgid "Label width and padding use the shared settings from the closed state."
+msgstr ""
+
+msgid "Show label when closed"
+msgstr ""
+
+msgid "Show label when opened"
+msgstr ""

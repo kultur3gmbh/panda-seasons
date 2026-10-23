@@ -891,3 +891,36 @@ msgstr "Sie sind nicht berechtigt, diesen Kalender anzusehen."
 
 msgid "Global color settings"
 msgstr "Globale Farbeinstellungen"
+
+msgid "Label background"
+msgstr "Beschriftungshintergrund"
+
+msgid "Label border color"
+msgstr "Rahmenfarbe der Beschriftung"
+
+msgid "Label border width (px)"
+msgstr "Rahmenbreite der Beschriftung (px)"
+
+msgid "Label width"
+msgstr "Breite der Beschriftung"
+
+msgid "Fit content"
+msgstr "An Inhalt anpassen"
+
+msgid "Fixed width in percent"
+msgstr "Feste Breite in Prozent"
+
+msgid "Width (%)"
+msgstr "Breite (%)"
+
+msgid "Padding (px)"
+msgstr "Innenabstand (px)"
+
+msgid "Label width and padding use the shared settings from the closed state."
+msgstr "Breite und Innenabstand der Beschriftung verwenden die gemeinsamen Einstellungen aus dem geschlossenen Zustand."
+
+msgid "Show label when closed"
+msgstr "Beschriftung bei geschlossener Türe anzeigen"
+
+msgid "Show label when opened"
+msgstr "Beschriftung bei geöffneter Türe anzeigen"

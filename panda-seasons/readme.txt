@@ -18,8 +18,11 @@ Use `[panda_seasons id="123"]` to display a published calendar.
 
 = 0.4.2 =
 * Rebuilds all calendar color fields as compact Avada-style RGBA pickers with immediate full controls.
-* Adds a separate globe button for detected WordPress, Avada, Elementor, and Divi global colors.
+* Adds a separate globe button for the global colors of the design source selected in ContactPanda Basic.
 * Adds the explanatory tooltip “Globale Farbeinstellungen” to the global-color button.
+* Makes Avada calendar elements fill the complete width of their containing column.
+* Places label visibility above the state tabs and aligns door border color and width in one row.
+* Adds independent label backgrounds, borders, padding, and content-based or percentage-based widths.
 
 = 0.4.1 =
 * Adds a centered, closable interactive preview with desktop and mobile sizes.
