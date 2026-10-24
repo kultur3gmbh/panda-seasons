@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.3\n"
+"Project-Id-Version: Panda Seasons 0.5.4\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1276,3 +1276,19 @@ msgstr "Diese Darstellung auf alle Türen anwenden und die allgemeinen Voreinste
 
 msgid "Width (px)"
 msgstr "Breite (px)"
++
+
+msgid "Label position"
+msgstr "Position der Beschriftung"
+
+msgid "Simulated date"
+msgstr "Simuliertes Datum"
+
+msgid "Apply"
+msgstr "Anwenden"
+
+msgid "Preview for %s – external actions are disabled."
+msgstr "Vorschau für %s – externe Aktionen sind deaktiviert."
+
+msgid "Preview mode – external actions are disabled."
+msgstr "Vorschaumodus – externe Aktionen sind deaktiviert."
