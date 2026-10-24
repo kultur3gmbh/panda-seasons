@@ -49,6 +49,8 @@ for content_contract in (
 	"_ps_default_active_border_color",
 	"_ps_default_closed_image_overlay",
 	"_ps_closed_image_overlay",
+	"_ps_closed_label_position",
+	"preview_date",
 ):
     if content_contract not in plugin:
         raise SystemExit(f"Missing door content contract {content_contract}")
