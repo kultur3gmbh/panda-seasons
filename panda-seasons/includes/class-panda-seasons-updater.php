@@ -19,6 +19,7 @@ final class Panda_Seasons_Updater {
 		add_filter( 'upgrader_source_selection', array( $this, 'source' ), 10, 4 );
 		add_filter( 'plugin_action_links_' . $plugin, array( $this, 'links' ) );
 		add_action( 'admin_post_panda_seasons_check_updates', array( $this, 'check' ) );
+		add_action( 'admin_init', array( $this, 'maybe_clear_forced_check_cache' ), 1 );
 		add_action( 'upgrader_process_complete', array( $this, 'clear' ), 10, 2 );
 	}
 
@@ -107,7 +108,11 @@ final class Panda_Seasons_Updater {
 			'asset_id'    => absint( $zip['id'] ),
 			'size'        => absint( $zip['size'] ),
 		);
-		set_site_transient( self::CACHE, $result, 30 * MINUTE_IN_SECONDS );
+		// Do not retain a negative answer. A release may be published immediately
+		// after a regular WordPress update check and must be visible on the next one.
+		if ( version_compare( $version, $this->version, '>' ) ) {
+			set_site_transient( self::CACHE, $result, 30 * MINUTE_IN_SECONDS );
+		}
 		return $result;
 	}
 
@@ -176,14 +181,29 @@ final class Panda_Seasons_Updater {
 	public function check() {
 		if ( ! current_user_can( 'update_plugins' ) ) wp_die( esc_html__( 'You are not allowed to check for updates.', 'panda-seasons' ), '', array( 'response' => 403 ) );
 		check_admin_referer( 'panda_seasons_check_updates' );
-		delete_site_transient( self::CACHE );
-		delete_site_transient( 'update_plugins' );
+		$this->clear_update_cache();
 		wp_update_plugins();
 		wp_safe_redirect( self_admin_url( 'plugins.php' ) );
 		exit;
 	}
 
+	/** Honour WordPress' core "Check again" action for this release channel. */
+	public function maybe_clear_forced_check_cache() {
+		if ( ! current_user_can( 'update_plugins' ) || empty( $_GET['force-check'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only core update refresh flag.
+			return;
+		}
+		$this->clear_update_cache();
+	}
+
+	/** Remove both the release response and WordPress' combined plugin result. */
+	private function clear_update_cache() {
+		delete_site_transient( self::CACHE );
+		delete_site_transient( 'update_plugins' );
+	}
+
 	public function clear( $upgrader, $extra ) {
-		if ( in_array( $this->plugin, (array) ( $extra['plugins'] ?? array( $extra['plugin'] ?? '' ) ), true ) ) delete_site_transient( self::CACHE );
+		if ( in_array( $this->plugin, (array) ( $extra['plugins'] ?? array( $extra['plugin'] ?? '' ) ), true ) ) {
+			$this->clear_update_cache();
+		}
 	}
 }
