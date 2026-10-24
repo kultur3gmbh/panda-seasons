@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.0\n"
+"Project-Id-Version: Panda Seasons 0.5.1\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1109,4 +1109,81 @@ msgstr "WooCommerce ist nicht verfügbar. Installieren und aktivieren Sie WooCom
 
 msgid "The calendar content was imported successfully."
 msgstr "Die Kalenderinhalte wurden erfolgreich importiert."
++
+msgid "Refresh images"
+msgstr "Bilder aktualisieren"
 
+msgid "Door content popup"
+msgstr "Inhaltsfenster der Türe"
+
+msgid "Style the content window that appears whenever an available door is clicked."
+msgstr "Gestalten Sie das Inhaltsfenster, das bei jedem Klick auf eine verfügbare Türe erscheint."
+
+msgid "Inner spacing (px)"
+msgstr "Innenabstand (px)"
+
+msgid "Maximum width (px)"
+msgstr "Maximale Breite (px)"
+
+msgid "Add design element"
+msgstr "Gestaltungselement hinzufügen"
+
+msgid "Text area"
+msgstr "Textfläche"
+
+msgid "Color area"
+msgstr "Farbfläche"
+
+msgid "Edit design element"
+msgstr "Gestaltungselement bearbeiten"
+
+msgid "Layer order"
+msgstr "Ebenenreihenfolge"
+
+msgid "Corner radius (px)"
+msgstr "Eckenradius (px)"
+
+msgid "Delete element"
+msgstr "Element löschen"
+
+msgid "Duplicate element"
+msgstr "Element duplizieren"
+
+msgid "Opening mode"
+msgstr "Öffnungsmodus"
+
+msgid "Only on the release day – open manually"
+msgstr "Nur am Freigabetag – manuell öffnen"
+
+msgid "Only on the release day – open automatically"
+msgstr "Nur am Freigabetag – automatisch öffnen"
+
+msgid "Open automatically and remain open"
+msgstr "Automatisch öffnen und geöffnet lassen"
+
+msgid "Defines whether the door can be opened only on its date or remains available afterwards."
+msgstr "Legt fest, ob die Türe nur an ihrem Freigabetag geöffnet werden kann oder danach verfügbar bleibt."
+
+msgid "Show the door number small in a corner after opening"
+msgstr "Türnummer nach dem Öffnen klein in einer Ecke anzeigen"
+
+msgid "Corner"
+msgstr "Ecke"
+
+msgid "Top left"
+msgstr "Oben links"
+
+msgid "Top right"
+msgstr "Oben rechts"
+
+msgid "Bottom left"
+msgstr "Unten links"
+
+msgid "Bottom right"
+msgstr "Unten rechts"
+
+msgid "Number size (px)"
+msgstr "Größe der Nummer (px)"
+
+msgid "Default opening mode"
+msgstr "Standard-Öffnungsmodus"

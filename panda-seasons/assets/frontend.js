@@ -38,7 +38,7 @@
 				modal.querySelector('.panda-seasons__modal-close').focus();
 				window.setTimeout(function () { door.classList.remove('is-opening'); }, 80);
 			};
-			if ('none' === effect || reducedMotion) showContent();
+			if (door.classList.contains('is-open-visual') || 'none' === effect || reducedMotion) showContent();
 			else {
 				door.classList.add('is-opening', 'effect-' + effect);
 				window.setTimeout(showContent, duration);

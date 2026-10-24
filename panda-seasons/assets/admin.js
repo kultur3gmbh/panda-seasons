@@ -154,15 +154,21 @@
 	function composerController(root) {
 		var stage = root.querySelector('[data-editor-stage]');
 		var dataField = root.querySelector('[data-editor-data]');
+		var layerDataField = root.querySelector('[data-layer-data]');
+		var layerEditor = document.querySelector('[data-layer-editor]');
 		var empty = root.querySelector('[data-editor-empty]');
 		var images = { desktop: '', mobile: '' };
 		var doors = [];
+		var layers = [];
+		var activeLayer = null;
+		var layerPointerState = null;
 		var view = 'desktop';
 		var previewState = 'actual';
 		var pointerState = null;
 		var dragged = false;
 
 		try { doors = JSON.parse(dataField.value || '[]'); } catch (ignore) { doors = []; }
+		try { layers = JSON.parse(layerDataField && layerDataField.value || '[]'); } catch (ignore) { layers = []; }
 		try { images = JSON.parse(root.querySelector('[data-editor-images]').textContent || '{}'); } catch (ignore) { images = { desktop: '', mobile: '' }; }
 
 		function cleanPosition(position, fallbackX, fallbackY, targetView) {
@@ -181,9 +187,74 @@
 			door.desktop = cleanPosition(door.desktop, 3 + (index % 6) * 16, 4 + Math.floor(index / 6) * 22, 'desktop');
 			door.mobile = cleanPosition(door.mobile, 4 + (index % 3) * 32, 4 + Math.floor(index / 3) * 22, 'mobile');
 		});
+		layers.forEach(function (layer, index) {
+			layer.id = layer.id || ('layer-' + Date.now() + '-' + index);
+			layer.desktop = cleanPosition(layer.desktop, 10 + (index % 5) * 8, 10 + (index % 5) * 8, 'desktop');
+			layer.mobile = cleanPosition(layer.mobile, 8 + (index % 3) * 10, 8 + (index % 3) * 10, 'mobile');
+		});
 
 		function writeData() {
 			dataField.value = JSON.stringify(doors);
+			if (layerDataField) layerDataField.value = JSON.stringify(layers.filter(function (layer) { return !layer.deleted; }));
+		}
+
+		function findLayer(key) { return layers.find(function (layer) { return String(layer.id) === String(key); }); }
+
+		function renderLayers() {
+			stage.querySelectorAll('[data-editor-layer]').forEach(function (element) { element.remove(); });
+			layers.filter(function (layer) { return !layer.deleted; }).sort(function (a, b) { return number(a.z, 1) - number(b.z, 1); }).forEach(function (layer) {
+				var position = layer[view];
+				var element = document.createElement('div');
+				element.className = 'panda-seasons-composer__layer is-' + (layer.type || 'color') + (activeLayer === layer ? ' is-selected' : '');
+				element.dataset.editorLayer = layer.id;
+				element.tabIndex = 0;
+				element.style.left = position.x + '%'; element.style.top = position.y + '%'; element.style.width = position.w + '%'; element.style.height = position.h + '%';
+				element.style.zIndex = number(layer.z, 1);
+				element.style.background = layer.background || 'transparent';
+				element.style.color = layer.color || '#1f2937';
+				element.style.fontSize = number(layer.fontSize, 24) + 'px';
+				element.style.borderRadius = number(layer.radius, 0) + 'px';
+				if (layer.type === 'image' && layer.imageUrl) element.innerHTML = '<img src="' + escapeHtml(safeUrl(layer.imageUrl)) + '" alt="">';
+				else if (layer.type === 'text') element.innerHTML = '<span>' + escapeHtml(layer.text || '').replace(/\n/g, '<br>') + '</span>';
+				element.insertAdjacentHTML('beforeend', '<span class="panda-seasons-composer__resize" data-resize-layer aria-hidden="true"></span>');
+				stage.appendChild(element);
+			});
+		}
+
+		function syncLayerEditor() {
+			if (!layerEditor || !activeLayer) return;
+			layerEditor.querySelectorAll('[data-layer-field]').forEach(function (field) {
+				var value = activeLayer[field.dataset.layerField];
+				field.value = value == null ? '' : value;
+				if (field.dataset.rgbaEnhanced) field.dispatchEvent(new Event('change', { bubbles: false }));
+			});
+			layerEditor.querySelectorAll('[data-layer-field-wrap]').forEach(function (wrap) { wrap.hidden = wrap.dataset.layerFieldWrap !== activeLayer.type; });
+			layerEditor.querySelectorAll('[data-layer-field="background"],[data-layer-field="color"]').forEach(enhanceColorField);
+		}
+
+		function openLayerEditor(layer) {
+			activeLayer = layer;
+			if (modal && !modal.hidden) closeDoorModal(true);
+			if (layerEditor) { layerEditor.hidden = false; syncLayerEditor(); }
+			var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = true;
+			render();
+		}
+
+		function closeLayerEditor() { activeLayer = null; if (layerEditor) layerEditor.hidden = true; var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = false; render(); }
+
+		function addLayer(type, position) {
+			var count = layers.filter(function (layer) { return !layer.deleted; }).length;
+			var layer = { id: 'layer-' + Date.now(), type: type, text: type === 'text' ? adminText('newTextArea', 'Text area') : '', imageId: 0, imageUrl: '', background: type === 'color' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0)', color: 'rgba(31, 41, 55, 1)', fontSize: 24, z: count + 1, url: '', radius: 0, desktop: cleanPosition(null, 10 + (count % 5) * 5, 10 + (count % 5) * 5, 'desktop'), mobile: cleanPosition(null, 8 + (count % 3) * 7, 8 + (count % 3) * 7, 'mobile') };
+			if (position) { layer[view].x = clamp(position.x - layer[view].w / 2, 0, 100 - layer[view].w); layer[view].y = clamp(position.y - layer[view].h / 2, 0, 100 - layer[view].h); }
+			layers.push(layer); openLayerEditor(layer);
+			if (type === 'image') selectLayerImage();
+		}
+
+		function selectLayerImage() {
+			if (!activeLayer || !window.wp || !wp.media) return;
+			var frame = wp.media({ title: adminText('selectImage', 'Select image'), library: { type: 'image' }, multiple: false });
+			frame.on('select', function () { var attachment = frame.state().get('selection').first().toJSON(); activeLayer.imageId = attachment.id || 0; activeLayer.imageUrl = attachment.url || ''; syncLayerEditor(); render(); });
+			frame.open();
 		}
 
 		function currentDoors() {
@@ -203,11 +274,14 @@
 
 		function render() {
 			stage.querySelectorAll('[data-editor-door]').forEach(function (element) { element.remove(); });
+			renderLayers();
 			currentDoors().forEach(function (door) {
 				var position = door[view];
 				var element = document.createElement('div');
-				var isOpen = previewState === 'open' || (previewState === 'actual' && (!door.unlockDate || new Date(door.unlockDate + 'T' + (door.unlockTime || '00:00')) <= new Date()));
-				element.className = 'panda-seasons-composer__door is-' + (isOpen ? 'open' : 'closed') + ' shape-' + (door.shape || 'rounded');
+				var now = new Date(), unlock = door.unlockDate ? new Date(door.unlockDate + 'T' + (door.unlockTime || '00:00')) : null, sameDay = unlock && unlock.getFullYear() === now.getFullYear() && unlock.getMonth() === now.getMonth() && unlock.getDate() === now.getDate();
+				var actualOpen = door.openingMode === 'manual-day' ? false : (door.openingMode === 'auto-day' ? Boolean(sameDay && unlock <= now) : (!unlock || unlock <= now));
+				var isOpen = previewState === 'open' || (previewState === 'actual' && actualOpen);
+				element.className = 'panda-seasons-composer__door is-' + (isOpen ? 'open' : 'closed') + ' shape-' + (door.shape || 'rounded') + (isOpen && door.openCompactLabel ? ' has-compact-label compact-' + (door.openLabelCorner || 'top-right') : '');
 				element.dataset.editorDoor = door.id || door.clientId;
 				element.setAttribute('role', 'button');
 				element.setAttribute('tabindex', '0');
@@ -238,6 +312,7 @@
 				element.style.setProperty('--ps-door-label-height', roundLabel && labelWidthMode !== 'round-percent' ? labelWidthValue : 'auto');
 				element.style.setProperty('--ps-door-label-aspect', labelWidthMode === 'round-percent' ? '1' : 'auto');
 				element.style.setProperty('--ps-door-label-padding', labelPadding + 'px');
+				element.style.setProperty('--ps-door-compact-size', number(door.openCompactLabelSize, 14) + 'px');
 				var stateImage = isOpen ? door.openImageUrl : door.closedImageUrl;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
 				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
@@ -245,7 +320,7 @@
 				element.innerHTML = '<span class="panda-seasons-composer__door-actions"><button type="button" data-duplicate-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '"><span class="dashicons dashicons-admin-page" aria-hidden="true"></span></button><button type="button" data-delete-stage-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '"><span class="dashicons dashicons-trash" aria-hidden="true"></span></button></span>' + (labelVisible ? '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span>' : '') + '<span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
 				stage.appendChild(element);
 			});
-			empty.hidden = currentDoors().length > 0;
+			empty.hidden = currentDoors().length > 0 || layers.some(function (layer) { return !layer.deleted; });
 			writeData();
 		}
 
@@ -290,6 +365,7 @@
 				unlockTime: '',
 				unlockBehavior: 'auto-open',
 				availabilityWindow: 'from-date',
+				openingMode: (document.querySelector('[name="panda_seasons_default_opening_mode"]') || {}).value || 'auto-permanent',
 				emailSubject: '',
 				emailContent: '',
 				mediaId: 0,
@@ -309,6 +385,7 @@
 				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: +(root.dataset.defaultLabelPadding || 4),
 				openBg: root.dataset.defaultOpen || 'rgba(51, 79, 232, 1)',
 				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: +(root.dataset.defaultLabelPadding || 4),
+				openCompactLabel: false, openLabelCorner: 'top-right', openCompactLabelSize: 14,
 				shape: root.dataset.defaultShape || 'rounded',
 				openEffect: 'inherit',
 				closedImageId: 0,
@@ -382,6 +459,28 @@
 		}
 
 		stage.addEventListener('pointerdown', function (event) {
+			var element = event.target.closest('[data-editor-layer]');
+			if (!element || event.button !== 0) return;
+			var layer = findLayer(element.dataset.editorLayer);
+			if (!layer) return;
+			var rectangle = stage.getBoundingClientRect();
+			layerPointerState = { layer: layer, element: element, resize: Boolean(event.target.closest('[data-resize-layer]')), startX: event.clientX, startY: event.clientY, start: Object.assign({}, layer[view]), width: rectangle.width, height: rectangle.height };
+			dragged = false; element.setPointerCapture(event.pointerId); event.preventDefault();
+		});
+		stage.addEventListener('pointermove', function (event) {
+			if (!layerPointerState) return;
+			var deltaX = (event.clientX - layerPointerState.startX) / layerPointerState.width * 100, deltaY = (event.clientY - layerPointerState.startY) / layerPointerState.height * 100;
+			if (Math.abs(deltaX) > .2 || Math.abs(deltaY) > .2) dragged = true;
+			var position = layerPointerState.layer[view];
+			if (layerPointerState.resize) { position.w = clamp(snap(layerPointerState.start.w + deltaX), 4, 100 - position.x); position.h = clamp(snap(layerPointerState.start.h + deltaY), 4, 100 - position.y); }
+			else { position.x = clamp(snap(layerPointerState.start.x + deltaX), 0, 100 - position.w); position.y = clamp(snap(layerPointerState.start.y + deltaY), 0, 100 - position.h); }
+			layerPointerState.element.style.left = position.x + '%'; layerPointerState.element.style.top = position.y + '%'; layerPointerState.element.style.width = position.w + '%'; layerPointerState.element.style.height = position.h + '%'; writeData();
+		});
+		stage.addEventListener('pointerup', function () { layerPointerState = null; });
+		stage.addEventListener('pointercancel', function () { layerPointerState = null; });
+		stage.addEventListener('click', function (event) { var element = event.target.closest('[data-editor-layer]'); if (!element || dragged || event.target.closest('[data-resize-layer]')) return; var layer = findLayer(element.dataset.editorLayer); if (layer) openLayerEditor(layer); });
+
+		stage.addEventListener('pointerdown', function (event) {
 			var element = event.target.closest('[data-editor-door]');
 			if (!element) return;
 			if (event.target.closest('.panda-seasons-composer__door-actions')) {
@@ -434,6 +533,8 @@
 		});
 
 		root.addEventListener('click', function (event) {
+			var layerButton = event.target.closest('[data-add-layer]');
+			if (layerButton) { addLayer(layerButton.dataset.addLayer); return; }
 			var stateButton = event.target.closest('button[data-preview-state]');
 			if (stateButton) {
 				previewState = stateButton.dataset.previewState;
@@ -453,6 +554,17 @@
 			if (event.target.closest('[data-add-door]')) addDoor();
 		});
 
+		if (layerEditor) {
+			layerEditor.addEventListener('input', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; var name = field.dataset.layerField; activeLayer[name] = ['imageId','fontSize','z','radius'].indexOf(name) !== -1 ? Math.max(0, parseInt(field.value, 10) || 0) : field.value; render(); });
+			layerEditor.addEventListener('change', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; activeLayer[field.dataset.layerField] = field.value; render(); });
+			layerEditor.addEventListener('click', function (event) {
+				if (event.target.closest('[data-select-layer-image]')) { selectLayerImage(); return; }
+				if (event.target.closest('[data-delete-layer]') && activeLayer) { activeLayer.deleted = true; closeLayerEditor(); return; }
+				if (event.target.closest('[data-duplicate-layer]') && activeLayer) { var copy = JSON.parse(JSON.stringify(activeLayer)); copy.id = 'layer-' + Date.now(); copy.desktop.x = clamp(copy.desktop.x + 2, 0, 100 - copy.desktop.w); copy.desktop.y = clamp(copy.desktop.y + 2, 0, 100 - copy.desktop.h); copy.mobile.x = clamp(copy.mobile.x + 2, 0, 100 - copy.mobile.w); copy.mobile.y = clamp(copy.mobile.y + 2, 0, 100 - copy.mobile.h); copy.z = number(copy.z, 1) + 1; layers.push(copy); openLayerEditor(copy); return; }
+				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor();
+			});
+		}
+
 		var addButton = root.querySelector('[data-add-door]');
 		if (addButton) {
 			addButton.draggable = true;
@@ -460,6 +572,12 @@
 			stage.addEventListener('dragover', function (event) { if (Array.prototype.indexOf.call(event.dataTransfer.types, 'text/panda-seasons-door') !== -1) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; } });
 			stage.addEventListener('drop', function (event) { if (!event.dataTransfer.getData('text/panda-seasons-door')) return; event.preventDefault(); var rect = stage.getBoundingClientRect(); addDoor({ x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }); });
 		}
+		root.querySelectorAll('[data-add-layer]').forEach(function (button) {
+			button.draggable = true;
+			button.addEventListener('dragstart', function (event) { event.dataTransfer.setData('text/panda-seasons-layer', button.dataset.addLayer); event.dataTransfer.effectAllowed = 'copy'; });
+		});
+		stage.addEventListener('dragover', function (event) { if (Array.prototype.indexOf.call(event.dataTransfer.types, 'text/panda-seasons-layer') !== -1) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; } });
+		stage.addEventListener('drop', function (event) { var type = event.dataTransfer.getData('text/panda-seasons-layer'); if (!type) return; event.preventDefault(); var rect = stage.getBoundingClientRect(); addLayer(type, { x: (event.clientX - rect.left) / rect.width * 100, y: (event.clientY - rect.top) / rect.height * 100 }); });
 
 		document.querySelectorAll('[data-editor-ratio]').forEach(function (input) {
 			input.addEventListener('input', function () { if (input.dataset.editorRatio === view) setStageAppearance(); });
@@ -478,6 +596,7 @@
 
 	function openDoorModal(door, trigger) {
 		if (!modal) return;
+		var layerEditor = document.querySelector('[data-layer-editor]'); if (layerEditor) layerEditor.hidden = true;
 		activeDoor = door;
 		activeDoorSnapshot = JSON.parse(JSON.stringify(door));
 		returnFocus = trigger || document.activeElement;
@@ -526,7 +645,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'contentType', 'unlockDate', 'unlockTime', 'unlockBehavior', 'availabilityWindow', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
+		['number', 'contentType', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'openCompactLabel', 'openLabelCorner', 'openCompactLabelSize', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -617,6 +736,17 @@
 	}
 
 	document.addEventListener('click', function (event) {
+		var refreshImages = event.target.closest('[data-refresh-calendar-images]');
+		if (refreshImages) {
+			var stamp = Date.now();
+			document.querySelectorAll('[data-media-field]').forEach(function (field) {
+				var hidden = field.querySelector('input[type="hidden"]'), image = field.querySelector('.panda-seasons-media-preview img');
+				if (!hidden || !hidden.value || !image) return;
+				var refreshed = new URL(image.src, window.location.href); refreshed.searchParams.set('ps_refresh', stamp); image.src = refreshed.toString();
+				var targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop'; if (composer && composer.updateImage) composer.updateImage(targetView, refreshed.toString());
+			});
+			refreshImages.classList.add('button-primary'); window.setTimeout(function () { refreshImages.classList.remove('button-primary'); }, 900); return;
+		}
 		var copyShortcode = event.target.closest('[data-copy-shortcode]');
 		if (copyShortcode) {
 			var copyInput = copyShortcode.parentNode.querySelector('input');
@@ -739,7 +869,7 @@
 	}
 	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
 
-	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"]').forEach(enhanceColorField);
+	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
 	var adminGrid=document.querySelector('.panda-seasons-admin-grid'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
 	if(adminGrid&&editorLayout){
@@ -768,7 +898,7 @@
 			{selector:'[name="panda_seasons_default_label_font"]',props:['closedFont','openFont']},{selector:'[name="panda_seasons_default_label_font_size"]',props:['closedFontSize','openFontSize']},
 			{selector:'[name="panda_seasons_default_label_font_weight"]',props:['closedFontWeight','openFontWeight']},{selector:'[name="panda_seasons_default_label_width_mode"]',props:['closedLabelWidthMode','openLabelWidthMode']},
 			{selector:'[name="panda_seasons_default_label_width"]',props:['closedLabelWidth','openLabelWidth']},{selector:'[name="panda_seasons_default_label_padding"]',props:['closedLabelPadding','openLabelPadding']},
-			{selector:'[name="panda_seasons_default_border_style"]',props:['closedBorderStyle','openBorderStyle']},{selector:'[name="panda_seasons_default_shape"]',props:['shape']},{selector:'[name="panda_seasons_open_effect"]',props:['openEffect']}
+			{selector:'[name="panda_seasons_default_border_style"]',props:['closedBorderStyle','openBorderStyle']},{selector:'[name="panda_seasons_default_shape"]',props:['shape']},{selector:'[name="panda_seasons_open_effect"]',props:['openEffect']},{selector:'[name="panda_seasons_default_opening_mode"]',props:['openingMode']}
 		];
 		function inputValue(input){return input.type==='checkbox'?input.checked:(input.type==='number'?number(input.value,0):input.value);}
 		function displayValue(value){if(value===true)return adminText('yes','Yes');if(value===false)return adminText('no','No');return String(value==null?'—':value);}

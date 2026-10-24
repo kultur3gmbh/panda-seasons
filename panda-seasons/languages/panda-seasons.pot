@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.0\n"
+"Project-Id-Version: Panda Seasons 0.5.1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1128,4 +1128,81 @@ msgstr ""
 
 msgid "The calendar content was imported successfully."
 msgstr ""
++
+msgid "Refresh images"
+msgstr ""
 
+msgid "Door content popup"
+msgstr ""
+
+msgid "Style the content window that appears whenever an available door is clicked."
+msgstr ""
+
+msgid "Inner spacing (px)"
+msgstr ""
+
+msgid "Maximum width (px)"
+msgstr ""
+
+msgid "Add design element"
+msgstr ""
+
+msgid "Text area"
+msgstr ""
+
+msgid "Color area"
+msgstr ""
+
+msgid "Edit design element"
+msgstr ""
+
+msgid "Layer order"
+msgstr ""
+
+msgid "Corner radius (px)"
+msgstr ""
+
+msgid "Delete element"
+msgstr ""
+
+msgid "Duplicate element"
+msgstr ""
+
+msgid "Opening mode"
+msgstr ""
+
+msgid "Only on the release day – open manually"
+msgstr ""
+
+msgid "Only on the release day – open automatically"
+msgstr ""
+
+msgid "Open automatically and remain open"
+msgstr ""
+
+msgid "Defines whether the door can be opened only on its date or remains available afterwards."
+msgstr ""
+
+msgid "Show the door number small in a corner after opening"
+msgstr ""
+
+msgid "Corner"
+msgstr ""
+
+msgid "Top left"
+msgstr ""
+
+msgid "Top right"
+msgstr ""
+
+msgid "Bottom left"
+msgstr ""
+
+msgid "Bottom right"
+msgstr ""
+
+msgid "Number size (px)"
+msgstr ""
+
+msgid "Default opening mode"
+msgstr ""
