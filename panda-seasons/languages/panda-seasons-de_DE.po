@@ -1,11 +1,56 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.5\n"
+"Project-Id-Version: Panda Seasons 0.5.6\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Align now"
+msgstr "Jetzt ausrichten"
+
+msgid "Save element"
+msgstr "Element speichern"
+
+msgid "Select image or drop it here"
+msgstr "Bild auswählen oder hierher ziehen"
+
+msgid "Select a download file"
+msgstr "Download-Datei auswählen"
+
+msgid "Template library"
+msgstr "Vorlagenbibliothek"
+
+msgid "Refresh library"
+msgstr "Bibliothek aktualisieren"
+
+msgid "Create calendar"
+msgstr "Kalender erstellen"
+
+msgid "Import images"
+msgstr "Bilder importieren"
+
+msgid "No templates are currently available."
+msgstr "Derzeit sind keine Vorlagen verfügbar."
+
+msgid "Create a new draft calendar from a centrally maintained layout. Library templates never import door content or personal data."
+msgstr "Erstellen Sie einen neuen Kalenderentwurf aus einem zentral gepflegten Layout. Vorlagen aus der Bibliothek importieren niemals Türinhalte oder personenbezogene Daten."
+
+msgid "Visitors must register separately for calendar emails. This registration uses the compact ContactPanda form and does not grant newsletter consent."
+msgstr "Besucher müssen sich gesondert für Kalender-E-Mails anmelden. Diese Anmeldung verwendet das kompakte ContactPanda-Formular und erteilt keine Newsletter-Einwilligung."
+
+msgid "The template library is temporarily unavailable. Please try again later."
+msgstr "Die Vorlagenbibliothek ist vorübergehend nicht erreichbar. Bitte versuchen Sie es später erneut."
+
+msgid "The template library returned an invalid response."
+msgstr "Die Vorlagenbibliothek hat eine ungültige Antwort zurückgegeben."
+
+msgid "The selected library template is no longer available."
+msgstr "Die ausgewählte Vorlage ist nicht mehr verfügbar."
+
+msgid "The downloaded template failed its integrity check."
+msgstr "Die heruntergeladene Vorlage hat die Integritätsprüfung nicht bestanden."
 
 msgid "Call to action"
 msgstr "Call-to-Action"
@@ -26,7 +71,7 @@ msgstr "Kein Gutschein"
 msgid "Coupon code:"
 msgstr "Gutscheincode:"
 msgid "Default door shape"
-msgstr "Standardform der Türe"
+msgstr "Standard-Türform"
 
 msgid "This text is shown on the door. Leave it empty to display the door number automatically. You may use a different label for the closed and opened state."
 msgstr "Dieser Text wird auf der Türe angezeigt. Lassen Sie das Feld leer, um automatisch die Nummer der Türe zu verwenden. Für den geschlossenen und geöffneten Zustand können Sie unterschiedliche Beschriftungen festlegen."
@@ -884,7 +929,7 @@ msgid "Keep closed until clicked"
 msgstr "Bis zum Anklicken geschlossen lassen"
 
 msgid "Active door border color"
-msgstr "Rahmenfarbe des aktuellen Türes"
+msgstr "Rahmenfarbe der aktuellen Türe"
 
 msgid "Preview mode – unlock dates are ignored and actions are disabled."
 msgstr "Vorschaumodus – Freigabezeiten werden ignoriert und Aktionen sind deaktiviert."

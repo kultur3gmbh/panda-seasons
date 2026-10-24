@@ -1,9 +1,54 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.5\n"
+"Project-Id-Version: Panda Seasons 0.5.6\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "Align now"
+msgstr ""
+
+msgid "Save element"
+msgstr ""
+
+msgid "Select image or drop it here"
+msgstr ""
+
+msgid "Select a download file"
+msgstr ""
+
+msgid "Template library"
+msgstr ""
+
+msgid "Refresh library"
+msgstr ""
+
+msgid "Create calendar"
+msgstr ""
+
+msgid "Import images"
+msgstr ""
+
+msgid "No templates are currently available."
+msgstr ""
+
+msgid "Create a new draft calendar from a centrally maintained layout. Library templates never import door content or personal data."
+msgstr ""
+
+msgid "Visitors must register separately for calendar emails. This registration uses the compact ContactPanda form and does not grant newsletter consent."
+msgstr ""
+
+msgid "The template library is temporarily unavailable. Please try again later."
+msgstr ""
+
+msgid "The template library returned an invalid response."
+msgstr ""
+
+msgid "The selected library template is no longer available."
+msgstr ""
+
+msgid "The downloaded template failed its integrity check."
+msgstr ""
 
 msgid "Call to action"
 msgstr ""

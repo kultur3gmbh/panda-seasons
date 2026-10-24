@@ -1,0 +1,47 @@
+{
+  "format": "panda-seasons-template",
+  "format_version": 1,
+  "plugin_version": "0.5.6",
+  "calendar": {
+    "title": "Adventskalender – Raster 24",
+    "content": "",
+    "excerpt": "",
+    "meta": {
+      "_ps_aspect_ratio": "1.5",
+      "_ps_mobile_aspect_ratio": "0.75",
+      "_ps_cover_desktop_background": "rgba(23, 32, 51, 1)",
+      "_ps_cover_mobile_background": "rgba(23, 32, 51, 1)",
+      "_ps_default_closed_background": "rgba(99, 99, 99, 0.2)",
+      "_ps_default_open_background": "rgba(51, 79, 232, 1)",
+      "_ps_default_shape": "rounded",
+      "_ps_default_opening_mode": "auto-permanent"
+    },
+    "media": {}
+  },
+  "doors": [
+    {"meta":{"_ps_door_number":1,"_ps_position_desktop":{"x":3,"y":5,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":3,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":2,"_ps_position_desktop":{"x":19,"y":5,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":3,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":3,"_ps_position_desktop":{"x":35,"y":5,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":3,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":4,"_ps_position_desktop":{"x":51,"y":5,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":15,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":5,"_ps_position_desktop":{"x":67,"y":5,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":15,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":6,"_ps_position_desktop":{"x":83,"y":5,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":15,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":7,"_ps_position_desktop":{"x":3,"y":29,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":27,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":8,"_ps_position_desktop":{"x":19,"y":29,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":27,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":9,"_ps_position_desktop":{"x":35,"y":29,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":27,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":10,"_ps_position_desktop":{"x":51,"y":29,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":39,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":11,"_ps_position_desktop":{"x":67,"y":29,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":39,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":12,"_ps_position_desktop":{"x":83,"y":29,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":39,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":13,"_ps_position_desktop":{"x":3,"y":53,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":51,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":14,"_ps_position_desktop":{"x":19,"y":53,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":51,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":15,"_ps_position_desktop":{"x":35,"y":53,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":51,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":16,"_ps_position_desktop":{"x":51,"y":53,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":63,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":17,"_ps_position_desktop":{"x":67,"y":53,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":63,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":18,"_ps_position_desktop":{"x":83,"y":53,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":63,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":19,"_ps_position_desktop":{"x":3,"y":77,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":75,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":20,"_ps_position_desktop":{"x":19,"y":77,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":75,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":21,"_ps_position_desktop":{"x":35,"y":77,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":75,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":22,"_ps_position_desktop":{"x":51,"y":77,"w":14,"h":18},"_ps_position_mobile":{"x":4,"y":87,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":23,"_ps_position_desktop":{"x":67,"y":77,"w":14,"h":18},"_ps_position_mobile":{"x":36,"y":87,"w":28,"h":10}}},
+    {"meta":{"_ps_door_number":24,"_ps_position_desktop":{"x":83,"y":77,"w":14,"h":18},"_ps_position_mobile":{"x":68,"y":87,"w":28,"h":10}}}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "format_version": 1,
+  "templates": [
+    {
+      "id": "starter-grid-24",
+      "title": "Raster mit 24 Türen",
+      "description": "Ein neutrales 6 × 4-Raster für Desktop und ein 3 × 8-Raster für Mobilgeräte. Ohne Inhalte und Bilder.",
+      "thumbnail": "starter-grid.svg",
+      "template": "starter-grid.json",
+      "sha256": "2e2f14ef0d56e9a6ae9b9976f02d7e78be0862dccefe986768f10d35cc1549fe",
+      "min_plugin_version": "0.5.6",
+      "has_images": false
+    }
+  ]
+}

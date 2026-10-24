@@ -115,6 +115,18 @@
 		} catch (ignore) { return ''; }
 	}
 
+	function uploadAttachment(file, callback) {
+		if (!file || !window.pandaSeasonsAdmin || !pandaSeasonsAdmin.uploadUrl || !pandaSeasonsAdmin.uploadNonce) return;
+		var data = new FormData();
+		data.append('name', file.name);
+		data.append('action', 'upload-attachment');
+		data.append('_wpnonce', pandaSeasonsAdmin.uploadNonce);
+		data.append('async-upload', file, file.name);
+		fetch(pandaSeasonsAdmin.uploadUrl, { method: 'POST', credentials: 'same-origin', body: data }).then(function (response) { return response.json(); }).then(function (result) {
+			if (result && result.success && result.data) callback(result.data);
+		}).catch(function () {});
+	}
+
 	function mediaMarkup(url, type) {
 		url = safeUrl(url);
 		if (!url) return '';
@@ -137,7 +149,7 @@
 		}
 		if (downloadBox) {
 			var downloadUrl = modal.querySelector('[data-door-field="downloadUrl"]').value;
-			downloadBox.querySelector('[data-door-asset-preview]').innerHTML = downloadUrl ? '<span class="dashicons dashicons-download" aria-hidden="true"></span> ' + escapeHtml(downloadUrl.split('/').pop()) : '';
+			downloadBox.querySelector('[data-door-asset-preview]').innerHTML = downloadUrl ? '<span>' + escapeHtml(downloadUrl.split('/').pop()) + '</span><span class="dashicons dashicons-media-document" aria-hidden="true"></span>' : '<span>' + escapeHtml(adminText('selectDownload', 'Select a download file')) + '</span><span class="dashicons dashicons-media-document" aria-hidden="true"></span>';
 			downloadBox.querySelector('[data-remove-door-download]').hidden = !downloadUrl;
 		}
 		['image'].forEach(function (kind) {
@@ -179,6 +191,7 @@
 		var doors = [];
 		var layers = [];
 		var activeLayer = null;
+		var activeLayerSnapshot = null;
 		var layerPointerState = null;
 		var view = 'desktop';
 		var previewState = 'actual';
@@ -187,11 +200,10 @@
 		var toolbar = root.querySelector('.panda-seasons-composer__toolbar');
 		var previewButton = root.querySelector('[data-open-calendar-preview]');
 		var snapControl = root.querySelector('[data-snap-grid]');
-		if (toolbar && previewButton && snapControl) {
+		if (toolbar && previewButton) {
 			var controls = document.createElement('div');
 			controls.className = 'panda-seasons-composer__preview-controls';
 			controls.appendChild(previewButton);
-			controls.appendChild(snapControl.closest('label'));
 			toolbar.appendChild(controls);
 		}
 
@@ -263,17 +275,30 @@
 
 		function openLayerEditor(layer) {
 			activeLayer = layer;
+			activeLayerSnapshot = JSON.parse(JSON.stringify(layer));
 			if (modal && !modal.hidden) closeDoorModal(true);
 			if (layerEditor) { layerEditor.hidden = false; syncLayerEditor(); }
 			var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = true;
 			render();
 		}
 
-		function closeLayerEditor(applyChanges) { if (activeLayer && applyChanges) activeLayer.text = getEditorContent('panda_seasons_layer_text_editor'); activeLayer = null; if (layerEditor) layerEditor.hidden = true; var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = false; render(); }
+		function closeLayerEditor(applyChanges) {
+			if (activeLayer && applyChanges) {
+				activeLayer.text = getEditorContent('panda_seasons_layer_text_editor');
+				delete activeLayer.isNew;
+			} else if (activeLayer) {
+				if (activeLayer.isNew) activeLayer.deleted = true;
+				else if (activeLayerSnapshot) { Object.keys(activeLayer).forEach(function (key) { delete activeLayer[key]; }); Object.assign(activeLayer, activeLayerSnapshot); }
+			}
+			activeLayer = null; activeLayerSnapshot = null;
+			if (layerEditor) layerEditor.hidden = true;
+			var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = false;
+			render();
+		}
 
 		function addLayer(type, position) {
 			var count = layers.filter(function (layer) { return !layer.deleted; }).length;
-			var layer = { id: 'layer-' + Date.now(), type: type, text: type === 'text' ? adminText('newTextArea', 'Text area') : '', imageId: 0, imageUrl: '', imagePosition: 'center', background: type === 'surface' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0)', color: 'rgba(31, 41, 55, 1)', fontSize: 24, z: count + 1, url: '', radius: 0, desktop: cleanPosition(null, 10 + (count % 5) * 5, 10 + (count % 5) * 5, 'desktop'), mobile: cleanPosition(null, 8 + (count % 3) * 7, 8 + (count % 3) * 7, 'mobile') };
+			var layer = { id: 'layer-' + Date.now(), type: type, isNew: true, text: type === 'text' ? adminText('newTextArea', 'Text area') : '', imageId: 0, imageUrl: '', imagePosition: 'center', background: type === 'surface' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0)', color: 'rgba(31, 41, 55, 1)', fontSize: 24, z: count + 1, url: '', radius: 0, desktop: cleanPosition(null, 10 + (count % 5) * 5, 10 + (count % 5) * 5, 'desktop'), mobile: cleanPosition(null, 8 + (count % 3) * 7, 8 + (count % 3) * 7, 'mobile') };
 			if (position) { layer[view].x = clamp(position.x - layer[view].w / 2, 0, 100 - layer[view].w); layer[view].y = clamp(position.y - layer[view].h / 2, 0, 100 - layer[view].h); }
 			layers.push(layer); openLayerEditor(layer);
 		}
@@ -454,6 +479,23 @@
 			return Math.round(value / step) * step;
 		}
 
+		function alignAllToGrid() {
+			var rectangle = stage.getBoundingClientRect();
+			var stepX = rectangle.width > 0 ? 1000 / rectangle.width : 1;
+			var stepY = rectangle.height > 0 ? 1000 / rectangle.height : 1;
+			function alignPosition(position) {
+				var right = Math.round((position.x + position.w) / stepX) * stepX;
+				var bottom = Math.round((position.y + position.h) / stepY) * stepY;
+				position.x = clamp(Math.round(position.x / stepX) * stepX, 0, 96);
+				position.y = clamp(Math.round(position.y / stepY) * stepY, 0, 96);
+				position.w = clamp(right - position.x, 4, 100 - position.x);
+				position.h = clamp(bottom - position.y, 4, 100 - position.y);
+			}
+			currentDoors().forEach(function (door) { alignPosition(door[view]); });
+			layers.filter(function (layer) { return !layer.deleted; }).forEach(function (layer) { alignPosition(layer[view]); });
+			render();
+		}
+
 		function startPointer(event, element, resize) {
 			if (event.button !== 0) return;
 			var door = findDoor(element.dataset.editorDoor);
@@ -573,6 +615,7 @@
 		});
 
 		root.addEventListener('click', function (event) {
+			if (event.target.closest('[data-align-grid]')) { alignAllToGrid(); return; }
 			var layerButton = event.target.closest('[data-add-layer]');
 			if (layerButton) { addLayer(layerButton.dataset.addLayer); return; }
 			var stateButton = event.target.closest('button[data-preview-state]');
@@ -595,12 +638,18 @@
 		});
 
 		if (layerEditor) {
+			var layerTextarea = document.getElementById('panda_seasons_layer_text_editor');
+			if (layerTextarea) layerTextarea.addEventListener('input', function () { if (activeLayer && activeLayer.type === 'text') { activeLayer.text = layerTextarea.value; render(); } });
+			(function bindLayerEditor(attempt) {
+				var editor = window.tinymce && window.tinymce.get('panda_seasons_layer_text_editor');
+				if (!editor) { if (attempt < 20) window.setTimeout(function () { bindLayerEditor(attempt + 1); }, 250); return; }
+				editor.on('input change keyup undo redo', function () { if (activeLayer && activeLayer.type === 'text') { activeLayer.text = editor.getContent(); render(); } });
+			}(0));
 			layerEditor.addEventListener('input', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; var name = field.dataset.layerField; activeLayer[name] = ['imageId','fontSize','z','radius'].indexOf(name) !== -1 ? Math.max(0, parseInt(field.value, 10) || 0) : field.value; render(); });
 			layerEditor.addEventListener('change', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; activeLayer[field.dataset.layerField] = field.value; render(); });
 			layerEditor.addEventListener('click', function (event) {
 				if (event.target.closest('[data-select-layer-image]')) { selectLayerImage(); return; }
-				if (event.target.closest('[data-delete-layer]') && activeLayer) { activeLayer.deleted = true; closeLayerEditor(); return; }
-				if (event.target.closest('[data-duplicate-layer]') && activeLayer) { var copy = JSON.parse(JSON.stringify(activeLayer)); copy.id = 'layer-' + Date.now(); copy.desktop.x = clamp(copy.desktop.x + 2, 0, 100 - copy.desktop.w); copy.desktop.y = clamp(copy.desktop.y + 2, 0, 100 - copy.desktop.h); copy.mobile.x = clamp(copy.mobile.x + 2, 0, 100 - copy.mobile.w); copy.mobile.y = clamp(copy.mobile.y + 2, 0, 100 - copy.mobile.h); copy.z = number(copy.z, 1) + 1; layers.push(copy); openLayerEditor(copy); return; }
+				if (event.target.closest('[data-delete-layer]') && activeLayer) { activeLayer.deleted = true; closeLayerEditor(true); return; }
 				if (event.target.closest('[data-apply-layer-editor]')) { closeLayerEditor(true); return; }
 				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor(false);
 			});
@@ -722,20 +771,24 @@
 		});
 		frame.on('select', function () {
 			var attachment = frame.state().get('selection').first().toJSON();
-			if (kind === 'media') {
-				modal.querySelector('[data-door-field="mediaId"]').value = attachment.id || 0;
-				modal.querySelector('[data-door-field="mediaUrl"]').value = attachment.url || '';
-				modal.querySelector('[data-door-field="mediaType"]').value = attachment.type || '';
-			} else {
-				modal.querySelector('[data-door-field="downloadId"]').value = attachment.id || 0;
-				modal.querySelector('[data-door-field="downloadUrl"]').value = attachment.url || '';
-				var label = modal.querySelector('[data-door-field="downloadLabel"]');
-				if (label && !label.value) label.value = attachment.title || attachment.filename || '';
-			}
-			updateDoorAssets();
-			syncDoorPreview();
+			setDoorAttachment(kind, attachment);
 		});
 		frame.open();
+	}
+
+	function setDoorAttachment(kind, attachment) {
+		if (!modal || !attachment) return;
+		if (kind === 'media') {
+			modal.querySelector('[data-door-field="mediaId"]').value = attachment.id || 0;
+			modal.querySelector('[data-door-field="mediaUrl"]').value = attachment.url || '';
+			modal.querySelector('[data-door-field="mediaType"]').value = attachment.type || String(attachment.mime || '').split('/')[0] || '';
+		} else {
+			modal.querySelector('[data-door-field="downloadId"]').value = attachment.id || 0;
+			modal.querySelector('[data-door-field="downloadUrl"]').value = attachment.url || '';
+			var label = modal.querySelector('[data-door-field="downloadLabel"]');
+			if (label && !label.value) label.value = attachment.title || attachment.filename || '';
+		}
+		updateDoorAssets(); syncDoorPreview();
 	}
 
 	function clearDoorAttachment(kind) {
@@ -848,12 +901,12 @@
 			var targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop';
 			if (remove) {
 				hidden.value = '';
-				field.querySelector('.panda-seasons-media-preview').innerHTML = '<span>' + escapeHtml(adminText('noImageSelected', 'No image selected')) + '</span>';
+					field.querySelector('.panda-seasons-media-preview').innerHTML = '<span>' + escapeHtml(adminText('imageDropHint', 'Select image or drop it here')) + '</span>';
 				remove.hidden = true;
 				if (composer && composer.updateImage) composer.updateImage(targetView, '');
 				return;
 			}
-			var frame = wp.media({ title: select.textContent, library: { type: 'image' }, multiple: false });
+			var frame = wp.media({ title: adminText('selectImage', 'Select image'), library: { type: 'image' }, multiple: false });
 			frame.on('select', function () {
 				var attachment = frame.state().get('selection').first().toJSON();
 				var previewUrl = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
@@ -893,6 +946,24 @@
 			closeDoorModal(true);
 		}
 
+	});
+
+	document.addEventListener('keydown', function (event) {
+		if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-select-media],[data-select-door-media],[data-select-door-download]')) { event.preventDefault(); event.target.click(); }
+	});
+	document.querySelectorAll('[data-media-field] .panda-seasons-media-preview').forEach(function (dropzone) {
+		dropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); dropzone.classList.add('is-dragover'); } });
+		dropzone.addEventListener('dragleave', function () { dropzone.classList.remove('is-dragover'); });
+		dropzone.addEventListener('drop', function (event) {
+			if (!event.dataTransfer || !event.dataTransfer.files.length) return;
+			event.preventDefault(); dropzone.classList.remove('is-dragover');
+			var file = event.dataTransfer.files[0]; if (!/^image\//.test(file.type)) return;
+			uploadAttachment(file, function (attachment) { var field = dropzone.closest('[data-media-field]'), hidden = field.querySelector('input[type="hidden"]'), targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop'; hidden.value = attachment.id || 0; dropzone.innerHTML = '<img src="' + escapeHtml(attachment.url || '') + '" alt="">'; field.querySelector('[data-remove-media]').hidden = false; if (composer && composer.updateImage) composer.updateImage(targetView, attachment.url || ''); });
+		});
+	});
+	document.querySelectorAll('[data-door-asset="media"] [data-select-door-media]').forEach(function (dropzone) {
+		dropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) event.preventDefault(); });
+		dropzone.addEventListener('drop', function (event) { if (!event.dataTransfer || !event.dataTransfer.files.length) return; event.preventDefault(); uploadAttachment(event.dataTransfer.files[0], function (attachment) { setDoorAttachment('media', attachment); }); });
 	});
 
 	document.addEventListener('input', function (event) {
@@ -979,7 +1050,6 @@
 		editorPanel.appendChild(editorLayout);settingsPanel.appendChild(adminGrid);
 		document.addEventListener('click',function(event){var button=event.target.closest('[data-main-editor-tab]');if(!button)return;var target=button.dataset.mainEditorTab;mainTabs.querySelectorAll('[data-main-editor-tab]').forEach(function(item){var active=item===button;item.classList.toggle('button-primary',active);item.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-main-editor-panel]').forEach(function(panel){panel.hidden=panel.dataset.mainEditorPanel!==target;});if(target==='editor'&&composer&&composer.renderDoors)composer.renderDoors();});
 	}
-	if(defaultsPanel){var motion=document.createElement('div');motion.className='panda-seasons-default-motion is-wide';var effectField=document.querySelector('[name="panda_seasons_open_effect"]'),speedField=document.querySelector('[name="panda_seasons_effect_speed"]'),sampleField=document.querySelector('.panda-seasons-default-preview');if(effectField)motion.appendChild(effectField.closest('label'));if(speedField)motion.appendChild(speedField.closest('label'));if(sampleField)motion.appendChild(sampleField);defaultsPanel.insertBefore(motion,defaultsPanel.children[1]||null);}
 	if(defaultsPanel&&composer){
 		var applyDefaultsButton=document.createElement('button');applyDefaultsButton.type='button';applyDefaultsButton.className='button button-primary panda-seasons-apply-defaults-button';applyDefaultsButton.textContent=adminText('applyDefaults','Apply global settings to existing doors');defaultsPanel.appendChild(applyDefaultsButton);
 		var defaultsDialog=document.createElement('div');defaultsDialog.className='panda-seasons-defaults-dialog';defaultsDialog.hidden=true;defaultsDialog.innerHTML='<div class="panda-seasons-defaults-dialog__backdrop" data-close-defaults-dialog></div><div class="panda-seasons-defaults-dialog__window" role="dialog" aria-modal="true" aria-labelledby="panda-seasons-defaults-title"><h2 id="panda-seasons-defaults-title">'+escapeHtml(adminText('defaultsTitle','Apply global settings'))+'</h2><p>'+escapeHtml(adminText('defaultsHelp','Choose each setting that may replace existing individual values.'))+'</p><div class="panda-seasons-defaults-dialog__actions"><button type="button" class="button" data-select-all-defaults>'+escapeHtml(adminText('selectAll','Select all'))+'</button><button type="button" class="button" data-select-no-defaults>'+escapeHtml(adminText('selectNone','Select none'))+'</button></div><div class="panda-seasons-defaults-table" data-defaults-comparison></div><div class="panda-seasons-defaults-dialog__footer"><button type="button" class="button" data-close-defaults-dialog>'+escapeHtml(adminText('cancel','Cancel'))+'</button><button type="button" class="button button-primary" data-apply-selected-defaults>'+escapeHtml(adminText('applySelected','Apply selected values'))+'</button></div></div>';document.body.appendChild(defaultsDialog);
