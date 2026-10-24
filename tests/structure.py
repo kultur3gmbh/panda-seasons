@@ -10,6 +10,7 @@ required = [
     "includes/class-panda-seasons-mailer.php",
     "includes/class-panda-seasons-updater.php",
 	"includes/class-panda-seasons-integrations.php",
+	"includes/class-panda-seasons-mcp.php",
     "assets/frontend.css",
     "assets/frontend.js",
 	"assets/block-editor.js",
@@ -20,6 +21,7 @@ for filename in required:
 plugin = (root / "includes/class-panda-seasons-plugin.php").read_text(encoding="utf-8")
 updater = (root / "includes/class-panda-seasons-updater.php").read_text(encoding="utf-8")
 integrations = (root / "includes/class-panda-seasons-integrations.php").read_text(encoding="utf-8")
+mcp = (root / "includes/class-panda-seasons-mcp.php").read_text(encoding="utf-8")
 subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_text(encoding="utf-8")
 if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin:
     raise SystemExit("Calendar contract missing")
@@ -56,3 +58,6 @@ for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_fi
 for integration_contract in ("register_block_type", "elementor/widgets/register", "et_builder_ready", "fusion_builder_map"):
     if integration_contract not in integrations:
         raise SystemExit(f"Missing builder integration contract {integration_contract}")
+for mcp_contract in ("wp_abilities_api_init", "wp_register_ability", "list-calendars", "get-calendar", "save-door", "delete-door"):
+    if mcp_contract not in mcp:
+        raise SystemExit(f"Missing MCP contract {mcp_contract}")

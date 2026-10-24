@@ -499,7 +499,8 @@ final class Panda_Seasons_Plugin {
 							<div class="panda-seasons-door-modal__section-grid">
 								<div class="is-wide panda-seasons-door-modal__content-editor"><strong><?php esc_html_e( 'Text', 'panda-seasons' ); ?></strong><?php wp_editor( '', 'panda_seasons_door_content_editor', array( 'textarea_name' => 'panda_seasons_door_content_editor', 'textarea_rows' => 10, 'media_buttons' => true, 'teeny' => false, 'quicktags' => true ) ); ?></div>
 								<div class="is-wide panda-seasons-door-modal__asset" data-door-asset="media">
-									<strong><?php esc_html_e( 'Image, video or audio', 'panda-seasons' ); ?></strong>
+									<strong><?php esc_html_e( 'Media in the content window', 'panda-seasons' ); ?></strong>
+									<p class="description"><?php esc_html_e( 'Displayed together with the content in the central window after the door is opened.', 'panda-seasons' ); ?></p>
 									<div class="panda-seasons-door-modal__asset-preview panda-seasons-door-modal__dropzone" data-door-asset-preview data-select-door-media role="button" tabindex="0"><span class="panda-seasons-door-modal__drop-hint"><?php esc_html_e( 'Drag an image, video or audio file here or select it from the media library.', 'panda-seasons' ); ?></span></div>
 									<input type="hidden" data-door-field="mediaId"><input type="hidden" data-door-field="mediaUrl"><input type="hidden" data-door-field="mediaType">
 									<div><button type="button" class="button" data-select-door-media><?php esc_html_e( 'Select media', 'panda-seasons' ); ?></button> <button type="button" class="button-link-delete" data-remove-door-media><?php esc_html_e( 'Remove', 'panda-seasons' ); ?></button></div>

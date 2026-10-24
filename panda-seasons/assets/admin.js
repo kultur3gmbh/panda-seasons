@@ -516,12 +516,15 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'unlockDate', 'unlockTime', 'unlockBehavior', 'availabilityWindow', 'title', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
+		['number', 'unlockDate', 'unlockTime', 'unlockBehavior', 'availabilityWindow', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
 		});
+		activeDoor.content = getEditorContent('panda_seasons_door_content_editor');
 		if (composer && composer.renderDoors) composer.renderDoors();
+		var openPreview = modal.querySelector('[data-door-preview]:not([hidden])');
+		if (openPreview) previewDoor(false);
 	}
 
 	if (composer) composerController(composer);
@@ -579,7 +582,7 @@
 		syncDoorPreview();
 	}
 
-	function previewDoor() {
+	function previewDoor(scrollToPreview) {
 		var preview = modal.querySelector('[data-door-preview]');
 		if (!preview) return;
 		var value = function (name) {
@@ -599,7 +602,7 @@
 		html += '</div>';
 		preview.innerHTML = html;
 		preview.hidden = false;
-		preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		if (scrollToPreview !== false) preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 	}
 
 	document.addEventListener('click', function (event) {

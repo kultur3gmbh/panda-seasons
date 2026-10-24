@@ -319,8 +319,11 @@ msgstr "Türcheninhalt und Medien"
 msgid "Text"
 msgstr "Text"
 
-msgid "Image, video or audio"
-msgstr "Bild, Video oder Audio"
+msgid "Media in the content window"
+msgstr "Medium im Inhaltsfenster"
+
+msgid "Displayed together with the content in the central window after the door is opened."
+msgstr "Wird nach dem Öffnen der Türe gemeinsam mit dem Inhalt im zentralen Fenster angezeigt."
 
 msgid "Select media"
 msgstr "Medium auswählen"

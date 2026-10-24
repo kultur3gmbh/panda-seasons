@@ -380,7 +380,10 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-msgid "Image, video or audio"
+msgid "Media in the content window"
+msgstr ""
+
+msgid "Displayed together with the content in the central window after the door is opened."
 msgstr ""
 
 msgid "Select media"
