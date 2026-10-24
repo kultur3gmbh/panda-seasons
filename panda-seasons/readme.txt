@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: calendar, advent calendar, seasonal campaign, email calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.4.9
+Stable tag: 0.5.0
 License: GPLv2 or later
 
 Interactive seasonal calendars with freely positioned doors on responsive desktop and mobile images. Web calendars work independently; email delivery requires the free ContactPanda plugin.
@@ -15,6 +15,15 @@ Create multiple parallel calendars in a visual drag-and-drop composer, schedule 
 Use `[panda_seasons id="123"]` to display a published calendar.
 
 == Changelog ==
+
+= 0.5.0 =
+* Splits the visual editor into a focused calendar workspace and a separate general-defaults tab without losing unsaved changes.
+* Refreshes newly selected desktop and mobile cover images immediately in both the editor and the protected preview.
+* Adds a selective old-value/new-value dialog for applying chosen global defaults to existing doors.
+* Adds automatic, pixel-based, and percentage-based round label backgrounds for closed and opened doors.
+* Separates door content into general, video, product, and quiz modes while keeping calls to action independently available.
+* Imports content into existing calendars with fill-empty, merge, and full-overwrite modes while preserving layout and appearance.
+* Extends the MCP document workflow with the same merge modes and content-type setting.
 
 = 0.4.9 =
 * Ensures Panda Seasons MCP abilities remain available when another plugin initializes WordPress ability categories early.

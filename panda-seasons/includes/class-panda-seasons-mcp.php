@@ -149,6 +149,7 @@ final class Panda_Seasons_MCP {
 			'properties' => array(
 				'calendar_id' => array( 'type' => 'integer', 'minimum' => 1 ),
 				'create_missing_doors' => array( 'type' => 'boolean', 'default' => false ),
+				'import_mode' => array( 'type' => 'string', 'enum' => array( 'empty', 'merge', 'overwrite' ), 'default' => 'merge' ),
 				'doors' => array(
 					'type' => 'array',
 					'items' => array(
@@ -238,7 +239,22 @@ final class Panda_Seasons_MCP {
 	}
 
 	private static function allowed_door_meta() {
-		return array( 'door_number', 'unlock_date', 'unlock_time', 'unlock_behavior', 'availability_window', 'media_id', 'download_id', 'download_label', 'button_label', 'button_url', 'product_id', 'coupon_id', 'cta_enabled', 'cta_title', 'cta_text', 'cta_type', 'cta_label', 'cta_url', 'cta_shortcode', 'event_id', 'closed_label', 'open_label', 'closed_background', 'open_background', 'closed_color', 'open_color', 'closed_label_visible', 'open_label_visible', 'closed_font', 'open_font', 'closed_font_size', 'open_font_size', 'closed_font_weight', 'open_font_weight', 'closed_text_align', 'open_text_align', 'closed_border_color', 'open_border_color', 'closed_border_width', 'open_border_width', 'closed_border_style', 'open_border_style', 'closed_label_background', 'open_label_background', 'closed_label_border_color', 'open_label_border_color', 'closed_label_border_width', 'open_label_border_width', 'closed_label_width_mode', 'open_label_width_mode', 'closed_label_width', 'open_label_width', 'closed_label_padding', 'open_label_padding', 'shape', 'open_effect', 'closed_image_id', 'open_image_id', 'quiz_enabled', 'quiz_questions', 'quiz_success', 'quiz_failure', 'position_desktop', 'position_mobile' );
+		return array( 'door_number', 'unlock_date', 'unlock_time', 'unlock_behavior', 'availability_window', 'content_type', 'media_id', 'download_id', 'download_label', 'button_label', 'button_url', 'product_id', 'coupon_id', 'cta_enabled', 'cta_title', 'cta_text', 'cta_type', 'cta_label', 'cta_url', 'cta_shortcode', 'event_id', 'closed_label', 'open_label', 'closed_background', 'open_background', 'closed_color', 'open_color', 'closed_label_visible', 'open_label_visible', 'closed_font', 'open_font', 'closed_font_size', 'open_font_size', 'closed_font_weight', 'open_font_weight', 'closed_text_align', 'open_text_align', 'closed_border_color', 'open_border_color', 'closed_border_width', 'open_border_width', 'closed_border_style', 'open_border_style', 'closed_label_background', 'open_label_background', 'closed_label_border_color', 'open_label_border_color', 'closed_label_border_width', 'open_label_border_width', 'closed_label_width_mode', 'open_label_width_mode', 'closed_label_width', 'open_label_width', 'closed_label_padding', 'open_label_padding', 'shape', 'open_effect', 'closed_image_id', 'open_image_id', 'quiz_enabled', 'quiz_questions', 'quiz_success', 'quiz_failure', 'position_desktop', 'position_mobile' );
+	}
+
+	private static function document_content_meta() {
+		return array( 'content_type', 'media_id', 'download_id', 'download_label', 'button_label', 'button_url', 'product_id', 'coupon_id', 'event_id', 'quiz_enabled', 'quiz_questions', 'quiz_success', 'quiz_failure', 'cta_enabled', 'cta_title', 'cta_text', 'cta_type', 'cta_label', 'cta_url', 'cta_shortcode' );
+	}
+
+	private static function door_has_document_content( $door_id ) {
+		$door = get_post( $door_id );
+		if ( $door && '' !== trim( wp_strip_all_tags( $door->post_content ) ) ) return true;
+		foreach ( self::document_content_meta() as $key ) {
+			$value = get_post_meta( $door_id, '_ps_' . $key, true );
+			if ( ! in_array( $key, array( 'content_type', 'quiz_enabled', 'cta_enabled' ), true ) && ! empty( $value ) ) return true;
+			if ( in_array( $key, array( 'quiz_enabled', 'cta_enabled' ), true ) && $value ) return true;
+		}
+		return false;
 	}
 
 	private static function update_settings( $post_id, $settings, $allowed ) {
@@ -368,6 +384,8 @@ final class Panda_Seasons_MCP {
 
 	public static function apply_document_content( $input ) {
 		$calendar_id = self::input_id( $input, 'calendar_id' );
+		$mode = sanitize_key( (string) ( $input['import_mode'] ?? 'merge' ) );
+		if ( ! in_array( $mode, array( 'empty', 'merge', 'overwrite' ), true ) ) $mode = 'merge';
 		$existing = array();
 		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1 ) ) as $door ) $existing[ absint( get_post_meta( $door->ID, '_ps_door_number', true ) ) ] = $door->ID;
 		$updated = array();
@@ -376,9 +394,22 @@ final class Panda_Seasons_MCP {
 			$number = min( 366, max( 1, absint( $item['number'] ?? 1 ) ) );
 			$door_id = $existing[ $number ] ?? 0;
 			if ( ! $door_id && empty( $input['create_missing_doors'] ) ) { $skipped[] = $number; continue; }
-			$result = self::save_door( array( 'calendar_id' => $calendar_id, 'door_id' => $door_id, 'title' => $item['title'] ?? sprintf( __( 'Door %d', 'panda-seasons' ), $number ), 'content' => $item['content'] ?? '', 'settings' => array_merge( array( 'door_number' => $number ), (array) ( $item['settings'] ?? array() ) ) ) );
+			if ( $door_id && 'empty' === $mode && self::door_has_document_content( $door_id ) ) { $skipped[] = $number; continue; }
+			if ( $door_id && 'overwrite' === $mode ) {
+				foreach ( self::document_content_meta() as $key ) delete_post_meta( $door_id, '_ps_' . $key );
+				wp_update_post( array( 'ID' => $door_id, 'post_content' => '' ) );
+			}
+			$save = array(
+				'calendar_id' => $calendar_id,
+				'door_id'     => $door_id,
+				'settings'    => array_merge( array( 'door_number' => $number ), array_intersect_key( (array) ( $item['settings'] ?? array() ), array_flip( self::document_content_meta() ) ) ),
+			);
+			if ( array_key_exists( 'title', $item ) ) $save['title'] = $item['title'];
+			elseif ( ! $door_id ) $save['title'] = sprintf( __( 'Door %d', 'panda-seasons' ), $number );
+			if ( array_key_exists( 'content', $item ) ) $save['content'] = $item['content'];
+			$result = self::save_door( $save );
 			if ( ! is_wp_error( $result ) ) $updated[] = $number;
 		}
-		return array( 'calendar_id' => $calendar_id, 'updated_door_numbers' => $updated, 'skipped_door_numbers' => $skipped, 'status' => get_post_status( $calendar_id ) );
+		return array( 'calendar_id' => $calendar_id, 'import_mode' => $mode, 'updated_door_numbers' => $updated, 'skipped_door_numbers' => $skipped, 'status' => get_post_status( $calendar_id ) );
 	}
 }

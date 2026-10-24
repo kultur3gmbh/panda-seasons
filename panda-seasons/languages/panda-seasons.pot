@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.4.5\n"
+"Project-Id-Version: Panda Seasons 0.5.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1025,5 +1025,107 @@ msgid "Adds normalized content from a document to existing doors by door number 
 msgstr ""
 
 msgid "Layout draft"
+msgstr ""
++
+msgid "Import into a new draft or add content to an existing calendar. Existing door positions and appearance remain unchanged when a target calendar is selected."
+msgstr ""
+
+msgid "Import destination"
+msgstr ""
+
+msgid "Create a new calendar draft"
+msgstr ""
+
+msgid "Existing content"
+msgstr ""
+
+msgid "Fill empty doors only"
+msgstr ""
+
+msgid "Add imported values without clearing other fields"
+msgstr ""
+
+msgid "Replace all existing door content"
+msgstr ""
+
+msgid "Import content"
+msgstr ""
+
+msgid "Content type"
+msgstr ""
+
+msgid "General content"
+msgstr ""
+
+msgid "Only the fields for the selected content type are displayed. A call to action may be added independently."
+msgstr ""
+
+msgid "Label background shape"
+msgstr ""
+
+msgid "Round – automatic diameter"
+msgstr ""
+
+msgid "Round – diameter in pixels"
+msgstr ""
+
+msgid "Round – diameter in percent"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "General defaults"
+msgstr ""
+
+msgid "Apply global settings to existing doors"
+msgstr ""
+
+msgid "Apply global settings"
+msgstr ""
+
+msgid "Choose each setting that may replace existing individual values."
+msgstr ""
+
+msgid "Select all"
+msgstr ""
+
+msgid "Select none"
+msgstr ""
+
+msgid "Overwrite"
+msgstr ""
+
+msgid "Setting"
+msgstr ""
+
+msgid "Old value"
+msgstr ""
+
+msgid "New value"
+msgstr ""
+
+msgid "Different individual values"
+msgstr ""
+
+msgid "Apply selected values"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Diameter (px)"
+msgstr ""
+
+msgid "Diameter (%)"
+msgstr ""
+
+msgid "WooCommerce is not available. Install and activate WooCommerce to select products."
+msgstr ""
+
+msgid "The calendar content was imported successfully."
 msgstr ""
 
