@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.2\n"
+"Project-Id-Version: Panda Seasons 0.5.3\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1217,4 +1217,60 @@ msgid "Use a separate position and size for the door number after opening"
 msgstr ""
 
 msgid "Position"
+msgstr ""
+msgid "No image selected"
+msgstr ""
+
+msgid "Top center"
+msgstr ""
+
+msgid "Center left"
+msgstr ""
+
+msgid "Center right"
+msgstr ""
+
+msgid "Bottom center"
+msgstr ""
+
+msgid "Image position"
+msgstr ""
+
+msgid "Content heading"
+msgstr ""
+
+msgid "Leave empty to use the release date."
+msgstr ""
+
+msgid "Rectangle"
+msgstr ""
+
+msgid "Rounded corners"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Automatic"
+msgstr ""
+
+msgid "Width in pixels"
+msgstr ""
+
+msgid "Width in percent"
+msgstr ""
+
+msgid "Font color"
+msgstr ""
+
+msgid "Apply appearance to all doors in this layout"
+msgstr ""
+
+msgid "Design area"
+msgstr ""
+
+msgid "Apply this appearance to all doors and update the global defaults?"
+msgstr ""
+
+msgid "Width (px)"
 msgstr ""

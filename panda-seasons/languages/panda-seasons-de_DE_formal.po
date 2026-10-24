@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.2\n"
+"Project-Id-Version: Panda Seasons 0.5.3\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,16 +26,16 @@ msgid "Edit calendar"
 msgstr "Kalender bearbeiten"
 
 msgid "Door"
-msgstr "Türchen"
+msgstr "Türe"
 
 msgid "Doors"
-msgstr "Türchen"
+msgstr "Türe"
 
 msgid "Add door"
-msgstr "Türchen hinzufügen"
+msgstr "Türe hinzufügen"
 
 msgid "Edit door"
-msgstr "Türchen bearbeiten"
+msgstr "Türe bearbeiten"
 
 msgid "Calendar design"
 msgstr "Kalendergestaltung"
@@ -47,13 +47,13 @@ msgid "Embed calendar"
 msgstr "Kalender einfügen"
 
 msgid "Door settings"
-msgstr "Türcheneinstellungen"
+msgstr "Türeinstellungen"
 
 msgid "Every five minutes"
 msgstr "Alle fünf Minuten"
 
 msgid "Build the doors first, then place one continuous image over the complete calendar. Separate images can be used for desktop and mobile."
-msgstr "Bauen Sie zuerst die Türchen und legen Sie anschließend ein durchgehendes Bild über den vollständigen Kalender. Für Desktop und Mobilgeräte können unterschiedliche Bilder verwendet werden."
+msgstr "Bauen Sie zuerst die Türen und legen Sie anschließend ein durchgehendes Bild über den vollständigen Kalender. Für Desktop und Mobilgeräte können unterschiedliche Bilder verwendet werden."
 
 msgid "Desktop cover image"
 msgstr "Gesamtbild für Desktop"
@@ -95,13 +95,13 @@ msgid "Verified ContactPanda contacts are enrolled immediately. All other addres
 msgstr "Bestätigte ContactPanda-Kontakte werden sofort angemeldet. Alle anderen Adressen erhalten eine Double-Opt-in-E-Mail. Die Kalendereinwilligung wird getrennt von der allgemeinen Marketingeinwilligung gespeichert."
 
 msgid "{calendar}: Door {day} is open"
-msgstr "{calendar}: Türchen {day} ist geöffnet"
+msgstr "{calendar}: Türe {day} ist geöffnet"
 
 msgid "Select calendar"
 msgstr "Kalender auswählen"
 
 msgid "Door number"
-msgstr "Türchennummer"
+msgstr "Türnummer"
 
 msgid "Number"
 msgstr "Nummer"
@@ -122,16 +122,16 @@ msgid "Shortcode"
 msgstr "Shortcode"
 
 msgid "This calendar does not have any doors yet."
-msgstr "Dieser Kalender hat noch keine Türchen."
+msgstr "Dieser Kalender hat noch keine Türe."
 
 msgid "Open door %d"
-msgstr "Türchen %d öffnen"
+msgstr "Türe %d öffnen"
 
 msgid "Door %1$d opens on %2$s"
-msgstr "Türchen %1$d öffnet am %2$s"
+msgstr "Türe %1$d öffnet am %2$s"
 
 msgid "Door %d"
-msgstr "Türchen %d"
+msgstr "Türe %d"
 
 msgid "Email delivery requires the free ContactPanda plugin."
 msgstr "Der E-Mail-Versand benötigt das kostenlose ContactPanda-Plugin."
@@ -227,7 +227,7 @@ msgid "WordPress could not send this email."
 msgstr "WordPress konnte diese E-Mail nicht versenden."
 
 msgid "Choose the calendar image and place every door directly on it. Click a door to edit its date and content."
-msgstr "Wählen Sie das Kalenderbild und platzieren Sie jedes Türchen direkt darauf. Klicken Sie auf ein Türchen, um Datum und Inhalt zu bearbeiten."
+msgstr "Wählen Sie das Kalenderbild und platzieren Sie jede Türe direkt darauf. Klicken Sie auf eine Türe, um Datum und Inhalt zu bearbeiten."
 
 msgid "Desktop width-to-height ratio"
 msgstr "Seitenverhältnis für Desktop"
@@ -248,13 +248,13 @@ msgid "Align to grid"
 msgstr "Am Raster ausrichten"
 
 msgid "Drag doors to move them. Use the handle at the bottom right to resize them. Desktop and mobile positions are saved separately."
-msgstr "Ziehen Sie Türchen, um sie zu verschieben. Mit dem Griff rechts unten ändern Sie ihre Größe. Positionen für Desktop und Mobilgeräte werden getrennt gespeichert."
+msgstr "Ziehen Sie Türe, um sie zu verschieben. Mit dem Griff rechts unten ändern Sie ihre Größe. Positionen für Desktop und Mobilgeräte werden getrennt gespeichert."
 
 msgid "Add a door to start designing your calendar."
-msgstr "Fügen Sie ein Türchen hinzu, um Ihren Kalender zu gestalten."
+msgstr "Fügen Sie eine Türe hinzu, um Ihren Kalender zu gestalten."
 
 msgid "Door changes are stored when you update the calendar."
-msgstr "Änderungen an den Türchen werden gespeichert, sobald Sie den Kalender aktualisieren."
+msgstr "Änderungen an den Türen werden gespeichert, sobald Sie den Kalender aktualisieren."
 
 msgid "Close"
 msgstr "Schließen"
@@ -287,13 +287,13 @@ msgid "Visual calendar editor"
 msgstr "Visueller Kalender-Editor"
 
 msgid "Door basics"
-msgstr "Grunddaten des Türchens"
+msgstr "Grunddaten der Türe"
 
 msgid "Optional unlock time"
 msgstr "Optionale Öffnungszeit"
 
 msgid "Door content and media"
-msgstr "Türcheninhalt und Medien"
+msgstr "Türinhalt und Medien"
 
 msgid "Text"
 msgstr "Text"
@@ -347,7 +347,7 @@ msgid "Email content"
 msgstr "Inhalt der E-Mail"
 
 msgid "Leave empty to use the regular door content."
-msgstr "Leer lassen, um den normalen Türcheninhalt zu verwenden."
+msgstr "Leer lassen, um den normalen Türinhalt zu verwenden."
 
 msgid "Appearance before and after opening"
 msgstr "Darstellung vor und nach dem Öffnen"
@@ -374,7 +374,7 @@ msgid "Preview content before it opens"
 msgstr "Inhalt schon vorab in der Verwaltung ansehen"
 
 msgid "Door preview"
-msgstr "Türchenvorschau"
+msgstr "Türvorschau"
 
 msgid "Select image, video or audio"
 msgstr "Bild, Video oder Audio auswählen"
@@ -392,7 +392,7 @@ msgid "View event"
 msgstr "Event ansehen"
 
 msgid "Door state preview"
-msgstr "Vorschau des Türchenzustands"
+msgstr "Vorschau des Türzustands"
 
 msgid "Actual"
 msgstr "Tatsächlich"
@@ -404,7 +404,7 @@ msgid "All open"
 msgstr "Alle geöffnet"
 
 msgid "Door shape"
-msgstr "Türchenform"
+msgstr "Türform"
 
 msgid "Square"
 msgstr "Eckig"
@@ -422,16 +422,16 @@ msgid "Open background opacity"
 msgstr "Deckkraft des geöffneten Hintergrunds"
 
 msgid "Optional image on the closed door"
-msgstr "Optionales Bild auf dem geschlossenen Türchen"
+msgstr "Optionales Bild auf dem geschlossener Türe"
 
 msgid "Optional image on the open door"
-msgstr "Optionales Bild auf dem geöffneten Türchen"
+msgstr "Optionales Bild auf dem geöffneter Türe"
 
 msgid "Quiz"
 msgstr "Quiz"
 
 msgid "Enable a quiz for this door"
-msgstr "Quiz für dieses Türchen aktivieren"
+msgstr "Quiz für diese Türe aktivieren"
 
 msgid "Question"
 msgstr "Frage"
@@ -464,7 +464,7 @@ msgid "Email-calendar signup"
 msgstr "Anmeldung zum E-Mail-Kalender"
 
 msgid "The signup works independently of the doors and may be published weeks before the calendar starts."
-msgstr "Die Anmeldung funktioniert unabhängig von den Türchen und kann bereits Wochen vor Kalenderbeginn veröffentlicht werden."
+msgstr "Die Anmeldung funktioniert unabhängig von den Türen und kann bereits Wochen vor Kalenderbeginn veröffentlicht werden."
 
 msgid "Signup heading"
 msgstr "Überschrift der Anmeldung"
@@ -524,7 +524,7 @@ msgid "Turn page"
 msgstr "Umblättern"
 
 msgid "Used for every door unless a door has its own setting."
-msgstr "Gilt für alle Türchen, sofern dort keine eigene Einstellung gewählt wurde."
+msgstr "Gilt für alle Türen, sofern dort keine eigene Einstellung gewählt wurde."
 
 msgid "Animation speed"
 msgstr "Animationsgeschwindigkeit"
@@ -557,13 +557,13 @@ msgid "Daily calendar email"
 msgstr "Täglicher Kalender-Versand"
 
 msgid "Sends the newly opened door to registered calendar subscribers at the selected time."
-msgstr "Sendet das neu geöffnete Türchen zur gewählten Uhrzeit an angemeldete Kalender-Abonnenten."
+msgstr "Sendet das neu geöffnete Türe zur gewählten Uhrzeit an angemeldete Kalender-Abonnenten."
 
 msgid "Enable daily delivery"
 msgstr "Täglichen Versand aktivieren"
 
 msgid "This separate signup can be published weeks before the first door opens."
-msgstr "Diese separate Anmeldung kann bereits Wochen vor dem ersten Türchen veröffentlicht werden."
+msgstr "Diese separate Anmeldung kann bereits Wochen vor dem ersten Türe veröffentlicht werden."
 
 msgid "Optionally show a link or an existing form. Newsletter consent remains separate from calendar consent."
 msgstr "Optional einen Link oder ein bestehendes Formular anzeigen. Die Newsletter-Einwilligung bleibt von der Kalender-Einwilligung getrennt."
@@ -599,7 +599,7 @@ msgid "Check answers"
 msgstr "Antworten prüfen"
 
 msgid "Click Add door or drag the button directly onto the calendar. Drag doors to move them and use the bottom-right handle to resize them."
-msgstr "Klicken Sie auf „Türchen hinzufügen“ oder ziehen Sie die Schaltfläche direkt auf den Kalender. Ziehen Sie Türchen zum Verschieben und verwenden Sie den Griff unten rechts zum Ändern der Größe."
+msgstr "Klicken Sie auf „Türe hinzufügen“ oder ziehen Sie die Schaltfläche direkt auf den Kalender. Ziehen Sie Türe zum Verschieben und verwenden Sie den Griff unten rechts zum Ändern der Größe."
 
 msgid "Add email and newsletter features for free"
 msgstr "E-Mail- und Newsletter-Funktionen kostenlos ergänzen"
@@ -617,28 +617,28 @@ msgid "Upload plugin ZIP"
 msgstr "Plugin-ZIP hochladen"
 
 msgid "Select a door"
-msgstr "Türchen auswählen"
+msgstr "Türe auswählen"
 
 msgid "Click a door in the calendar to edit its settings here. Changes are shown immediately in the preview."
-msgstr "Klicken Sie im Kalender auf ein Türchen, um dessen Einstellungen hier zu bearbeiten. Änderungen werden sofort in der Vorschau angezeigt."
+msgstr "Klicken Sie im Kalender auf eine Türe, um dessen Einstellungen hier zu bearbeiten. Änderungen werden sofort in der Vorschau angezeigt."
 
 msgid "Default door colors"
-msgstr "Standardfarben für Türchen"
+msgstr "Standardfarben für Türe"
 
 msgid "These colors are used only for newly created doors. Existing doors keep their individual settings."
-msgstr "Diese Farben werden nur für neu angelegte Türchen verwendet. Bestehende Türchen behalten ihre individuellen Einstellungen."
+msgstr "Diese Farben werden nur für neu angelegte Türe verwendet. Bestehende Türe behalten ihre individuellen Einstellungen."
 
 msgid "Default color when closed (RGBA)"
-msgstr "Standardfarbe bei geschlossenem Türchen (RGBA)"
+msgstr "Standardfarbe bei geschlossenem Türe (RGBA)"
 
 msgid "Default color when opened (RGBA)"
-msgstr "Standardfarbe bei geöffnetem Türchen (RGBA)"
+msgstr "Standardfarbe bei geöffnetem Türe (RGBA)"
 
 msgid "Theme colors"
 msgstr "Theme-Farben"
 
 msgid "First select the closed or opened color field, then choose a theme color."
-msgstr "Wählen Sie zuerst das Farbfeld für das geschlossene oder geöffnete Türchen und anschließend eine Theme-Farbe aus."
+msgstr "Wählen Sie zuerst das Farbfeld für das geschlossene oder geöffnete Türe und anschließend eine Theme-Farbe aus."
 
 msgid "Apply settings"
 msgstr "Einstellungen übernehmen"
@@ -713,7 +713,7 @@ msgid "Default label font"
 msgstr "Standard-Schriftart der Beschriftung"
 
 msgid "Show door label"
-msgstr "Türchenbeschriftung anzeigen"
+msgstr "Türbeschriftung anzeigen"
 
 msgid "Label color (RGBA)"
 msgstr "Beschriftungsfarbe (RGBA)"
@@ -794,10 +794,10 @@ msgid "Default border style"
 msgstr "Standard-Rahmenart"
 
 msgid "Show label when closed by default"
-msgstr "Beschriftung bei geschlossenen Türchen standardmäßig anzeigen"
+msgstr "Beschriftung bei geschlossener Türe standardmäßig anzeigen"
 
 msgid "Show label when opened by default"
-msgstr "Beschriftung bei geöffneten Türchen standardmäßig anzeigen"
+msgstr "Beschriftung bei geöffneter Türe standardmäßig anzeigen"
 
 msgid "Transparency"
 msgstr "Transparenz"
@@ -863,7 +863,7 @@ msgid "Keep closed until clicked"
 msgstr "Bis zum Anklicken geschlossen lassen"
 
 msgid "Active door border color"
-msgstr "Rahmenfarbe des aktuellen Türchens"
+msgstr "Rahmenfarbe des aktuellen Türes"
 
 msgid "Preview mode – unlock dates are ignored and actions are disabled."
 msgstr "Vorschaumodus – Freigabezeiten werden ignoriert und Aktionen sind deaktiviert."
@@ -1199,3 +1199,59 @@ msgstr "Separate Position und Größe für die Türnummer nach dem Öffnen verwe
 
 msgid "Position"
 msgstr "Position"
+msgid "No image selected"
+msgstr "Kein Bild ausgewählt"
+
+msgid "Top center"
+msgstr "Oben mittig"
+
+msgid "Center left"
+msgstr "Mitte links"
+
+msgid "Center right"
+msgstr "Mitte rechts"
+
+msgid "Bottom center"
+msgstr "Unten mittig"
+
+msgid "Image position"
+msgstr "Bildposition"
+
+msgid "Content heading"
+msgstr "Inhaltsüberschrift"
+
+msgid "Leave empty to use the release date."
+msgstr "Leer lassen, um das Freigabedatum zu verwenden."
+
+msgid "Rectangle"
+msgstr "Rechteckig"
+
+msgid "Rounded corners"
+msgstr "Abgerundete Ecken"
+
+msgid "Width"
+msgstr "Breite"
+
+msgid "Automatic"
+msgstr "Automatisch"
+
+msgid "Width in pixels"
+msgstr "Breite in Pixel"
+
+msgid "Width in percent"
+msgstr "Breite in Prozent"
+
+msgid "Font color"
+msgstr "Schriftfarbe"
+
+msgid "Apply appearance to all doors in this layout"
+msgstr "Darstellung auf alle Türen in diesem Layout anwenden"
+
+msgid "Design area"
+msgstr "Gestaltungsfläche"
+
+msgid "Apply this appearance to all doors and update the global defaults?"
+msgstr "Diese Darstellung auf alle Türen anwenden und die allgemeinen Voreinstellungen aktualisieren?"
+
+msgid "Width (px)"
+msgstr "Breite (px)"

@@ -123,14 +123,13 @@
 			downloadBox.querySelector('[data-door-asset-preview]').innerHTML = downloadUrl ? '<span class="dashicons dashicons-download" aria-hidden="true"></span> ' + escapeHtml(downloadUrl.split('/').pop()) : '';
 			downloadBox.querySelector('[data-remove-door-download]').hidden = !downloadUrl;
 		}
-		['closedImage', 'openImage'].forEach(function (kind) {
+		['image'].forEach(function (kind) {
 			var box = modal.querySelector('[data-door-asset="' + kind + '"]');
 			if (!box) return;
-			var url = modal.querySelector('[data-door-field="' + kind + 'Url"]').value;
-			box.querySelector('[data-door-asset-preview]').innerHTML = url ? '<img src="' + escapeHtml(safeUrl(url)) + '" alt="">' : '';
+			var url = modal.querySelector('[data-door-field="imageUrl"]').value;
+			box.querySelector('[data-door-asset-preview]').innerHTML = url ? '<img src="' + escapeHtml(safeUrl(url)) + '" alt="">' : '<span>' + escapeHtml(adminText('noImageSelected', 'No image selected')) + '</span>';
 			box.querySelector('[data-remove-door-image="' + kind + '"]').hidden = !url;
-			var overlayWrap = modal.querySelector('[data-image-overlay-wrap="' + kind.replace('Image', '') + '"]');
-			if (overlayWrap) overlayWrap.hidden = !url;
+			modal.querySelectorAll('[data-image-overlay-wrap]').forEach(function (overlayWrap) { overlayWrap.hidden = !url; });
 		});
 	}
 
@@ -216,7 +215,7 @@
 				element.style.color = layer.color || '#1f2937';
 				element.style.fontSize = number(layer.fontSize, 24) + 'px';
 				element.style.borderRadius = number(layer.radius, 0) + 'px';
-				if (layer.type === 'image' && layer.imageUrl) element.innerHTML = '<img src="' + escapeHtml(safeUrl(layer.imageUrl)) + '" alt="">';
+				if ((layer.type === 'surface' || layer.type === 'image') && layer.imageUrl) element.innerHTML = '<img src="' + escapeHtml(safeUrl(layer.imageUrl)) + '" alt="" style="object-position:' + escapeHtml(String(layer.imagePosition || 'center').replace('-', ' ')) + '">';
 				else if (layer.type === 'text') element.innerHTML = '<span>' + escapeHtml(layer.text || '').replace(/\n/g, '<br>') + '</span>';
 				element.insertAdjacentHTML('beforeend', '<span class="panda-seasons-composer__resize" data-resize-layer aria-hidden="true"></span>');
 				stage.appendChild(element);
@@ -246,10 +245,9 @@
 
 		function addLayer(type, position) {
 			var count = layers.filter(function (layer) { return !layer.deleted; }).length;
-			var layer = { id: 'layer-' + Date.now(), type: type, text: type === 'text' ? adminText('newTextArea', 'Text area') : '', imageId: 0, imageUrl: '', background: type === 'color' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0)', color: 'rgba(31, 41, 55, 1)', fontSize: 24, z: count + 1, url: '', radius: 0, desktop: cleanPosition(null, 10 + (count % 5) * 5, 10 + (count % 5) * 5, 'desktop'), mobile: cleanPosition(null, 8 + (count % 3) * 7, 8 + (count % 3) * 7, 'mobile') };
+			var layer = { id: 'layer-' + Date.now(), type: type, text: type === 'text' ? adminText('newTextArea', 'Text area') : '', imageId: 0, imageUrl: '', imagePosition: 'center', background: type === 'surface' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0)', color: 'rgba(31, 41, 55, 1)', fontSize: 24, z: count + 1, url: '', radius: 0, desktop: cleanPosition(null, 10 + (count % 5) * 5, 10 + (count % 5) * 5, 'desktop'), mobile: cleanPosition(null, 8 + (count % 3) * 7, 8 + (count % 3) * 7, 'mobile') };
 			if (position) { layer[view].x = clamp(position.x - layer[view].w / 2, 0, 100 - layer[view].w); layer[view].y = clamp(position.y - layer[view].h / 2, 0, 100 - layer[view].h); }
 			layers.push(layer); openLayerEditor(layer);
-			if (type === 'image') selectLayerImage();
 		}
 
 		function selectLayerImage() {
@@ -271,6 +269,8 @@
 			var ratioInput = document.querySelector('[data-editor-ratio="' + view + '"]');
 			stage.style.setProperty('--ps-editor-ratio', number(ratioInput && ratioInput.value, view === 'mobile' ? 0.75 : 1.5));
 			stage.style.setProperty('--ps-editor-image', currentImage() ? 'url("' + currentImage().replace(/"/g, '\\"') + '")' : 'none');
+				var backgroundInput = document.querySelector('[data-cover-background="' + view + '"]');
+				stage.style.setProperty('--ps-editor-background', backgroundInput ? backgroundInput.value : 'rgba(23,32,51,1)');
 			root.setAttribute('data-view', view);
 		}
 
@@ -306,19 +306,22 @@
 				element.style.setProperty('--ps-door-label-border-width', (isOpen ? (door.openLabelBorderWidth == null ? 1 : door.openLabelBorderWidth) : (door.closedLabelBorderWidth == null ? 1 : door.closedLabelBorderWidth)) + 'px');
 				var labelWidthMode = isOpen ? door.openLabelWidthMode : door.closedLabelWidthMode;
 				var labelWidth = isOpen ? door.openLabelWidth : door.closedLabelWidth;
-				var labelPadding = isOpen ? (door.openLabelPadding == null ? 4 : door.openLabelPadding) : (door.closedLabelPadding == null ? 4 : door.closedLabelPadding);
+					var labelPadding = 4;
 				var labelSize = labelWidth || 60;
-				var roundLabel = String(labelWidthMode || '').indexOf('round-') === 0;
-				var labelWidthValue = labelWidthMode === 'percent' || labelWidthMode === 'round-percent' ? labelSize + '%' : labelWidthMode === 'round-px' ? labelSize + 'px' : labelWidthMode === 'round-auto' ? 'calc(2.5em + ' + (labelPadding * 2) + 'px)' : 'auto';
+					var labelShape = isOpen ? door.openLabelShape : door.closedLabelShape;
+					var roundLabel = labelShape === 'round' || labelShape === 'square';
+					var labelWidthValue = labelWidthMode === 'percent' ? labelSize + '%' : labelWidthMode === 'px' ? labelSize + 'px' : 'auto';
 				element.style.setProperty('--ps-door-label-width', labelWidthValue);
-				element.style.setProperty('--ps-door-label-height', roundLabel && labelWidthMode !== 'round-percent' ? labelWidthValue : 'auto');
-				element.style.setProperty('--ps-door-label-aspect', labelWidthMode === 'round-percent' ? '1' : 'auto');
+				element.style.setProperty('--ps-door-label-height', roundLabel ? labelWidthValue : 'auto');
+				element.style.setProperty('--ps-door-label-aspect', roundLabel ? '1' : 'auto');
+					element.style.setProperty('--ps-door-label-radius', labelShape === 'round' ? '999px' : labelShape === 'rounded' ? '8px' : '0');
 				element.style.setProperty('--ps-door-label-padding', labelPadding + 'px');
 				element.style.setProperty('--ps-door-compact-size', number(door.openCompactLabelSize, 14) + 'px');
-				var stateImage = isOpen ? door.openImageUrl : door.closedImageUrl;
+					var stateImage = door.imageUrl;
 				var stateImageOverlay = isOpen ? door.openImageOverlay : door.closedImageOverlay;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
 				element.style.setProperty('--ps-door-image-overlay', stateImage ? (stateImageOverlay || 'rgba(0,0,0,0)') : 'rgba(0,0,0,0)');
+					element.style.setProperty('--ps-door-image-position', String(door.imagePosition || 'center').replace('-', ' '));
 				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
 				var labelVisible = isOpen ? door.openLabelVisible !== false : door.closedLabelVisible !== false;
 				element.innerHTML = '<span class="panda-seasons-composer__door-actions"><button type="button" data-duplicate-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '"><span class="dashicons dashicons-admin-page" aria-hidden="true"></span></button><button type="button" data-delete-stage-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '"><span class="dashicons dashicons-trash" aria-hidden="true"></span></button></span>' + (labelVisible ? '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span>' : '') + '<span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
@@ -364,6 +367,7 @@
 				title: label,
 				content: '',
 				contentType: 'general',
+					contentHeading: '',
 				number: doorNumber,
 				unlockDate: '',
 				unlockTime: '',
@@ -386,16 +390,15 @@
 				closedLabel: '',
 				openLabel: '',
 				closedBg: root.dataset.defaultClosed || 'rgba(99, 99, 99, 0.2)',
-				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: +(root.dataset.defaultLabelPadding || 4), closedImageOverlay: root.dataset.defaultClosedImageOverlay || 'rgba(0, 0, 0, 0)',
+					closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelShape: (document.querySelector('[name="panda_seasons_default_closed_label_shape"]') || {}).value || 'rounded', closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: 4, closedImageOverlay: root.dataset.defaultClosedImageOverlay || 'rgba(0, 0, 0, 0)',
 				openBg: root.dataset.defaultOpen || 'rgba(51, 79, 232, 1)',
-				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: +(root.dataset.defaultLabelPadding || 4), openImageOverlay: root.dataset.defaultOpenImageOverlay || 'rgba(0, 0, 0, 0)',
+					openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelShape: (document.querySelector('[name="panda_seasons_default_open_label_shape"]') || {}).value || 'rounded', openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: 4, openImageOverlay: root.dataset.defaultOpenImageOverlay || 'rgba(0, 0, 0, 0)',
 				openCompactLabel: false, openLabelCorner: 'top-right', openCompactLabelSize: 14,
 				shape: root.dataset.defaultShape || 'rounded',
 				openEffect: 'inherit',
-				closedImageId: 0,
-				closedImageUrl: '',
-				openImageId: 0,
-				openImageUrl: '',
+					imageId: 0,
+					imageUrl: '',
+					imagePosition: 'center',
 				quizEnabled: false,
 				quizQuestions: [{ question: '', answers: ['', ''], correct: 1 }],
 				quizSuccess: '',
@@ -593,6 +596,7 @@
 		};
 		root.getDoors = function () { return doors; };
 		root.renderDoors = render;
+		root.updateBackground = setStageAppearance;
 		root.setPreviewState = function(state){previewState=state;root.dataset.previewState=state;root.querySelectorAll('button[data-preview-state]').forEach(function(button){button.classList.toggle('button-primary',button.dataset.previewState===state);});render();};
 		setStageAppearance();
 		render();
@@ -649,7 +653,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'contentType', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'openCompactLabel', 'openLabelCorner', 'openCompactLabelSize', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'closedImageOverlay', 'openImageId', 'openImageUrl', 'openImageOverlay'].forEach(function (name) {
+		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'openCompactLabel', 'openLabelCorner', 'openCompactLabelSize', 'shape', 'openEffect', 'imageId', 'imageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -659,6 +663,16 @@
 		var openPreview = modal.querySelector('[data-door-preview]:not([hidden])');
 		if (openPreview) previewDoor(false);
 	}
+
+	function arrangeDoorEditorSections() {
+		if (!modal) return;
+		var fields = modal.querySelector('.panda-seasons-door-modal__fields');
+		if (!fields) return;
+		var findSection = function (selector) { var field=modal.querySelector(selector); return field && field.closest('details, .panda-seasons-content-type'); };
+		var ordered = [findSection('[data-door-section="basics"]'), findSection('[data-door-section="appearance"]'), findSection('[data-door-section="content-type"]'), findSection('[data-content-type-panel="general video"]'), findSection('[data-content-type-panel="product"]'), findSection('[data-content-type-panel="quiz"]'), findSection('[data-door-section="button"]'), findSection('[data-door-field="ctaEnabled"]'), findSection('[data-door-field="emailSubject"]')];
+		ordered.forEach(function (section) { if (section) fields.appendChild(section); });
+	}
+	arrangeDoorEditorSections();
 
 	if (composer) composerController(composer);
 
@@ -740,6 +754,21 @@
 	}
 
 	document.addEventListener('click', function (event) {
+		if (event.target.closest('[data-apply-door-appearance]') && activeDoor && composer) {
+			if (!window.confirm(adminText('applyAppearanceConfirm', 'Apply this appearance to all doors and update the global defaults?'))) return;
+			syncDoorPreview();
+			var props = ['shape','openEffect','imagePosition','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay','openCompactLabel','openLabelCorner','openCompactLabelSize'];
+			composer.getDoors().forEach(function (door) { if (!door.deleted && door !== activeDoor) props.forEach(function (prop) { door[prop] = activeDoor[prop]; }); });
+			var defaultLinks = {shape:'panda_seasons_default_shape',openEffect:'panda_seasons_open_effect',closedBg:'panda_seasons_default_closed_background',openBg:'panda_seasons_default_open_background',closedLabelVisible:'panda_seasons_default_closed_label_visible',openLabelVisible:'panda_seasons_default_open_label_visible',closedLabelShape:'panda_seasons_default_closed_label_shape',openLabelShape:'panda_seasons_default_open_label_shape',closedFont:'panda_seasons_default_label_font',closedFontSize:'panda_seasons_default_label_font_size',closedFontWeight:'panda_seasons_default_label_font_weight',closedLabelWidthMode:'panda_seasons_default_label_width_mode',closedLabelWidth:'panda_seasons_default_label_width',closedBorderStyle:'panda_seasons_default_border_style',closedColor:'panda_seasons_default_closed_text_color',openColor:'panda_seasons_default_open_text_color',closedBorderColor:'panda_seasons_default_closed_border_color',openBorderColor:'panda_seasons_default_open_border_color',closedBorderWidth:'panda_seasons_default_closed_border_width',openBorderWidth:'panda_seasons_default_open_border_width',closedLabelBg:'panda_seasons_default_closed_label_background',openLabelBg:'panda_seasons_default_open_label_background',closedLabelBorderColor:'panda_seasons_default_closed_label_border_color',openLabelBorderColor:'panda_seasons_default_open_label_border_color',closedLabelBorderWidth:'panda_seasons_default_closed_label_border_width',openLabelBorderWidth:'panda_seasons_default_open_label_border_width',closedImageOverlay:'panda_seasons_default_closed_image_overlay',openImageOverlay:'panda_seasons_default_open_image_overlay'};
+			Object.keys(defaultLinks).forEach(function (prop) {
+				var input=document.querySelector('[name="'+defaultLinks[prop]+'"]');
+				if(!input || (prop === 'openEffect' && activeDoor[prop] === 'inherit')) return;
+				if(input.type === 'checkbox') input.checked = Boolean(activeDoor[prop]); else input.value=activeDoor[prop];
+				input.dispatchEvent(new Event('change',{bubbles:true}));
+			});
+			composer.renderDoors();
+			return;
+		}
 		var refreshImages = event.target.closest('[data-refresh-calendar-images]');
 		if (refreshImages) {
 			var stamp = Date.now();
@@ -782,7 +811,7 @@
 			var targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop';
 			if (remove) {
 				hidden.value = '';
-				field.querySelector('.panda-seasons-media-preview').innerHTML = '';
+				field.querySelector('.panda-seasons-media-preview').innerHTML = '<span>' + escapeHtml(adminText('noImageSelected', 'No image selected')) + '</span>';
 				remove.hidden = true;
 				if (composer && composer.updateImage) composer.updateImage(targetView, '');
 				return;
@@ -837,18 +866,19 @@
 		if (event.target.matches('[data-default-door-color]') && composer) composer.dataset['default' + (event.target.dataset.defaultDoorColor === 'closed' ? 'Closed' : 'Open')] = event.target.value;
 		if (event.target.matches('[data-default-door-setting]') && composer) composer.dataset['default' + event.target.dataset.defaultDoorSetting.charAt(0).toUpperCase() + event.target.dataset.defaultDoorSetting.slice(1)] = event.target.type === 'checkbox' ? (event.target.checked ? '1' : '0') : event.target.value;
 		if (event.target.matches('[data-default-door-shape]') && composer) composer.dataset.defaultShape = event.target.value;
+		if (event.target.matches('[data-cover-background]') && composer && composer.updateBackground) composer.updateBackground();
 	});
 	function updateLabelWidthVisibility(select) {
 		var row = select && select.closest('.panda-seasons-label-size-row');
 		if (!row) return;
 		var widthField = row.querySelector('[data-door-field$="LabelWidth"], [data-default-door-setting="labelWidth"]');
 		var label = widthField && widthField.closest('label');
-		var needsSize = ['percent', 'round-px', 'round-percent'].indexOf(select.value) !== -1;
+		var needsSize = ['percent', 'px'].indexOf(select.value) !== -1;
 		if (label) label.hidden = !needsSize;
 		if (widthField) {
-			widthField.max = select.value === 'round-px' ? '300' : '100';
+			widthField.max = select.value === 'px' ? '300' : '100';
 			var caption = label && label.querySelector('[data-label-size-caption]');
-			if (caption) caption.textContent = select.value === 'round-px' ? adminText('diameterPx','Diameter (px)') : select.value === 'round-percent' ? adminText('diameterPercent','Diameter (%)') : adminText('widthPercent','Width (%)');
+			if (caption) caption.textContent = select.value === 'px' ? adminText('widthPx','Width (px)') : adminText('widthPercent','Width (%)');
 		}
 	}
 	function updateContentTypeVisibility() {
@@ -873,7 +903,7 @@
 	}
 	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
 
-	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
+	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[data-cover-background],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
 	var adminGrid=document.querySelector('.panda-seasons-admin-grid'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
 	if(adminGrid&&editorLayout){
@@ -899,7 +929,7 @@
 			{selector:'[name="panda_seasons_default_closed_label_background"]',props:['closedLabelBg']},{selector:'[name="panda_seasons_default_open_label_background"]',props:['openLabelBg']},
 			{selector:'[name="panda_seasons_default_closed_label_border_color"]',props:['closedLabelBorderColor']},{selector:'[name="panda_seasons_default_open_label_border_color"]',props:['openLabelBorderColor']},
 			{selector:'[name="panda_seasons_default_closed_label_border_width"]',props:['closedLabelBorderWidth']},{selector:'[name="panda_seasons_default_open_label_border_width"]',props:['openLabelBorderWidth']},
-			{selector:'[name="panda_seasons_default_closed_label_visible"]',props:['closedLabelVisible']},{selector:'[name="panda_seasons_default_open_label_visible"]',props:['openLabelVisible']},
+			{selector:'[name="panda_seasons_default_closed_label_shape"]',props:['closedLabelShape']},{selector:'[name="panda_seasons_default_open_label_shape"]',props:['openLabelShape']},{selector:'[name="panda_seasons_default_closed_label_visible"]',props:['closedLabelVisible']},{selector:'[name="panda_seasons_default_open_label_visible"]',props:['openLabelVisible']},
 			{selector:'[name="panda_seasons_default_label_font"]',props:['closedFont','openFont']},{selector:'[name="panda_seasons_default_label_font_size"]',props:['closedFontSize','openFontSize']},
 			{selector:'[name="panda_seasons_default_label_font_weight"]',props:['closedFontWeight','openFontWeight']},{selector:'[name="panda_seasons_default_label_width_mode"]',props:['closedLabelWidthMode','openLabelWidthMode']},
 			{selector:'[name="panda_seasons_default_label_width"]',props:['closedLabelWidth','openLabelWidth']},{selector:'[name="panda_seasons_default_label_padding"]',props:['closedLabelPadding','openLabelPadding']},
@@ -931,11 +961,11 @@
 		sampleLabel.style.borderWidth=defaultValue('panda_seasons_default_'+prefix+'_label_border_width','1')+'px';
 		sampleLabel.style.borderStyle='solid';
 		sampleLabel.style.padding=defaultValue('panda_seasons_default_label_padding','4')+'px';
-		var labelMode=defaultValue('panda_seasons_default_label_width_mode','content'),labelSize=defaultValue('panda_seasons_default_label_width','60'),isRound=labelMode.indexOf('round-')===0;
-		sampleLabel.style.width=labelMode==='percent'||labelMode==='round-percent'?labelSize+'%':labelMode==='round-px'?labelSize+'px':labelMode==='round-auto'?'calc(2.5em + '+(2*number(defaultValue('panda_seasons_default_label_padding','4'),4))+'px)':'auto';
-		sampleLabel.style.height=isRound&&labelMode!=='round-percent'?sampleLabel.style.width:'auto';
-		sampleLabel.style.aspectRatio=labelMode==='round-percent'?'1':'auto';
-		sampleLabel.style.borderRadius=isRound?'999px':'999px';
+		var labelMode=defaultValue('panda_seasons_default_label_width_mode','content'),labelSize=defaultValue('panda_seasons_default_label_width','60'),labelShape=defaultValue('panda_seasons_default_'+prefix+'_label_shape','rounded'),isRound=labelShape==='round'||labelShape==='square';
+		sampleLabel.style.width=labelMode==='percent'?labelSize+'%':labelMode==='px'?labelSize+'px':'auto';
+		sampleLabel.style.height=isRound?sampleLabel.style.width:'auto';
+		sampleLabel.style.aspectRatio=isRound?'1':'auto';
+		sampleLabel.style.borderRadius=labelShape==='round'?'999px':labelShape==='rounded'?'8px':'0';
 		sampleLabel.style.boxSizing='border-box';
 		defaultPreview.classList.remove('shape-square','shape-rounded','shape-round');
 		defaultPreview.classList.add('shape-'+defaultValue('panda_seasons_default_shape','rounded'));

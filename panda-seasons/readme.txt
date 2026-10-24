@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: calendar, advent calendar, seasonal campaign, email calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 License: GPLv2 or later
 
 Interactive seasonal calendars with freely positioned doors on responsive desktop and mobile images. Web calendars work independently; email delivery requires the free ContactPanda plugin.
@@ -15,6 +15,14 @@ Create multiple parallel calendars in a visual drag-and-drop composer, schedule 
 Use `[panda_seasons id="123"]` to display a published calendar.
 
 == Changelog ==
+
+= 0.5.3 =
+* Uses one shared background image per door with separate closed/open overlays and nine image positions.
+* Adds draggable design areas that combine a background color with an optional positioned image.
+* Reorganizes the door editor, hides unavailable integrations and adds a content heading with a release-date fallback.
+* Adds rectangle, rounded, square and round label backgrounds with automatic, pixel or percentage width.
+* Adds separate desktop and mobile canvas background colors and a compact 60:40 defaults layout.
+* Displays popup content in a responsive image-and-text layout and adds an appearance action for all doors.
 
 = 0.5.2 =
 * Places the image-save action below both cover images and moves content-window styling directly below it in the left settings column.
