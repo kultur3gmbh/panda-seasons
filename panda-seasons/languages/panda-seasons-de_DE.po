@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.6\n"
+"Project-Id-Version: Panda Seasons 0.5.7\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1316,8 +1316,8 @@ msgstr "Darstellung auf alle Türen in diesem Layout anwenden"
 msgid "Design area"
 msgstr "Gestaltungsfläche"
 
-msgid "Apply this appearance to all doors and update the global defaults?"
-msgstr "Diese Darstellung auf alle Türen anwenden und die allgemeinen Voreinstellungen aktualisieren?"
+msgid "Only appearance and style settings will be applied to all doors. Contents, media, links, products, quiz questions, call-to-action settings and dates remain unchanged."
+msgstr "Es werden ausschließlich die Darstellungs- und Stileinstellungen auf alle Türen übertragen. Inhalte, Medien, Links, Produkte, Quizfragen, Call-to-Action-Einstellungen und Termine bleiben unverändert."
 
 msgid "Width (px)"
 msgstr "Breite (px)"

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.6\n"
+"Project-Id-Version: Panda Seasons 0.5.7\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,6 +54,24 @@ msgstr "Die ausgewählte Vorlage ist nicht mehr verfügbar."
 
 msgid "The downloaded template failed its integrity check."
 msgstr "Die heruntergeladene Vorlage hat die Integritätsprüfung nicht bestanden."
+
+msgid "Call to action"
+msgstr "Call-to-Action"
+
+msgid "Enable call to action"
+msgstr "Call-to-Action aktivieren"
+
+msgid "CTA heading"
+msgstr "CTA-Überschrift"
+
+msgid "CTA text"
+msgstr "CTA-Text"
+
+msgid "CTA type"
+msgstr "Call-to-Action-Typ"
+
+msgid "ContactPanda newsletter form"
+msgstr "ContactPanda-Newsletterformular"
 
 msgid "This text is shown on the door. Leave it empty to display the door number automatically. You may use a different label for the closed and opened state."
 msgstr "Dieser Text wird auf der Türe angezeigt. Lassen Sie das Feld leer, um automatisch die Nummer der Türe zu verwenden. Für den geschlossenen und geöffneten Zustand können Sie unterschiedliche Beschriftungen festlegen."
@@ -1298,8 +1316,8 @@ msgstr "Darstellung auf alle Türen in diesem Layout anwenden"
 msgid "Design area"
 msgstr "Gestaltungsfläche"
 
-msgid "Apply this appearance to all doors and update the global defaults?"
-msgstr "Diese Darstellung auf alle Türen anwenden und die allgemeinen Voreinstellungen aktualisieren?"
+msgid "Only appearance and style settings will be applied to all doors. Contents, media, links, products, quiz questions, call-to-action settings and dates remain unchanged."
+msgstr "Es werden ausschließlich die Darstellungs- und Stileinstellungen auf alle Türen übertragen. Inhalte, Medien, Links, Produkte, Quizfragen, Call-to-Action-Einstellungen und Termine bleiben unverändert."
 
 msgid "Width (px)"
 msgstr "Breite (px)"

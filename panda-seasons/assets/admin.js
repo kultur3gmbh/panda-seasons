@@ -716,6 +716,7 @@
 		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"],[data-door-field$="Overlay"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('change',{bubbles:true}));});
 		modal.querySelectorAll('[data-door-field$="LabelWidthMode"]').forEach(updateLabelWidthVisibility);
 		updateContentTypeVisibility();
+		updateCtaVisibility();
 	}
 
 	function closeDoorModal(applyChanges) {
@@ -845,7 +846,7 @@
 
 	document.addEventListener('click', function (event) {
 		if (event.target.closest('[data-apply-door-appearance]') && activeDoor && composer) {
-			if (!window.confirm(adminText('applyAppearanceConfirm', 'Apply this appearance to all doors and update the global defaults?'))) return;
+			if (!window.confirm(adminText('applyAppearanceConfirm', 'Only appearance and style settings will be applied to all doors. Contents, media, links, products, quiz questions, call-to-action settings and dates remain unchanged.'))) return;
 			syncDoorPreview();
 			var props = ['shape','openEffect','imagePosition','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelPosition','openLabelPosition','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay'];
 			composer.getDoors().forEach(function (door) { if (!door.deleted && door !== activeDoor) props.forEach(function (prop) { door[prop] = activeDoor[prop]; }); });
@@ -972,6 +973,7 @@
 	document.addEventListener('change', function (event) {
 		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();
 		if (event.target.matches('[data-door-field="contentType"]')) updateContentTypeVisibility();
+			if (event.target.matches('[data-door-field="ctaType"]')) updateCtaVisibility();
 		if (event.target.matches('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]')) updateLabelWidthVisibility(event.target);
 		if (event.target.matches('[data-default-door-color]') && composer) composer.dataset['default' + (event.target.dataset.defaultDoorColor === 'closed' ? 'Closed' : 'Open')] = event.target.value;
 		if (event.target.matches('[data-default-door-setting]') && composer) composer.dataset['default' + event.target.dataset.defaultDoorSetting.charAt(0).toUpperCase() + event.target.dataset.defaultDoorSetting.slice(1)] = event.target.type === 'checkbox' ? (event.target.checked ? '1' : '0') : event.target.value;
@@ -1010,6 +1012,14 @@
 		}
 		var quizEnabled = modal.querySelector('[data-door-field="quizEnabled"]');
 		if (quizEnabled) quizEnabled.checked = type === 'quiz';
+	}
+	function updateCtaVisibility() {
+		if (!modal) return;
+		var typeField = modal.querySelector('[data-door-field="ctaType"]');
+		var type = typeField ? typeField.value : 'link';
+		modal.querySelectorAll('[data-cta-field]').forEach(function (field) {
+			field.hidden = field.dataset.ctaField !== type;
+		});
 	}
 	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
 	if (modal) {

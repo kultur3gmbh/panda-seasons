@@ -86,3 +86,20 @@ body.post-type-panda_calendar #titlediv{margin:8px 0 12px}.panda-seasons-admin-g
 .panda-seasons-editor-layout .panda-seasons-door-modal__footer>[data-delete-door]{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;min-height:36px;padding:0 12px;border:1px solid #d63638;border-radius:3px;color:#b32d2e;background:#fff;text-decoration:none}.panda-seasons-editor-layout .panda-seasons-door-modal__footer>[data-delete-door]:hover{color:#fff;background:#b32d2e}
 .panda-seasons-template-library{margin-top:20px;padding:18px;border:1px solid #dcdcde;border-radius:10px;background:#fff}.panda-seasons-template-library__header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.panda-seasons-template-library__header h2{margin-top:0}.panda-seasons-template-library__header .button{display:inline-flex;align-items:center;gap:5px}.panda-seasons-template-library__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}.panda-seasons-template-card{overflow:hidden;border:1px solid #dcdcde;border-radius:9px;background:#fff}.panda-seasons-template-card__preview{display:block;aspect-ratio:4/3;background:#f0f0f1}.panda-seasons-template-card__preview img{width:100%;height:100%;object-fit:cover}.panda-seasons-template-card__body{padding:14px}.panda-seasons-template-card__body h3{margin:0 0 6px}.panda-seasons-template-card__images{display:block;margin:10px 0}.panda-seasons-template-card__body form .button{width:100%}
 @media(max-width:900px){.panda-seasons-template-library__header{display:block}.panda-seasons-composer__tools .panda-seasons-composer__snap{margin-left:0}.panda-seasons-interactive-preview{margin-left:0!important}}
+
+/* 0.5.7: compact defaults, simplified preview controls and clearer door assets. */
+.panda-seasons-cover-settings__row{display:block}
+.panda-seasons-cover-settings .panda-seasons-media-preview{aspect-ratio:4/3;min-height:0}
+.panda-seasons-cover-settings__controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.panda-seasons-defaults-row{grid-template-columns:1fr 1fr}
+.panda-seasons-default-active-color{grid-column:1/-1!important;max-width:none;margin-bottom:18px}
+.panda-seasons-composer__toolbar{justify-content:flex-start}
+.panda-seasons-composer__toolbar .panda-seasons-interactive-preview{margin-left:auto!important}
+.panda-seasons-composer__tools{display:grid;gap:8px;align-items:start;margin:12px 0}
+.panda-seasons-composer__add-row,.panda-seasons-composer__grid-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.panda-seasons-composer__grid-row .panda-seasons-composer__snap{margin-left:0}
+.panda-seasons-door-modal__asset[data-door-asset=media],.panda-seasons-door-modal__asset[data-door-asset=download]{grid-template-columns:1fr!important;align-items:stretch}
+.panda-seasons-door-modal__asset[data-door-asset=media]>*,.panda-seasons-door-modal__asset[data-door-asset=download]>*{grid-column:1}
+.panda-seasons-door-modal__asset .panda-seasons-door-asset-remove{justify-self:start}
+[data-cta-field][hidden]{display:none!important}
+@media(max-width:782px){.panda-seasons-cover-settings__controls{grid-template-columns:1fr}}
