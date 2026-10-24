@@ -16,6 +16,7 @@ final class Panda_Seasons_Plugin {
 		add_action( 'save_post_' . self::CALENDAR_POST_TYPE, array( __CLASS__, 'save_calendar' ) );
 		add_action( 'save_post_' . self::DOOR_POST_TYPE, array( __CLASS__, 'save_door' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_assets' ) );
+		add_action( 'wp_ajax_panda_seasons_save_editor_door', array( __CLASS__, 'save_editor_door_ajax' ) );
 		add_action( 'admin_post_panda_seasons_preview', array( __CLASS__, 'preview_page' ) );
 		add_action( 'admin_post_panda_seasons_export_template', array( __CLASS__, 'export_template' ) );
 		add_action( 'admin_post_panda_seasons_import_template', array( __CLASS__, 'import_template' ) );
@@ -1179,9 +1180,10 @@ final class Panda_Seasons_Plugin {
 	}
 
 	private static function save_composer_doors( $calendar_id ) {
-		if ( ! isset( $_POST['panda_seasons_door_layout'] ) ) return;
+		$saved_door_ids = array();
+		if ( ! isset( $_POST['panda_seasons_door_layout'] ) ) return $saved_door_ids;
 		$items = json_decode( wp_unslash( $_POST['panda_seasons_door_layout'] ), true );
-		if ( ! is_array( $items ) ) return;
+		if ( ! is_array( $items ) ) return $saved_door_ids;
 		$event_options = self::event_options();
 
 		foreach ( $items as $item ) {
@@ -1310,7 +1312,37 @@ final class Panda_Seasons_Plugin {
 			update_post_meta( $door_id, '_ps_quiz_questions', $questions );
 			update_post_meta( $door_id, '_ps_position_desktop', self::sanitize_position( $item['desktop'] ?? array() ) );
 			update_post_meta( $door_id, '_ps_position_mobile', self::sanitize_position( $item['mobile'] ?? array() ) );
+			$saved_door_ids[] = $door_id;
 		}
+		return $saved_door_ids;
+	}
+
+	public static function save_editor_door_ajax() {
+		check_ajax_referer( 'panda_seasons_save_editor_door', 'nonce' );
+		$calendar_id = absint( $_POST['calendar_id'] ?? 0 );
+		if ( ! $calendar_id || self::CALENDAR_POST_TYPE !== get_post_type( $calendar_id ) || ! current_user_can( 'edit_post', $calendar_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'You are not allowed to save this calendar.', 'panda-seasons' ) ), 403 );
+		}
+		$door = json_decode( wp_unslash( $_POST['door'] ?? '' ), true );
+		if ( ! is_array( $door ) ) wp_send_json_error( array( 'message' => __( 'The door data is invalid.', 'panda-seasons' ) ), 400 );
+		$door_id = absint( $door['id'] ?? 0 );
+		if ( $door_id && ( self::DOOR_POST_TYPE !== get_post_type( $door_id ) || absint( wp_get_post_parent_id( $door_id ) ) !== $calendar_id || ! current_user_can( 'edit_post', $door_id ) ) ) {
+			wp_send_json_error( array( 'message' => __( 'You are not allowed to save this door.', 'panda-seasons' ) ), 403 );
+		}
+		$_POST['panda_seasons_door_layout'] = wp_slash( wp_json_encode( array( $door ) ) );
+		$saved_ids = self::save_composer_doors( $calendar_id );
+		$saved_id  = absint( $saved_ids[0] ?? 0 );
+		if ( ! $saved_id ) wp_send_json_error( array( 'message' => __( 'The door could not be saved.', 'panda-seasons' ) ), 500 );
+		$media_id = absint( get_post_meta( $saved_id, '_ps_media_id', true ) );
+		wp_send_json_success(
+			array(
+				'doorId'    => $saved_id,
+				'mediaId'   => $media_id,
+				'mediaUrl'  => $media_id ? ( wp_get_attachment_url( $media_id ) ?: '' ) : '',
+				'mediaType' => self::attachment_kind( $media_id ),
+				'message'   => __( 'Door saved.', 'panda-seasons' ),
+			)
+		);
 	}
 
 	private static function update_attachment_meta( $door_id, $meta_key, $attachment_id ) {
@@ -1418,6 +1450,9 @@ final class Panda_Seasons_Plugin {
 			'panda-seasons-admin',
 			'pandaSeasonsAdmin',
 			array(
+				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
+				'calendarId'     => get_the_ID(),
+				'saveDoorNonce'  => wp_create_nonce( 'panda_seasons_save_editor_door' ),
 				'uploadUrl'      => admin_url( 'async-upload.php' ),
 				'uploadNonce'    => wp_create_nonce( 'media-form' ),
 				'deleteConfirm'  => __( 'Move this door to the trash? You can restore it from the door list.', 'panda-seasons' ),
@@ -1441,7 +1476,9 @@ final class Panda_Seasons_Plugin {
 				'duplicateDoor'   => __( 'Duplicate door', 'panda-seasons' ),
 				'deleteDoor'      => __( 'Delete door', 'panda-seasons' ),
 				'editDoorTitle'   => __( 'Edit door %1$s – %2$s', 'panda-seasons' ),
+				'savingDoor'      => __( 'Saving door…', 'panda-seasons' ),
 				'doorSaved'       => __( 'Door saved.', 'panda-seasons' ),
+				'doorSaveFailed'  => __( 'The door could not be saved. Please try again.', 'panda-seasons' ),
 				'editCalendar'    => __( 'Edit calendar', 'panda-seasons' ),
 				'generalSettings' => __( 'General defaults', 'panda-seasons' ),
 				'applyDefaults'   => __( 'Apply global settings to existing doors', 'panda-seasons' ),

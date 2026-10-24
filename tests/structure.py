@@ -23,6 +23,9 @@ updater = (root / "includes/class-panda-seasons-updater.php").read_text(encoding
 integrations = (root / "includes/class-panda-seasons-integrations.php").read_text(encoding="utf-8")
 mcp = (root / "includes/class-panda-seasons-mcp.php").read_text(encoding="utf-8")
 subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_text(encoding="utf-8")
+admin_js = (root / "assets/admin.js").read_text(encoding="utf-8")
+admin_css = (root / "assets/admin-041.css").read_text(encoding="utf-8")
+frontend_css = (root / "assets/frontend.css").read_text(encoding="utf-8")
 if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin:
     raise SystemExit("Calendar contract missing")
 for composer_contract in ("_ps_position_desktop", "_ps_position_mobile", "data-door-modal", "panda-seasons__canvas"):
@@ -61,6 +64,16 @@ for content_contract in (
 for scope in ("calendar", "all_calendars", "all_mailings"):
     if scope not in subscriptions:
         raise SystemExit(f"Missing unsubscribe scope {scope}")
+for media_contract in ("wp_ajax_panda_seasons_save_editor_door", "save_editor_door_ajax", "_ps_media_id"):
+    if media_contract not in plugin:
+        raise SystemExit(f"Missing persistent door media contract {media_contract}")
+for dropzone_contract in ("carriesFiles", "event.stopPropagation()", "data-select-door-media"):
+    if dropzone_contract not in admin_js:
+        raise SystemExit(f"Missing isolated media dropzone contract {dropzone_contract}")
+if ".panda-seasons-door-modal__dropzone.is-dragover" not in admin_css:
+    raise SystemExit("Missing visible media dropzone state")
+if ".panda-seasons__layer--text{display:flex;flex-direction:column" not in frontend_css:
+    raise SystemExit("Text layers must stack headings and paragraphs vertically")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")

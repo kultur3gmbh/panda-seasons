@@ -792,6 +792,39 @@
 		updateDoorAssets(); syncDoorPreview();
 	}
 
+	function saveActiveDoor(door, status) {
+		if (!door || !window.pandaSeasonsAdmin || !pandaSeasonsAdmin.ajaxUrl || !pandaSeasonsAdmin.saveDoorNonce || !pandaSeasonsAdmin.calendarId) return;
+		if (status) status.textContent = adminText('savingDoor', 'Saving door…');
+		var data = new FormData();
+		data.append('action', 'panda_seasons_save_editor_door');
+		data.append('nonce', pandaSeasonsAdmin.saveDoorNonce);
+		data.append('calendar_id', pandaSeasonsAdmin.calendarId);
+		data.append('door', JSON.stringify(door));
+		fetch(pandaSeasonsAdmin.ajaxUrl, { method: 'POST', credentials: 'same-origin', body: data })
+			.then(function (response) { return response.json(); })
+			.then(function (result) {
+				if (!result || !result.success || !result.data) throw new Error(result && result.data && result.data.message ? result.data.message : adminText('doorSaveFailed', 'The door could not be saved. Please try again.'));
+				door.id = parseInt(result.data.doorId, 10) || door.id;
+				door.mediaId = parseInt(result.data.mediaId, 10) || 0;
+				door.mediaUrl = result.data.mediaUrl || '';
+				door.mediaType = result.data.mediaType || '';
+				door.isDraft = false;
+				if (activeDoor === door) {
+					var mediaId = modal.querySelector('[data-door-field="mediaId"]');
+					var mediaUrl = modal.querySelector('[data-door-field="mediaUrl"]');
+					var mediaType = modal.querySelector('[data-door-field="mediaType"]');
+					if (mediaId) mediaId.value = door.mediaId;
+					if (mediaUrl) mediaUrl.value = door.mediaUrl;
+					if (mediaType) mediaType.value = door.mediaType;
+					updateDoorAssets();
+					activeDoorSnapshot = JSON.parse(JSON.stringify(door));
+				}
+				if (composer && composer.renderDoors) composer.renderDoors();
+				if (status) { status.textContent = result.data.message || adminText('doorSaved', 'Door saved.'); window.setTimeout(function () { status.textContent = ''; }, 2200); }
+			})
+			.catch(function (error) { if (status) status.textContent = error && error.message && error.message !== 'save_failed' ? error.message : adminText('doorSaveFailed', 'The door could not be saved. Please try again.'); });
+	}
+
 	function clearDoorAttachment(kind) {
 		var prefix = kind === 'media' ? 'media' : 'download';
 		modal.querySelector('[data-door-field="' + prefix + 'Id"]').value = '';
@@ -934,9 +967,8 @@
 			activeDoor.quizQuestions = collectQuizQuestions();
 			activeDoor.isDraft = false;
 			if (composer && composer.renderDoors) composer.renderDoors();
-			activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
 			var status = modal.querySelector('[data-door-save-status]');
-			if (status) { status.textContent = adminText('doorSaved', 'Door saved.'); window.setTimeout(function () { status.textContent = ''; }, 1800); }
+			saveActiveDoor(activeDoor, status);
 		}
 
 		if (event.target.closest('[data-delete-door]') && activeDoor) {
@@ -963,8 +995,20 @@
 		});
 	});
 	document.querySelectorAll('[data-door-asset="media"] [data-select-door-media]').forEach(function (dropzone) {
-		dropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) event.preventDefault(); });
-		dropzone.addEventListener('drop', function (event) { if (!event.dataTransfer || !event.dataTransfer.files.length) return; event.preventDefault(); uploadAttachment(event.dataTransfer.files[0], function (attachment) { setDoorAttachment('media', attachment); }); });
+		function carriesFiles(event) {
+			if (!event.dataTransfer) return false;
+			return (event.dataTransfer.types && Array.prototype.indexOf.call(event.dataTransfer.types, 'Files') !== -1) || (event.dataTransfer.items && Array.prototype.some.call(event.dataTransfer.items, function (item) { return item.kind === 'file'; })) || Boolean(event.dataTransfer.files && event.dataTransfer.files.length);
+		}
+		['dragenter', 'dragover'].forEach(function (name) {
+			dropzone.addEventListener(name, function (event) { if (!carriesFiles(event)) return; event.preventDefault(); event.stopPropagation(); dropzone.classList.add('is-dragover'); if (event.dataTransfer) event.dataTransfer.dropEffect = 'copy'; }, true);
+		});
+		dropzone.addEventListener('dragleave', function (event) { event.stopPropagation(); dropzone.classList.remove('is-dragover'); }, true);
+		dropzone.addEventListener('drop', function (event) {
+			if (!carriesFiles(event)) return;
+			event.preventDefault(); event.stopPropagation(); dropzone.classList.remove('is-dragover');
+			if (!event.dataTransfer.files || !event.dataTransfer.files.length) return;
+			uploadAttachment(event.dataTransfer.files[0], function (attachment) { setDoorAttachment('media', attachment); });
+		}, true);
 	});
 
 	document.addEventListener('input', function (event) {
