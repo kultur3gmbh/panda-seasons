@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.4\n"
+"Project-Id-Version: Panda Seasons 0.5.5\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1289,4 +1289,34 @@ msgid "Preview for %s – external actions are disabled."
 msgstr ""
 
 msgid "Preview mode – external actions are disabled."
+msgstr ""
+
+msgid "Default settings for new doors"
+msgstr ""
+
+msgid "These settings are used for newly created doors. Existing doors keep their individual settings unless you explicitly apply the settings to all doors."
+msgstr ""
+
+msgid "Enter the shortcode of a form plugin, for example Contact Form 7, Gravity Forms or Mailchimp. The form is displayed in this door’s call-to-action area."
+msgstr ""
+
+msgid "Save door"
+msgstr ""
+
+msgid "Apply settings to all doors"
+msgstr ""
+
+msgid "Door saved."
+msgstr ""
+
+msgid "Edit door %1$s – %2$s"
+msgstr ""
+
+msgid "Contact tag for this calendar"
+msgstr ""
+
+msgid "ContactPanda uses this tag and the calendar origin details for people who sign up through this calendar."
+msgstr ""
+
+msgid "Panda Seasons – %s"
 msgstr ""

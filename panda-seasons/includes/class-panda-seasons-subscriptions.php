@@ -64,6 +64,15 @@ final class Panda_Seasons_Subscriptions {
 		$token = wp_generate_password( 48, false, false );
 		$row   = self::upsert( $calendar_id, $contact_id, $email, $first_name, $last_name, $verified ? 'active' : 'pending', $token );
 		if ( ! $row ) self::redirect( $calendar_id, 'error' );
+		do_action( 'panda_seasons_contact_registered', $contact_id, array(
+			'source'       => 'panda_seasons',
+			'source_id'    => (string) $calendar_id,
+			'source_title' => get_the_title( $calendar_id ),
+			'source_url'   => wp_get_referer() ?: get_permalink( $calendar_id ),
+			'tag'          => (string) get_post_meta( $calendar_id, '_ps_contact_tag', true ) ?: sprintf( __( 'Panda Seasons – %s', 'panda-seasons' ), get_the_title( $calendar_id ) ),
+			'form'         => 'calendar_email_signup',
+			'subscribed_at'=> current_time( 'mysql' ),
+		), $row );
 		self::log_event( $row, $verified ? 'subscribed' : 'confirmation_requested', 'calendar', 'calendar_form' );
 		if ( $verified ) self::redirect( $calendar_id, 'active' );
 

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.4\n"
+"Project-Id-Version: Panda Seasons 0.5.5\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1271,3 +1271,33 @@ msgstr "Vorschau für %s – externe Aktionen sind deaktiviert."
 
 msgid "Preview mode – external actions are disabled."
 msgstr "Vorschaumodus – externe Aktionen sind deaktiviert."
+
+msgid "Default settings for new doors"
+msgstr "Standardeinstellungen für neue Türen"
+
+msgid "These settings are used for newly created doors. Existing doors keep their individual settings unless you explicitly apply the settings to all doors."
+msgstr "Diese Einstellungen gelten für neu angelegte Türen. Bestehende Türen behalten ihre individuellen Einstellungen, solange Sie die Einstellungen nicht ausdrücklich auf alle Türen anwenden."
+
+msgid "Enter the shortcode of a form plugin, for example Contact Form 7, Gravity Forms or Mailchimp. The form is displayed in this door’s call-to-action area."
+msgstr "Geben Sie den Shortcode eines Formular-Plugins ein, zum Beispiel Contact Form 7, Gravity Forms oder Mailchimp. Das Formular wird im Call-to-Action-Bereich dieser Türe angezeigt."
+
+msgid "Save door"
+msgstr "Türe speichern"
+
+msgid "Apply settings to all doors"
+msgstr "Einstellungen für alle Türen übernehmen"
+
+msgid "Door saved."
+msgstr "Türe gespeichert."
+
+msgid "Edit door %1$s – %2$s"
+msgstr "Türe %1$s bearbeiten – %2$s"
+
+msgid "Contact tag for this calendar"
+msgstr "Kontakt-Tag für diesen Kalender"
+
+msgid "ContactPanda uses this tag and the calendar origin details for people who sign up through this calendar."
+msgstr "ContactPanda speichert bei Anmeldungen über diesen Kalender dieses Tag sowie die Herkunftsdaten des Kalenders."
+
+msgid "Panda Seasons – %s"
+msgstr "Panda Seasons – %s"

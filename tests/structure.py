@@ -37,7 +37,6 @@ for content_contract in (
     "_ps_event_id",
     "_ps_email_content",
     "_ps_closed_background",
-    "data-preview-door",
 	"_ps_closed_opacity",
 	"_ps_door_image_id",
 	"_ps_door_image_position",
@@ -51,6 +50,11 @@ for content_contract in (
 	"_ps_closed_image_overlay",
 	"_ps_closed_label_position",
 	"preview_date",
+	"data-save-door",
+	"data-apply-door-appearance",
+	"panda_seasons_layer_text_editor",
+	"_ps_contact_tag",
+	"panda_seasons_contact_signup_context",
 ):
     if content_contract not in plugin:
         raise SystemExit(f"Missing door content contract {content_contract}")

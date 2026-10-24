@@ -37,7 +37,6 @@ body.post-type-panda_calendar #poststuff #post-body.columns-2{margin-right:0}bod
 .panda-seasons-editor-layout .panda-seasons-door-modal__body{min-height:0}
 .panda-seasons-editor-layout .panda-seasons-door-modal__footer{position:relative;bottom:auto;z-index:3;display:grid;grid-template-columns:1fr;flex:0 0 auto;gap:8px;padding:12px 14px;background:#fff;box-shadow:0 -3px 12px rgba(0,0,0,.08)}
 .panda-seasons-editor-layout .panda-seasons-door-modal__footer>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
-.panda-seasons-editor-layout .panda-seasons-door-modal__footer [data-preview-door]{grid-column:1/-1}
 .panda-seasons-editor-layout .panda-seasons-door-modal__footer .button{display:flex;align-items:center;justify-content:center;min-height:34px;white-space:normal;text-align:center}
 .panda-seasons-door-modal__asset>.description{margin:4px 0 8px;color:#646970;font-weight:400}
 

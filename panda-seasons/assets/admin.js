@@ -43,6 +43,17 @@
 		element.textContent = String(value == null ? '' : value);
 		return element.innerHTML;
 	}
+	function safeRichHtml(value) {
+		var template = document.createElement('template');
+		template.innerHTML = String(value == null ? '' : value);
+		template.content.querySelectorAll('script,style,iframe,object,embed,form').forEach(function (node) { node.remove(); });
+		template.content.querySelectorAll('*').forEach(function (node) {
+			Array.prototype.slice.call(node.attributes).forEach(function (attribute) {
+				if (/^on/i.test(attribute.name) || (/^(?:href|src)$/i.test(attribute.name) && /^javascript:/i.test(attribute.value))) node.removeAttribute(attribute.name);
+			});
+		});
+		return template.innerHTML;
+	}
 	function adminText(key, fallback) { return window.pandaSeasonsAdmin && pandaSeasonsAdmin[key] ? pandaSeasonsAdmin[key] : fallback; }
 	function rgbaParts(value) { var m=String(value||'').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/i); if(m)return {hex:'#'+[m[1],m[2],m[3]].map(function(v){return Math.max(0,Math.min(255,+v)).toString(16).padStart(2,'0');}).join(''),alpha:m[4]==null?1:Math.max(0,Math.min(1,+m[4]))}; return {hex:/^#[0-9a-f]{6}$/i.test(value)?value:'#636363',alpha:1}; }
 	function enhanceColorField(field){
@@ -173,6 +184,16 @@
 		var previewState = 'actual';
 		var pointerState = null;
 		var dragged = false;
+		var toolbar = root.querySelector('.panda-seasons-composer__toolbar');
+		var previewButton = root.querySelector('[data-open-calendar-preview]');
+		var snapControl = root.querySelector('[data-snap-grid]');
+		if (toolbar && previewButton && snapControl) {
+			var controls = document.createElement('div');
+			controls.className = 'panda-seasons-composer__preview-controls';
+			controls.appendChild(previewButton);
+			controls.appendChild(snapControl.closest('label'));
+			toolbar.appendChild(controls);
+		}
 
 		try { doors = JSON.parse(dataField.value || '[]'); } catch (ignore) { doors = []; }
 		try { layers = JSON.parse(layerDataField && layerDataField.value || '[]'); } catch (ignore) { layers = []; }
@@ -222,7 +243,7 @@
 				element.style.fontSize = number(layer.fontSize, 24) + 'px';
 				element.style.borderRadius = number(layer.radius, 0) + 'px';
 				if ((layer.type === 'surface' || layer.type === 'image') && layer.imageUrl) element.innerHTML = '<img src="' + escapeHtml(safeUrl(layer.imageUrl)) + '" alt="" style="object-position:' + escapeHtml(String(layer.imagePosition || 'center').replace('-', ' ')) + '">';
-				else if (layer.type === 'text') element.innerHTML = '<span>' + escapeHtml(layer.text || '').replace(/\n/g, '<br>') + '</span>';
+				else if (layer.type === 'text') element.innerHTML = '<div class="panda-seasons-composer__rich-text">' + safeRichHtml(layer.text || '') + '</div>';
 				element.insertAdjacentHTML('beforeend', '<span class="panda-seasons-composer__resize" data-resize-layer aria-hidden="true"></span>');
 				stage.appendChild(element);
 			});
@@ -236,6 +257,7 @@
 				if (field.dataset.rgbaEnhanced) field.dispatchEvent(new Event('change', { bubbles: false }));
 			});
 			layerEditor.querySelectorAll('[data-layer-field-wrap]').forEach(function (wrap) { wrap.hidden = wrap.dataset.layerFieldWrap !== activeLayer.type; });
+			if (activeLayer.type === 'text') setEditorContent('panda_seasons_layer_text_editor', activeLayer.text || '');
 			layerEditor.querySelectorAll('[data-layer-field="background"],[data-layer-field="color"]').forEach(enhanceColorField);
 		}
 
@@ -247,7 +269,7 @@
 			render();
 		}
 
-		function closeLayerEditor() { activeLayer = null; if (layerEditor) layerEditor.hidden = true; var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = false; render(); }
+		function closeLayerEditor(applyChanges) { if (activeLayer && applyChanges) activeLayer.text = getEditorContent('panda_seasons_layer_text_editor'); activeLayer = null; if (layerEditor) layerEditor.hidden = true; var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = false; render(); }
 
 		function addLayer(type, position) {
 			var count = layers.filter(function (layer) { return !layer.deleted; }).length;
@@ -423,9 +445,13 @@
 			openDoorModal(door, root.querySelector('[data-add-door]'));
 		}
 
-		function snap(value) {
+		function snap(value, axis) {
 			var snapInput = root.querySelector('[data-snap-grid]');
-			return snapInput && snapInput.checked ? Math.round(value) : Math.round(value * 10) / 10;
+			if (!snapInput || !snapInput.checked) return Math.round(value * 10) / 10;
+			var rectangle = stage.getBoundingClientRect();
+			var dimension = axis === 'y' ? rectangle.height : rectangle.width;
+			var step = dimension > 0 ? 1000 / dimension : 1;
+			return Math.round(value / step) * step;
 		}
 
 		function startPointer(event, element, resize) {
@@ -455,11 +481,11 @@
 			if (Math.abs(deltaX) > 0.2 || Math.abs(deltaY) > 0.2) dragged = true;
 			var position = pointerState.door[view];
 			if (pointerState.resize) {
-				position.w = clamp(snap(pointerState.start.w + deltaX), 4, 100 - position.x);
-				position.h = clamp(snap(pointerState.start.h + deltaY), 4, 100 - position.y);
+				position.w = clamp(snap(pointerState.start.w + deltaX, 'x'), 4, 100 - position.x);
+				position.h = clamp(snap(pointerState.start.h + deltaY, 'y'), 4, 100 - position.y);
 			} else {
-				position.x = clamp(snap(pointerState.start.x + deltaX), 0, 100 - position.w);
-				position.y = clamp(snap(pointerState.start.y + deltaY), 0, 100 - position.h);
+				position.x = clamp(snap(pointerState.start.x + deltaX, 'x'), 0, 100 - position.w);
+				position.y = clamp(snap(pointerState.start.y + deltaY, 'y'), 0, 100 - position.h);
 			}
 			pointerState.element.style.left = position.x + '%';
 			pointerState.element.style.top = position.y + '%';
@@ -486,8 +512,8 @@
 			var deltaX = (event.clientX - layerPointerState.startX) / layerPointerState.width * 100, deltaY = (event.clientY - layerPointerState.startY) / layerPointerState.height * 100;
 			if (Math.abs(deltaX) > .2 || Math.abs(deltaY) > .2) dragged = true;
 			var position = layerPointerState.layer[view];
-			if (layerPointerState.resize) { position.w = clamp(snap(layerPointerState.start.w + deltaX), 4, 100 - position.x); position.h = clamp(snap(layerPointerState.start.h + deltaY), 4, 100 - position.y); }
-			else { position.x = clamp(snap(layerPointerState.start.x + deltaX), 0, 100 - position.w); position.y = clamp(snap(layerPointerState.start.y + deltaY), 0, 100 - position.h); }
+			if (layerPointerState.resize) { position.w = clamp(snap(layerPointerState.start.w + deltaX, 'x'), 4, 100 - position.x); position.h = clamp(snap(layerPointerState.start.h + deltaY, 'y'), 4, 100 - position.y); }
+			else { position.x = clamp(snap(layerPointerState.start.x + deltaX, 'x'), 0, 100 - position.w); position.y = clamp(snap(layerPointerState.start.y + deltaY, 'y'), 0, 100 - position.h); }
 			layerPointerState.element.style.left = position.x + '%'; layerPointerState.element.style.top = position.y + '%'; layerPointerState.element.style.width = position.w + '%'; layerPointerState.element.style.height = position.h + '%'; writeData();
 		});
 		stage.addEventListener('pointerup', function () { layerPointerState = null; });
@@ -575,7 +601,8 @@
 				if (event.target.closest('[data-select-layer-image]')) { selectLayerImage(); return; }
 				if (event.target.closest('[data-delete-layer]') && activeLayer) { activeLayer.deleted = true; closeLayerEditor(); return; }
 				if (event.target.closest('[data-duplicate-layer]') && activeLayer) { var copy = JSON.parse(JSON.stringify(activeLayer)); copy.id = 'layer-' + Date.now(); copy.desktop.x = clamp(copy.desktop.x + 2, 0, 100 - copy.desktop.w); copy.desktop.y = clamp(copy.desktop.y + 2, 0, 100 - copy.desktop.h); copy.mobile.x = clamp(copy.mobile.x + 2, 0, 100 - copy.mobile.w); copy.mobile.y = clamp(copy.mobile.y + 2, 0, 100 - copy.mobile.h); copy.z = number(copy.z, 1) + 1; layers.push(copy); openLayerEditor(copy); return; }
-				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor();
+				if (event.target.closest('[data-apply-layer-editor]')) { closeLayerEditor(true); return; }
+				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor(false);
 			});
 		}
 
@@ -605,6 +632,7 @@
 		root.renderDoors = render;
 		root.updateBackground = setStageAppearance;
 		root.setPreviewState = function(state){previewState=state;root.dataset.previewState=state;root.querySelectorAll('button[data-preview-state]').forEach(function(button){button.classList.toggle('button-primary',button.dataset.previewState===state);});render();};
+		if (snapControl) { stage.classList.toggle('has-grid', snapControl.checked); snapControl.addEventListener('change', function () { stage.classList.toggle('has-grid', snapControl.checked); }); }
 		setStageAppearance();
 		render();
 	}
@@ -615,6 +643,8 @@
 		activeDoor = door;
 		activeDoorSnapshot = JSON.parse(JSON.stringify(door));
 		returnFocus = trigger || document.activeElement;
+		var modalTitle = modal.querySelector('#panda-seasons-door-modal-title');
+		if (modalTitle) modalTitle.textContent = adminText('editDoorTitle', 'Edit door %1$s – %2$s').replace('%1$s', door.number || '').replace('%2$s', door.title || door.closedLabel || adminText('untitledDoor', 'Door %d').replace('%d', door.number || ''));
 		var colorDefaults = { closedBg: '#1f2937', closedColor: 'rgba(255, 255, 255, 1)', openBg: '#334fe8', openColor: 'rgba(255, 255, 255, 1)' };
 		modal.querySelectorAll('[data-door-field]').forEach(function (field) {
 			var value = door[field.dataset.doorField];
@@ -851,6 +881,8 @@
 			activeDoor.isDraft = false;
 			if (composer && composer.renderDoors) composer.renderDoors();
 			activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
+			var status = modal.querySelector('[data-door-save-status]');
+			if (status) { status.textContent = adminText('doorSaved', 'Door saved.'); window.setTimeout(function () { status.textContent = ''; }, 1800); }
 		}
 
 		if (event.target.closest('[data-delete-door]') && activeDoor) {
@@ -919,6 +951,20 @@
 
 	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[data-cover-background],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
+	if (defaultsPanel) {
+		var defaultTabs = defaultsPanel.querySelector('.panda-seasons-default-state-tabs');
+		var shapeField = document.querySelector('[name="panda_seasons_default_shape"]');
+		var openingModeField = document.querySelector('[name="panda_seasons_default_opening_mode"]');
+		var effectField = document.querySelector('[name="panda_seasons_open_effect"]');
+		var speedField = document.querySelector('[name="panda_seasons_effect_speed"]');
+		var activeColorField = document.querySelector('[name="panda_seasons_default_active_border_color"]');
+		[[shapeField,openingModeField,'panda-seasons-defaults-row'],[effectField,speedField,'panda-seasons-defaults-row']].forEach(function (config) {
+			var row=document.createElement('div'); row.className=config[2];
+			[config[0],config[1]].forEach(function(field){if(field&&field.closest('label'))row.appendChild(field.closest('label'));});
+			if(row.children.length)defaultsPanel.insertBefore(row,defaultTabs);
+		});
+		if(activeColorField&&activeColorField.closest('label'))defaultsPanel.insertBefore(activeColorField.closest('label'),defaultTabs);
+	}
 	var adminGrid=document.querySelector('.panda-seasons-admin-grid'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
 	if(adminGrid&&editorLayout){
 		var mainTabs=document.createElement('div'),editorPanel=document.createElement('section'),settingsPanel=document.createElement('section');
@@ -927,6 +973,8 @@
 		editorPanel.className='panda-seasons-main-panel';editorPanel.dataset.mainEditorPanel='editor';
 		settingsPanel.className='panda-seasons-main-panel';settingsPanel.dataset.mainEditorPanel='settings';settingsPanel.hidden=true;
 		adminGrid.parentNode.insertBefore(mainTabs,adminGrid);mainTabs.parentNode.insertBefore(editorPanel,adminGrid);mainTabs.parentNode.insertBefore(settingsPanel,adminGrid);
+		var titleBox=document.getElementById('titlediv');
+		if(titleBox)mainTabs.parentNode.insertBefore(titleBox,mainTabs);
 		if(publishPanel)mainTabs.parentNode.insertBefore(publishPanel,mainTabs);
 		editorPanel.appendChild(editorLayout);settingsPanel.appendChild(adminGrid);
 		document.addEventListener('click',function(event){var button=event.target.closest('[data-main-editor-tab]');if(!button)return;var target=button.dataset.mainEditorTab;mainTabs.querySelectorAll('[data-main-editor-tab]').forEach(function(item){var active=item===button;item.classList.toggle('button-primary',active);item.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-main-editor-panel]').forEach(function(panel){panel.hidden=panel.dataset.mainEditorPanel!==target;});if(target==='editor'&&composer&&composer.renderDoors)composer.renderDoors();});
