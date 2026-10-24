@@ -31,6 +31,12 @@
 	function clamp(value, min, max) {
 		return Math.min(max, Math.max(min, value));
 	}
+	function labelPlacement(position) {
+		var parts = String(position || 'center').split('-');
+		var vertical = parts.length === 1 ? 'center' : parts[0];
+		var horizontal = parts.length === 1 ? 'center' : parts[1];
+		return { align: {top:'start',center:'center',bottom:'end'}[vertical] || 'center', justify: {left:'start',center:'center',right:'end'}[horizontal] || 'center' };
+	}
 
 	function escapeHtml(value) {
 		var element = document.createElement('div');
@@ -283,7 +289,7 @@
 				var now = new Date(), unlock = door.unlockDate ? new Date(door.unlockDate + 'T' + (door.unlockTime || '00:00')) : null, sameDay = unlock && unlock.getFullYear() === now.getFullYear() && unlock.getMonth() === now.getMonth() && unlock.getDate() === now.getDate();
 				var actualOpen = door.openingMode === 'manual-day' ? false : (door.openingMode === 'auto-day' ? Boolean(sameDay && unlock <= now) : (!unlock || unlock <= now));
 				var isOpen = previewState === 'open' || (previewState === 'actual' && actualOpen);
-				element.className = 'panda-seasons-composer__door is-' + (isOpen ? 'open' : 'closed') + ' shape-' + (door.shape || 'rounded') + (isOpen && door.openCompactLabel ? ' has-compact-label compact-' + (door.openLabelCorner || 'top-right') : '');
+				element.className = 'panda-seasons-composer__door is-' + (isOpen ? 'open' : 'closed') + ' shape-' + (door.shape || 'rounded');
 				element.dataset.editorDoor = door.id || door.clientId;
 				element.setAttribute('role', 'button');
 				element.setAttribute('tabindex', '0');
@@ -316,7 +322,9 @@
 				element.style.setProperty('--ps-door-label-aspect', roundLabel ? '1' : 'auto');
 					element.style.setProperty('--ps-door-label-radius', labelShape === 'round' ? '999px' : labelShape === 'rounded' ? '8px' : '0');
 				element.style.setProperty('--ps-door-label-padding', labelPadding + 'px');
-				element.style.setProperty('--ps-door-compact-size', number(door.openCompactLabelSize, 14) + 'px');
+				var placement = labelPlacement(isOpen ? door.openLabelPosition : door.closedLabelPosition);
+				element.style.setProperty('--ps-door-label-align', placement.align);
+				element.style.setProperty('--ps-door-label-justify', placement.justify);
 					var stateImage = door.imageUrl;
 				var stateImageOverlay = isOpen ? door.openImageOverlay : door.closedImageOverlay;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
@@ -390,10 +398,9 @@
 				closedLabel: '',
 				openLabel: '',
 				closedBg: root.dataset.defaultClosed || 'rgba(99, 99, 99, 0.2)',
-					closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelShape: (document.querySelector('[name="panda_seasons_default_closed_label_shape"]') || {}).value || 'rounded', closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: 4, closedImageOverlay: root.dataset.defaultClosedImageOverlay || 'rgba(0, 0, 0, 0)',
+				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelShape: (document.querySelector('[name="panda_seasons_default_closed_label_shape"]') || {}).value || 'rounded', closedLabelPosition: (document.querySelector('[name="panda_seasons_default_closed_label_position"]') || {}).value || 'center', closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: 4, closedImageOverlay: root.dataset.defaultClosedImageOverlay || 'rgba(0, 0, 0, 0)',
 				openBg: root.dataset.defaultOpen || 'rgba(51, 79, 232, 1)',
-					openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelShape: (document.querySelector('[name="panda_seasons_default_open_label_shape"]') || {}).value || 'rounded', openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: 4, openImageOverlay: root.dataset.defaultOpenImageOverlay || 'rgba(0, 0, 0, 0)',
-				openCompactLabel: false, openLabelCorner: 'top-right', openCompactLabelSize: 14,
+				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelShape: (document.querySelector('[name="panda_seasons_default_open_label_shape"]') || {}).value || 'rounded', openLabelPosition: (document.querySelector('[name="panda_seasons_default_open_label_position"]') || {}).value || 'center', openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: 4, openImageOverlay: root.dataset.defaultOpenImageOverlay || 'rgba(0, 0, 0, 0)',
 				shape: root.dataset.defaultShape || 'rounded',
 				openEffect: 'inherit',
 					imageId: 0,
@@ -653,7 +660,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'openCompactLabel', 'openLabelCorner', 'openCompactLabelSize', 'shape', 'openEffect', 'imageId', 'imageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
+		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelPosition', 'openLabelPosition', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'shape', 'openEffect', 'imageId', 'imageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -757,9 +764,9 @@
 		if (event.target.closest('[data-apply-door-appearance]') && activeDoor && composer) {
 			if (!window.confirm(adminText('applyAppearanceConfirm', 'Apply this appearance to all doors and update the global defaults?'))) return;
 			syncDoorPreview();
-			var props = ['shape','openEffect','imagePosition','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay','openCompactLabel','openLabelCorner','openCompactLabelSize'];
+			var props = ['shape','openEffect','imagePosition','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelPosition','openLabelPosition','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay'];
 			composer.getDoors().forEach(function (door) { if (!door.deleted && door !== activeDoor) props.forEach(function (prop) { door[prop] = activeDoor[prop]; }); });
-			var defaultLinks = {shape:'panda_seasons_default_shape',openEffect:'panda_seasons_open_effect',closedBg:'panda_seasons_default_closed_background',openBg:'panda_seasons_default_open_background',closedLabelVisible:'panda_seasons_default_closed_label_visible',openLabelVisible:'panda_seasons_default_open_label_visible',closedLabelShape:'panda_seasons_default_closed_label_shape',openLabelShape:'panda_seasons_default_open_label_shape',closedFont:'panda_seasons_default_label_font',closedFontSize:'panda_seasons_default_label_font_size',closedFontWeight:'panda_seasons_default_label_font_weight',closedLabelWidthMode:'panda_seasons_default_label_width_mode',closedLabelWidth:'panda_seasons_default_label_width',closedBorderStyle:'panda_seasons_default_border_style',closedColor:'panda_seasons_default_closed_text_color',openColor:'panda_seasons_default_open_text_color',closedBorderColor:'panda_seasons_default_closed_border_color',openBorderColor:'panda_seasons_default_open_border_color',closedBorderWidth:'panda_seasons_default_closed_border_width',openBorderWidth:'panda_seasons_default_open_border_width',closedLabelBg:'panda_seasons_default_closed_label_background',openLabelBg:'panda_seasons_default_open_label_background',closedLabelBorderColor:'panda_seasons_default_closed_label_border_color',openLabelBorderColor:'panda_seasons_default_open_label_border_color',closedLabelBorderWidth:'panda_seasons_default_closed_label_border_width',openLabelBorderWidth:'panda_seasons_default_open_label_border_width',closedImageOverlay:'panda_seasons_default_closed_image_overlay',openImageOverlay:'panda_seasons_default_open_image_overlay'};
+			var defaultLinks = {shape:'panda_seasons_default_shape',openEffect:'panda_seasons_open_effect',closedBg:'panda_seasons_default_closed_background',openBg:'panda_seasons_default_open_background',closedLabelVisible:'panda_seasons_default_closed_label_visible',openLabelVisible:'panda_seasons_default_open_label_visible',closedLabelShape:'panda_seasons_default_closed_label_shape',openLabelShape:'panda_seasons_default_open_label_shape',closedLabelPosition:'panda_seasons_default_closed_label_position',openLabelPosition:'panda_seasons_default_open_label_position',closedFont:'panda_seasons_default_label_font',closedFontSize:'panda_seasons_default_label_font_size',closedFontWeight:'panda_seasons_default_label_font_weight',closedLabelWidthMode:'panda_seasons_default_label_width_mode',closedLabelWidth:'panda_seasons_default_label_width',closedBorderStyle:'panda_seasons_default_border_style',closedColor:'panda_seasons_default_closed_text_color',openColor:'panda_seasons_default_open_text_color',closedBorderColor:'panda_seasons_default_closed_border_color',openBorderColor:'panda_seasons_default_open_border_color',closedBorderWidth:'panda_seasons_default_closed_border_width',openBorderWidth:'panda_seasons_default_open_border_width',closedLabelBg:'panda_seasons_default_closed_label_background',openLabelBg:'panda_seasons_default_open_label_background',closedLabelBorderColor:'panda_seasons_default_closed_label_border_color',openLabelBorderColor:'panda_seasons_default_open_label_border_color',closedLabelBorderWidth:'panda_seasons_default_closed_label_border_width',openLabelBorderWidth:'panda_seasons_default_open_label_border_width',closedImageOverlay:'panda_seasons_default_closed_image_overlay',openImageOverlay:'panda_seasons_default_open_image_overlay'};
 			Object.keys(defaultLinks).forEach(function (prop) {
 				var input=document.querySelector('[name="'+defaultLinks[prop]+'"]');
 				if(!input || (prop === 'openEffect' && activeDoor[prop] === 'inherit')) return;
@@ -902,6 +909,13 @@
 		if (quizEnabled) quizEnabled.checked = type === 'quiz';
 	}
 	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
+	if (modal) {
+		var doorFields = modal.querySelector('.panda-seasons-door-modal__fields');
+		['basics', 'appearance', 'content-type', 'content', 'button', 'product', 'quiz', 'cta', 'email'].forEach(function (section) {
+			var sectionElement = doorFields && doorFields.querySelector('[data-door-section="' + section + '"]');
+			if (sectionElement) doorFields.appendChild(sectionElement);
+		});
+	}
 
 	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[data-cover-background],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
@@ -913,6 +927,7 @@
 		editorPanel.className='panda-seasons-main-panel';editorPanel.dataset.mainEditorPanel='editor';
 		settingsPanel.className='panda-seasons-main-panel';settingsPanel.dataset.mainEditorPanel='settings';settingsPanel.hidden=true;
 		adminGrid.parentNode.insertBefore(mainTabs,adminGrid);mainTabs.parentNode.insertBefore(editorPanel,adminGrid);mainTabs.parentNode.insertBefore(settingsPanel,adminGrid);
+		if(publishPanel)mainTabs.parentNode.insertBefore(publishPanel,mainTabs);
 		editorPanel.appendChild(editorLayout);settingsPanel.appendChild(adminGrid);
 		document.addEventListener('click',function(event){var button=event.target.closest('[data-main-editor-tab]');if(!button)return;var target=button.dataset.mainEditorTab;mainTabs.querySelectorAll('[data-main-editor-tab]').forEach(function(item){var active=item===button;item.classList.toggle('button-primary',active);item.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-main-editor-panel]').forEach(function(panel){panel.hidden=panel.dataset.mainEditorPanel!==target;});if(target==='editor'&&composer&&composer.renderDoors)composer.renderDoors();});
 	}
@@ -929,7 +944,7 @@
 			{selector:'[name="panda_seasons_default_closed_label_background"]',props:['closedLabelBg']},{selector:'[name="panda_seasons_default_open_label_background"]',props:['openLabelBg']},
 			{selector:'[name="panda_seasons_default_closed_label_border_color"]',props:['closedLabelBorderColor']},{selector:'[name="panda_seasons_default_open_label_border_color"]',props:['openLabelBorderColor']},
 			{selector:'[name="panda_seasons_default_closed_label_border_width"]',props:['closedLabelBorderWidth']},{selector:'[name="panda_seasons_default_open_label_border_width"]',props:['openLabelBorderWidth']},
-			{selector:'[name="panda_seasons_default_closed_label_shape"]',props:['closedLabelShape']},{selector:'[name="panda_seasons_default_open_label_shape"]',props:['openLabelShape']},{selector:'[name="panda_seasons_default_closed_label_visible"]',props:['closedLabelVisible']},{selector:'[name="panda_seasons_default_open_label_visible"]',props:['openLabelVisible']},
+			{selector:'[name="panda_seasons_default_closed_label_shape"]',props:['closedLabelShape']},{selector:'[name="panda_seasons_default_open_label_shape"]',props:['openLabelShape']},{selector:'[name="panda_seasons_default_closed_label_position"]',props:['closedLabelPosition']},{selector:'[name="panda_seasons_default_open_label_position"]',props:['openLabelPosition']},{selector:'[name="panda_seasons_default_closed_label_visible"]',props:['closedLabelVisible']},{selector:'[name="panda_seasons_default_open_label_visible"]',props:['openLabelVisible']},
 			{selector:'[name="panda_seasons_default_label_font"]',props:['closedFont','openFont']},{selector:'[name="panda_seasons_default_label_font_size"]',props:['closedFontSize','openFontSize']},
 			{selector:'[name="panda_seasons_default_label_font_weight"]',props:['closedFontWeight','openFontWeight']},{selector:'[name="panda_seasons_default_label_width_mode"]',props:['closedLabelWidthMode','openLabelWidthMode']},
 			{selector:'[name="panda_seasons_default_label_width"]',props:['closedLabelWidth','openLabelWidth']},{selector:'[name="panda_seasons_default_label_padding"]',props:['closedLabelPadding','openLabelPadding']},
@@ -967,6 +982,8 @@
 		sampleLabel.style.aspectRatio=isRound?'1':'auto';
 		sampleLabel.style.borderRadius=labelShape==='round'?'999px':labelShape==='rounded'?'8px':'0';
 		sampleLabel.style.boxSizing='border-box';
+		var samplePlacement=labelPlacement(defaultValue('panda_seasons_default_'+prefix+'_label_position','center')),sampleButton=defaultPreview.querySelector('button');
+		if(sampleButton){sampleButton.style.alignItems=samplePlacement.align;sampleButton.style.justifyItems=samplePlacement.justify;}
 		defaultPreview.classList.remove('shape-square','shape-rounded','shape-round');
 		defaultPreview.classList.add('shape-'+defaultValue('panda_seasons_default_shape','rounded'));
 	}
@@ -995,9 +1012,11 @@
 		if(event.key==='Escape'&&calendarPreview&&!calendarPreview.hidden)closeCalendarPreview(calendarPreview);
 	});
 	function closeCalendarPreview(preview){preview.hidden=true;preview.querySelector('iframe').src='about:blank';document.body.classList.remove('panda-seasons-preview-open');}
+	function loadCalendarPreview(preview,baseUrl){if(!preview||!baseUrl)return;var desktopInput=document.querySelector('[name="panda_seasons_cover_desktop"]'),mobileInput=document.querySelector('[name="panda_seasons_cover_mobile"]'),previewUrl=new URL(baseUrl,window.location.href),dateInput=preview.querySelector('[data-calendar-preview-date]'),timeInput=preview.querySelector('[data-calendar-preview-time]');previewUrl.searchParams.set('cover_desktop',desktopInput?desktopInput.value:'');previewUrl.searchParams.set('cover_mobile',mobileInput?mobileInput.value:'');previewUrl.searchParams.set('preview_date',dateInput?dateInput.value:'');previewUrl.searchParams.set('preview_time',timeInput?timeInput.value:'');previewUrl.searchParams.set('cache_bust',Date.now());preview.dataset.previewUrl=baseUrl;preview.querySelector('iframe').src=previewUrl.toString();}
 	document.addEventListener('click',function(event){
 		var opener=event.target.closest('[data-open-calendar-preview]');
-		if(opener){var preview=document.querySelector('[data-calendar-preview]');if(!preview)return;var desktopInput=document.querySelector('[name="panda_seasons_cover_desktop"]'),mobileInput=document.querySelector('[name="panda_seasons_cover_mobile"]'),previewUrl=new URL(opener.dataset.previewUrl,window.location.href);previewUrl.searchParams.set('cover_desktop',desktopInput?desktopInput.value:'');previewUrl.searchParams.set('cover_mobile',mobileInput?mobileInput.value:'');previewUrl.searchParams.set('cache_bust',Date.now());preview.hidden=false;preview.classList.remove('is-mobile');preview.querySelector('iframe').src=previewUrl.toString();document.body.classList.add('panda-seasons-preview-open');return;}
+		if(opener){var preview=document.querySelector('[data-calendar-preview]');if(!preview)return;preview.hidden=false;preview.classList.remove('is-mobile');loadCalendarPreview(preview,opener.dataset.previewUrl);document.body.classList.add('panda-seasons-preview-open');return;}
+		var applyPreviewDate=event.target.closest('[data-calendar-preview-date-apply]');if(applyPreviewDate){var datePreview=applyPreviewDate.closest('[data-calendar-preview]');loadCalendarPreview(datePreview,datePreview.dataset.previewUrl);return;}
 		var close=event.target.closest('[data-close-calendar-preview]');if(close){closeCalendarPreview(close.closest('[data-calendar-preview]'));return;}
 		var size=event.target.closest('[data-calendar-preview-size]');if(size){var shell=size.closest('[data-calendar-preview]');shell.classList.toggle('is-mobile',size.dataset.calendarPreviewSize==='mobile');shell.querySelectorAll('[data-calendar-preview-size]').forEach(function(button){button.classList.toggle('button-primary',button===size);});}
 	});
