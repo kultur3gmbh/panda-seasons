@@ -8,10 +8,20 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Panda_Seasons_MCP {
 	const CATEGORY = 'panda-seasons';
+	const FALLBACK_CATEGORY = 'site';
 
 	public static function boot() {
 		add_action( 'wp_abilities_api_categories_init', array( __CLASS__, 'register_category' ) );
 		add_action( 'wp_abilities_api_init', array( __CLASS__, 'register_abilities' ) );
+
+		// Some production stacks initialize the lazy Abilities registry while
+		// active plugins are still being loaded. WordPress only fires the init
+		// action once, so a plugin loaded afterwards would otherwise never get a
+		// registration callback. Register directly with the existing registry in
+		// that exceptional late-load case.
+		if ( did_action( 'wp_abilities_api_init' ) ) {
+			self::register_abilities();
+		}
 	}
 
 	public static function register_category() {
@@ -26,10 +36,17 @@ final class Panda_Seasons_MCP {
 	}
 
 	private static function ability( $name, $label, $description, $callback, $permission, $input_schema = null, $readonly = false, $destructive = false ) {
+		// The category registry may already have been initialized by another plugin
+		// before Panda Seasons is loaded. In that case WordPress no longer fires the
+		// category registration hook, so use the built-in category instead of
+		// silently losing every Panda Seasons ability.
+		$category = function_exists( 'wp_has_ability_category' ) && wp_has_ability_category( self::CATEGORY )
+			? self::CATEGORY
+			: self::FALLBACK_CATEGORY;
 		$args = array(
 			'label'               => $label,
 			'description'         => $description,
-			'category'            => self::CATEGORY,
+			'category'            => $category,
 			'execute_callback'    => array( __CLASS__, $callback ),
 			'permission_callback' => array( __CLASS__, $permission ),
 			'meta'                => array(
@@ -40,7 +57,18 @@ final class Panda_Seasons_MCP {
 			),
 		);
 		if ( null !== $input_schema ) $args['input_schema'] = $input_schema;
-		wp_register_ability( 'panda-seasons/' . $name, $args );
+		$ability_name = 'panda-seasons/' . $name;
+		if ( doing_action( 'wp_abilities_api_init' ) ) {
+			wp_register_ability( $ability_name, $args );
+			return;
+		}
+
+		if ( class_exists( 'WP_Abilities_Registry' ) ) {
+			$registry = WP_Abilities_Registry::get_instance();
+			if ( $registry && ! $registry->is_registered( $ability_name ) ) {
+				$registry->register( $ability_name, $args );
+			}
+		}
 	}
 
 	public static function register_abilities() {
