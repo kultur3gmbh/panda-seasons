@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.5.1\n"
+"Project-Id-Version: Panda Seasons 0.5.2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1205,4 +1205,16 @@ msgid "Number size (px)"
 msgstr ""
 
 msgid "Default opening mode"
+msgstr ""
+
+msgid "Save images"
+msgstr ""
+
+msgid "Image color overlay"
+msgstr ""
+
+msgid "Use a separate position and size for the door number after opening"
+msgstr ""
+
+msgid "Position"
 msgstr ""

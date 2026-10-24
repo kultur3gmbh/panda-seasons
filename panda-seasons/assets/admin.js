@@ -129,6 +129,8 @@
 			var url = modal.querySelector('[data-door-field="' + kind + 'Url"]').value;
 			box.querySelector('[data-door-asset-preview]').innerHTML = url ? '<img src="' + escapeHtml(safeUrl(url)) + '" alt="">' : '';
 			box.querySelector('[data-remove-door-image="' + kind + '"]').hidden = !url;
+			var overlayWrap = modal.querySelector('[data-image-overlay-wrap="' + kind.replace('Image', '') + '"]');
+			if (overlayWrap) overlayWrap.hidden = !url;
 		});
 	}
 
@@ -314,7 +316,9 @@
 				element.style.setProperty('--ps-door-label-padding', labelPadding + 'px');
 				element.style.setProperty('--ps-door-compact-size', number(door.openCompactLabelSize, 14) + 'px');
 				var stateImage = isOpen ? door.openImageUrl : door.closedImageUrl;
+				var stateImageOverlay = isOpen ? door.openImageOverlay : door.closedImageOverlay;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
+				element.style.setProperty('--ps-door-image-overlay', stateImage ? (stateImageOverlay || 'rgba(0,0,0,0)') : 'rgba(0,0,0,0)');
 				var stateLabel = isOpen ? (door.openLabel || door.number) : (door.closedLabel || door.number);
 				var labelVisible = isOpen ? door.openLabelVisible !== false : door.closedLabelVisible !== false;
 				element.innerHTML = '<span class="panda-seasons-composer__door-actions"><button type="button" data-duplicate-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '"><span class="dashicons dashicons-admin-page" aria-hidden="true"></span></button><button type="button" data-delete-stage-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '"><span class="dashicons dashicons-trash" aria-hidden="true"></span></button></span>' + (labelVisible ? '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span>' : '') + '<span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
@@ -382,9 +386,9 @@
 				closedLabel: '',
 				openLabel: '',
 				closedBg: root.dataset.defaultClosed || 'rgba(99, 99, 99, 0.2)',
-				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: +(root.dataset.defaultLabelPadding || 4),
+				closedColor: root.dataset.defaultClosedColor || 'rgba(255, 255, 255, 1)', closedLabelVisible: root.dataset.defaultClosedLabelVisible !== '0', closedFont: root.dataset.defaultLabelFont || 'inherit', closedFontSize: +(root.dataset.defaultLabelFontSize || 20), closedFontWeight: root.dataset.defaultLabelFontWeight || '700', closedTextAlign: 'center', closedBorderColor: root.dataset.defaultClosedBorderColor || 'rgba(255, 255, 255, 0.9)', closedBorderWidth: +(root.dataset.defaultClosedBorderWidth || 2), closedBorderStyle: root.dataset.defaultBorderStyle || 'dashed', closedLabelBg: root.dataset.defaultClosedLabelBg || 'rgba(10, 18, 30, 0.76)', closedLabelBorderColor: root.dataset.defaultClosedLabelBorderColor || 'rgba(255, 255, 255, 1)', closedLabelBorderWidth: +(root.dataset.defaultClosedLabelBorderWidth || 1), closedLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', closedLabelWidth: +(root.dataset.defaultLabelWidth || 60), closedLabelPadding: +(root.dataset.defaultLabelPadding || 4), closedImageOverlay: root.dataset.defaultClosedImageOverlay || 'rgba(0, 0, 0, 0)',
 				openBg: root.dataset.defaultOpen || 'rgba(51, 79, 232, 1)',
-				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: +(root.dataset.defaultLabelPadding || 4),
+				openColor: root.dataset.defaultOpenColor || 'rgba(255, 255, 255, 1)', openLabelVisible: root.dataset.defaultOpenLabelVisible !== '0', openFont: root.dataset.defaultLabelFont || 'inherit', openFontSize: +(root.dataset.defaultLabelFontSize || 20), openFontWeight: root.dataset.defaultLabelFontWeight || '700', openTextAlign: 'center', openBorderColor: root.dataset.defaultOpenBorderColor || 'rgba(255, 255, 255, 0.9)', openBorderWidth: +(root.dataset.defaultOpenBorderWidth || 2), openBorderStyle: root.dataset.defaultBorderStyle || 'dashed', openLabelBg: root.dataset.defaultOpenLabelBg || 'rgba(10, 18, 30, 0.76)', openLabelBorderColor: root.dataset.defaultOpenLabelBorderColor || 'rgba(255, 255, 255, 1)', openLabelBorderWidth: +(root.dataset.defaultOpenLabelBorderWidth || 1), openLabelWidthMode: root.dataset.defaultLabelWidthMode || 'content', openLabelWidth: +(root.dataset.defaultLabelWidth || 60), openLabelPadding: +(root.dataset.defaultLabelPadding || 4), openImageOverlay: root.dataset.defaultOpenImageOverlay || 'rgba(0, 0, 0, 0)',
 				openCompactLabel: false, openLabelCorner: 'top-right', openCompactLabelSize: 14,
 				shape: root.dataset.defaultShape || 'rounded',
 				openEffect: 'inherit',
@@ -619,7 +623,7 @@
 		if (emptyPanel) emptyPanel.hidden = true;
 		composer.classList.add('has-active-door');
 		modal.querySelector('[data-door-field="number"]').focus();
-		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('change',{bubbles:true}));});
+		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"],[data-door-field$="Overlay"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('change',{bubbles:true}));});
 		modal.querySelectorAll('[data-door-field$="LabelWidthMode"]').forEach(updateLabelWidthVisibility);
 		updateContentTypeVisibility();
 	}
@@ -645,7 +649,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'contentType', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'openCompactLabel', 'openLabelCorner', 'openCompactLabelSize', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl'].forEach(function (name) {
+		['number', 'contentType', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'closedLabelPadding', 'openLabelPadding', 'openCompactLabel', 'openLabelCorner', 'openCompactLabelSize', 'shape', 'openEffect', 'closedImageId', 'closedImageUrl', 'closedImageOverlay', 'openImageId', 'openImageUrl', 'openImageOverlay'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -869,7 +873,7 @@
 	}
 	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
 
-	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
+	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
 	var adminGrid=document.querySelector('.panda-seasons-admin-grid'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
 	if(adminGrid&&editorLayout){
@@ -888,6 +892,7 @@
 		var defaultsDialog=document.createElement('div');defaultsDialog.className='panda-seasons-defaults-dialog';defaultsDialog.hidden=true;defaultsDialog.innerHTML='<div class="panda-seasons-defaults-dialog__backdrop" data-close-defaults-dialog></div><div class="panda-seasons-defaults-dialog__window" role="dialog" aria-modal="true" aria-labelledby="panda-seasons-defaults-title"><h2 id="panda-seasons-defaults-title">'+escapeHtml(adminText('defaultsTitle','Apply global settings'))+'</h2><p>'+escapeHtml(adminText('defaultsHelp','Choose each setting that may replace existing individual values.'))+'</p><div class="panda-seasons-defaults-dialog__actions"><button type="button" class="button" data-select-all-defaults>'+escapeHtml(adminText('selectAll','Select all'))+'</button><button type="button" class="button" data-select-no-defaults>'+escapeHtml(adminText('selectNone','Select none'))+'</button></div><div class="panda-seasons-defaults-table" data-defaults-comparison></div><div class="panda-seasons-defaults-dialog__footer"><button type="button" class="button" data-close-defaults-dialog>'+escapeHtml(adminText('cancel','Cancel'))+'</button><button type="button" class="button button-primary" data-apply-selected-defaults>'+escapeHtml(adminText('applySelected','Apply selected values'))+'</button></div></div>';document.body.appendChild(defaultsDialog);
 		var defaultMappings=[
 			{selector:'[name="panda_seasons_default_closed_background"]',props:['closedBg']},{selector:'[name="panda_seasons_default_open_background"]',props:['openBg']},
+			{selector:'[name="panda_seasons_default_closed_image_overlay"]',props:['closedImageOverlay']},{selector:'[name="panda_seasons_default_open_image_overlay"]',props:['openImageOverlay']},
 			{selector:'[name="panda_seasons_default_closed_text_color"]',props:['closedColor']},{selector:'[name="panda_seasons_default_open_text_color"]',props:['openColor']},
 			{selector:'[name="panda_seasons_default_closed_border_color"]',props:['closedBorderColor']},{selector:'[name="panda_seasons_default_open_border_color"]',props:['openBorderColor']},
 			{selector:'[name="panda_seasons_default_closed_border_width"]',props:['closedBorderWidth']},{selector:'[name="panda_seasons_default_open_border_width"]',props:['openBorderWidth']},
@@ -945,7 +950,7 @@
 	updateDefaultPreview();
 	var activeDefaultColorField = document.querySelector('[data-default-door-color="closed"]');
 	document.addEventListener('focusin', function (event) {
-		if (event.target.matches('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-door-field$="Bg"],[data-door-field$="Color"]')) activeDefaultColorField = event.target;
+		if (event.target.matches('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[data-door-field$="Bg"],[data-door-field$="Color"],[data-door-field$="Overlay"]')) activeDefaultColorField = event.target;
 	});
 	document.addEventListener('click', function (event) {
 		var swatch = event.target.closest('[data-theme-door-color]');

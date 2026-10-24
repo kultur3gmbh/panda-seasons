@@ -46,6 +46,8 @@ for content_contract in (
 	"_ps_unlock_behavior",
 	"panda_seasons_preview",
 	"_ps_default_active_border_color",
+	"_ps_default_closed_image_overlay",
+	"_ps_closed_image_overlay",
 ):
     if content_contract not in plugin:
         raise SystemExit(f"Missing door content contract {content_contract}")
