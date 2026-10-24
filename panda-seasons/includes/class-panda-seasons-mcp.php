@@ -57,6 +57,8 @@ final class Panda_Seasons_MCP {
 		self::ability( 'duplicate-door', __( 'Duplicate door', 'panda-seasons' ), __( 'Duplicates an existing door in the same calendar.', 'panda-seasons' ), 'duplicate_door', 'can_edit_door', array( 'type' => 'object', 'properties' => array( 'door_id' => array( 'type' => 'integer', 'minimum' => 1 ) ), 'required' => array( 'door_id' ) ) );
 		self::ability( 'delete-door', __( 'Move door to trash', 'panda-seasons' ), __( 'Moves one calendar door to the WordPress trash.', 'panda-seasons' ), 'delete_door', 'can_delete_door', array( 'type' => 'object', 'properties' => array( 'door_id' => array( 'type' => 'integer', 'minimum' => 1 ) ), 'required' => array( 'door_id' ) ), false, true );
 		self::ability( 'export-template', __( 'Export calendar template', 'panda-seasons' ), __( 'Returns a portable Panda Seasons template object without subscriber data.', 'panda-seasons' ), 'export_template', 'can_edit_calendar', $id_schema, true );
+		self::ability( 'create-layout-draft', __( 'Create layout-only calendar draft', 'panda-seasons' ), __( 'Creates a draft calendar from an analyzed reference image, door rectangles and visual defaults. Door content may be added later.', 'panda-seasons' ), 'create_layout_draft', 'can_create_layout', self::layout_input_schema() );
+		self::ability( 'apply-document-content', __( 'Apply document content to calendar', 'panda-seasons' ), __( 'Adds normalized content from a document to existing doors by door number without changing their layout.', 'panda-seasons' ), 'apply_document_content', 'can_apply_document_content', self::document_input_schema() );
 	}
 
 	private static function calendar_input_schema() {
@@ -83,6 +85,57 @@ final class Panda_Seasons_MCP {
 				'settings'    => array( 'type' => 'object', 'additionalProperties' => true ),
 			),
 			'required' => array( 'calendar_id' ),
+		);
+	}
+
+	private static function layout_input_schema() {
+		$position = array(
+			'type' => 'object',
+			'properties' => array(
+				'number' => array( 'type' => 'integer', 'minimum' => 1, 'maximum' => 366 ),
+				'x' => array( 'type' => 'number', 'minimum' => 0, 'maximum' => 100 ),
+				'y' => array( 'type' => 'number', 'minimum' => 0, 'maximum' => 100 ),
+				'w' => array( 'type' => 'number', 'minimum' => 1, 'maximum' => 100 ),
+				'h' => array( 'type' => 'number', 'minimum' => 1, 'maximum' => 100 ),
+			),
+			'required' => array( 'number', 'x', 'y', 'w', 'h' ),
+		);
+		return array(
+			'type' => 'object',
+			'properties' => array(
+				'title' => array( 'type' => 'string' ),
+				'background_media_id' => array( 'type' => 'integer', 'minimum' => 0 ),
+				'desktop_aspect_ratio' => array( 'type' => 'number', 'minimum' => 0.4, 'maximum' => 3 ),
+				'mobile_aspect_ratio' => array( 'type' => 'number', 'minimum' => 0.35, 'maximum' => 2 ),
+				'doors' => array( 'type' => 'array', 'minItems' => 1, 'maxItems' => 366, 'items' => $position ),
+				'mobile_doors' => array( 'type' => 'array', 'items' => $position ),
+				'style' => array( 'type' => 'object', 'additionalProperties' => true ),
+			),
+			'required' => array( 'doors' ),
+		);
+	}
+
+	private static function document_input_schema() {
+		return array(
+			'type' => 'object',
+			'properties' => array(
+				'calendar_id' => array( 'type' => 'integer', 'minimum' => 1 ),
+				'create_missing_doors' => array( 'type' => 'boolean', 'default' => false ),
+				'doors' => array(
+					'type' => 'array',
+					'items' => array(
+						'type' => 'object',
+						'properties' => array(
+							'number' => array( 'type' => 'integer', 'minimum' => 1, 'maximum' => 366 ),
+							'title' => array( 'type' => 'string' ),
+							'content' => array( 'type' => 'string' ),
+							'settings' => array( 'type' => 'object', 'additionalProperties' => true ),
+						),
+						'required' => array( 'number' ),
+					),
+				),
+			),
+			'required' => array( 'calendar_id', 'doors' ),
 		);
 	}
 
@@ -113,6 +166,8 @@ final class Panda_Seasons_MCP {
 		$id = self::input_id( $input, 'door_id' );
 		return self::can_edit_door( $input ) && current_user_can( 'delete_post', $id );
 	}
+	public static function can_create_layout() { return current_user_can( 'edit_posts' ); }
+	public static function can_apply_document_content( $input ) { return self::can_edit_calendar( $input ); }
 
 	private static function post_meta( $post_id ) {
 		$result = array();
@@ -217,5 +272,85 @@ final class Panda_Seasons_MCP {
 	public static function export_template( $input ) {
 		$data = self::get_calendar( $input );
 		return array( 'format' => 'panda-seasons-template', 'format_version' => 1, 'exported_at' => gmdate( 'c' ), 'calendar' => $data );
+	}
+
+	private static function layout_position( $position ) {
+		$x = min( 99, max( 0, (float) ( $position['x'] ?? 0 ) ) );
+		$y = min( 99, max( 0, (float) ( $position['y'] ?? 0 ) ) );
+		$w = min( 100 - $x, max( 1, (float) ( $position['w'] ?? 10 ) ) );
+		$h = min( 100 - $y, max( 1, (float) ( $position['h'] ?? 10 ) ) );
+		return array( 'x' => round( $x, 3 ), 'y' => round( $y, 3 ), 'w' => round( $w, 3 ), 'h' => round( $h, 3 ) );
+	}
+
+	private static function mobile_positions( $doors ) {
+		$result = array();
+		$count = max( 1, count( $doors ) );
+		$columns = 3;
+		$rows = (int) ceil( $count / $columns );
+		$gap = 2;
+		$width = ( 100 - ( $columns + 1 ) * $gap ) / $columns;
+		$height = ( 100 - ( $rows + 1 ) * $gap ) / max( 1, $rows );
+		foreach ( array_values( $doors ) as $index => $door ) {
+			$result[ absint( $door['number'] ?? ( $index + 1 ) ) ] = array( 'x' => round( $gap + ( $index % $columns ) * ( $width + $gap ), 3 ), 'y' => round( $gap + floor( $index / $columns ) * ( $height + $gap ), 3 ), 'w' => round( $width, 3 ), 'h' => round( $height, 3 ) );
+		}
+		return $result;
+	}
+
+	public static function create_layout_draft( $input ) {
+		$title = sanitize_text_field( (string) ( $input['title'] ?? __( 'Layout draft', 'panda-seasons' ) ) );
+		$calendar_id = wp_insert_post( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => 'draft', 'post_title' => $title ), true );
+		if ( is_wp_error( $calendar_id ) ) return $calendar_id;
+		$background_id = absint( $input['background_media_id'] ?? 0 );
+		if ( $background_id && 'attachment' === get_post_type( $background_id ) ) update_post_meta( $calendar_id, '_ps_cover_desktop', $background_id );
+		update_post_meta( $calendar_id, '_ps_aspect_ratio', min( 3, max( 0.4, (float) ( $input['desktop_aspect_ratio'] ?? 1.5 ) ) ) );
+		update_post_meta( $calendar_id, '_ps_mobile_aspect_ratio', min( 2, max( 0.35, (float) ( $input['mobile_aspect_ratio'] ?? 0.75 ) ) ) );
+		$style_map = array(
+			'closed_background' => 'default_closed_background', 'open_background' => 'default_open_background',
+			'closed_text_color' => 'default_closed_text_color', 'open_text_color' => 'default_open_text_color',
+			'closed_border_color' => 'default_closed_border_color', 'open_border_color' => 'default_open_border_color',
+			'closed_border_width' => 'default_closed_border_width', 'open_border_width' => 'default_open_border_width',
+			'border_style' => 'default_border_style', 'active_border_color' => 'default_active_border_color',
+			'label_font' => 'default_label_font', 'label_font_size' => 'default_label_font_size', 'label_font_weight' => 'default_label_font_weight',
+			'shape' => 'default_shape', 'open_effect' => 'open_effect', 'effect_speed' => 'effect_speed',
+		);
+		$calendar_style = array();
+		foreach ( (array) ( $input['style'] ?? array() ) as $key => $value ) if ( isset( $style_map[ $key ] ) ) $calendar_style[ $style_map[ $key ] ] = $value;
+		self::update_settings( $calendar_id, $calendar_style, self::allowed_calendar_meta() );
+		$mobile = array();
+		foreach ( (array) ( $input['mobile_doors'] ?? array() ) as $position ) $mobile[ absint( $position['number'] ?? 0 ) ] = self::layout_position( $position );
+		if ( ! $mobile ) $mobile = self::mobile_positions( (array) $input['doors'] );
+		$created = array();
+		foreach ( (array) $input['doors'] as $position ) {
+			$number = min( 366, max( 1, absint( $position['number'] ?? 1 ) ) );
+			$door_id = wp_insert_post( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => 'publish', 'post_title' => sprintf( __( 'Door %d', 'panda-seasons' ), $number ) ), true );
+			if ( is_wp_error( $door_id ) ) continue;
+			update_post_meta( $door_id, '_ps_calendar_id', $calendar_id );
+			update_post_meta( $door_id, '_ps_door_number', $number );
+			update_post_meta( $door_id, '_ps_position_desktop', self::layout_position( $position ) );
+			update_post_meta( $door_id, '_ps_position_mobile', $mobile[ $number ] ?? self::layout_position( $position ) );
+			foreach ( $style_map as $style_key => $calendar_key ) {
+				if ( ! array_key_exists( $style_key, (array) ( $input['style'] ?? array() ) ) ) continue;
+				$door_key = preg_replace( '/^default_/', '', $calendar_key );
+				if ( in_array( $door_key, self::allowed_door_meta(), true ) ) self::update_settings( $door_id, array( $door_key => $input['style'][ $style_key ] ), self::allowed_door_meta() );
+			}
+			$created[] = $door_id;
+		}
+		return array( 'calendar_id' => $calendar_id, 'status' => 'draft', 'doors_created' => count( $created ), 'door_ids' => $created, 'edit_url' => get_edit_post_link( $calendar_id, 'raw' ), 'shortcode' => '[panda_seasons id="' . $calendar_id . '"]' );
+	}
+
+	public static function apply_document_content( $input ) {
+		$calendar_id = self::input_id( $input, 'calendar_id' );
+		$existing = array();
+		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1 ) ) as $door ) $existing[ absint( get_post_meta( $door->ID, '_ps_door_number', true ) ) ] = $door->ID;
+		$updated = array();
+		$skipped = array();
+		foreach ( (array) ( $input['doors'] ?? array() ) as $item ) {
+			$number = min( 366, max( 1, absint( $item['number'] ?? 1 ) ) );
+			$door_id = $existing[ $number ] ?? 0;
+			if ( ! $door_id && empty( $input['create_missing_doors'] ) ) { $skipped[] = $number; continue; }
+			$result = self::save_door( array( 'calendar_id' => $calendar_id, 'door_id' => $door_id, 'title' => $item['title'] ?? sprintf( __( 'Door %d', 'panda-seasons' ), $number ), 'content' => $item['content'] ?? '', 'settings' => array_merge( array( 'door_number' => $number ), (array) ( $item['settings'] ?? array() ) ) ) );
+			if ( ! is_wp_error( $result ) ) $updated[] = $number;
+		}
+		return array( 'calendar_id' => $calendar_id, 'updated_door_numbers' => $updated, 'skipped_door_numbers' => $skipped, 'status' => get_post_status( $calendar_id ) );
 	}
 }

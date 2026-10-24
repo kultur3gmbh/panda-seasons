@@ -995,3 +995,37 @@ msgstr "Importierter Kalender"
 msgid "Imported door"
 msgstr "Importierte Türe"
 
+
+msgid "Securely read and manage seasonal calendars and their doors."
+msgstr "Saisonkalender und ihre Türen sicher lesen und verwalten."
+
+msgid "List calendars"
+msgstr "Kalender auflisten"
+
+msgid "Get calendar"
+msgstr "Kalender abrufen"
+
+msgid "Create or update calendar"
+msgstr "Kalender erstellen oder aktualisieren"
+
+msgid "Create or update door"
+msgstr "Türe erstellen oder aktualisieren"
+
+msgid "Export calendar template"
+msgstr "Kalendervorlage exportieren"
+
+msgid "Create layout-only calendar draft"
+msgstr "Kalenderentwurf nur aus dem Layout erstellen"
+
+msgid "Creates a draft calendar from an analyzed reference image, door rectangles and visual defaults. Door content may be added later."
+msgstr "Erstellt aus einem analysierten Referenzbild, den Türenflächen und den Gestaltungsvorgaben einen Kalenderentwurf. Inhalte können später ergänzt werden."
+
+msgid "Apply document content to calendar"
+msgstr "Dokumentinhalte auf den Kalender anwenden"
+
+msgid "Adds normalized content from a document to existing doors by door number without changing their layout."
+msgstr "Ordnet normalisierte Dokumentinhalte anhand der Türnummern bestehenden Türen zu, ohne deren Anordnung zu verändern."
+
+msgid "Layout draft"
+msgstr "Layoutentwurf"
+

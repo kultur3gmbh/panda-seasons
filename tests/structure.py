@@ -58,6 +58,6 @@ for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_fi
 for integration_contract in ("register_block_type", "elementor/widgets/register", "et_builder_ready", "fusion_builder_map"):
     if integration_contract not in integrations:
         raise SystemExit(f"Missing builder integration contract {integration_contract}")
-for mcp_contract in ("wp_abilities_api_init", "wp_register_ability", "list-calendars", "get-calendar", "save-door", "delete-door"):
+for mcp_contract in ("wp_abilities_api_init", "wp_register_ability", "list-calendars", "get-calendar", "save-door", "delete-door", "create-layout-draft", "apply-document-content"):
     if mcp_contract not in mcp:
         raise SystemExit(f"Missing MCP contract {mcp_contract}")

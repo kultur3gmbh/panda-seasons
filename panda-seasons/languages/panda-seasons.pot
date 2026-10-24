@@ -993,3 +993,37 @@ msgstr ""
 msgid "Imported door"
 msgstr ""
 
+
+msgid "Securely read and manage seasonal calendars and their doors."
+msgstr ""
+
+msgid "List calendars"
+msgstr ""
+
+msgid "Get calendar"
+msgstr ""
+
+msgid "Create or update calendar"
+msgstr ""
+
+msgid "Create or update door"
+msgstr ""
+
+msgid "Export calendar template"
+msgstr ""
+
+msgid "Create layout-only calendar draft"
+msgstr ""
+
+msgid "Creates a draft calendar from an analyzed reference image, door rectangles and visual defaults. Door content may be added later."
+msgstr ""
+
+msgid "Apply document content to calendar"
+msgstr ""
+
+msgid "Adds normalized content from a document to existing doors by door number without changing their layout."
+msgstr ""
+
+msgid "Layout draft"
+msgstr ""
+
