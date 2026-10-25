@@ -192,8 +192,8 @@ trait Panda_Seasons_Runtime {
 		$default_closed_bg = (string) get_post_meta( $id, '_ps_default_closed_background', true ) ?: 'rgba(99, 99, 99, 0.2)';
 		$default_open_bg = (string) get_post_meta( $id, '_ps_default_open_background', true ) ?: 'rgba(51, 79, 232, 1)';
 		$style .= '--ps-active-border-color:' . $active_border . ';--ps-popup-bg:' . ( (string) get_post_meta( $id, '_ps_popup_background', true ) ?: 'rgba(255,255,255,1)' ) . ';--ps-popup-color:' . ( (string) get_post_meta( $id, '_ps_popup_text_color', true ) ?: 'rgba(31,41,55,1)' ) . ';--ps-popup-border-color:' . ( (string) get_post_meta( $id, '_ps_popup_border_color', true ) ?: 'rgba(216,221,231,1)' ) . ';--ps-popup-border-width:' . min( 20, absint( get_post_meta( $id, '_ps_popup_border_width', true ) ) ) . 'px;--ps-popup-radius:' . min( 80, absint( get_post_meta( $id, '_ps_popup_radius', true ) ) ?: 16 ) . 'px;--ps-popup-padding:' . min( 100, absint( get_post_meta( $id, '_ps_popup_padding', true ) ) ?: 32 ) . 'px;--ps-popup-width:' . min( 1600, max( 320, absint( get_post_meta( $id, '_ps_popup_width', true ) ) ?: 720 ) ) . 'px;';
-		if ( $desktop ) $style .= '--ps-cover-desktop:url("' . esc_url_raw( $desktop ) . '");';
-		if ( $mobile ) $style .= '--ps-cover-mobile:url("' . esc_url_raw( $mobile ) . '");';
+		$style .= '--ps-cover-desktop:' . ( $desktop ? 'url("' . esc_url_raw( $desktop ) . '")' : 'none' ) . ';';
+		$style .= '--ps-cover-mobile:' . ( $mobile ? 'url("' . esc_url_raw( $mobile ) . '")' : 'none' ) . ';';
 
 		ob_start();
 		?>
