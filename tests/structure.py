@@ -89,6 +89,12 @@ for layer_contract in ("activeDoor.ctaText = getEditorContent('panda_seasons_doo
 for frontend_contract in ("--ps-layer-padding", ".panda-seasons__content-layout.has-media", ".panda-seasons__cta{"):
 	if frontend_contract not in frontend_css:
 		raise SystemExit(f"Missing 0.6.0 frontend layout {frontend_contract}")
+for release_contract in ("_ps_default_cta_enabled", "_ps_cta_mode", "data-apply-door-dialog", "Select settings to apply", "Save settings"):
+	if release_contract not in plugin:
+		raise SystemExit(f"Missing 0.6.1 editor contract {release_contract}")
+for behavior_contract in ("data-confirm-apply-door-settings", "ctaMode: 'default'", "updateDefaultCtaVisibility"):
+	if behavior_contract not in admin_js:
+		raise SystemExit(f"Missing 0.6.1 editor behavior {behavior_contract}")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")

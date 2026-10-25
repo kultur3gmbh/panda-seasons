@@ -441,7 +441,7 @@
 				buttonLabel: '',
 				buttonUrl: '',
 				productId: 0,
-				couponId: 0, ctaEnabled: false, ctaTitle: '', ctaText: '', ctaType: 'link', ctaLabel: '', ctaUrl: '', ctaShortcode: '',
+				couponId: 0, ctaMode: 'default', ctaEnabled: false, ctaTitle: '', ctaText: '', ctaType: 'link', ctaLabel: '', ctaUrl: '', ctaShortcode: '',
 				eventId: 0,
 				closedLabel: '',
 				openLabel: '',
@@ -742,7 +742,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelPosition', 'openLabelPosition', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'shape', 'openEffect', 'imageId', 'imageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
+		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'ctaMode', 'ctaEnabled', 'ctaTitle', 'ctaType', 'ctaLabel', 'ctaUrl', 'ctaShortcode', 'eventId', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelPosition', 'openLabelPosition', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'shape', 'openEffect', 'imageId', 'imageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -882,19 +882,27 @@
 
 	document.addEventListener('click', function (event) {
 		if (event.target.closest('[data-apply-door-appearance]') && activeDoor && composer) {
-			if (!window.confirm(adminText('applyAppearanceConfirm', 'Only appearance and style settings will be applied to all doors. Contents, media, links, products, quiz questions, call-to-action settings and dates remain unchanged.'))) return;
-			syncDoorPreview();
-			var props = ['shape','openEffect','imagePosition','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelPosition','openLabelPosition','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay'];
-			composer.getDoors().forEach(function (door) { if (!door.deleted && door !== activeDoor) props.forEach(function (prop) { door[prop] = activeDoor[prop]; }); });
-			var defaultLinks = {shape:'panda_seasons_default_shape',openEffect:'panda_seasons_open_effect',closedBg:'panda_seasons_default_closed_background',openBg:'panda_seasons_default_open_background',closedLabelVisible:'panda_seasons_default_closed_label_visible',openLabelVisible:'panda_seasons_default_open_label_visible',closedLabelShape:'panda_seasons_default_closed_label_shape',openLabelShape:'panda_seasons_default_open_label_shape',closedLabelPosition:'panda_seasons_default_closed_label_position',openLabelPosition:'panda_seasons_default_open_label_position',closedFont:'panda_seasons_default_label_font',closedFontSize:'panda_seasons_default_label_font_size',closedFontWeight:'panda_seasons_default_label_font_weight',closedLabelWidthMode:'panda_seasons_default_label_width_mode',closedLabelWidth:'panda_seasons_default_label_width',closedBorderStyle:'panda_seasons_default_border_style',closedColor:'panda_seasons_default_closed_text_color',openColor:'panda_seasons_default_open_text_color',closedBorderColor:'panda_seasons_default_closed_border_color',openBorderColor:'panda_seasons_default_open_border_color',closedBorderWidth:'panda_seasons_default_closed_border_width',openBorderWidth:'panda_seasons_default_open_border_width',closedLabelBg:'panda_seasons_default_closed_label_background',openLabelBg:'panda_seasons_default_open_label_background',closedLabelBorderColor:'panda_seasons_default_closed_label_border_color',openLabelBorderColor:'panda_seasons_default_open_label_border_color',closedLabelBorderWidth:'panda_seasons_default_closed_label_border_width',openLabelBorderWidth:'panda_seasons_default_open_label_border_width',closedImageOverlay:'panda_seasons_default_closed_image_overlay',openImageOverlay:'panda_seasons_default_open_image_overlay'};
-			Object.keys(defaultLinks).forEach(function (prop) {
-				var input=document.querySelector('[name="'+defaultLinks[prop]+'"]');
-				if(!input || (prop === 'openEffect' && activeDoor[prop] === 'inherit')) return;
-				if(input.type === 'checkbox') input.checked = Boolean(activeDoor[prop]); else input.value=activeDoor[prop];
-				input.dispatchEvent(new Event('change',{bubbles:true}));
-			});
-			composer.renderDoors();
+			var applyDialog = document.querySelector('[data-apply-door-dialog]');
+			if (applyDialog) applyDialog.hidden = false;
 			return;
+		}
+		if (event.target.closest('[data-close-apply-door-dialog]')) { var closeApplyDialog=document.querySelector('[data-apply-door-dialog]'); if(closeApplyDialog)closeApplyDialog.hidden=true; return; }
+		if (event.target.closest('[data-confirm-apply-door-settings]') && activeDoor && composer) {
+			var dialog=document.querySelector('[data-apply-door-dialog]'), selected=[];
+			if(dialog)dialog.querySelectorAll('input[type="checkbox"]:checked').forEach(function(input){selected.push(input.value);});
+			if(!selected.length)return;
+			syncDoorPreview();
+			var groups={
+				appearance:['shape','openEffect','imagePosition','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelPosition','openLabelPosition','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay'],
+				related:['buttonLabel','buttonUrl','eventId'],
+				cta:['ctaMode','ctaEnabled','ctaTitle','ctaText','ctaType','ctaLabel','ctaUrl','ctaShortcode']
+			};
+			composer.getDoors().forEach(function(door){if(door.deleted||door===activeDoor)return;selected.forEach(function(group){(groups[group]||[]).forEach(function(prop){door[prop]=activeDoor[prop];});});});
+			if(selected.indexOf('appearance')!==-1){
+				var defaultLinks={shape:'panda_seasons_default_shape',openEffect:'panda_seasons_open_effect',closedBg:'panda_seasons_default_closed_background',openBg:'panda_seasons_default_open_background',closedLabelVisible:'panda_seasons_default_closed_label_visible',openLabelVisible:'panda_seasons_default_open_label_visible',closedLabelShape:'panda_seasons_default_closed_label_shape',openLabelShape:'panda_seasons_default_open_label_shape',closedLabelPosition:'panda_seasons_default_closed_label_position',openLabelPosition:'panda_seasons_default_open_label_position',closedFont:'panda_seasons_default_label_font',closedFontSize:'panda_seasons_default_label_font_size',closedFontWeight:'panda_seasons_default_label_font_weight',closedLabelWidthMode:'panda_seasons_default_label_width_mode',closedLabelWidth:'panda_seasons_default_label_width',closedBorderStyle:'panda_seasons_default_border_style',closedColor:'panda_seasons_default_closed_text_color',openColor:'panda_seasons_default_open_text_color',closedBorderColor:'panda_seasons_default_closed_border_color',openBorderColor:'panda_seasons_default_open_border_color',closedBorderWidth:'panda_seasons_default_closed_border_width',openBorderWidth:'panda_seasons_default_open_border_width',closedLabelBg:'panda_seasons_default_closed_label_background',openLabelBg:'panda_seasons_default_open_label_background',closedLabelBorderColor:'panda_seasons_default_closed_label_border_color',openLabelBorderColor:'panda_seasons_default_open_label_border_color',closedLabelBorderWidth:'panda_seasons_default_closed_label_border_width',openLabelBorderWidth:'panda_seasons_default_open_label_border_width',closedImageOverlay:'panda_seasons_default_closed_image_overlay',openImageOverlay:'panda_seasons_default_open_image_overlay'};
+				Object.keys(defaultLinks).forEach(function(prop){var input=document.querySelector('[name="'+defaultLinks[prop]+'"]');if(!input||(prop==='openEffect'&&activeDoor[prop]==='inherit'))return;if(input.type==='checkbox')input.checked=Boolean(activeDoor[prop]);else input.value=activeDoor[prop];input.dispatchEvent(new Event('change',{bubbles:true}));});
+			}
+			composer.renderDoors(); if(dialog)dialog.hidden=true; return;
 		}
 		var refreshImages = event.target.closest('[data-refresh-calendar-images]');
 		if (refreshImages) {
@@ -1021,7 +1029,8 @@
 	document.addEventListener('change', function (event) {
 		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();
 		if (event.target.matches('[data-door-field="contentType"]')) updateContentTypeVisibility();
-			if (event.target.matches('[data-door-field="ctaType"]')) updateCtaVisibility();
+			if (event.target.matches('[data-door-field="ctaType"],[data-door-field="ctaMode"]')) updateCtaVisibility();
+			if (event.target.matches('[data-default-cta-type]')) updateDefaultCtaVisibility();
 		if (event.target.matches('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]')) updateLabelWidthVisibility(event.target);
 		if (event.target.matches('[data-default-door-color]') && composer) composer.dataset['default' + (event.target.dataset.defaultDoorColor === 'closed' ? 'Closed' : 'Open')] = event.target.value;
 		if (event.target.matches('[data-default-door-setting]') && composer) composer.dataset['default' + event.target.dataset.defaultDoorSetting.charAt(0).toUpperCase() + event.target.dataset.defaultDoorSetting.slice(1)] = event.target.type === 'checkbox' ? (event.target.checked ? '1' : '0') : event.target.value;
@@ -1063,12 +1072,21 @@
 	}
 	function updateCtaVisibility() {
 		if (!modal) return;
+		var modeField = modal.querySelector('[data-door-field="ctaMode"]');
+		var customFields = modal.querySelector('[data-cta-custom-fields]');
+		if (customFields) customFields.hidden = modeField && modeField.value === 'default';
 		var typeField = modal.querySelector('[data-door-field="ctaType"]');
 		var type = typeField ? typeField.value : 'link';
 		modal.querySelectorAll('[data-cta-field]').forEach(function (field) {
 			field.hidden = field.dataset.ctaField !== type;
 		});
 	}
+	function updateDefaultCtaVisibility() {
+		var typeField = document.querySelector('[data-default-cta-type]');
+		if (!typeField) return;
+		document.querySelectorAll('[data-default-cta-field]').forEach(function (field) { field.hidden = field.dataset.defaultCtaField !== typeField.value; });
+	}
+	updateDefaultCtaVisibility();
 	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
 	if (modal) {
 		var doorFields = modal.querySelector('.panda-seasons-door-modal__fields');

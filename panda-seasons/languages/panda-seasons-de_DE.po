@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.6.0\n"
+"Project-Id-Version: Panda Seasons 0.6.1\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1385,3 +1385,26 @@ msgstr "Sie dürfen diese Türe nicht speichern."
 
 msgid "The door could not be saved."
 msgstr "Die Türe konnte nicht gespeichert werden."
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
+msgid "Default call to action"
+msgstr "Standard-Call-to-Action"
+
+msgid "Doors using the calendar defaults inherit these settings. Individual door settings remain unchanged."
+msgstr "Türen, die die Kalendervoreinstellungen verwenden, übernehmen diese Einstellungen. Individuelle Türeinstellungen bleiben unverändert."
+
+msgid "CTA settings"
+msgstr "CTA-Einstellungen"
+
+msgid "Use calendar defaults"
+msgstr "Kalendervoreinstellungen verwenden"
+
+msgid "Use individual settings"
+msgstr "Individuelle Einstellungen verwenden"
+
+msgid "Select settings to apply"
+msgstr "Zu übernehmende Einstellungen auswählen"
+
+msgid "Appearance"
+msgstr "Darstellung"

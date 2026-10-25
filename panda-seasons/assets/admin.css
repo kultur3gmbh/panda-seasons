@@ -79,3 +79,24 @@ body.post-type-panda_calendar #poststuff #post-body.columns-2{margin-right:0}bod
 .panda-seasons-cta-primary-row label{display:grid;gap:6px}
 #wp-panda_seasons_door_cta_editor-wrap{min-height:150px}
 @media(max-width:782px){.panda-seasons-default-general-grid,.panda-seasons-default-typography-grid,.panda-seasons-cta-primary-row{grid-template-columns:1fr}.panda-seasons-composer__toolbar{grid-template-columns:1fr}.panda-seasons-composer__preview-controls{justify-self:start}}
+
+/* 0.6.1: full-width defaults, reusable CTA defaults and selective bulk application. */
+.panda-seasons-default-general-grid{width:100%;max-width:none;box-sizing:border-box}
+.panda-seasons-default-general-grid>label{width:100%;max-width:none;box-sizing:border-box}
+.panda-seasons-default-general-grid>label>select,.panda-seasons-default-general-grid>label>input{width:100%!important;max-width:none!important;min-height:40px}
+.panda-seasons-popup-settings__save{margin-top:14px}
+.panda-seasons-default-cta{padding:14px;border:1px solid #dcdcde;border-radius:8px;background:#fff}
+.panda-seasons-default-cta h3{margin:0 0 6px}
+.panda-seasons-default-cta__grid,.panda-seasons-cta-custom-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.panda-seasons-default-cta__grid>label,.panda-seasons-cta-custom-fields>label{display:grid;gap:5px;min-width:0}
+.panda-seasons-default-cta__grid>.is-wide,.panda-seasons-cta-custom-fields>.is-wide{grid-column:1/-1}
+.panda-seasons-cta-custom-fields[hidden]{display:none}
+.panda-seasons-apply-dialog[hidden]{display:none}
+.panda-seasons-apply-dialog{position:fixed;inset:0;z-index:100100;display:grid;place-items:center;padding:20px}
+.panda-seasons-apply-dialog__backdrop{position:absolute;inset:0;background:rgba(15,23,42,.55)}
+.panda-seasons-apply-dialog__panel{position:relative;width:min(440px,100%);padding:22px;border-radius:10px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.panda-seasons-apply-dialog__panel h2{margin:0 0 16px}
+.panda-seasons-apply-dialog__blocks{display:grid;gap:10px}
+.panda-seasons-apply-dialog__blocks label{display:flex;align-items:center;gap:9px;padding:12px;border:1px solid #dcdcde;border-radius:7px;font-weight:600}
+.panda-seasons-apply-dialog__actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+@media(max-width:782px){.panda-seasons-default-cta__grid,.panda-seasons-cta-custom-fields{grid-template-columns:1fr}.panda-seasons-default-general-grid label>span{white-space:normal}}
