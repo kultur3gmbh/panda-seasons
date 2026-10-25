@@ -286,6 +286,7 @@ body.post-type-panda_calendar #titlediv{margin:8px 0 12px}.panda-seasons-admin-g
 .panda-seasons-composer__toolbar{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;width:100%}
 .panda-seasons-composer__toolbar-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;width:100%}
 .panda-seasons-composer__states,.panda-seasons-composer__add-actions,.panda-seasons-composer__primary-actions,.panda-seasons-composer__grid-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.panda-seasons-composer__toolbar-divider{width:1px;height:24px;margin:0 2px;background:#c3c4c7}.panda-seasons-composer__states [data-editor-view]{display:inline-flex;align-items:center;gap:4px}.panda-seasons-composer__states [data-editor-view] .dashicons{width:17px;height:17px;font-size:17px;line-height:17px}
 .panda-seasons-composer__primary-actions,.panda-seasons-composer__grid-row{margin-left:auto}
 .panda-seasons-composer__grid-size{display:inline-flex;align-items:center;gap:6px;margin:0}
 .panda-seasons-composer__grid-size span{font-size:12px}.panda-seasons-composer__grid-size select{min-height:30px}

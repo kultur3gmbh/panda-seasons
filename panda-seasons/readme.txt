@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: calendar, advent calendar, seasonal campaign, email calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.7.6
+Stable tag: 0.7.7
 License: GPLv2 or later
 
 Interactive seasonal calendars with freely positioned doors on responsive desktop and mobile images. Web calendars work independently; email delivery requires the free ContactPanda plugin.
@@ -15,6 +15,10 @@ Create multiple parallel calendars in a visual drag-and-drop composer, schedule 
 Use `[panda_seasons id="123"]` to display a published calendar.
 
 == Changelog ==
+
+= 0.7.7 =
+* Restores the desktop and mobile editor switches directly beside the closed and opened preview controls.
+* Keeps the selected door state while switching between the separately stored desktop and mobile layouts.
 
 = 0.7.6 =
 * Initializes the editor with the visibly selected closed-door preview instead of the obsolete mixed actual-date state.

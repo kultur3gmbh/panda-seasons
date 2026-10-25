@@ -598,6 +598,9 @@ final class Panda_Seasons_Plugin {
 				<div class="panda-seasons-composer__states" role="group" aria-label="<?php esc_attr_e( 'Door state preview', 'panda-seasons' ); ?>">
 						<button type="button" class="button button-primary" data-preview-state="closed"><?php esc_html_e( 'All closed', 'panda-seasons' ); ?></button>
 					<button type="button" class="button" data-preview-state="open"><?php esc_html_e( 'All open', 'panda-seasons' ); ?></button>
+					<span class="panda-seasons-composer__toolbar-divider" aria-hidden="true"></span>
+					<button type="button" class="button button-primary" data-editor-view="desktop"><span class="dashicons dashicons-desktop" aria-hidden="true"></span><?php esc_html_e( 'Desktop', 'panda-seasons' ); ?></button>
+					<button type="button" class="button" data-editor-view="mobile"><span class="dashicons dashicons-smartphone" aria-hidden="true"></span><?php esc_html_e( 'Mobile', 'panda-seasons' ); ?></button>
 				</div>
 				<div class="panda-seasons-composer__primary-actions"><button type="button" class="button" data-open-template-dialog><span class="dashicons dashicons-layout" aria-hidden="true"></span><?php esc_html_e( 'Save as template', 'panda-seasons' ); ?></button><button type="button" class="button button-secondary panda-seasons-interactive-preview" data-open-calendar-preview data-preview-url="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_preview&calendar=' . $post->ID ), 'panda_seasons_preview_' . $post->ID ) ); ?>"><span class="dashicons dashicons-visibility" aria-hidden="true"></span><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></button><button type="button" class="button button-primary" data-save-calendar><span class="dashicons dashicons-saved" aria-hidden="true"></span><?php esc_html_e( 'Save calendar', 'panda-seasons' ); ?></button></div>
 				</div>
