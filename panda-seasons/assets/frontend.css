@@ -18,3 +18,14 @@
 .panda-seasons__door.is-open-visual .panda-seasons__door-face{background-image:linear-gradient(var(--ps-open-image-overlay,rgba(0,0,0,0)),var(--ps-open-image-overlay,rgba(0,0,0,0))),var(--ps-open-image,none)}
 .panda-seasons__door.is-closed-visual .panda-seasons__door-face{background-image:linear-gradient(var(--ps-closed-image-overlay,rgba(0,0,0,0)),var(--ps-closed-image-overlay,rgba(0,0,0,0))),var(--ps-closed-image,none)}
 .panda-seasons__door.compact-label-center.is-open-visual .panda-seasons__door-face{place-items:center}.panda-seasons__door.compact-label-center.is-open-visual .panda-seasons__door-number{top:50%;left:50%;transform:translate(-50%,-50%)}
+
+/* 0.6.0: configurable text padding and full-width CTA below the content columns. */
+.panda-seasons__layer--text{padding:var(--ps-layer-padding,8px)}
+.panda-seasons__content-layout.has-media{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,3vw,32px);align-items:start}
+.panda-seasons__content-layout .panda-seasons__door-media{margin:0}
+.panda-seasons__content-media img,.panda-seasons__content-media video{width:100%;height:auto}
+.panda-seasons__cta{width:100%;box-sizing:border-box;margin-top:clamp(18px,3vw,30px);padding-top:clamp(14px,2vw,22px);border-top:1px solid var(--ps-popup-border-color,#d8dde7)}
+.panda-seasons__cta h4{margin:0 0 .55rem;font-size:clamp(1rem,1.8vw,1.2rem)}
+.panda-seasons__cta-text{margin:0 0 1rem}.panda-seasons__cta-text>:first-child{margin-top:0}.panda-seasons__cta-text>:last-child{margin-bottom:0}
+.panda-seasons__modal-content>h3{margin-top:0;padding-right:48px;padding-left:48px;text-align:center}
+@media(max-width:600px){.panda-seasons__content-layout.has-media{grid-template-columns:1fr}}

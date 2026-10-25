@@ -74,6 +74,21 @@ if ".panda-seasons-door-modal__dropzone.is-dragover" not in admin_css:
     raise SystemExit("Missing visible media dropzone state")
 if ".panda-seasons__layer--text{display:flex;flex-direction:column" not in frontend_css:
     raise SystemExit("Text layers must stack headings and paragraphs vertically")
+for release_contract in (
+	"panda_seasons_door_cta_editor",
+	"door_cta_markup",
+	"panda-seasons-default-general-grid",
+	"Click Add door, Design area or Text area",
+	"data-layer-field=\"padding\"",
+):
+	if release_contract not in plugin:
+		raise SystemExit(f"Missing 0.6.0 editor contract {release_contract}")
+for layer_contract in ("activeDoor.ctaText = getEditorContent('panda_seasons_door_cta_editor')", "padding: 8"):
+	if layer_contract not in admin_js:
+		raise SystemExit(f"Missing 0.6.0 editor behavior {layer_contract}")
+for frontend_contract in ("--ps-layer-padding", ".panda-seasons__content-layout.has-media", ".panda-seasons__cta{"):
+	if frontend_contract not in frontend_css:
+		raise SystemExit(f"Missing 0.6.0 frontend layout {frontend_contract}")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")
