@@ -215,7 +215,7 @@
 		var activeLayerSnapshot = null;
 		var layerPointerState = null;
 		var view = 'desktop';
-		var previewState = 'actual';
+		var previewState = root.dataset.previewState === 'open' ? 'open' : 'closed';
 		var pointerState = null;
 		var dragged = false;
 		var snapControl = root.querySelector('[data-snap-grid]');
@@ -389,7 +389,7 @@
 				element.style.top = position.y + '%';
 				element.style.width = position.w + '%';
 				element.style.height = position.h + '%';
-				element.style.setProperty('--ps-door-bg', isOpen ? (door.openBg || '#334fe8') : (door.closedBg || '#1f2937'));
+				element.style.setProperty('--ps-door-bg', isOpen ? (door.openBg || root.dataset.defaultOpen || 'transparent') : (door.closedBg || root.dataset.defaultClosed || 'transparent'));
 				element.style.setProperty('--ps-door-color', isOpen ? (door.openColor || '#ffffff') : (door.closedColor || '#ffffff'));
 				element.style.setProperty('--ps-door-font', isOpen ? (door.openFont || 'inherit') : (door.closedFont || 'inherit'));
 				element.style.setProperty('--ps-door-font-size', (isOpen ? (door.openFontSize || 20) : (door.closedFontSize || 20)) + 'px');
