@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.6.3\n"
+"Project-Id-Version: Panda Seasons 0.6.4\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1416,3 +1416,66 @@ msgstr "Vorab-Anmeldung zum E-Mail-Kalender"
 
 msgid "Publish this registration immediately, before the first door opens. New contacts receive a double opt-in email and the calendar-specific tag."
 msgstr "Veröffentlichen Sie diese Anmeldung sofort, noch bevor die erste Türe geöffnet wird. Neue Kontakte erhalten eine Double-Opt-in-E-Mail und das kalenderspezifische Tag."
+
+msgid "Registration and email delivery"
+msgstr "Anmeldung und E-Mail-Versand"
+
+msgid "ContactPanda status"
+msgstr "ContactPanda-Status"
+
+msgid "Connected"
+msgstr "Verbunden"
+
+msgid "Not available"
+msgstr "Nicht verfügbar"
+
+msgid "Registrations"
+msgstr "Anmeldungen"
+
+msgid "Confirmed"
+msgstr "Bestätigt"
+
+msgid "Awaiting confirmation"
+msgstr "Bestätigung ausständig"
+
+msgid "Unsubscribed or blocked"
+msgstr "Abgemeldet oder blockiert"
+
+msgid "Consent text"
+msgstr "Einwilligungstext"
+
+msgid "Signup button text"
+msgstr "Text der Anmeldeschaltfläche"
+
+msgid "Message after confirmed registration"
+msgstr "Meldung nach bestätigter Anmeldung"
+
+msgid "Message while confirmation is pending"
+msgstr "Meldung bei ausständiger Bestätigung"
+
+msgid "Error message"
+msgstr "Fehlermeldung"
+
+msgid "Double opt-in email"
+msgstr "Double-Opt-in-E-Mail"
+
+msgid "These texts are sent to new, not yet confirmed contacts. The confirmation link is inserted automatically."
+msgstr "Diese Texte werden an neue, noch nicht bestätigte Kontakte gesendet. Der Bestätigungslink wird automatisch eingefügt."
+
+msgid "Double opt-in subject"
+msgstr "Double-Opt-in-Betreff"
+
+msgid "Double opt-in text"
+msgstr "Double-Opt-in-Text"
+
+msgid "Confirmation button text"
+msgstr "Text der Bestätigungsschaltfläche"
+
+msgid "Confirmation page heading"
+msgstr "Überschrift der Bestätigungsseite"
+
+msgid "Confirmation page text"
+msgstr "Text der Bestätigungsseite"
+
+msgid "Save email settings"
+msgstr "E-Mail-Einstellungen speichern"

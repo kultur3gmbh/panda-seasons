@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.6.3\n"
+"Project-Id-Version: Panda Seasons 0.6.4\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1413,4 +1413,67 @@ msgid "Advance email-calendar registration"
 msgstr ""
 
 msgid "Publish this registration immediately, before the first door opens. New contacts receive a double opt-in email and the calendar-specific tag."
+msgstr ""
+
+msgid "Registration and email delivery"
+msgstr ""
+
+msgid "ContactPanda status"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Not available"
+msgstr ""
+
+msgid "Registrations"
+msgstr ""
+
+msgid "Confirmed"
+msgstr ""
+
+msgid "Awaiting confirmation"
+msgstr ""
+
+msgid "Unsubscribed or blocked"
+msgstr ""
+
+msgid "Consent text"
+msgstr ""
+
+msgid "Signup button text"
+msgstr ""
+
+msgid "Message after confirmed registration"
+msgstr ""
+
+msgid "Message while confirmation is pending"
+msgstr ""
+
+msgid "Error message"
+msgstr ""
+
+msgid "Double opt-in email"
+msgstr ""
+
+msgid "These texts are sent to new, not yet confirmed contacts. The confirmation link is inserted automatically."
+msgstr ""
+
+msgid "Double opt-in subject"
+msgstr ""
+
+msgid "Double opt-in text"
+msgstr ""
+
+msgid "Confirmation button text"
+msgstr ""
+
+msgid "Confirmation page heading"
+msgstr ""
+
+msgid "Confirmation page text"
+msgstr ""
+
+msgid "Save email settings"
 msgstr ""

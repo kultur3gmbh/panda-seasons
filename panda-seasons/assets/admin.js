@@ -1114,16 +1114,18 @@
 	}
 	var adminGrid=document.querySelector('.panda-seasons-admin-grid'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
 	if(adminGrid&&editorLayout){
-		var mainTabs=document.createElement('div'),editorPanel=document.createElement('section'),settingsPanel=document.createElement('section');
+		var mainTabs=document.createElement('div'),editorPanel=document.createElement('section'),settingsPanel=document.createElement('section'),emailPanel=document.createElement('section'),emailBox=document.getElementById('panda-seasons-email');
 		mainTabs.className='panda-seasons-main-tabs';mainTabs.setAttribute('role','tablist');
-		mainTabs.innerHTML='<button type="button" class="button button-primary" role="tab" aria-selected="true" data-main-editor-tab="editor">'+escapeHtml(adminText('editCalendar','Edit calendar'))+'</button><button type="button" class="button" role="tab" aria-selected="false" data-main-editor-tab="settings">'+escapeHtml(adminText('generalSettings','General defaults'))+'</button>';
+		mainTabs.innerHTML='<button type="button" class="button button-primary" role="tab" aria-selected="true" data-main-editor-tab="editor">'+escapeHtml(adminText('editCalendar','Edit calendar'))+'</button><button type="button" class="button" role="tab" aria-selected="false" data-main-editor-tab="settings">'+escapeHtml(adminText('generalSettings','General defaults'))+'</button><button type="button" class="button" role="tab" aria-selected="false" data-main-editor-tab="email">'+escapeHtml(adminText('emailSettings','Registration and email delivery'))+'</button>';
 		editorPanel.className='panda-seasons-main-panel';editorPanel.dataset.mainEditorPanel='editor';
 		settingsPanel.className='panda-seasons-main-panel';settingsPanel.dataset.mainEditorPanel='settings';settingsPanel.hidden=true;
-		adminGrid.parentNode.insertBefore(mainTabs,adminGrid);mainTabs.parentNode.insertBefore(editorPanel,adminGrid);mainTabs.parentNode.insertBefore(settingsPanel,adminGrid);
+		emailPanel.className='panda-seasons-main-panel panda-seasons-email-panel';emailPanel.dataset.mainEditorPanel='email';emailPanel.hidden=true;
+		adminGrid.parentNode.insertBefore(mainTabs,adminGrid);mainTabs.parentNode.insertBefore(editorPanel,adminGrid);mainTabs.parentNode.insertBefore(settingsPanel,adminGrid);mainTabs.parentNode.insertBefore(emailPanel,adminGrid);
 		var titleBox=document.getElementById('titlediv');
 		if(titleBox)mainTabs.parentNode.insertBefore(titleBox,mainTabs);
 		if(publishPanel)mainTabs.parentNode.insertBefore(publishPanel,mainTabs);
 		editorPanel.appendChild(editorLayout);settingsPanel.appendChild(adminGrid);
+		if(emailBox){emailPanel.appendChild(emailBox);emailBox.classList.remove('closed');var emailToggle=emailBox.querySelector('.handlediv');if(emailToggle)emailToggle.setAttribute('aria-expanded','true');}
 		document.addEventListener('click',function(event){var button=event.target.closest('[data-main-editor-tab]');if(!button)return;var target=button.dataset.mainEditorTab;mainTabs.querySelectorAll('[data-main-editor-tab]').forEach(function(item){var active=item===button;item.classList.toggle('button-primary',active);item.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-main-editor-panel]').forEach(function(panel){panel.hidden=panel.dataset.mainEditorPanel!==target;});if(target==='editor'&&composer&&composer.renderDoors)composer.renderDoors();});
 	}
 	if(defaultsPanel&&composer){

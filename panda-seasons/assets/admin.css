@@ -115,3 +115,26 @@ body.post-type-panda_calendar #poststuff #post-body.columns-2{margin-right:0}bod
 .panda-seasons-default-general-row>label{display:grid!important;grid-template-rows:minmax(34px,auto) minmax(40px,auto);gap:5px;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important}
 .panda-seasons-default-general-row select{width:100%!important;max-width:none!important;min-width:0!important}
 @media(max-width:782px){.panda-seasons-default-general-row{grid-template-columns:1fr!important}}
+
+/* 0.6.4: dedicated registration and email-delivery workspace. */
+.panda-seasons-email-panel{padding:20px 0}
+.panda-seasons-email-panel>#panda-seasons-email{margin:0;box-shadow:none;border:1px solid #c3c4c7;border-radius:10px;overflow:hidden}
+.panda-seasons-email-panel>#panda-seasons-email>.postbox-header{display:none}
+.panda-seasons-email-panel>#panda-seasons-email>.inside{margin:0;padding:20px}
+.panda-seasons-email-settings{gap:18px}
+.panda-seasons-email-settings section{padding:18px;border:1px solid #dcdcde;border-radius:9px;background:#fff}
+.panda-seasons-email-settings section:last-of-type{border-bottom:1px solid #dcdcde}
+.panda-seasons-email-settings section>h3{font-size:18px}
+.panda-seasons-email-settings .panda-seasons-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.panda-seasons-email-settings .panda-seasons-admin-grid>label{display:grid;gap:6px;align-content:start;min-width:0}
+.panda-seasons-email-settings .panda-seasons-admin-grid>.is-wide{grid-column:1/-1}
+.panda-seasons-email-settings input:not([type=checkbox]),.panda-seasons-email-settings select{min-height:40px}
+.panda-seasons-email-status{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.panda-seasons-email-status>div{display:grid;gap:5px;padding:12px;border:1px solid #dcdcde;border-radius:8px;background:#f6f7f7}
+.panda-seasons-email-status strong{font-size:12px;color:#50575e}
+.panda-seasons-email-status span{font-size:17px;font-weight:700}
+.panda-seasons-email-status .is-active{color:#008a20}.panda-seasons-email-status .is-inactive{color:#b32d2e}
+.panda-seasons-email-settings .panda-seasons-shortcode{padding:12px;border-radius:7px;background:#f6f7f7}
+.panda-seasons-email-settings__save{min-height:40px;padding:0 18px!important}
+@media(max-width:1100px){.panda-seasons-email-status{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:782px){.panda-seasons-email-settings .panda-seasons-admin-grid,.panda-seasons-email-status{grid-template-columns:1fr}.panda-seasons-email-panel>#panda-seasons-email>.inside{padding:14px}}

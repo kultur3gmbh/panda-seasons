@@ -105,6 +105,15 @@ for release_contract in ("panda-seasons-default-general-row", "Save images and b
 		raise SystemExit(f"Missing 0.6.3 editor contract {release_contract}")
 if ".panda-seasons__content-date" not in frontend_css:
 	raise SystemExit("Missing 0.6.3 popup date styling")
+for release_contract in ("_ps_signup_consent", "_ps_doi_subject", "_ps_confirmation_text", "panda-seasons-email-status", "Save email settings"):
+	if release_contract not in plugin:
+		raise SystemExit(f"Missing 0.6.4 email settings contract {release_contract}")
+for release_contract in ("emailSettings", "panda-seasons-email-panel"):
+	if release_contract not in admin_js:
+		raise SystemExit(f"Missing 0.6.4 email tab behavior {release_contract}")
+for release_contract in ("_ps_signup_consent", "_ps_doi_subject", "_ps_confirmation_text"):
+	if release_contract not in subscriptions:
+		raise SystemExit(f"Missing 0.6.4 subscription behavior {release_contract}")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")
