@@ -108,3 +108,10 @@ body.post-type-panda_calendar #poststuff #post-body.columns-2{margin-right:0}bod
 .panda-seasons-default-colors>.panda-seasons-default-cta{grid-column:1/-1!important;width:100%;box-sizing:border-box;margin-top:8px}
 .panda-seasons-default-cta__save{margin-top:14px}
 @media(max-width:782px){.panda-seasons-default-colors>.panda-seasons-default-general-grid{grid-template-columns:1fr!important}}
+
+/* 0.6.3: structural full-width rows prevent legacy grid rules from shrinking dropdowns. */
+.panda-seasons-default-colors>.panda-seasons-default-general-grid{grid-template-columns:minmax(0,1fr)!important}
+.panda-seasons-default-general-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-column:1/-1!important;gap:12px;width:100%!important;max-width:none!important;box-sizing:border-box}
+.panda-seasons-default-general-row>label{display:grid!important;grid-template-rows:minmax(34px,auto) minmax(40px,auto);gap:5px;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important}
+.panda-seasons-default-general-row select{width:100%!important;max-width:none!important;min-width:0!important}
+@media(max-width:782px){.panda-seasons-default-general-row{grid-template-columns:1fr!important}}

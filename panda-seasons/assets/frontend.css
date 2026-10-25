@@ -32,3 +32,7 @@
 
 /* 0.6.2: popup title and call-to-action title have equal visual weight. */
 .panda-seasons__modal-content>h3,.panda-seasons__cta h4{font-size:clamp(1rem,1.8vw,1.2rem);line-height:1.3}
+
+/* 0.6.3: prominent content title with the release date directly below it. */
+.panda-seasons__modal-content>h3{margin-bottom:.25rem;font-size:clamp(1.45rem,3vw,2rem);line-height:1.2}
+.panda-seasons__content-date{margin:0 0 clamp(16px,2.5vw,26px);color:color-mix(in srgb,currentColor 68%,transparent);font-size:.9rem;text-align:center}
