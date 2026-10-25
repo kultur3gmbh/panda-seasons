@@ -509,7 +509,7 @@ final class Panda_Seasons_Plugin {
 		}
 		?>
 		<p><?php esc_html_e( 'Choose the calendar image and place every door directly on it. Click a door to edit its date and content.', 'panda-seasons' ); ?></p>
-		<div class="panda-seasons-admin-grid">
+		<div class="panda-seasons-settings-layout">
 			<div class="panda-seasons-cover-settings is-wide">
 				<div class="panda-seasons-cover-settings__row">
 					<?php self::media_field( 'panda_seasons_cover_desktop', __( 'Desktop cover image', 'panda-seasons' ), $desktop_id, $desktop ); ?>
@@ -519,8 +519,8 @@ final class Panda_Seasons_Plugin {
 					<?php self::media_field( 'panda_seasons_cover_mobile', __( 'Mobile cover image', 'panda-seasons' ), $mobile_id, $mobile ); ?>
 					<div class="panda-seasons-cover-settings__controls"><label><span><?php esc_html_e( 'Mobile width-to-height ratio', 'panda-seasons' ); ?></span><input type="number" min="0.35" max="2" step="0.05" name="panda_seasons_mobile_aspect_ratio" value="<?php echo esc_attr( $mobile_ratio ); ?>" data-editor-ratio="mobile"></label><label><span><?php esc_html_e( 'Background color', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_cover_mobile_background" value="<?php echo esc_attr( $mobile_background ); ?>" data-cover-background="mobile"></label></div>
 				</div>
+				<button type="submit" name="save" value="<?php esc_attr_e( 'Save images and backgrounds', 'panda-seasons' ); ?>" class="button panda-seasons-refresh-images" data-refresh-calendar-images><span class="dashicons dashicons-update" aria-hidden="true"></span><?php esc_html_e( 'Save images and backgrounds', 'panda-seasons' ); ?></button>
 			</div>
-			<button type="submit" name="save" value="<?php esc_attr_e( 'Save images and backgrounds', 'panda-seasons' ); ?>" class="button is-wide panda-seasons-refresh-images" data-refresh-calendar-images><span class="dashicons dashicons-update" aria-hidden="true"></span><?php esc_html_e( 'Save images and backgrounds', 'panda-seasons' ); ?></button>
 			<section class="is-wide panda-seasons-default-colors">
 				<div><h3><?php esc_html_e( 'Default settings for new doors', 'panda-seasons' ); ?></h3><p class="description"><?php esc_html_e( 'These settings are used for newly created doors. Existing doors keep their individual settings unless you explicitly apply the settings to all doors.', 'panda-seasons' ); ?></p></div>
 				<div class="panda-seasons-default-general-grid">
@@ -1061,6 +1061,10 @@ final class Panda_Seasons_Plugin {
 		$doi_button = (string) get_post_meta( $post->ID, '_ps_doi_button_label', true ) ?: __( 'Confirm email calendar', 'panda-seasons' );
 		$confirmation_title = (string) get_post_meta( $post->ID, '_ps_confirmation_title', true ) ?: __( 'Registration confirmed', 'panda-seasons' );
 		$confirmation_text = (string) get_post_meta( $post->ID, '_ps_confirmation_text', true ) ?: sprintf( __( 'You will now receive the emails for “%s”.', 'panda-seasons' ), get_the_title( $post ) );
+		$doi_reminder_count = min( 3, absint( get_post_meta( $post->ID, '_ps_doi_reminder_count', true ) ) );
+		$doi_reminder_delays = (array) get_post_meta( $post->ID, '_ps_doi_reminder_delays', true );
+		$doi_reminder_subject = (string) get_post_meta( $post->ID, '_ps_doi_reminder_subject', true ) ?: sprintf( __( 'Reminder: confirm your registration for %s', 'panda-seasons' ), get_the_title( $post ) );
+		$doi_reminder_text = (string) get_post_meta( $post->ID, '_ps_doi_reminder_text', true ) ?: __( 'Please confirm your registration for the email calendar using the following link.', 'panda-seasons' );
 		$subscription_stats = array( 'active' => 0, 'pending' => 0, 'unsubscribed' => 0, 'total' => 0 );
 		$subscription_table = Panda_Seasons_Schema::tables()['subscriptions'];
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT status,COUNT(*) AS amount FROM `{$subscription_table}` WHERE calendar_id=%d GROUP BY status", $post->ID ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- internal table name.
@@ -1093,6 +1097,7 @@ final class Panda_Seasons_Plugin {
 			<div><strong><?php esc_html_e( 'Awaiting confirmation', 'panda-seasons' ); ?></strong><span><?php echo esc_html( $subscription_stats['pending'] ); ?></span></div>
 			<div><strong><?php esc_html_e( 'Unsubscribed or blocked', 'panda-seasons' ); ?></strong><span><?php echo esc_html( $subscription_stats['unsubscribed'] ); ?></span></div>
 		</div>
+		<div class="panda-seasons-signup-columns"><div class="panda-seasons-signup-column">
 		<section><h3><?php esc_html_e( 'Advance email-calendar registration', 'panda-seasons' ); ?></h3>
 		<p class="description"><?php esc_html_e( 'Publish this registration immediately, before the first door opens. New contacts receive a double opt-in email and the calendar-specific tag.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-admin-grid">
@@ -1113,7 +1118,12 @@ final class Panda_Seasons_Plugin {
 			<label><span><?php esc_html_e( 'Confirmation button text', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_doi_button_label" value="<?php echo esc_attr( $doi_button ); ?>"></label>
 			<label><span><?php esc_html_e( 'Confirmation page heading', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_confirmation_title" value="<?php echo esc_attr( $confirmation_title ); ?>"></label>
 			<label class="is-wide"><span><?php esc_html_e( 'Confirmation page text', 'panda-seasons' ); ?></span><textarea name="panda_seasons_confirmation_text" rows="3"><?php echo esc_textarea( $confirmation_text ); ?></textarea></label>
+			<label><span><?php esc_html_e( 'Number of reminders', 'panda-seasons' ); ?></span><select name="panda_seasons_doi_reminder_count"><?php for ( $reminder_number = 0; $reminder_number <= 3; $reminder_number++ ) : ?><option value="<?php echo esc_attr( $reminder_number ); ?>" <?php selected( $doi_reminder_count, $reminder_number ); ?>><?php echo esc_html( $reminder_number ); ?></option><?php endfor; ?></select></label>
+			<?php for ( $reminder_index = 0; $reminder_index < 3; $reminder_index++ ) : ?><label><span><?php echo esc_html( sprintf( __( 'Reminder %d after days', 'panda-seasons' ), $reminder_index + 1 ) ); ?></span><input type="number" min="1" max="30" name="panda_seasons_doi_reminder_delays[]" value="<?php echo esc_attr( absint( $doi_reminder_delays[ $reminder_index ] ?? ( $reminder_index + 1 ) * 3 ) ); ?>"></label><?php endfor; ?>
+			<label class="is-wide"><span><?php esc_html_e( 'Reminder subject', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_doi_reminder_subject" value="<?php echo esc_attr( $doi_reminder_subject ); ?>"></label>
+			<label class="is-wide"><span><?php esc_html_e( 'Reminder email text', 'panda-seasons' ); ?></span><textarea name="panda_seasons_doi_reminder_text" rows="4"><?php echo esc_textarea( $doi_reminder_text ); ?></textarea></label>
 		</div></section>
+		</div><div class="panda-seasons-signup-column">
 		<section><h3><?php esc_html_e( 'General newsletter signup', 'panda-seasons' ); ?></h3>
 		<p class="description"><?php esc_html_e( 'Optionally show a link or an existing form. Newsletter consent remains separate from calendar consent.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-admin-grid">
@@ -1123,6 +1133,8 @@ final class Panda_Seasons_Plugin {
 			<label><span><?php esc_html_e( 'Link URL', 'panda-seasons' ); ?></span><input type="url" name="panda_seasons_newsletter_link_url" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ps_newsletter_link_url', true ) ); ?>"></label>
 			<label class="is-wide"><span><?php esc_html_e( 'Form shortcode', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_newsletter_shortcode" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ps_newsletter_shortcode', true ) ); ?>" placeholder="[contact-form-7 id=&quot;123&quot;]"></label>
 		</div></section>
+		</div></div>
+		<?php if ( has_action( 'contactpanda_email_preview_controls' ) ) : ?><section class="panda-seasons-email-preview"><h3><?php esc_html_e( 'Email preview', 'panda-seasons' ); ?></h3><?php do_action( 'contactpanda_email_preview_controls', array( 'source' => 'panda-seasons', 'calendar_id' => $post->ID, 'modes' => array( 'desktop', 'mobile' ) ) ); ?></section><?php else : ?><p class="description"><?php esc_html_e( 'Desktop and mobile email previews are provided centrally by ContactPanda Basic as soon as the shared preview module is available.', 'panda-seasons' ); ?></p><?php endif; ?>
 		<p class="description"><?php esc_html_e( 'Verified ContactPanda contacts are enrolled immediately. All other addresses receive a double opt-in email. Calendar consent is stored separately from general marketing consent.', 'panda-seasons' ); ?></p>
 		<p><button type="submit" name="save" class="button button-primary panda-seasons-email-settings__save"><?php esc_html_e( 'Save email settings', 'panda-seasons' ); ?></button></p>
 		</div>
@@ -1243,6 +1255,12 @@ final class Panda_Seasons_Plugin {
 		update_post_meta( $post_id, '_ps_doi_button_label', sanitize_text_field( wp_unslash( $_POST['panda_seasons_doi_button_label'] ?? '' ) ) );
 		update_post_meta( $post_id, '_ps_confirmation_title', sanitize_text_field( wp_unslash( $_POST['panda_seasons_confirmation_title'] ?? '' ) ) );
 		update_post_meta( $post_id, '_ps_confirmation_text', sanitize_textarea_field( wp_unslash( $_POST['panda_seasons_confirmation_text'] ?? '' ) ) );
+		update_post_meta( $post_id, '_ps_doi_reminder_count', min( 3, absint( $_POST['panda_seasons_doi_reminder_count'] ?? 0 ) ) );
+		$reminder_delays = array();
+		foreach ( array_slice( (array) ( $_POST['panda_seasons_doi_reminder_delays'] ?? array() ), 0, 3 ) as $reminder_delay ) $reminder_delays[] = min( 30, max( 1, absint( $reminder_delay ) ) );
+		update_post_meta( $post_id, '_ps_doi_reminder_delays', array_pad( $reminder_delays, 3, 7 ) );
+		update_post_meta( $post_id, '_ps_doi_reminder_subject', sanitize_text_field( wp_unslash( $_POST['panda_seasons_doi_reminder_subject'] ?? '' ) ) );
+		update_post_meta( $post_id, '_ps_doi_reminder_text', sanitize_textarea_field( wp_unslash( $_POST['panda_seasons_doi_reminder_text'] ?? '' ) ) );
 		$newsletter_mode = sanitize_key( wp_unslash( $_POST['panda_seasons_newsletter_mode'] ?? 'none' ) );
 		if ( ! in_array( $newsletter_mode, array( 'none', 'link', 'shortcode', 'contactpanda' ), true ) || ( 'contactpanda' === $newsletter_mode && ! self::contactpanda_newsletter_available() ) ) $newsletter_mode = 'none';
 		update_post_meta( $post_id, '_ps_newsletter_mode', $newsletter_mode );

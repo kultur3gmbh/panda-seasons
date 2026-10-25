@@ -10,6 +10,7 @@ final class Panda_Seasons_Subscriptions {
 		add_action( 'admin_post_nopriv_panda_seasons_confirm', array( __CLASS__, 'confirm' ) );
 		add_action( 'admin_post_panda_seasons_unsubscribe', array( __CLASS__, 'unsubscribe' ) );
 		add_action( 'admin_post_nopriv_panda_seasons_unsubscribe', array( __CLASS__, 'unsubscribe' ) );
+		add_action( 'panda_seasons_confirmation_reminder', array( __CLASS__, 'send_confirmation_reminder' ), 10, 3 );
 	}
 
 	public static function form( $calendar_id ) {
@@ -85,7 +86,29 @@ final class Panda_Seasons_Subscriptions {
 		$body = '<p>' . esc_html( sprintf( __( 'Hello %s,', 'panda-seasons' ), $first_name ) ) . '</p><p>' . nl2br( esc_html( $doi_text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $doi_button ) . '</a></p>';
 		$sent = self::send( $email, $subject, $body );
 		if ( ! $sent ) self::redirect( $calendar_id, 'error' );
+		self::schedule_confirmation_reminders( $row, $token );
 		self::redirect( $calendar_id, 'pending' );
+	}
+
+	private static function schedule_confirmation_reminders( $row, $token ) {
+		$count = min( 3, absint( get_post_meta( $row['calendar_id'], '_ps_doi_reminder_count', true ) ) );
+		$delays = (array) get_post_meta( $row['calendar_id'], '_ps_doi_reminder_delays', true );
+		for ( $index = 0; $index < $count; $index++ ) {
+			$days = min( 30, max( 1, absint( $delays[ $index ] ?? ( $index + 1 ) * 3 ) ) );
+			wp_schedule_single_event( time() + $days * DAY_IN_SECONDS, 'panda_seasons_confirmation_reminder', array( absint( $row['id'] ), sanitize_text_field( $token ), $index + 1 ) );
+		}
+	}
+
+	public static function send_confirmation_reminder( $subscription_id, $token, $number ) {
+		$row = self::verified_row( absint( $subscription_id ), sanitize_text_field( $token ) );
+		if ( ! $row || 'pending' !== $row['status'] || ! is_email( $row['email'] ) ) return;
+		$calendar_id = absint( $row['calendar_id'] );
+		$url = add_query_arg( array( 'action' => 'panda_seasons_confirm', 'subscription' => $row['id'], 'token' => $token ), admin_url( 'admin-post.php' ) );
+		$subject = get_post_meta( $calendar_id, '_ps_doi_reminder_subject', true ) ?: sprintf( __( 'Reminder: confirm your registration for %s', 'panda-seasons' ), get_the_title( $calendar_id ) );
+		$text = get_post_meta( $calendar_id, '_ps_doi_reminder_text', true ) ?: __( 'Please confirm your registration for the email calendar using the following link.', 'panda-seasons' );
+		$button = get_post_meta( $calendar_id, '_ps_doi_button_label', true ) ?: __( 'Confirm email calendar', 'panda-seasons' );
+		$body = '<p>' . esc_html( sprintf( __( 'Hello %s,', 'panda-seasons' ), $row['first_name'] ) ) . '</p><p>' . nl2br( esc_html( $text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $button ) . '</a></p>';
+		if ( self::send( $row['email'], $subject, $body ) ) self::log_event( $row, 'confirmation_reminder_' . absint( $number ), 'calendar', 'double_opt_in' );
 	}
 
 	public static function confirm() {

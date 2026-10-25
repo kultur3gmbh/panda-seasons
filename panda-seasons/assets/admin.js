@@ -6,6 +6,12 @@
 	var activeDoor = null;
 	var activeDoorSnapshot = null;
 	var returnFocus = null;
+	var inspectorStateKey = 'panda-seasons-inspector:' + window.location.pathname + window.location.search;
+	var inspectorState = {};
+	try { inspectorState = JSON.parse(window.sessionStorage.getItem(inspectorStateKey) || '{}') || {}; } catch (error) { inspectorState = {}; }
+	function saveInspectorState() {
+		try { window.sessionStorage.setItem(inspectorStateKey, JSON.stringify(inspectorState)); } catch (error) { /* Session storage may be disabled. */ }
+	}
 	var designBox = document.getElementById('panda-seasons-design');
 	var postBody = document.getElementById('post-body');
 	if (designBox && postBody) postBody.insertBefore(designBox, postBody.firstChild);
@@ -295,6 +301,15 @@
 			if (layerEditor) layerEditor.hidden = true;
 			var emptyPanel = document.querySelector('[data-door-editor-empty-panel]'); if (emptyPanel) emptyPanel.hidden = false;
 			render();
+		}
+
+		function saveLayerEditor() {
+			if (!activeLayer) return;
+			activeLayer.text = getEditorContent('panda_seasons_layer_text_editor');
+			delete activeLayer.isNew;
+			activeLayerSnapshot = JSON.parse(JSON.stringify(activeLayer));
+			render();
+			syncLayerEditor();
 		}
 
 		function addLayer(type, position) {
@@ -649,7 +664,7 @@
 			layerEditor.addEventListener('click', function (event) {
 				if (event.target.closest('[data-select-layer-image]')) { selectLayerImage(); return; }
 				if (event.target.closest('[data-delete-layer]') && activeLayer) { activeLayer.deleted = true; closeLayerEditor(true); return; }
-				if (event.target.closest('[data-apply-layer-editor]')) { closeLayerEditor(true); return; }
+				if (event.target.closest('[data-apply-layer-editor]')) { saveLayerEditor(); return; }
 				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor(false);
 			});
 		}
@@ -760,6 +775,20 @@
 		ordered.forEach(function (section) { if (section) fields.appendChild(section); });
 	}
 	arrangeDoorEditorSections();
+	if (modal) {
+		modal.querySelectorAll('details[data-door-section]').forEach(function (section) {
+			var name = section.dataset.doorSection;
+			section.open = Object.prototype.hasOwnProperty.call(inspectorState, name) ? Boolean(inspectorState[name]) : (name !== 'button' && section.open);
+			section.addEventListener('toggle', function () { inspectorState[name] = section.open; saveInspectorState(); });
+		});
+		if (inspectorState.doorStateTab) {
+			var rememberedStateTab = modal.querySelector('[data-door-state-tab="' + inspectorState.doorStateTab + '"]');
+			if (rememberedStateTab) {
+				modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === rememberedStateTab); button.setAttribute('aria-selected', button === rememberedStateTab ? 'true' : 'false'); });
+				modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== inspectorState.doorStateTab; });
+			}
+		}
+	}
 
 	if (composer) composerController(composer);
 
@@ -920,7 +949,7 @@
 			return;
 		}
 		var stateTab = event.target.closest('[data-door-state-tab]');
-		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); button.setAttribute('aria-selected',button===stateTab?'true':'false'); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); if(composer&&composer.setPreviewState)composer.setPreviewState(stateTab.dataset.doorStateTab); return; }
+		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); button.setAttribute('aria-selected',button===stateTab?'true':'false'); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); inspectorState.doorStateTab=stateTab.dataset.doorStateTab;saveInspectorState();if(composer&&composer.setPreviewState)composer.setPreviewState(stateTab.dataset.doorStateTab); return; }
 		if (event.target.closest('[data-add-quiz-question]')) { var questions = collectQuizQuestions(); questions.push({ question: '', answers: ['', ''], correct: 1 }); renderQuizQuestions(questions); return; }
 		var removeQuestion = event.target.closest('[data-remove-quiz-question]');
 		if (removeQuestion) { var remaining = collectQuizQuestions(); remaining.splice(Array.prototype.indexOf.call(modal.querySelectorAll('[data-quiz-question-editor]'), removeQuestion.closest('[data-quiz-question-editor]')), 1); renderQuizQuestions(remaining); return; }
@@ -1094,21 +1123,7 @@
 
 	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[data-cover-background],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
-	if (defaultsPanel) {
-		var defaultTabs = defaultsPanel.querySelector('.panda-seasons-default-state-tabs');
-		var shapeField = document.querySelector('[name="panda_seasons_default_shape"]');
-		var openingModeField = document.querySelector('[name="panda_seasons_default_opening_mode"]');
-		var effectField = document.querySelector('[name="panda_seasons_open_effect"]');
-		var speedField = document.querySelector('[name="panda_seasons_effect_speed"]');
-		var activeColorField = document.querySelector('[name="panda_seasons_default_active_border_color"]');
-		[[shapeField,openingModeField,'panda-seasons-defaults-row'],[effectField,speedField,'panda-seasons-defaults-row']].forEach(function (config) {
-			var row=document.createElement('div'); row.className=config[2];
-			[config[0],config[1]].forEach(function(field){if(field&&field.closest('label'))row.appendChild(field.closest('label'));});
-			if(row.children.length)defaultsPanel.insertBefore(row,defaultTabs);
-		});
-		if(activeColorField&&activeColorField.closest('label'))defaultsPanel.insertBefore(activeColorField.closest('label'),defaultTabs);
-	}
-	var adminGrid=document.querySelector('.panda-seasons-admin-grid'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
+	var adminGrid=document.querySelector('.panda-seasons-settings-layout'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
 	if(adminGrid&&editorLayout){
 		var mainTabs=document.createElement('div'),editorPanel=document.createElement('section'),settingsPanel=document.createElement('section'),emailPanel=document.createElement('section'),emailBox=document.getElementById('panda-seasons-email');
 		mainTabs.className='panda-seasons-main-tabs';mainTabs.setAttribute('role','tablist');

@@ -35,7 +35,8 @@ final class Panda_Seasons_Contract {
 			'newsletter_link_label', 'newsletter_link_url', 'newsletter_shortcode', 'contact_tag',
 			'signup_title', 'signup_text', 'signup_consent', 'signup_button_label',
 			'signup_active_message', 'signup_pending_message', 'signup_error_message', 'doi_subject',
-			'doi_text', 'doi_button_label', 'confirmation_title', 'confirmation_text',
+			'doi_text', 'doi_button_label', 'confirmation_title', 'confirmation_text', 'doi_reminder_count',
+			'doi_reminder_delays', 'doi_reminder_subject', 'doi_reminder_text',
 		);
 	}
 

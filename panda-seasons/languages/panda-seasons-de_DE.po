@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.0\n"
+"Project-Id-Version: Panda Seasons 0.7.1\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1479,3 +1479,29 @@ msgstr "Text der Bestätigungsseite"
 
 msgid "Save email settings"
 msgstr "E-Mail-Einstellungen speichern"
+msgid "Panda Seasons calendar signup"
+msgstr "Panda Seasons Kalender-Anmeldung"
+
+msgid "Number of reminders"
+msgstr "Anzahl der Erinnerungen"
+
+msgid "Reminder %d after days"
+msgstr "Erinnerung %d nach Tagen"
+
+msgid "Reminder subject"
+msgstr "Betreff der Erinnerung"
+
+msgid "Reminder email text"
+msgstr "Text der Erinnerungs-E-Mail"
+
+msgid "Reminder: confirm your registration for %s"
+msgstr "Erinnerung: Anmeldung für %s bestätigen"
+
+msgid "Please confirm your registration for the email calendar using the following link."
+msgstr "Bitte bestätigen Sie Ihre Anmeldung für den E-Mail-Kalender über den folgenden Link."
+
+msgid "Email preview"
+msgstr "E-Mail-Vorschau"
+
+msgid "Desktop and mobile email previews are provided centrally by ContactPanda Basic as soon as the shared preview module is available."
+msgstr "Die Desktop- und Mobilvorschau der E-Mails wird zentral von ContactPanda Basic bereitgestellt, sobald das gemeinsame Vorschaumodul verfügbar ist."
