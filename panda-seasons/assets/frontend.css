@@ -29,3 +29,6 @@
 .panda-seasons__cta-text{margin:0 0 1rem}.panda-seasons__cta-text>:first-child{margin-top:0}.panda-seasons__cta-text>:last-child{margin-bottom:0}
 .panda-seasons__modal-content>h3{margin-top:0;padding-right:48px;padding-left:48px;text-align:center}
 @media(max-width:600px){.panda-seasons__content-layout.has-media{grid-template-columns:1fr}}
+
+/* 0.6.2: popup title and call-to-action title have equal visual weight. */
+.panda-seasons__modal-content>h3,.panda-seasons__cta h4{font-size:clamp(1rem,1.8vw,1.2rem);line-height:1.3}

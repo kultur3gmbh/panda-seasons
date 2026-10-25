@@ -95,6 +95,11 @@ for release_contract in ("_ps_default_cta_enabled", "_ps_cta_mode", "data-apply-
 for behavior_contract in ("data-confirm-apply-door-settings", "ctaMode: 'default'", "updateDefaultCtaVisibility"):
 	if behavior_contract not in admin_js:
 		raise SystemExit(f"Missing 0.6.1 editor behavior {behavior_contract}")
+for release_contract in ("panda-seasons-default-cta__save", "'supports'     => array( 'title', 'thumbnail' )"):
+	if release_contract not in plugin:
+		raise SystemExit(f"Missing 0.6.2 editor contract {release_contract}")
+if ".panda-seasons__modal-content>h3,.panda-seasons__cta h4" not in frontend_css:
+	raise SystemExit("Missing 0.6.2 equal popup heading sizes")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")
