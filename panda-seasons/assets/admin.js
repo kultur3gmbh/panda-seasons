@@ -6,6 +6,19 @@
 	var activeDoor = null;
 	var activeDoorSnapshot = null;
 	var returnFocus = null;
+	var calendarForm = document.getElementById('post');
+	var calendarDirty = false;
+	var calendarStorageKey = 'panda-seasons-calendar:' + (window.pandaSeasonsAdmin && pandaSeasonsAdmin.calendarId ? pandaSeasonsAdmin.calendarId : window.location.pathname);
+	function calendarStatus(message, state) {
+		var status = document.querySelector('[data-calendar-save-state]');
+		if (!status) return;
+		status.textContent = message || '';
+		status.dataset.state = state || '';
+	}
+	function markCalendarDirty() {
+		calendarDirty = true;
+		calendarStatus(adminText('unsavedChanges', 'Unsaved changes'), 'dirty');
+	}
 	var inspectorStateKey = 'panda-seasons-inspector:' + window.location.pathname + window.location.search;
 	var inspectorState = {};
 	try { inspectorState = JSON.parse(window.sessionStorage.getItem(inspectorStateKey) || '{}') || {}; } catch (error) { inspectorState = {}; }
@@ -19,9 +32,11 @@
 	var publishBox = document.getElementById('submitdiv');
 	if (publishPanel && publishBox) {
 		publishPanel.appendChild(publishBox);
-		publishBox.classList.remove('closed');
+		publishBox.classList.add('closed');
+		var publishHeading = publishBox.querySelector('.postbox-header h2');
+		if (publishHeading) publishHeading.textContent = adminText('calendarStatusTitle', 'Calendar status');
 		var publishToggle = publishBox.querySelector('.handlediv');
-		if (publishToggle) publishToggle.setAttribute('aria-expanded', 'true');
+		if (publishToggle) publishToggle.setAttribute('aria-expanded', 'false');
 	}
 	var shortcodeBox = document.getElementById('panda-seasons-shortcode');
 	if (publishPanel && shortcodeBox) {
@@ -277,10 +292,14 @@
 			});
 			layerEditor.querySelectorAll('[data-layer-field-wrap]').forEach(function (wrap) { wrap.hidden = wrap.dataset.layerFieldWrap !== activeLayer.type; });
 			if (activeLayer.type === 'text') setEditorContent('panda_seasons_layer_text_editor', activeLayer.text || '');
+			var imagePreview = layerEditor.querySelector('[data-layer-image-preview]');
+			if (imagePreview) imagePreview.innerHTML = activeLayer.imageUrl ? '<img src="' + escapeHtml(safeUrl(activeLayer.imageUrl)) + '" alt="">' : '<span>' + escapeHtml(adminText('imageDropHint', 'Select image or drop it here')) + '</span>';
 			layerEditor.querySelectorAll('[data-layer-field="background"],[data-layer-field="color"]').forEach(enhanceColorField);
 		}
 
 		function openLayerEditor(layer) {
+			if (activeLayer && activeLayer !== layer) saveLayerEditor();
+			if (activeDoor) { syncDoorPreview(); closeDoorModal(true); }
 			activeLayer = layer;
 			activeLayerSnapshot = JSON.parse(JSON.stringify(layer));
 			if (modal && !modal.hidden) closeDoorModal(true);
@@ -310,6 +329,9 @@
 			activeLayerSnapshot = JSON.parse(JSON.stringify(activeLayer));
 			render();
 			syncLayerEditor();
+			markCalendarDirty();
+			var status = layerEditor && layerEditor.querySelector('[data-layer-save-status]');
+			if (status) { status.textContent = adminText('elementApplied', 'Changes applied. Save the calendar to store them permanently.'); window.setTimeout(function () { status.textContent = ''; }, 3200); }
 		}
 
 		function addLayer(type, position) {
@@ -322,7 +344,7 @@
 		function selectLayerImage() {
 			if (!activeLayer || !window.wp || !wp.media) return;
 			var frame = wp.media({ title: adminText('selectImage', 'Select image'), library: { type: 'image' }, multiple: false });
-			frame.on('select', function () { var attachment = frame.state().get('selection').first().toJSON(); activeLayer.imageId = attachment.id || 0; activeLayer.imageUrl = attachment.url || ''; syncLayerEditor(); render(); });
+			frame.on('select', function () { var attachment = frame.state().get('selection').first().toJSON(); activeLayer.imageId = attachment.id || 0; activeLayer.imageUrl = attachment.url || ''; syncLayerEditor(); render(); markCalendarDirty(); });
 			frame.open();
 		}
 
@@ -693,6 +715,7 @@
 		};
 		root.getDoors = function () { return doors; };
 		root.renderDoors = render;
+		root.prepareForSave = function () { if (activeLayer) saveLayerEditor(); render(); };
 		root.updateBackground = setStageAppearance;
 		root.setPreviewState = function(state){previewState=state;root.dataset.previewState=state;root.querySelectorAll('button[data-preview-state]').forEach(function(button){button.classList.toggle('button-primary',button.dataset.previewState===state);});render();};
 		if (snapControl) { stage.classList.toggle('has-grid', snapControl.checked); snapControl.addEventListener('change', function () { stage.classList.toggle('has-grid', snapControl.checked); }); }
@@ -702,6 +725,7 @@
 
 	function openDoorModal(door, trigger) {
 		if (!modal) return;
+		if (activeDoor && activeDoor !== door) syncDoorPreview();
 		var layerEditor = document.querySelector('[data-layer-editor]'); if (layerEditor) layerEditor.hidden = true;
 		activeDoor = door;
 		activeDoorSnapshot = JSON.parse(JSON.stringify(door));
@@ -1005,7 +1029,9 @@
 			activeDoor.isDraft = false;
 			if (composer && composer.renderDoors) composer.renderDoors();
 			var status = modal.querySelector('[data-door-save-status]');
-			saveActiveDoor(activeDoor, status);
+			activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
+			markCalendarDirty();
+			if (status) { status.textContent = adminText('elementApplied', 'Changes applied. Save the calendar to store them permanently.'); window.setTimeout(function () { status.textContent = ''; }, 3200); }
 		}
 
 		if (event.target.closest('[data-delete-door]') && activeDoor) {
@@ -1019,7 +1045,7 @@
 	});
 
 	document.addEventListener('keydown', function (event) {
-		if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-select-media],[data-select-door-media],[data-select-door-download]')) { event.preventDefault(); event.target.click(); }
+		if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-select-media],[data-select-door-media],[data-select-door-download],[data-select-layer-image]')) { event.preventDefault(); event.target.click(); }
 	});
 	document.querySelectorAll('[data-media-field] .panda-seasons-media-preview').forEach(function (dropzone) {
 		dropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); dropzone.classList.add('is-dragover'); } });
@@ -1047,6 +1073,24 @@
 			uploadAttachment(event.dataTransfer.files[0], function (attachment) { setDoorAttachment('media', attachment); });
 		}, true);
 	});
+	var layerDropzone = document.querySelector('[data-select-layer-image]');
+	if (layerDropzone) {
+		layerDropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); layerDropzone.classList.add('is-dragover'); } });
+		layerDropzone.addEventListener('dragleave', function () { layerDropzone.classList.remove('is-dragover'); });
+		layerDropzone.addEventListener('drop', function (event) {
+			if (!event.dataTransfer || !event.dataTransfer.files.length) return;
+			event.preventDefault(); layerDropzone.classList.remove('is-dragover');
+			var file = event.dataTransfer.files[0]; if (!/^image\//.test(file.type)) return;
+			uploadAttachment(file, function (attachment) {
+				var id = layerDropzone.parentNode.querySelector('[data-layer-field="imageId"]'), url = layerDropzone.parentNode.querySelector('[data-layer-field="imageUrl"]');
+				if (id) id.value = attachment.id || 0;
+				if (url) url.value = attachment.url || '';
+				layerDropzone.querySelector('[data-layer-image-preview]').innerHTML = '<img src="' + escapeHtml(attachment.url || '') + '" alt="">';
+				if (activeLayer) { activeLayer.imageId = attachment.id || 0; activeLayer.imageUrl = attachment.url || ''; if (composer && composer.renderDoors) composer.renderDoors(); }
+				markCalendarDirty();
+			});
+		});
+	}
 
 	document.addEventListener('input', function (event) {
 		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();
@@ -1134,7 +1178,6 @@
 		adminGrid.parentNode.insertBefore(mainTabs,adminGrid);mainTabs.parentNode.insertBefore(editorPanel,adminGrid);mainTabs.parentNode.insertBefore(settingsPanel,adminGrid);mainTabs.parentNode.insertBefore(emailPanel,adminGrid);
 		var titleBox=document.getElementById('titlediv');
 		if(titleBox)mainTabs.parentNode.insertBefore(titleBox,mainTabs);
-		if(publishPanel)mainTabs.parentNode.insertBefore(publishPanel,mainTabs);
 		editorPanel.appendChild(editorLayout);settingsPanel.appendChild(adminGrid);
 		if(emailBox){emailPanel.appendChild(emailBox);emailBox.classList.remove('closed');var emailToggle=emailBox.querySelector('.handlediv');if(emailToggle)emailToggle.setAttribute('aria-expanded','true');}
 		document.addEventListener('click',function(event){var button=event.target.closest('[data-main-editor-tab]');if(!button)return;var target=button.dataset.mainEditorTab;mainTabs.querySelectorAll('[data-main-editor-tab]').forEach(function(item){var active=item===button;item.classList.toggle('button-primary',active);item.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-main-editor-panel]').forEach(function(panel){panel.hidden=panel.dataset.mainEditorPanel!==target;});if(target==='editor'&&composer&&composer.renderDoors)composer.renderDoors();});
@@ -1222,9 +1265,46 @@
 	function loadCalendarPreview(preview,baseUrl){if(!preview||!baseUrl)return;var desktopInput=document.querySelector('[name="panda_seasons_cover_desktop"]'),mobileInput=document.querySelector('[name="panda_seasons_cover_mobile"]'),previewUrl=new URL(baseUrl,window.location.href),dateInput=preview.querySelector('[data-calendar-preview-date]'),timeInput=preview.querySelector('[data-calendar-preview-time]');previewUrl.searchParams.set('cover_desktop',desktopInput?desktopInput.value:'');previewUrl.searchParams.set('cover_mobile',mobileInput?mobileInput.value:'');previewUrl.searchParams.set('preview_date',dateInput?dateInput.value:'');previewUrl.searchParams.set('preview_time',timeInput?timeInput.value:'');previewUrl.searchParams.set('cache_bust',Date.now());preview.dataset.previewUrl=baseUrl;preview.querySelector('iframe').src=previewUrl.toString();}
 	document.addEventListener('click',function(event){
 		var opener=event.target.closest('[data-open-calendar-preview]');
-		if(opener){var preview=document.querySelector('[data-calendar-preview]');if(!preview)return;preview.hidden=false;preview.classList.remove('is-mobile');loadCalendarPreview(preview,opener.dataset.previewUrl);document.body.classList.add('panda-seasons-preview-open');return;}
+		if(opener){
+			if(calendarDirty&&window.confirm(adminText('saveBeforePreview','There are unsaved changes. Save them before opening the preview?'))){try{window.sessionStorage.setItem(calendarStorageKey+':preview',opener.dataset.previewUrl);}catch(ignore){}saveCalendar();return;}
+			var preview=document.querySelector('[data-calendar-preview]');if(!preview)return;preview.hidden=false;preview.classList.remove('is-mobile');loadCalendarPreview(preview,opener.dataset.previewUrl);document.body.classList.add('panda-seasons-preview-open');return;
+		}
 		var applyPreviewDate=event.target.closest('[data-calendar-preview-date-apply]');if(applyPreviewDate){var datePreview=applyPreviewDate.closest('[data-calendar-preview]');loadCalendarPreview(datePreview,datePreview.dataset.previewUrl);return;}
 		var close=event.target.closest('[data-close-calendar-preview]');if(close){closeCalendarPreview(close.closest('[data-calendar-preview]'));return;}
 		var size=event.target.closest('[data-calendar-preview-size]');if(size){var shell=size.closest('[data-calendar-preview]');shell.classList.toggle('is-mobile',size.dataset.calendarPreviewSize==='mobile');shell.querySelectorAll('[data-calendar-preview-size]').forEach(function(button){button.classList.toggle('button-primary',button===size);});}
 	});
+
+	function prepareCalendarState() {
+		if (activeDoor) syncDoorPreview();
+		if (composer && composer.prepareForSave) composer.prepareForSave();
+	}
+	function saveCalendar() {
+		if (!calendarForm) return;
+		prepareCalendarState();
+		calendarDirty = false;
+		calendarStatus(adminText('savingCalendar', 'Saving calendar…'), 'saving');
+		try { window.sessionStorage.setItem(calendarStorageKey + ':saved', '1'); } catch (ignore) {}
+		var originalStatus = document.getElementById('original_post_status');
+		var submit = originalStatus && ['auto-draft','draft','pending'].indexOf(originalStatus.value) !== -1 ? document.getElementById('save-post') : document.getElementById('publish');
+		if (submit) submit.click(); else calendarForm.submit();
+	}
+	if (calendarForm) {
+		calendarForm.addEventListener('input', function (event) { if (!event.target.closest('#submitdiv')) markCalendarDirty(); });
+		calendarForm.addEventListener('change', function (event) { if (!event.target.closest('#submitdiv')) markCalendarDirty(); });
+		calendarForm.addEventListener('submit', function () { prepareCalendarState(); calendarDirty = false; });
+	}
+	document.addEventListener('click', function (event) {
+		if (event.target.closest('[data-save-calendar]')) { saveCalendar(); return; }
+		if (event.target.closest('[data-add-door],[data-add-layer],[data-delete-stage-door],[data-delete-door],[data-delete-layer],[data-align-grid],[data-duplicate-door]')) markCalendarDirty();
+		var templateOpen = event.target.closest('[data-open-template-dialog]'), templateClose = event.target.closest('[data-close-template-dialog]'), dialog = document.querySelector('[data-template-dialog]');
+		if (templateOpen && dialog) { if (calendarDirty) { window.alert(adminText('saveBeforeTemplate','Save the calendar before creating a template.')); return; } dialog.hidden = false; document.body.classList.add('panda-seasons-modal-open'); return; }
+		if (templateClose && dialog) { dialog.hidden = true; document.body.classList.remove('panda-seasons-modal-open'); }
+	});
+	document.addEventListener('pointerup', function (event) { if (event.target.closest('[data-editor-stage]')) markCalendarDirty(); });
+	try {
+		if (window.sessionStorage.getItem(calendarStorageKey + ':saved')) { window.sessionStorage.removeItem(calendarStorageKey + ':saved'); calendarStatus(adminText('calendarSaved','Calendar saved.'),'saved'); }
+		var pendingPreview = window.sessionStorage.getItem(calendarStorageKey + ':preview');
+		if (pendingPreview) { window.sessionStorage.removeItem(calendarStorageKey + ':preview'); window.setTimeout(function () { var button=document.querySelector('[data-open-calendar-preview]'); if(button){calendarDirty=false;button.click();} },350); }
+	} catch (ignore) {}
+	window.addEventListener('beforeunload', function (event) { if (!calendarDirty) return; event.preventDefault(); event.returnValue = ''; });
 }());

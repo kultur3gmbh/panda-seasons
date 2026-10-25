@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.1\n"
+"Project-Id-Version: Panda Seasons 0.7.2\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1505,3 +1505,54 @@ msgstr "E-Mail-Vorschau"
 
 msgid "Desktop and mobile email previews are provided centrally by ContactPanda Basic as soon as the shared preview module is available."
 msgstr "Die Desktop- und Mobilvorschau der E-Mails wird zentral von ContactPanda Basic bereitgestellt, sobald das gemeinsame Vorschaumodul verfügbar ist."
+
+msgid "Template contents"
+msgstr "Vorlageninhalte"
+
+msgid "Include door contents"
+msgstr "Inhalte der Türen übernehmen"
+
+msgid "Layout and appearance only"
+msgstr "Nur Layout und Darstellung"
+
+msgid "Save calendar"
+msgstr "Kalender speichern"
+
+msgid "Save as template"
+msgstr "Als Vorlage speichern"
+
+msgid "Apply changes"
+msgstr "Änderungen übernehmen"
+
+msgid "Save calendar as template"
+msgstr "Kalender als Vorlage speichern"
+
+msgid "Choose whether editorial door contents should be included."
+msgstr "Wählen Sie, ob die redaktionellen Inhalte der Türen übernommen werden sollen."
+
+msgid "Template with contents"
+msgstr "Vorlage mit Inhalten"
+
+msgid "Template without contents"
+msgstr "Vorlage ohne Inhalte"
+
+msgid "Changes applied. Save the calendar to store them permanently."
+msgstr "Änderungen übernommen. Speichern Sie den Kalender, um sie dauerhaft zu sichern."
+
+msgid "Unsaved changes"
+msgstr "Ungespeicherte Änderungen"
+
+msgid "Saving calendar…"
+msgstr "Kalender wird gespeichert…"
+
+msgid "Calendar saved."
+msgstr "Kalender gespeichert."
+
+msgid "There are unsaved changes. Save them before opening the preview?"
+msgstr "Es gibt ungespeicherte Änderungen. Möchten Sie diese vor dem Öffnen der Vorschau speichern?"
+
+msgid "Save the calendar before creating a template."
+msgstr "Speichern Sie den Kalender, bevor Sie eine Vorlage erstellen."
+
+msgid "Calendar status"
+msgstr "Kalenderstatus"
