@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.2\n"
+"Project-Id-Version: Panda Seasons 0.7.3\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1556,3 +1556,6 @@ msgstr "Speichern Sie den Kalender, bevor Sie eine Vorlage erstellen."
 
 msgid "Calendar status"
 msgstr "Kalenderstatus"
+
+msgid "The calendar could not be saved. Please try again."
+msgstr "Der Kalender konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."

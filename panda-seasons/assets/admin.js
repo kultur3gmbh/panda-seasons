@@ -8,7 +8,7 @@
 	var returnFocus = null;
 	var calendarForm = document.getElementById('post');
 	var calendarDirty = false;
-	var calendarStorageKey = 'panda-seasons-calendar:' + (window.pandaSeasonsAdmin && pandaSeasonsAdmin.calendarId ? pandaSeasonsAdmin.calendarId : window.location.pathname);
+	var calendarSaving = false;
 	function calendarStatus(message, state) {
 		var status = document.querySelector('[data-calendar-save-state]');
 		if (!status) return;
@@ -679,7 +679,7 @@
 			(function bindLayerEditor(attempt) {
 				var editor = window.tinymce && window.tinymce.get('panda_seasons_layer_text_editor');
 				if (!editor) { if (attempt < 20) window.setTimeout(function () { bindLayerEditor(attempt + 1); }, 250); return; }
-				editor.on('input change keyup undo redo', function () { if (activeLayer && activeLayer.type === 'text') { activeLayer.text = editor.getContent(); render(); } });
+				editor.on('input change keyup undo redo', function () { if (activeLayer && activeLayer.type === 'text') { activeLayer.text = editor.getContent(); render(); markCalendarDirty(); } });
 			}(0));
 			layerEditor.addEventListener('input', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; var name = field.dataset.layerField; activeLayer[name] = ['imageId','fontSize','padding','z','radius'].indexOf(name) !== -1 ? Math.max(0, parseInt(field.value, 10) || 0) : field.value; render(); });
 			layerEditor.addEventListener('change', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; activeLayer[field.dataset.layerField] = field.value; render(); });
@@ -714,6 +714,16 @@
 			setStageAppearance();
 		};
 		root.getDoors = function () { return doors; };
+		root.applySavedDoorIds = function (ids) {
+			var index = 0;
+			doors.forEach(function (door) {
+				if (door.deleted) return;
+				if (ids[index]) { door.id = parseInt(ids[index], 10) || door.id; door.isDraft = false; }
+				index++;
+			});
+			render();
+		};
+		root.commitSavedState = function () { if (activeLayer) activeLayerSnapshot = JSON.parse(JSON.stringify(activeLayer)); };
 		root.renderDoors = render;
 		root.prepareForSave = function () { if (activeLayer) saveLayerEditor(); render(); };
 		root.updateBackground = setStageAppearance;
@@ -785,6 +795,8 @@
 		});
 		activeDoor.content = getEditorContent('panda_seasons_door_content_editor');
 		activeDoor.ctaText = getEditorContent('panda_seasons_door_cta_editor');
+		activeDoor.emailContent = getEditorContent('panda_seasons_door_email_editor');
+		activeDoor.quizQuestions = collectQuizQuestions();
 		if (composer && composer.renderDoors) composer.renderDoors();
 		var openPreview = modal.querySelector('[data-door-preview]:not([hidden])');
 		if (openPreview) previewDoor(false);
@@ -842,7 +854,7 @@
 			var label = modal.querySelector('[data-door-field="downloadLabel"]');
 			if (label && !label.value) label.value = attachment.title || attachment.filename || '';
 		}
-		updateDoorAssets(); syncDoorPreview();
+		updateDoorAssets(); syncDoorPreview(); markCalendarDirty();
 	}
 
 	function saveActiveDoor(door, status) {
@@ -885,6 +897,7 @@
 		if (kind === 'media') modal.querySelector('[data-door-field="mediaType"]').value = '';
 		updateDoorAssets();
 		syncDoorPreview();
+		markCalendarDirty();
 	}
 
 	function selectDoorStateImage(kind) {
@@ -895,6 +908,7 @@
 			modal.querySelector('[data-door-field="' + kind + 'Url"]').value = attachment.url || '';
 			updateDoorAssets();
 			syncDoorPreview();
+			markCalendarDirty();
 		});
 		frame.open();
 	}
@@ -904,6 +918,7 @@
 		modal.querySelector('[data-door-field="' + kind + 'Url"]').value = '';
 		updateDoorAssets();
 		syncDoorPreview();
+		markCalendarDirty();
 	}
 
 	function previewDoor(scrollToPreview) {
@@ -999,6 +1014,7 @@
 					field.querySelector('.panda-seasons-media-preview').innerHTML = '<span>' + escapeHtml(adminText('imageDropHint', 'Select image or drop it here')) + '</span>';
 				remove.hidden = true;
 				if (composer && composer.updateImage) composer.updateImage(targetView, '');
+				markCalendarDirty();
 				return;
 			}
 			var frame = wp.media({ title: adminText('selectImage', 'Select image'), library: { type: 'image' }, multiple: false });
@@ -1009,6 +1025,7 @@
 				field.querySelector('.panda-seasons-media-preview').innerHTML = '<img src="' + previewUrl + '" alt="">';
 				field.querySelector('[data-remove-media]').hidden = false;
 				if (composer && composer.updateImage) composer.updateImage(targetView, attachment.url);
+				markCalendarDirty();
 			});
 			frame.open();
 			return;
@@ -1054,7 +1071,7 @@
 			if (!event.dataTransfer || !event.dataTransfer.files.length) return;
 			event.preventDefault(); dropzone.classList.remove('is-dragover');
 			var file = event.dataTransfer.files[0]; if (!/^image\//.test(file.type)) return;
-			uploadAttachment(file, function (attachment) { var field = dropzone.closest('[data-media-field]'), hidden = field.querySelector('input[type="hidden"]'), targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop'; hidden.value = attachment.id || 0; dropzone.innerHTML = '<img src="' + escapeHtml(attachment.url || '') + '" alt="">'; field.querySelector('[data-remove-media]').hidden = false; if (composer && composer.updateImage) composer.updateImage(targetView, attachment.url || ''); });
+			uploadAttachment(file, function (attachment) { var field = dropzone.closest('[data-media-field]'), hidden = field.querySelector('input[type="hidden"]'), targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop'; hidden.value = attachment.id || 0; dropzone.innerHTML = '<img src="' + escapeHtml(attachment.url || '') + '" alt="">'; field.querySelector('[data-remove-media]').hidden = false; if (composer && composer.updateImage) composer.updateImage(targetView, attachment.url || ''); markCalendarDirty(); });
 		});
 	});
 	document.querySelectorAll('[data-door-asset="media"] [data-select-door-media]').forEach(function (dropzone) {
@@ -1266,7 +1283,7 @@
 	document.addEventListener('click',function(event){
 		var opener=event.target.closest('[data-open-calendar-preview]');
 		if(opener){
-			if(calendarDirty&&window.confirm(adminText('saveBeforePreview','There are unsaved changes. Save them before opening the preview?'))){try{window.sessionStorage.setItem(calendarStorageKey+':preview',opener.dataset.previewUrl);}catch(ignore){}saveCalendar();return;}
+			if(calendarDirty&&window.confirm(adminText('saveBeforePreview','There are unsaved changes. Save them before opening the preview?'))){saveCalendar(function(){opener.click();});return;}
 			var preview=document.querySelector('[data-calendar-preview]');if(!preview)return;preview.hidden=false;preview.classList.remove('is-mobile');loadCalendarPreview(preview,opener.dataset.previewUrl);document.body.classList.add('panda-seasons-preview-open');return;
 		}
 		var applyPreviewDate=event.target.closest('[data-calendar-preview-date-apply]');if(applyPreviewDate){var datePreview=applyPreviewDate.closest('[data-calendar-preview]');loadCalendarPreview(datePreview,datePreview.dataset.previewUrl);return;}
@@ -1278,21 +1295,47 @@
 		if (activeDoor) syncDoorPreview();
 		if (composer && composer.prepareForSave) composer.prepareForSave();
 	}
-	function saveCalendar() {
-		if (!calendarForm) return;
+	function saveCalendar(afterSave) {
+		if (!calendarForm || calendarSaving) return;
 		prepareCalendarState();
-		calendarDirty = false;
+		calendarSaving = true;
 		calendarStatus(adminText('savingCalendar', 'Saving calendar…'), 'saving');
-		try { window.sessionStorage.setItem(calendarStorageKey + ':saved', '1'); } catch (ignore) {}
-		var originalStatus = document.getElementById('original_post_status');
-		var submit = originalStatus && ['auto-draft','draft','pending'].indexOf(originalStatus.value) !== -1 ? document.getElementById('save-post') : document.getElementById('publish');
-		if (submit) submit.click(); else calendarForm.submit();
+		var data = new FormData(calendarForm);
+		data.set('action', 'panda_seasons_save_calendar');
+		data.set('calendar_id', window.pandaSeasonsAdmin && pandaSeasonsAdmin.calendarId ? pandaSeasonsAdmin.calendarId : data.get('post_ID'));
+		fetch(window.pandaSeasonsAdmin && pandaSeasonsAdmin.ajaxUrl ? pandaSeasonsAdmin.ajaxUrl : window.ajaxurl, { method: 'POST', credentials: 'same-origin', body: data })
+			.then(function (response) { return response.json(); })
+			.then(function (result) {
+				if (!result || !result.success) throw new Error(result && result.data && result.data.message ? result.data.message : adminText('calendarSaveFailed', 'The calendar could not be saved. Please try again.'));
+				if (composer && composer.applySavedDoorIds) composer.applySavedDoorIds(result.data.doorIds || []);
+				if (composer && composer.commitSavedState) composer.commitSavedState();
+				if (activeDoor) activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
+				calendarDirty = false;
+				calendarStatus(result.data.message || adminText('calendarSaved', 'Calendar saved.'), 'saved');
+				if (typeof afterSave === 'function') afterSave();
+			})
+			.catch(function (error) {
+				calendarDirty = true;
+				calendarStatus(error && error.message ? error.message : adminText('calendarSaveFailed', 'The calendar could not be saved. Please try again.'), 'error');
+			})
+			.finally(function () { calendarSaving = false; });
 	}
 	if (calendarForm) {
 		calendarForm.addEventListener('input', function (event) { if (!event.target.closest('#submitdiv')) markCalendarDirty(); });
 		calendarForm.addEventListener('change', function (event) { if (!event.target.closest('#submitdiv')) markCalendarDirty(); });
 		calendarForm.addEventListener('submit', function () { prepareCalendarState(); calendarDirty = false; });
 	}
+	(function bindDoorRichTextDirtyState(attempt) {
+		var ready = true;
+		['panda_seasons_door_content_editor', 'panda_seasons_door_cta_editor', 'panda_seasons_door_email_editor'].forEach(function (id) {
+			var editor = window.tinymce && window.tinymce.get(id);
+			if (!editor) { ready = false; return; }
+			if (editor.settings && editor.settings.pandaSeasonsDirtyBound) return;
+			editor.on('input change keyup undo redo', markCalendarDirty);
+			if (editor.settings) editor.settings.pandaSeasonsDirtyBound = true;
+		});
+		if (!ready && attempt < 30) window.setTimeout(function () { bindDoorRichTextDirtyState(attempt + 1); }, 250);
+	}(0));
 	document.addEventListener('click', function (event) {
 		if (event.target.closest('[data-save-calendar]')) { saveCalendar(); return; }
 		if (event.target.closest('[data-add-door],[data-add-layer],[data-delete-stage-door],[data-delete-door],[data-delete-layer],[data-align-grid],[data-duplicate-door]')) markCalendarDirty();
@@ -1301,10 +1344,5 @@
 		if (templateClose && dialog) { dialog.hidden = true; document.body.classList.remove('panda-seasons-modal-open'); }
 	});
 	document.addEventListener('pointerup', function (event) { if (event.target.closest('[data-editor-stage]')) markCalendarDirty(); });
-	try {
-		if (window.sessionStorage.getItem(calendarStorageKey + ':saved')) { window.sessionStorage.removeItem(calendarStorageKey + ':saved'); calendarStatus(adminText('calendarSaved','Calendar saved.'),'saved'); }
-		var pendingPreview = window.sessionStorage.getItem(calendarStorageKey + ':preview');
-		if (pendingPreview) { window.sessionStorage.removeItem(calendarStorageKey + ':preview'); window.setTimeout(function () { var button=document.querySelector('[data-open-calendar-preview]'); if(button){calendarDirty=false;button.click();} },350); }
-	} catch (ignore) {}
 	window.addEventListener('beforeunload', function (event) { if (!calendarDirty) return; event.preventDefault(); event.returnValue = ''; });
 }());

@@ -20,6 +20,7 @@ final class Panda_Seasons_Plugin {
 		add_action( 'save_post_' . self::DOOR_POST_TYPE, array( __CLASS__, 'save_door' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_assets' ) );
 		add_action( 'wp_ajax_panda_seasons_save_editor_door', array( __CLASS__, 'save_editor_door_ajax' ) );
+		add_action( 'wp_ajax_panda_seasons_save_calendar', array( __CLASS__, 'save_calendar_ajax' ) );
 		add_action( 'admin_post_panda_seasons_preview', array( __CLASS__, 'preview_page' ) );
 		add_action( 'admin_post_panda_seasons_export_template', array( __CLASS__, 'export_template' ) );
 		add_action( 'admin_post_panda_seasons_import_template', array( __CLASS__, 'import_template' ) );
@@ -1170,7 +1171,7 @@ final class Panda_Seasons_Plugin {
 	}
 
 	public static function save_calendar( $post_id ) {
-		if ( ! self::can_save( $post_id, 'panda_seasons_calendar_nonce', 'panda_seasons_save_calendar' ) ) return;
+		if ( ! self::can_save( $post_id, 'panda_seasons_calendar_nonce', 'panda_seasons_save_calendar' ) ) return array();
 		update_post_meta( $post_id, '_ps_cover_desktop', absint( $_POST['panda_seasons_cover_desktop'] ?? 0 ) );
 		update_post_meta( $post_id, '_ps_cover_mobile', absint( $_POST['panda_seasons_cover_mobile'] ?? 0 ) );
 		self::update_css_color_meta( $post_id, '_ps_cover_desktop_background', wp_unslash( $_POST['panda_seasons_cover_desktop_background'] ?? 'rgba(23, 32, 51, 1)' ) );
@@ -1273,7 +1274,32 @@ final class Panda_Seasons_Plugin {
 		update_post_meta( $post_id, '_ps_newsletter_link_url', esc_url_raw( wp_unslash( $_POST['panda_seasons_newsletter_link_url'] ?? '' ) ) );
 		update_post_meta( $post_id, '_ps_newsletter_shortcode', sanitize_text_field( wp_unslash( $_POST['panda_seasons_newsletter_shortcode'] ?? '' ) ) );
 		update_post_meta( $post_id, '_ps_contact_tag', sanitize_text_field( wp_unslash( $_POST['panda_seasons_contact_tag'] ?? '' ) ) );
-		self::save_composer_doors( $post_id );
+		return self::save_composer_doors( $post_id );
+	}
+
+	/** Save the complete visual editor without relying on the classic WordPress publish box. */
+	public static function save_calendar_ajax() {
+		check_ajax_referer( 'panda_seasons_save_calendar', 'panda_seasons_calendar_nonce' );
+		$calendar_id = absint( $_POST['post_ID'] ?? $_POST['calendar_id'] ?? 0 );
+		if ( ! $calendar_id || self::CALENDAR_POST_TYPE !== get_post_type( $calendar_id ) || ! current_user_can( 'edit_post', $calendar_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'The calendar could not be saved. Please try again.', 'panda-seasons' ) ), 403 );
+		}
+		$title = sanitize_text_field( wp_unslash( $_POST['post_title'] ?? '' ) );
+		if ( '' !== $title && $title !== get_the_title( $calendar_id ) ) {
+			remove_action( 'save_post_' . self::CALENDAR_POST_TYPE, array( __CLASS__, 'save_calendar' ) );
+			$result = wp_update_post( array( 'ID' => $calendar_id, 'post_title' => $title ), true );
+			add_action( 'save_post_' . self::CALENDAR_POST_TYPE, array( __CLASS__, 'save_calendar' ) );
+			if ( is_wp_error( $result ) ) wp_send_json_error( array( 'message' => $result->get_error_message() ), 500 );
+		}
+		$door_ids = self::save_calendar( $calendar_id );
+		clean_post_cache( $calendar_id );
+		wp_send_json_success(
+			array(
+				'message' => __( 'Calendar saved.', 'panda-seasons' ),
+				'doorIds' => array_values( array_map( 'absint', (array) $door_ids ) ),
+				'savedAt' => current_time( 'mysql' ),
+			)
+		);
 	}
 
 	private static function save_composer_doors( $calendar_id ) {
@@ -1569,6 +1595,7 @@ final class Panda_Seasons_Plugin {
 				'unsavedChanges'  => __( 'Unsaved changes', 'panda-seasons' ),
 				'savingCalendar'  => __( 'Saving calendar…', 'panda-seasons' ),
 				'calendarSaved'   => __( 'Calendar saved.', 'panda-seasons' ),
+				'calendarSaveFailed' => __( 'The calendar could not be saved. Please try again.', 'panda-seasons' ),
 				'saveBeforePreview' => __( 'There are unsaved changes. Save them before opening the preview?', 'panda-seasons' ),
 				'saveBeforeTemplate' => __( 'Save the calendar before creating a template.', 'panda-seasons' ),
 				'calendarStatusTitle' => __( 'Calendar status', 'panda-seasons' ),

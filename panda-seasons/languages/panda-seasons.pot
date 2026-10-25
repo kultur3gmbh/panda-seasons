@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.2\n"
+"Project-Id-Version: Panda Seasons 0.7.3\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1553,4 +1553,7 @@ msgid "Save the calendar before creating a template."
 msgstr ""
 
 msgid "Calendar status"
+msgstr ""
+
+msgid "The calendar could not be saved. Please try again."
 msgstr ""
