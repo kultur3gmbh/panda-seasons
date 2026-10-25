@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.3\n"
+"Project-Id-Version: Panda Seasons 0.7.4\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1559,3 +1559,15 @@ msgstr "Kalenderstatus"
 
 msgid "The calendar could not be saved. Please try again."
 msgstr "Der Kalender konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+
+msgid "Grid size"
+msgstr "Rastergröße"
+
+msgid "Delete this element?"
+msgstr "Dieses Element löschen?"
+
+msgid "Selected calendar: %s"
+msgstr "Ausgewählter Kalender: %s"
+
+msgid "No calendar selected"
+msgstr "Kein Kalender ausgewählt"

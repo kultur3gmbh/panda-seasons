@@ -189,6 +189,8 @@ trait Panda_Seasons_Runtime {
 		$style        = '--ps-ratio:' . $ratio . ';--ps-mobile-ratio:' . $mobile_ratio . ';';
 		$style       .= '--ps-cover-desktop-bg:' . ( (string) get_post_meta( $id, '_ps_cover_desktop_background', true ) ?: 'rgba(23,32,51,1)' ) . ';--ps-cover-mobile-bg:' . ( (string) get_post_meta( $id, '_ps_cover_mobile_background', true ) ?: 'rgba(23,32,51,1)' ) . ';';
 		$active_border = (string) get_post_meta( $id, '_ps_default_active_border_color', true ) ?: 'rgba(255, 193, 7, 1)';
+		$default_closed_bg = (string) get_post_meta( $id, '_ps_default_closed_background', true ) ?: 'rgba(99, 99, 99, 0.2)';
+		$default_open_bg = (string) get_post_meta( $id, '_ps_default_open_background', true ) ?: 'rgba(51, 79, 232, 1)';
 		$style .= '--ps-active-border-color:' . $active_border . ';--ps-popup-bg:' . ( (string) get_post_meta( $id, '_ps_popup_background', true ) ?: 'rgba(255,255,255,1)' ) . ';--ps-popup-color:' . ( (string) get_post_meta( $id, '_ps_popup_text_color', true ) ?: 'rgba(31,41,55,1)' ) . ';--ps-popup-border-color:' . ( (string) get_post_meta( $id, '_ps_popup_border_color', true ) ?: 'rgba(216,221,231,1)' ) . ';--ps-popup-border-width:' . min( 20, absint( get_post_meta( $id, '_ps_popup_border_width', true ) ) ) . 'px;--ps-popup-radius:' . min( 80, absint( get_post_meta( $id, '_ps_popup_radius', true ) ) ?: 16 ) . 'px;--ps-popup-padding:' . min( 100, absint( get_post_meta( $id, '_ps_popup_padding', true ) ) ?: 32 ) . 'px;--ps-popup-width:' . min( 1600, max( 320, absint( get_post_meta( $id, '_ps_popup_width', true ) ) ?: 720 ) ) . 'px;';
 		if ( $desktop ) $style .= '--ps-cover-desktop:url("' . esc_url_raw( $desktop ) . '");';
 		if ( $mobile ) $style .= '--ps-cover-mobile:url("' . esc_url_raw( $mobile ) . '");';
@@ -216,8 +218,8 @@ trait Panda_Seasons_Runtime {
 					$desktop_position = self::door_position( $door->ID, 'desktop', $index, count( $doors ) );
 					$mobile_position  = self::door_position( $door->ID, 'mobile', $index, count( $doors ) );
 					$item_style = '--ps-x:' . $desktop_position['x'] . '%;--ps-y:' . $desktop_position['y'] . '%;--ps-w:' . $desktop_position['w'] . '%;--ps-h:' . $desktop_position['h'] . '%;--ps-mobile-x:' . $mobile_position['x'] . '%;--ps-mobile-y:' . $mobile_position['y'] . '%;--ps-mobile-w:' . $mobile_position['w'] . '%;--ps-mobile-h:' . $mobile_position['h'] . '%;';
-					$closed_bg = (string) get_post_meta( $door->ID, '_ps_closed_background', true ) ?: '#1f2937';
-					$open_bg = (string) get_post_meta( $door->ID, '_ps_open_background', true ) ?: '#334fe8';
+					$closed_bg = (string) get_post_meta( $door->ID, '_ps_closed_background', true ) ?: $default_closed_bg;
+					$open_bg = (string) get_post_meta( $door->ID, '_ps_open_background', true ) ?: $default_open_bg;
 					$closed_color = (string) get_post_meta( $door->ID, '_ps_closed_color', true ) ?: 'rgba(255,255,255,1)';
 					$open_color = (string) get_post_meta( $door->ID, '_ps_open_color', true ) ?: 'rgba(255,255,255,1)';
 					$item_style .= '--ps-closed-bg:' . $closed_bg . ';--ps-closed-color:' . $closed_color . ';--ps-open-bg:' . $open_bg . ';--ps-open-color:' . $open_color . ';';
@@ -292,7 +294,9 @@ trait Panda_Seasons_Runtime {
 			<?php echo self::newsletter_markup( $id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- validated mode-specific markup. ?>
 		</section>
 		<?php
-		return ob_get_clean();
+		$output = ob_get_clean();
+		if ( class_exists( 'Panda_Seasons_Integrations' ) && Panda_Seasons_Integrations::is_builder_preview() ) $output .= Panda_Seasons_Integrations::builder_selection_hint( $id );
+		return $output;
 	}
 
 	public static function preview_page() {

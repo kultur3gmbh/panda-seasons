@@ -18,6 +18,21 @@ final class Panda_Seasons_Integrations {
 		return $choices;
 	}
 
+	public static function builder_selection_hint( $id ) {
+		$title = $id ? get_the_title( $id ) : '';
+		$text = $title ? sprintf( __( 'Selected calendar: %s', 'panda-seasons' ), $title ) : __( 'No calendar selected', 'panda-seasons' );
+		return '<small class="panda-seasons-builder-selection">' . esc_html( $text ) . '</small>';
+	}
+
+	public static function is_builder_preview() {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) return false;
+		if ( class_exists( '\Elementor\Plugin' ) && isset( \Elementor\Plugin::$instance->editor ) && \Elementor\Plugin::$instance->editor->is_edit_mode() ) return true;
+		if ( function_exists( 'et_fb_is_enabled' ) && et_fb_is_enabled() ) return true;
+		if ( function_exists( 'fusion_is_builder_frame' ) && fusion_is_builder_frame() ) return true;
+		if ( function_exists( 'fusion_is_preview_frame' ) && fusion_is_preview_frame() ) return true;
+		return isset( $_GET['et_fb'] ) || isset( $_GET['fb-edit'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	}
+
 	public static function render( $attributes ) {
 		$id = absint( $attributes['id'] ?? 0 );
 		return $id ? Panda_Seasons_Plugin::shortcode( array( 'id' => $id ) ) : '';
@@ -32,7 +47,7 @@ final class Panda_Seasons_Integrations {
 		wp_register_script( 'panda-seasons-block-editor', PANDA_SEASONS_URL . 'assets/block-editor.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-server-side-render' ), PANDA_SEASONS_VERSION, true );
 		$calendars = array();
 		foreach ( self::calendars() as $value => $label ) $calendars[] = array( 'value' => $value, 'label' => $label );
-		wp_localize_script( 'panda-seasons-block-editor', 'pandaSeasonsBlock', array( 'calendars' => $calendars, 'title' => __( 'Panda Seasons calendar', 'panda-seasons' ), 'signupTitle' => __( 'Panda Seasons calendar signup', 'panda-seasons' ), 'selectLabel' => __( 'Calendar', 'panda-seasons' ) ) );
+		wp_localize_script( 'panda-seasons-block-editor', 'pandaSeasonsBlock', array( 'calendars' => $calendars, 'title' => __( 'Panda Seasons calendar', 'panda-seasons' ), 'signupTitle' => __( 'Panda Seasons calendar signup', 'panda-seasons' ), 'selectLabel' => __( 'Calendar', 'panda-seasons' ), 'selectedLabel' => __( 'Selected calendar: %s', 'panda-seasons' ), 'noneSelected' => __( 'No calendar selected', 'panda-seasons' ) ) );
 		register_block_type( 'panda-seasons/calendar', array(
 			'api_version'     => 2,
 			'editor_script'   => 'panda-seasons-block-editor',
