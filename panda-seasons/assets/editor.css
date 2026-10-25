@@ -298,3 +298,12 @@ body.post-type-panda_calendar #titlediv{margin:8px 0 12px}.panda-seasons-admin-g
 .panda-seasons-composer__layer-actions button:hover,.panda-seasons-composer__layer-actions button:focus{color:#2271b1;border-color:#2271b1}.panda-seasons-composer__layer-actions [data-delete-stage-layer]:hover,.panda-seasons-composer__layer-actions [data-delete-stage-layer]:focus{color:#b32d2e;border-color:#b32d2e}
 .panda-seasons-composer__layer-actions .dashicons{width:16px;height:16px;font-size:16px;line-height:16px}
 @media(max-width:782px){.panda-seasons-composer__primary-actions,.panda-seasons-composer__grid-row{margin-left:0}.panda-seasons-composer__layer-actions{display:flex}}
+
+/* 0.7.8: centre-based grid, compact canvas controls and multi-selection. */
+.panda-seasons-composer__stage.has-grid::after{background-position:center center}
+.panda-seasons-composer__door.is-selected,.panda-seasons-composer__layer.is-selected{outline:0;box-shadow:inset 0 0 0 3px #2271b1,0 3px 12px rgba(0,0,0,.18)}
+.panda-seasons-composer__grid-row>[data-editor-undo],.panda-seasons-composer__grid-row>[data-editor-redo]{display:inline-grid;place-items:center;width:32px;min-width:32px;padding:0}
+.panda-seasons-composer__grid-row>[data-editor-undo] .dashicons,.panda-seasons-composer__grid-row>[data-editor-redo] .dashicons{width:17px;height:17px;font-size:17px;line-height:17px}
+.panda-seasons-aspect-dimensions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.panda-seasons-aspect-dimensions label{min-width:0}.panda-seasons-cover-settings__controls{grid-template-columns:1fr 1fr!important;align-items:end}.panda-seasons-cover-settings__controls>label:first-child{grid-column:1}.panda-seasons-cover-settings__controls>.panda-seasons-aspect-dimensions{grid-column:2}.panda-seasons-cover-settings__controls>label:last-child{grid-column:1/-1}
+.panda-seasons-door-dimensions{display:grid!important;grid-template-columns:1fr 1fr;gap:10px;align-items:end;padding-top:10px;border-top:1px solid #dcdcde}.panda-seasons-door-dimensions>label{min-width:0}.panda-seasons-door-dimensions__lock{display:flex!important;align-items:center;gap:7px;min-height:36px}.panda-seasons-door-dimensions__lock input{margin:0}.panda-seasons-door-dimensions .button{min-height:36px}.panda-seasons-door-dimensions small{grid-column:1/-1}
+@media(max-width:782px){.panda-seasons-cover-settings__controls,.panda-seasons-door-dimensions{grid-template-columns:1fr!important}.panda-seasons-cover-settings__controls>*{grid-column:1!important}}

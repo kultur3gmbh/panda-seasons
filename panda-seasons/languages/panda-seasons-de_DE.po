@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.7\n"
+"Project-Id-Version: Panda Seasons 0.7.8\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1571,3 +1571,36 @@ msgstr "Ausgewählter Kalender: %s"
 
 msgid "No calendar selected"
 msgstr "Kein Kalender ausgewählt"
+
+msgid "Canvas format"
+msgstr "Format der Gesamtfläche"
+
+msgid "Custom"
+msgstr "Benutzerdefiniert"
+
+msgid "Height"
+msgstr "Höhe"
+
+msgid "Undo"
+msgstr "Rückgängig"
+
+msgid "Redo"
+msgstr "Wiederherstellen"
+
+msgid "Height (%)"
+msgstr "Höhe (%)"
+
+msgid "Keep aspect ratio"
+msgstr "Seitenverhältnis beibehalten"
+
+msgid "Apply dimensions to all doors"
+msgstr "Maße auf alle Türen anwenden"
+
+msgid "Dimensions apply separately to the current desktop or mobile layout."
+msgstr "Die Maße gelten getrennt für das aktuell gewählte Desktop- oder Mobil-Layout."
+
+msgid "Dimensions applied to all doors in this layout."
+msgstr "Die Maße wurden auf alle Türen in diesem Layout angewendet."
+
+msgid "Click Add door, Design area or Text area, or drag the corresponding button directly onto the calendar. Hold Shift while clicking to select several elements and move them together."
+msgstr "Klicken Sie auf „Türe hinzufügen“, „Gestaltungsfläche“ oder „Textfläche“ – oder ziehen Sie die entsprechende Schaltfläche direkt auf den Kalender. Halten Sie beim Anklicken die Umschalttaste gedrückt, um mehrere Elemente auszuwählen und gemeinsam zu verschieben."

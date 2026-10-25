@@ -9,6 +9,7 @@
 	var calendarForm = document.getElementById('post');
 	var calendarDirty = false;
 	var calendarSaving = false;
+	var pendingDoorHistory = null;
 	function calendarStatus(message, state) {
 		var status = document.querySelector('[data-calendar-save-state]');
 		if (!status) return;
@@ -219,6 +220,54 @@
 		var pointerState = null;
 		var dragged = false;
 		var snapControl = root.querySelector('[data-snap-grid]');
+		var selectedItems = {};
+		var undoStack = [];
+		var redoStack = [];
+		var historyLimit = 3;
+		var pendingLayerHistory = null;
+
+		function itemKey(type, item) { return type + ':' + String(type === 'door' ? (item.id || item.clientId) : item.id); }
+		function isSelected(type, item) { return Boolean(selectedItems[itemKey(type, item)]); }
+		function clearSelection() { selectedItems = {}; }
+		function selectOnly(type, item) { clearSelection(); selectedItems[itemKey(type, item)] = true; }
+		function toggleSelection(type, item) {
+			var key = itemKey(type, item);
+			if (selectedItems[key]) delete selectedItems[key]; else selectedItems[key] = true;
+		}
+		function selectedMovables() {
+			var result = [];
+			currentDoors().forEach(function (door) { if (isSelected('door', door)) result.push({ type: 'door', item: door }); });
+			layers.filter(function (layer) { return !layer.deleted; }).forEach(function (layer) { if (isSelected('layer', layer)) result.push({ type: 'layer', item: layer }); });
+			return result;
+		}
+		function snapshotEditor() { return JSON.stringify({ doors: doors, layers: layers, view: view, previewState: previewState }); }
+		function updateHistoryButtons() {
+			var undo = root.querySelector('[data-editor-undo]'), redo = root.querySelector('[data-editor-redo]');
+			if (undo) undo.disabled = !undoStack.length;
+			if (redo) redo.disabled = !redoStack.length;
+		}
+		function recordHistory(explicitState) {
+			var state = explicitState || snapshotEditor();
+			if (!undoStack.length || undoStack[undoStack.length - 1] !== state) undoStack.push(state);
+			if (undoStack.length > historyLimit) undoStack.shift();
+			redoStack = [];
+			updateHistoryButtons();
+		}
+		function restoreHistory(state) {
+			var parsed = JSON.parse(state);
+			if (activeDoor) closeDoorModal(true);
+			if (activeLayer) closeLayerEditor(true);
+			doors = parsed.doors || [];
+			layers = parsed.layers || [];
+			view = parsed.view || view;
+			previewState = parsed.previewState || previewState;
+			clearSelection();
+			root.querySelectorAll('[data-editor-view]').forEach(function (button) { button.classList.toggle('button-primary', button.dataset.editorView === view); });
+			root.querySelectorAll('[data-preview-state]').forEach(function (button) { button.classList.toggle('button-primary', button.dataset.previewState === previewState); });
+			setStageAppearance(); render(); markCalendarDirty(); updateHistoryButtons();
+		}
+		function undoEditor() { if (!undoStack.length) return; redoStack.push(snapshotEditor()); restoreHistory(undoStack.pop()); }
+		function redoEditor() { if (!redoStack.length) return; undoStack.push(snapshotEditor()); if (undoStack.length > historyLimit) undoStack.shift(); restoreHistory(redoStack.pop()); }
 
 		try { doors = JSON.parse(dataField.value || '[]'); } catch (ignore) { doors = []; }
 		try { layers = JSON.parse(layerDataField && layerDataField.value || '[]'); } catch (ignore) { layers = []; }
@@ -258,7 +307,7 @@
 			layers.filter(function (layer) { return !layer.deleted; }).sort(function (a, b) { return number(a.z, 1) - number(b.z, 1); }).forEach(function (layer) {
 				var position = layer[view];
 				var element = document.createElement('div');
-				element.className = 'panda-seasons-composer__layer is-' + (layer.type || 'color') + (activeLayer === layer ? ' is-selected' : '');
+				element.className = 'panda-seasons-composer__layer is-' + (layer.type || 'color') + ((activeLayer === layer || isSelected('layer', layer)) ? ' is-selected' : '');
 				element.dataset.editorLayer = layer.id;
 				element.tabIndex = 0;
 				element.style.left = position.x + '%'; element.style.top = position.y + '%'; element.style.width = position.w + '%'; element.style.height = position.h + '%';
@@ -327,6 +376,7 @@
 		}
 
 		function addLayer(type, position) {
+			recordHistory();
 			var count = layers.filter(function (layer) { return !layer.deleted; }).length;
 			var layer = { id: 'layer-' + Date.now(), type: type, isNew: true, text: type === 'text' ? adminText('newTextArea', 'Text area') : '', imageId: 0, imageUrl: '', imagePosition: 'center', background: type === 'surface' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0)', color: 'rgba(31, 41, 55, 1)', fontSize: 24, padding: 8, z: count + 1, url: '', radius: 0, desktop: cleanPosition(null, 10 + (count % 5) * 5, 10 + (count % 5) * 5, 'desktop'), mobile: cleanPosition(null, 8 + (count % 3) * 7, 8 + (count % 3) * 7, 'mobile') };
 			if (position) { layer[view].x = clamp(position.x - layer[view].w / 2, 0, 100 - layer[view].w); layer[view].y = clamp(position.y - layer[view].h / 2, 0, 100 - layer[view].h); }
@@ -334,6 +384,7 @@
 		}
 
 		function duplicateLayer(source) {
+			recordHistory();
 			var copy = JSON.parse(JSON.stringify(source));
 			copy.id = 'layer-' + Date.now();
 			copy.deleted = false;
@@ -380,7 +431,7 @@
 				var now = new Date(), unlock = door.unlockDate ? new Date(door.unlockDate + 'T' + (door.unlockTime || '00:00')) : null, sameDay = unlock && unlock.getFullYear() === now.getFullYear() && unlock.getMonth() === now.getMonth() && unlock.getDate() === now.getDate();
 				var actualOpen = door.openingMode === 'manual-day' ? false : (door.openingMode === 'auto-day' ? Boolean(sameDay && unlock <= now) : (!unlock || unlock <= now));
 				var isOpen = previewState === 'open' || (previewState === 'actual' && actualOpen);
-				element.className = 'panda-seasons-composer__door is-' + (isOpen ? 'open' : 'closed') + ' shape-' + (door.shape || 'rounded');
+				element.className = 'panda-seasons-composer__door is-' + (isOpen ? 'open' : 'closed') + ' shape-' + (door.shape || 'rounded') + (isSelected('door', door) ? ' is-selected' : '');
 				element.dataset.editorDoor = door.id || door.clientId;
 				element.setAttribute('role', 'button');
 				element.setAttribute('tabindex', '0');
@@ -435,6 +486,7 @@
 		}
 
 		function duplicateDoor(door) {
+			recordHistory();
 			var copy = JSON.parse(JSON.stringify(door));
 			copy.id = 0;
 			copy.clientId = 'new-' + Date.now();
@@ -456,6 +508,7 @@
 		}
 
 		function addDoor(position) {
+			recordHistory();
 			var sequence = currentDoors().length;
 			var doorNumber = nextNumber();
 			var label = (window.pandaSeasonsAdmin && pandaSeasonsAdmin.untitledDoor ? pandaSeasonsAdmin.untitledDoor : 'Door %d').replace('%d', doorNumber);
@@ -518,7 +571,7 @@
 			var rectangle = stage.getBoundingClientRect();
 			var dimension = axis === 'y' ? rectangle.height : rectangle.width;
 			var step = dimension > 0 ? gridSize() * 100 / dimension : 1;
-			return Math.round(value / step) * step;
+			return 50 + Math.round((value - 50) / step) * step;
 		}
 
 		function gridSize() {
@@ -528,14 +581,15 @@
 		}
 
 		function alignAllToGrid() {
+			recordHistory();
 			var rectangle = stage.getBoundingClientRect();
 			var stepX = rectangle.width > 0 ? gridSize() * 100 / rectangle.width : 1;
 			var stepY = rectangle.height > 0 ? gridSize() * 100 / rectangle.height : 1;
 			function alignPosition(position) {
-				var right = Math.round((position.x + position.w) / stepX) * stepX;
-				var bottom = Math.round((position.y + position.h) / stepY) * stepY;
-				position.x = clamp(Math.round(position.x / stepX) * stepX, 0, 96);
-				position.y = clamp(Math.round(position.y / stepY) * stepY, 0, 96);
+				var right = 50 + Math.round((position.x + position.w - 50) / stepX) * stepX;
+				var bottom = 50 + Math.round((position.y + position.h - 50) / stepY) * stepY;
+				position.x = clamp(50 + Math.round((position.x - 50) / stepX) * stepX, 0, 96);
+				position.y = clamp(50 + Math.round((position.y - 50) / stepY) * stepY, 0, 96);
 				position.w = clamp(right - position.x, 4, 100 - position.x);
 				position.h = clamp(bottom - position.y, 4, 100 - position.y);
 			}
@@ -548,11 +602,16 @@
 			if (event.button !== 0) return;
 			var door = findDoor(element.dataset.editorDoor);
 			if (!door) return;
+			if (event.shiftKey) return;
+			if (!isSelected('door', door)) selectOnly('door', door);
+			recordHistory();
 			var rectangle = stage.getBoundingClientRect();
+			var moving = selectedMovables();
 			pointerState = {
 				door: door,
 				element: element,
 				resize: resize,
+				items: moving.map(function (entry) { return { type: entry.type, item: entry.item, start: Object.assign({}, entry.item[view]) }; }),
 				startX: event.clientX,
 				startY: event.clientY,
 				start: Object.assign({}, door[view]),
@@ -571,16 +630,23 @@
 			if (Math.abs(deltaX) > 0.2 || Math.abs(deltaY) > 0.2) dragged = true;
 			var position = pointerState.door[view];
 			if (pointerState.resize) {
-				position.w = clamp(snap(pointerState.start.w + deltaX, 'x'), 4, 100 - position.x);
-				position.h = clamp(snap(pointerState.start.h + deltaY, 'y'), 4, 100 - position.y);
+				position.w = clamp(snap(pointerState.start.x + pointerState.start.w + deltaX, 'x') - position.x, 4, 100 - position.x);
+				position.h = clamp(snap(pointerState.start.y + pointerState.start.h + deltaY, 'y') - position.y, 4, 100 - position.y);
 			} else {
-				position.x = clamp(snap(pointerState.start.x + deltaX, 'x'), 0, 100 - position.w);
-				position.y = clamp(snap(pointerState.start.y + deltaY, 'y'), 0, 100 - position.h);
+				var snappedX = snap(pointerState.start.x + deltaX, 'x'), snappedY = snap(pointerState.start.y + deltaY, 'y');
+				var moveX = snappedX - pointerState.start.x, moveY = snappedY - pointerState.start.y;
+				var minX = Math.min.apply(null, pointerState.items.map(function (entry) { return entry.start.x; }));
+				var minY = Math.min.apply(null, pointerState.items.map(function (entry) { return entry.start.y; }));
+				var maxX = Math.max.apply(null, pointerState.items.map(function (entry) { return entry.start.x + entry.start.w; }));
+				var maxY = Math.max.apply(null, pointerState.items.map(function (entry) { return entry.start.y + entry.start.h; }));
+				moveX = clamp(moveX, -minX, 100 - maxX); moveY = clamp(moveY, -minY, 100 - maxY);
+				pointerState.items.forEach(function (entry) { entry.item[view].x = entry.start.x + moveX; entry.item[view].y = entry.start.y + moveY; });
 			}
-			pointerState.element.style.left = position.x + '%';
-			pointerState.element.style.top = position.y + '%';
-			pointerState.element.style.width = position.w + '%';
-			pointerState.element.style.height = position.h + '%';
+			pointerState.items.forEach(function (entry) {
+				var selector = entry.type === 'door' ? '[data-editor-door="' + CSS.escape(String(entry.item.id || entry.item.clientId)) + '"]' : '[data-editor-layer="' + CSS.escape(String(entry.item.id)) + '"]';
+				var node = stage.querySelector(selector), current = entry.item[view];
+				if (node) { node.style.left = current.x + '%'; node.style.top = current.y + '%'; node.style.width = current.w + '%'; node.style.height = current.h + '%'; }
+			});
 			writeData();
 		}
 
@@ -594,8 +660,11 @@
 			if (event.target.closest('.panda-seasons-composer__layer-actions')) { dragged = false; return; }
 			var layer = findLayer(element.dataset.editorLayer);
 			if (!layer) return;
+			if (event.shiftKey) return;
+			if (!isSelected('layer', layer)) selectOnly('layer', layer);
+			recordHistory();
 			var rectangle = stage.getBoundingClientRect();
-			layerPointerState = { layer: layer, element: element, resize: Boolean(event.target.closest('[data-resize-layer]')), startX: event.clientX, startY: event.clientY, start: Object.assign({}, layer[view]), width: rectangle.width, height: rectangle.height };
+			layerPointerState = { layer: layer, element: element, resize: Boolean(event.target.closest('[data-resize-layer]')), startX: event.clientX, startY: event.clientY, start: Object.assign({}, layer[view]), items: selectedMovables().map(function (entry) { return { type: entry.type, item: entry.item, start: Object.assign({}, entry.item[view]) }; }), width: rectangle.width, height: rectangle.height };
 			dragged = false; element.setPointerCapture(event.pointerId); event.preventDefault();
 		});
 		stage.addEventListener('pointermove', function (event) {
@@ -603,9 +672,16 @@
 			var deltaX = (event.clientX - layerPointerState.startX) / layerPointerState.width * 100, deltaY = (event.clientY - layerPointerState.startY) / layerPointerState.height * 100;
 			if (Math.abs(deltaX) > .2 || Math.abs(deltaY) > .2) dragged = true;
 			var position = layerPointerState.layer[view];
-			if (layerPointerState.resize) { position.w = clamp(snap(layerPointerState.start.w + deltaX, 'x'), 4, 100 - position.x); position.h = clamp(snap(layerPointerState.start.h + deltaY, 'y'), 4, 100 - position.y); }
-			else { position.x = clamp(snap(layerPointerState.start.x + deltaX, 'x'), 0, 100 - position.w); position.y = clamp(snap(layerPointerState.start.y + deltaY, 'y'), 0, 100 - position.h); }
-			layerPointerState.element.style.left = position.x + '%'; layerPointerState.element.style.top = position.y + '%'; layerPointerState.element.style.width = position.w + '%'; layerPointerState.element.style.height = position.h + '%'; writeData();
+			if (layerPointerState.resize) { position.w = clamp(snap(layerPointerState.start.x + layerPointerState.start.w + deltaX, 'x') - position.x, 4, 100 - position.x); position.h = clamp(snap(layerPointerState.start.y + layerPointerState.start.h + deltaY, 'y') - position.y, 4, 100 - position.y); }
+			else {
+				var snappedX = snap(layerPointerState.start.x + deltaX, 'x'), snappedY = snap(layerPointerState.start.y + deltaY, 'y');
+				var moveX = snappedX - layerPointerState.start.x, moveY = snappedY - layerPointerState.start.y;
+				var minX = Math.min.apply(null, layerPointerState.items.map(function (entry) { return entry.start.x; })), minY = Math.min.apply(null, layerPointerState.items.map(function (entry) { return entry.start.y; }));
+				var maxX = Math.max.apply(null, layerPointerState.items.map(function (entry) { return entry.start.x + entry.start.w; })), maxY = Math.max.apply(null, layerPointerState.items.map(function (entry) { return entry.start.y + entry.start.h; }));
+				moveX = clamp(moveX, -minX, 100 - maxX); moveY = clamp(moveY, -minY, 100 - maxY);
+				layerPointerState.items.forEach(function (entry) { entry.item[view].x = entry.start.x + moveX; entry.item[view].y = entry.start.y + moveY; });
+			}
+			layerPointerState.items.forEach(function (entry) { var selector = entry.type === 'door' ? '[data-editor-door="' + CSS.escape(String(entry.item.id || entry.item.clientId)) + '"]' : '[data-editor-layer="' + CSS.escape(String(entry.item.id)) + '"]'; var node = stage.querySelector(selector), current = entry.item[view]; if (node) { node.style.left = current.x + '%'; node.style.top = current.y + '%'; node.style.width = current.w + '%'; node.style.height = current.h + '%'; } }); writeData();
 		});
 		stage.addEventListener('pointerup', function () { layerPointerState = null; });
 		stage.addEventListener('pointercancel', function () { layerPointerState = null; });
@@ -613,10 +689,12 @@
 			var element = event.target.closest('[data-editor-layer]');
 			if (!element) return;
 			var layer = findLayer(element.dataset.editorLayer);
+			if (event.shiftKey && layer) { event.preventDefault(); event.stopPropagation(); toggleSelection('layer', layer); render(); return; }
 			if (event.target.closest('[data-duplicate-layer]')) { event.stopPropagation(); if (layer) duplicateLayer(layer); return; }
 			if (event.target.closest('[data-delete-stage-layer]')) {
 				event.stopPropagation();
 				if (layer && window.confirm(adminText('deleteElementConfirm', 'Delete this element?'))) {
+					recordHistory();
 					layer.deleted = true;
 					if (activeLayer === layer) closeLayerEditor(true);
 					render(); markCalendarDirty();
@@ -644,10 +722,12 @@
 			var element = event.target.closest('[data-editor-door]');
 			if (!element) return;
 			var door = findDoor(element.dataset.editorDoor);
+			if (event.shiftKey && door) { event.preventDefault(); event.stopPropagation(); toggleSelection('door', door); render(); return; }
 			if (event.target.closest('[data-duplicate-door]')) { event.stopPropagation(); if (door) duplicateDoor(door); return; }
 			if (event.target.closest('[data-delete-stage-door]')) {
 				event.stopPropagation();
 				if (door && window.confirm(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteConfirm ? pandaSeasonsAdmin.deleteConfirm : 'Move this door to the trash?')) {
+					recordHistory();
 					door.deleted = true;
 					if (activeDoor === door) closeDoorModal(true);
 					render();
@@ -671,6 +751,7 @@
 			var movements = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
 			if (!movements[event.key]) return;
 			event.preventDefault();
+			recordHistory();
 			var position = door[view];
 			var step = event.shiftKey ? 5 : 1;
 			position.x = clamp(position.x + movements[event.key][0] * step, 0, 100 - position.w);
@@ -680,6 +761,8 @@
 		});
 
 		root.addEventListener('click', function (event) {
+			if (event.target.closest('[data-editor-undo]')) { undoEditor(); return; }
+			if (event.target.closest('[data-editor-redo]')) { redoEditor(); return; }
 			if (event.target.closest('[data-align-grid]')) { alignAllToGrid(); return; }
 			var layerButton = event.target.closest('[data-add-layer]');
 			if (layerButton) { addLayer(layerButton.dataset.addLayer); return; }
@@ -697,6 +780,7 @@
 				root.querySelectorAll('[data-editor-view]').forEach(function (button) { button.classList.toggle('button-primary', button === viewButton); });
 				setStageAppearance();
 				render();
+					if (activeDoor) root.syncDoorDimensionFields(activeDoor);
 				return;
 			}
 			if (event.target.closest('[data-add-door]')) addDoor();
@@ -707,6 +791,7 @@
 		syncGridSize();
 
 		if (layerEditor) {
+			layerEditor.addEventListener('focusin', function (event) { if (activeLayer && event.target.matches('[data-layer-field]')) pendingLayerHistory = snapshotEditor(); });
 			var layerTextarea = document.getElementById('panda_seasons_layer_text_editor');
 			if (layerTextarea) layerTextarea.addEventListener('input', function () { if (activeLayer && activeLayer.type === 'text') { activeLayer.text = layerTextarea.value; render(); } });
 			(function bindLayerEditor(attempt) {
@@ -714,11 +799,11 @@
 				if (!editor) { if (attempt < 20) window.setTimeout(function () { bindLayerEditor(attempt + 1); }, 250); return; }
 				editor.on('input change keyup undo redo', function () { if (activeLayer && activeLayer.type === 'text') { activeLayer.text = editor.getContent(); render(); markCalendarDirty(); } });
 			}(0));
-			layerEditor.addEventListener('input', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; var name = field.dataset.layerField; activeLayer[name] = ['imageId','fontSize','padding','z','radius'].indexOf(name) !== -1 ? Math.max(0, parseInt(field.value, 10) || 0) : field.value; render(); });
-			layerEditor.addEventListener('change', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; activeLayer[field.dataset.layerField] = field.value; render(); });
+			layerEditor.addEventListener('input', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; if (pendingLayerHistory) { recordHistory(pendingLayerHistory); pendingLayerHistory = null; } var name = field.dataset.layerField; activeLayer[name] = ['imageId','fontSize','padding','z','radius'].indexOf(name) !== -1 ? Math.max(0, parseInt(field.value, 10) || 0) : field.value; render(); });
+			layerEditor.addEventListener('change', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; if (pendingLayerHistory) { recordHistory(pendingLayerHistory); pendingLayerHistory = null; } activeLayer[field.dataset.layerField] = field.value; render(); });
 			layerEditor.addEventListener('click', function (event) {
 				if (event.target.closest('[data-select-layer-image]')) { selectLayerImage(); return; }
-				if (event.target.closest('[data-delete-layer]') && activeLayer) { activeLayer.deleted = true; closeLayerEditor(true); return; }
+				if (event.target.closest('[data-delete-layer]') && activeLayer) { recordHistory(); activeLayer.deleted = true; closeLayerEditor(true); return; }
 				if (event.target.closest('[data-apply-layer-editor]')) { saveLayerEditor(); return; }
 				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor(false);
 			});
@@ -741,12 +826,65 @@
 		document.querySelectorAll('[data-editor-ratio]').forEach(function (input) {
 			input.addEventListener('input', function () { if (input.dataset.editorRatio === view) setStageAppearance(); });
 		});
+		document.querySelectorAll('[data-aspect-preset]').forEach(function (preset) {
+			var targetView = preset.dataset.aspectPreset;
+			var ratioInput = document.querySelector('[data-editor-ratio="' + targetView + '"]');
+			var widthInput = document.querySelector('[data-aspect-width="' + targetView + '"]');
+			var heightInput = document.querySelector('[data-aspect-height="' + targetView + '"]');
+			var ratio = number(ratioInput && ratioInput.value, targetView === 'mobile' ? .75 : 1.5);
+			var options = Array.prototype.slice.call(preset.options).filter(function (option) { return option.value !== 'custom'; });
+			var match = options.find(function (option) { return Math.abs(number(option.value, 0) - ratio) < .002; });
+			preset.value = match ? match.value : 'custom';
+			if (widthInput && heightInput) { heightInput.value = 1000; widthInput.value = Math.round(ratio * 1000); }
+			preset.addEventListener('change', function () {
+				if (preset.value === 'custom') return;
+				if (ratioInput) ratioInput.value = preset.value;
+				if (heightInput) heightInput.value = 1000;
+				if (widthInput) widthInput.value = Math.round(number(preset.value, 1) * 1000);
+				if (targetView === view) setStageAppearance(); markCalendarDirty();
+			});
+			function updateCustomRatio() {
+				var width = Math.max(1, number(widthInput && widthInput.value, 1)), height = Math.max(1, number(heightInput && heightInput.value, 1));
+				preset.value = 'custom'; if (ratioInput) ratioInput.value = Math.max(.35, Math.min(3, width / height)).toFixed(6);
+				if (targetView === view) setStageAppearance(); markCalendarDirty();
+			}
+			if (widthInput) widthInput.addEventListener('input', updateCustomRatio);
+			if (heightInput) heightInput.addEventListener('input', updateCustomRatio);
+		});
+
+		stage.addEventListener('click', function (event) {
+			if (event.target !== stage) return;
+			clearSelection(); render();
+		});
 
 		root.updateImage = function (targetView, url) {
 			images[targetView] = url || '';
 			setStageAppearance();
 		};
 		root.getDoors = function () { return doors; };
+		root.getView = function () { return view; };
+		root.captureHistory = recordHistory;
+		root.snapshotEditor = snapshotEditor;
+		root.undoEditor = undoEditor;
+		root.redoEditor = redoEditor;
+		root.syncDoorDimensionFields = function (door) {
+			if (!modal || !door) return;
+			var position = door[view], widthField = modal.querySelector('[data-door-dimension="width"]'), heightField = modal.querySelector('[data-door-dimension="height"]');
+			if (widthField) widthField.value = Math.round(position.w * 10) / 10;
+			if (heightField) heightField.value = Math.round(position.h * 10) / 10;
+		};
+		root.updateDoorDimensions = function (door, dimension, rawValue, locked) {
+			if (!door || !door[view]) return;
+			var position = door[view], oldWidth = position.w, oldHeight = position.h, value = clamp(number(rawValue, dimension === 'width' ? oldWidth : oldHeight), 4, 100);
+			if (dimension === 'width') { position.w = value; position.x = clamp(position.x, 0, 100 - position.w); if (locked && oldWidth) { position.h = clamp(oldHeight * position.w / oldWidth, 4, 100); position.y = clamp(position.y, 0, 100 - position.h); } }
+			else { position.h = value; position.y = clamp(position.y, 0, 100 - position.h); if (locked && oldHeight) { position.w = clamp(oldWidth * position.h / oldHeight, 4, 100); position.x = clamp(position.x, 0, 100 - position.w); } }
+			render(); root.syncDoorDimensionFields(door); markCalendarDirty();
+		};
+		root.applyDoorDimensionsToAll = function (door) {
+			if (!door) return; recordHistory(); var source = door[view];
+			currentDoors().forEach(function (candidate) { candidate[view].w = clamp(source.w, 4, 100); candidate[view].h = clamp(source.h, 4, 100); candidate[view].x = clamp(candidate[view].x, 0, 100 - candidate[view].w); candidate[view].y = clamp(candidate[view].y, 0, 100 - candidate[view].h); });
+			render(); markCalendarDirty();
+		};
 		root.applySavedDoorIds = function (ids) {
 			var index = 0;
 			doors.forEach(function (door) {
@@ -764,6 +902,7 @@
 		if (snapControl) { stage.classList.toggle('has-grid', snapControl.checked); snapControl.addEventListener('change', function () { stage.classList.toggle('has-grid', snapControl.checked); }); }
 		setStageAppearance();
 		render();
+		updateHistoryButtons();
 	}
 
 	function openDoorModal(door, trigger) {
@@ -796,6 +935,7 @@
 		modal.querySelector('[data-door-field="number"]').focus();
 		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"],[data-door-field$="Overlay"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('change',{bubbles:true}));});
 		modal.querySelectorAll('[data-door-field$="LabelWidthMode"]').forEach(updateLabelWidthVisibility);
+		if (composer && composer.syncDoorDimensionFields) composer.syncDoorDimensionFields(door);
 		updateContentTypeVisibility();
 		updateCtaVisibility();
 	}
@@ -979,6 +1119,12 @@
 	}
 
 	document.addEventListener('click', function (event) {
+		if (event.target.closest('[data-apply-door-size-all]') && activeDoor && composer) {
+			composer.applyDoorDimensionsToAll(activeDoor);
+			var sizeStatus = modal.querySelector('[data-door-save-status]');
+			if (sizeStatus) { sizeStatus.textContent = adminText('dimensionsApplied', 'Dimensions applied to all doors in this layout.'); window.setTimeout(function () { sizeStatus.textContent = ''; }, 2600); }
+			return;
+		}
 		if (event.target.closest('[data-apply-door-appearance]') && activeDoor && composer) {
 			var applyDialog = document.querySelector('[data-apply-door-dialog]');
 			if (applyDialog) applyDialog.hidden = false;
@@ -1087,6 +1233,7 @@
 		if (event.target.closest('[data-delete-door]') && activeDoor) {
 			var warning = window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteConfirm ? pandaSeasonsAdmin.deleteConfirm : 'Move this door to the trash?';
 			if (!window.confirm(warning)) return;
+			if (composer && composer.captureHistory) composer.captureHistory();
 			activeDoor.deleted = true;
 			if (composer && composer.renderDoors) composer.renderDoors();
 			closeDoorModal(true);
@@ -1094,8 +1241,28 @@
 
 	});
 
+	if (modal) {
+		modal.addEventListener('focusin', function (event) {
+			if (activeDoor && composer && composer.snapshotEditor && event.target.matches('[data-door-field],[data-door-dimension]')) pendingDoorHistory = composer.snapshotEditor();
+		});
+		modal.addEventListener('input', function (event) {
+			if (pendingDoorHistory && event.target.matches('[data-door-field],[data-door-dimension]') && composer && composer.captureHistory) { composer.captureHistory(pendingDoorHistory); pendingDoorHistory = null; }
+			var dimension = event.target.closest('[data-door-dimension]');
+			if (!dimension || !activeDoor || !composer || !composer.updateDoorDimensions) return;
+			var lock = modal.querySelector('[data-door-aspect-lock]');
+			composer.updateDoorDimensions(activeDoor, dimension.dataset.doorDimension, dimension.value, Boolean(lock && lock.checked));
+		});
+		modal.addEventListener('change', function (event) {
+			if (pendingDoorHistory && event.target.matches('[data-door-field],[data-door-dimension]') && composer && composer.captureHistory) { composer.captureHistory(pendingDoorHistory); pendingDoorHistory = null; }
+		});
+	}
+
 	document.addEventListener('keydown', function (event) {
 		if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-select-media],[data-select-door-media],[data-select-door-download],[data-select-layer-image]')) { event.preventDefault(); event.target.click(); }
+		if (!composer || !(event.ctrlKey || event.metaKey) || String(event.key).toLowerCase() !== 'z') return;
+		if (event.target.matches('input,textarea,select,[contenteditable="true"]') || event.target.closest('.wp-editor-wrap')) return;
+		event.preventDefault();
+		if (event.shiftKey && composer.redoEditor) composer.redoEditor(); else if (composer.undoEditor) composer.undoEditor();
 	});
 	document.querySelectorAll('[data-media-field] .panda-seasons-media-preview').forEach(function (dropzone) {
 		dropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); dropzone.classList.add('is-dragover'); } });

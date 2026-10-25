@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.7\n"
+"Project-Id-Version: Panda Seasons 0.7.8\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1568,4 +1568,37 @@ msgid "Selected calendar: %s"
 msgstr ""
 
 msgid "No calendar selected"
+msgstr ""
+
+msgid "Canvas format"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "Redo"
+msgstr ""
+
+msgid "Height (%)"
+msgstr ""
+
+msgid "Keep aspect ratio"
+msgstr ""
+
+msgid "Apply dimensions to all doors"
+msgstr ""
+
+msgid "Dimensions apply separately to the current desktop or mobile layout."
+msgstr ""
+
+msgid "Dimensions applied to all doors in this layout."
+msgstr ""
+
+msgid "Click Add door, Design area or Text area, or drag the corresponding button directly onto the calendar. Hold Shift while clicking to select several elements and move them together."
 msgstr ""
