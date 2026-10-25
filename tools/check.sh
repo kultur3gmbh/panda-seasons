@@ -3,8 +3,8 @@ set -euo pipefail
 repo_dir="$(cd "$(dirname "$0")/.." && pwd)"
 plugin_dir="$repo_dir/panda-seasons"
 test -f "$plugin_dir/panda-seasons.php"
-grep -q "Version: 0.6.4" "$plugin_dir/panda-seasons.php"
-grep -q "Stable tag: 0.6.4" "$plugin_dir/readme.txt"
+grep -q "Version: 0.7.0" "$plugin_dir/panda-seasons.php"
+grep -q "Stable tag: 0.7.0" "$plugin_dir/readme.txt"
 grep -R "Text Domain: panda-seasons" "$plugin_dir/panda-seasons.php" >/dev/null
 for translation_file in \
   "$plugin_dir/languages/panda-seasons-de_DE.po" \
@@ -18,4 +18,5 @@ if command -v php >/dev/null 2>&1; then
 fi
 python3 "$repo_dir/tools/check_php_structure.py" "$plugin_dir"
 python3 "$repo_dir/tests/structure.py"
+python3 "$repo_dir/tests/consolidation.py"
 echo "Panda Seasons checks passed."

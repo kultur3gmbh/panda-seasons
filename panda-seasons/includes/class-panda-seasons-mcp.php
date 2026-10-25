@@ -235,11 +235,11 @@ final class Panda_Seasons_MCP {
 	}
 
 	private static function allowed_calendar_meta() {
-		return array( 'cover_desktop', 'cover_mobile', 'cover_desktop_background', 'cover_mobile_background', 'aspect_ratio', 'mobile_aspect_ratio', 'open_effect', 'effect_speed', 'design_layers', 'popup_background', 'popup_text_color', 'popup_border_color', 'popup_border_width', 'popup_radius', 'popup_padding', 'popup_width', 'default_closed_background', 'default_open_background', 'default_closed_image_overlay', 'default_open_image_overlay', 'default_closed_text_color', 'default_open_text_color', 'default_closed_border_color', 'default_open_border_color', 'default_closed_border_width', 'default_open_border_width', 'default_closed_label_background', 'default_open_label_background', 'default_closed_label_border_color', 'default_open_label_border_color', 'default_closed_label_border_width', 'default_open_label_border_width', 'default_closed_label_shape', 'default_open_label_shape', 'default_closed_label_position', 'default_open_label_position', 'default_label_width_mode', 'default_label_width', 'default_label_padding', 'default_active_border_color', 'default_label_font', 'default_label_font_size', 'default_label_font_weight', 'default_border_style', 'default_closed_label_visible', 'default_open_label_visible', 'default_shape', 'newsletter_mode', 'newsletter_title', 'newsletter_link_label', 'newsletter_link_url', 'newsletter_shortcode', 'contact_tag', 'signup_title', 'signup_text', 'signup_consent', 'signup_button_label', 'signup_active_message', 'signup_pending_message', 'signup_error_message', 'doi_subject', 'doi_text', 'doi_button_label', 'confirmation_title', 'confirmation_text' );
+		return Panda_Seasons_Contract::calendar_meta();
 	}
 
 	private static function allowed_door_meta() {
-		return array( 'door_number', 'unlock_date', 'unlock_time', 'opening_mode', 'unlock_behavior', 'availability_window', 'content_heading', 'content_type', 'media_id', 'download_id', 'download_label', 'button_label', 'button_url', 'product_id', 'coupon_id', 'cta_enabled', 'cta_title', 'cta_text', 'cta_type', 'cta_label', 'cta_url', 'cta_shortcode', 'event_id', 'closed_label', 'open_label', 'closed_background', 'open_background', 'closed_color', 'open_color', 'closed_label_visible', 'open_label_visible', 'closed_font', 'open_font', 'closed_font_size', 'open_font_size', 'closed_font_weight', 'open_font_weight', 'closed_text_align', 'open_text_align', 'closed_border_color', 'open_border_color', 'closed_border_width', 'open_border_width', 'closed_border_style', 'open_border_style', 'closed_label_background', 'open_label_background', 'closed_label_border_color', 'open_label_border_color', 'closed_label_border_width', 'open_label_border_width', 'closed_label_shape', 'open_label_shape', 'closed_label_position', 'open_label_position', 'closed_label_width_mode', 'open_label_width_mode', 'closed_label_width', 'open_label_width', 'closed_label_padding', 'open_label_padding', 'shape', 'open_effect', 'door_image_id', 'door_image_position', 'closed_image_overlay', 'open_image_overlay', 'quiz_enabled', 'quiz_questions', 'quiz_success', 'quiz_failure', 'position_desktop', 'position_mobile' );
+		return Panda_Seasons_Contract::door_meta();
 	}
 
 	private static function document_content_meta() {
@@ -293,7 +293,6 @@ final class Panda_Seasons_MCP {
 		if ( isset( $input['content'] ) ) $data['post_content'] = wp_kses_post( (string) $input['content'] );
 		$result = $door_id ? wp_update_post( wp_slash( $data ), true ) : wp_insert_post( wp_slash( $data ), true );
 		if ( is_wp_error( $result ) ) return $result;
-		update_post_meta( $result, '_ps_calendar_id', $calendar_id );
 		self::update_settings( $result, $input['settings'] ?? array(), self::allowed_door_meta() );
 		return self::door_data( get_post( $result ) );
 	}
@@ -314,8 +313,7 @@ final class Panda_Seasons_MCP {
 	}
 
 	public static function export_template( $input ) {
-		$data = self::get_calendar( $input );
-		return array( 'format' => 'panda-seasons-template', 'format_version' => 1, 'exported_at' => gmdate( 'c' ), 'calendar' => $data );
+		return Panda_Seasons_Transfer::export( self::input_id( $input, 'calendar_id' ) );
 	}
 
 	private static function layout_position( $position ) {
@@ -368,7 +366,6 @@ final class Panda_Seasons_MCP {
 			$number = min( 366, max( 1, absint( $position['number'] ?? 1 ) ) );
 			$door_id = wp_insert_post( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => 'publish', 'post_title' => sprintf( __( 'Door %d', 'panda-seasons' ), $number ) ), true );
 			if ( is_wp_error( $door_id ) ) continue;
-			update_post_meta( $door_id, '_ps_calendar_id', $calendar_id );
 			update_post_meta( $door_id, '_ps_door_number', $number );
 			update_post_meta( $door_id, '_ps_position_desktop', self::layout_position( $position ) );
 			update_post_meta( $door_id, '_ps_position_mobile', $mobile[ $number ] ?? self::layout_position( $position ) );

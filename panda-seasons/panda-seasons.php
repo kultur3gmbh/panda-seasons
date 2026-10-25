@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Panda Seasons
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.6.4
+ * Version: 0.7.0
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,14 +13,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.6.4' );
+define( 'PANDA_SEASONS_VERSION', '0.7.0' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_URL', plugin_dir_url( __FILE__ ) );
 
 require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-schema.php';
+require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-contract.php';
+require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-migrator.php';
+require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-transfer.php';
 require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-subscriptions.php';
 require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-mailer.php';
+require_once PANDA_SEASONS_PATH . 'includes/trait-panda-seasons-runtime.php';
 require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-plugin.php';
 require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-integrations.php';
 require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-mcp.php';

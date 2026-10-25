@@ -427,8 +427,6 @@
 				number: doorNumber,
 				unlockDate: '',
 				unlockTime: '',
-				unlockBehavior: 'auto-open',
-				availabilityWindow: 'from-date',
 				openingMode: (document.querySelector('[name="panda_seasons_default_opening_mode"]') || {}).value || 'auto-permanent',
 				emailSubject: '',
 				emailContent: '',
@@ -700,7 +698,6 @@
 			var value = door[field.dataset.doorField];
 			if ((value == null || value === '') && field.type === 'color') value = colorDefaults[field.dataset.doorField] || '#ffffff';
 			if (field.type === 'checkbox') field.checked = Boolean(value);
-			else if (field.dataset.doorField === 'quizAnswers' && Array.isArray(value)) field.value = value.join('\n');
 			else field.value = value == null ? '' : value;
 		});
 		setEditorContent('panda_seasons_door_content_editor', door.content || '');
@@ -970,7 +967,6 @@
 			modal.querySelectorAll('[data-door-field]').forEach(function (field) {
 				var name = field.dataset.doorField;
 				if (field.type === 'checkbox') activeDoor[name] = field.checked;
-				else if (name === 'quizAnswers') activeDoor[name] = field.value.split(/\r?\n/).map(function (answer) { return answer.trim(); }).filter(Boolean);
 				else activeDoor[name] = name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value);
 			});
 			activeDoor.content = getEditorContent('panda_seasons_door_content_editor');

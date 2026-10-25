@@ -6,12 +6,17 @@ required = [
     "panda-seasons.php",
     "includes/class-panda-seasons-plugin.php",
     "includes/class-panda-seasons-schema.php",
+	"includes/class-panda-seasons-contract.php",
+	"includes/class-panda-seasons-migrator.php",
+	"includes/class-panda-seasons-transfer.php",
+	"includes/trait-panda-seasons-runtime.php",
     "includes/class-panda-seasons-subscriptions.php",
     "includes/class-panda-seasons-mailer.php",
     "includes/class-panda-seasons-updater.php",
 	"includes/class-panda-seasons-integrations.php",
 	"includes/class-panda-seasons-mcp.php",
-    "assets/frontend.css",
+    "assets/calendar.css",
+	"assets/editor.css",
     "assets/frontend.js",
 	"assets/block-editor.js",
 ]
@@ -19,17 +24,18 @@ for filename in required:
     if not (root / filename).exists():
         raise SystemExit(f"Missing {filename}")
 plugin = (root / "includes/class-panda-seasons-plugin.php").read_text(encoding="utf-8")
+runtime = (root / "includes/trait-panda-seasons-runtime.php").read_text(encoding="utf-8")
 updater = (root / "includes/class-panda-seasons-updater.php").read_text(encoding="utf-8")
 integrations = (root / "includes/class-panda-seasons-integrations.php").read_text(encoding="utf-8")
 mcp = (root / "includes/class-panda-seasons-mcp.php").read_text(encoding="utf-8")
 subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_text(encoding="utf-8")
 admin_js = (root / "assets/admin.js").read_text(encoding="utf-8")
-admin_css = (root / "assets/admin-041.css").read_text(encoding="utf-8")
-frontend_css = (root / "assets/frontend.css").read_text(encoding="utf-8")
-if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin:
+admin_css = (root / "assets/editor.css").read_text(encoding="utf-8")
+frontend_css = (root / "assets/calendar.css").read_text(encoding="utf-8")
+if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin + runtime:
     raise SystemExit("Calendar contract missing")
 for composer_contract in ("_ps_position_desktop", "_ps_position_mobile", "data-door-modal", "panda-seasons__canvas"):
-    if composer_contract not in plugin:
+    if composer_contract not in plugin + runtime:
         raise SystemExit(f"Missing visual composer contract {composer_contract}")
 for content_contract in (
     "_ps_unlock_time",
@@ -40,13 +46,12 @@ for content_contract in (
     "_ps_event_id",
     "_ps_email_content",
     "_ps_closed_background",
-	"_ps_closed_opacity",
 	"_ps_door_image_id",
 	"_ps_door_image_position",
-	"_ps_quiz_question",
+	"_ps_quiz_questions",
 	"panda_seasons_subscribe",
 	"_ps_newsletter_mode",
-	"_ps_unlock_behavior",
+	"_ps_opening_mode",
 	"panda_seasons_preview",
 	"_ps_default_active_border_color",
 	"_ps_default_closed_image_overlay",
@@ -59,7 +64,7 @@ for content_contract in (
 	"_ps_contact_tag",
 	"panda_seasons_contact_signup_context",
 ):
-    if content_contract not in plugin:
+    if content_contract not in plugin + runtime:
         raise SystemExit(f"Missing door content contract {content_contract}")
 for scope in ("calendar", "all_calendars", "all_mailings"):
     if scope not in subscriptions:
@@ -81,7 +86,7 @@ for release_contract in (
 	"Click Add door, Design area or Text area",
 	"data-layer-field=\"padding\"",
 ):
-	if release_contract not in plugin:
+	if release_contract not in plugin + runtime:
 		raise SystemExit(f"Missing 0.6.0 editor contract {release_contract}")
 for layer_contract in ("activeDoor.ctaText = getEditorContent('panda_seasons_door_cta_editor')", "padding: 8"):
 	if layer_contract not in admin_js:
@@ -90,23 +95,23 @@ for frontend_contract in ("--ps-layer-padding", ".panda-seasons__content-layout.
 	if frontend_contract not in frontend_css:
 		raise SystemExit(f"Missing 0.6.0 frontend layout {frontend_contract}")
 for release_contract in ("_ps_default_cta_enabled", "_ps_cta_mode", "data-apply-door-dialog", "Select settings to apply", "Save settings"):
-	if release_contract not in plugin:
+	if release_contract not in plugin + runtime:
 		raise SystemExit(f"Missing 0.6.1 editor contract {release_contract}")
 for behavior_contract in ("data-confirm-apply-door-settings", "ctaMode: 'default'", "updateDefaultCtaVisibility"):
 	if behavior_contract not in admin_js:
 		raise SystemExit(f"Missing 0.6.1 editor behavior {behavior_contract}")
 for release_contract in ("panda-seasons-default-cta__save", "'supports'     => array( 'title', 'thumbnail' )"):
-	if release_contract not in plugin:
+	if release_contract not in plugin + runtime:
 		raise SystemExit(f"Missing 0.6.2 editor contract {release_contract}")
 if ".panda-seasons__modal-content>h3,.panda-seasons__cta h4" not in frontend_css:
 	raise SystemExit("Missing 0.6.2 equal popup heading sizes")
 for release_contract in ("panda-seasons-default-general-row", "Save images and backgrounds", "panda-seasons__content-date", "Advance email-calendar registration"):
-	if release_contract not in plugin:
+	if release_contract not in plugin + runtime:
 		raise SystemExit(f"Missing 0.6.3 editor contract {release_contract}")
 if ".panda-seasons__content-date" not in frontend_css:
 	raise SystemExit("Missing 0.6.3 popup date styling")
 for release_contract in ("_ps_signup_consent", "_ps_doi_subject", "_ps_confirmation_text", "panda-seasons-email-status", "Save email settings"):
-	if release_contract not in plugin:
+	if release_contract not in plugin + runtime:
 		raise SystemExit(f"Missing 0.6.4 email settings contract {release_contract}")
 for release_contract in ("emailSettings", "panda-seasons-email-panel"):
 	if release_contract not in admin_js:

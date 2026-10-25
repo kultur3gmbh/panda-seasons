@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: calendar, advent calendar, seasonal campaign, email calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.6.4
+Stable tag: 0.7.0
 License: GPLv2 or later
 
 Interactive seasonal calendars with freely positioned doors on responsive desktop and mobile images. Web calendars work independently; email delivery requires the free ContactPanda plugin.
@@ -15,6 +15,14 @@ Create multiple parallel calendars in a visual drag-and-drop composer, schedule 
 Use `[panda_seasons id="123"]` to display a published calendar.
 
 == Changelog ==
+
+= 0.7.0 =
+* Consolidates the prototype data model into one canonical calendar and door contract.
+* Migrates existing calendars in place while preserving doors, contents, layouts, media assignments and settings.
+* Removes duplicate legacy fields for door ownership, opening behavior, opacity and single-question quizzes after migration.
+* Replaces duplicated version-specific stylesheets with one editor and one frontend stylesheet.
+* Adds one shared, portable template export used by both the WordPress interface and MCP, without subscriber or consent data.
+* Keeps a verified pre-migration snapshot of the existing Casa-Pepe test calendar outside the release package.
 
 = 0.6.4 =
 * Adds a dedicated Registration and email delivery tab to the calendar editor.
