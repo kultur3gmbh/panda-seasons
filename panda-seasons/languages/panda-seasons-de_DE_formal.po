@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.7.8\n"
+"Project-Id-Version: Panda Seasons 0.7.9\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1604,3 +1604,15 @@ msgstr "Die Maße wurden auf alle Türen in diesem Layout angewendet."
 
 msgid "Click Add door, Design area or Text area, or drag the corresponding button directly onto the calendar. Hold Shift while clicking to select several elements and move them together."
 msgstr "Klicken Sie auf „Türe hinzufügen“, „Gestaltungsfläche“ oder „Textfläche“ – oder ziehen Sie die entsprechende Schaltfläche direkt auf den Kalender. Halten Sie beim Anklicken die Umschalttaste gedrückt, um mehrere Elemente auszuwählen und gemeinsam zu verschieben."
+
+msgid "I would also like to receive the general newsletter. I can withdraw this consent at any time."
+msgstr "Ich möchte zusätzlich den allgemeinen Newsletter erhalten. Diese Einwilligung kann ich jederzeit widerrufen."
+
+msgid "The general newsletter signup is currently unavailable."
+msgstr "Die Anmeldung zum allgemeinen Newsletter ist derzeit nicht verfügbar."
+
+msgid "You are registered for this email calendar. The general newsletter signup could not be completed."
+msgstr "Sie sind für diesen E-Mail-Kalender angemeldet. Die Anmeldung zum allgemeinen Newsletter konnte nicht abgeschlossen werden."
+
+msgid "Please confirm your email-calendar registration using the email we sent. The general newsletter signup could not be completed."
+msgstr "Bitte bestätigen Sie Ihre Anmeldung zum E-Mail-Kalender über die zugesandte E-Mail. Die Anmeldung zum allgemeinen Newsletter konnte nicht abgeschlossen werden."

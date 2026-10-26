@@ -69,6 +69,14 @@ for content_contract in (
 for scope in ("calendar", "all_calendars", "all_mailings"):
     if scope not in subscriptions:
         raise SystemExit(f"Missing unsubscribe scope {scope}")
+for newsletter_consent_contract in (
+	"general_newsletter_consent",
+	"extension_request_marketing_optin",
+	"newsletter_confirmation_requested",
+	"general_newsletter",
+):
+	if newsletter_consent_contract not in subscriptions:
+		raise SystemExit(f"Missing optional general newsletter consent contract {newsletter_consent_contract}")
 for media_contract in ("wp_ajax_panda_seasons_save_editor_door", "save_editor_door_ajax", "_ps_media_id"):
     if media_contract not in plugin:
         raise SystemExit(f"Missing persistent door media contract {media_contract}")

@@ -17,12 +17,20 @@ final class Panda_Seasons_Subscriptions {
 		if ( ! Panda_Seasons_Plugin::contactpanda_available() ) return '';
 		$message = sanitize_key( wp_unslash( $_GET['panda_seasons_message'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only status.
 		$messages = array(
-			'active'  => get_post_meta( $calendar_id, '_ps_signup_active_message', true ) ?: __( 'You are registered for this email calendar.', 'panda-seasons' ),
-			'pending' => get_post_meta( $calendar_id, '_ps_signup_pending_message', true ) ?: __( 'Please check your inbox and confirm your email address. Also check your spam folder.', 'panda-seasons' ),
-			'error'   => get_post_meta( $calendar_id, '_ps_signup_error_message', true ) ?: __( 'The registration could not be completed. Please try again.', 'panda-seasons' ),
+			'active'                   => get_post_meta( $calendar_id, '_ps_signup_active_message', true ) ?: __( 'You are registered for this email calendar.', 'panda-seasons' ),
+			'pending'                  => get_post_meta( $calendar_id, '_ps_signup_pending_message', true ) ?: __( 'Please check your inbox and confirm your email address. Also check your spam folder.', 'panda-seasons' ),
+			'error'                    => get_post_meta( $calendar_id, '_ps_signup_error_message', true ) ?: __( 'The registration could not be completed. Please try again.', 'panda-seasons' ),
+			'active_newsletter_error'  => __( 'You are registered for this email calendar. The general newsletter signup could not be completed.', 'panda-seasons' ),
+			'pending_newsletter_error' => __( 'Please confirm your email-calendar registration using the email we sent. The general newsletter signup could not be completed.', 'panda-seasons' ),
 		);
 		$consent = get_post_meta( $calendar_id, '_ps_signup_consent', true ) ?: sprintf( __( 'I would like to receive the daily emails for “%s”. I can unsubscribe at any time.', 'panda-seasons' ), get_the_title( $calendar_id ) );
 		$button = get_post_meta( $calendar_id, '_ps_signup_button_label', true ) ?: __( 'Register for email calendar', 'panda-seasons' );
+		$newsletter_available = method_exists( 'ContactPanda_Plugin', 'extension_request_marketing_optin' );
+		$newsletter_consent = apply_filters(
+			'panda_seasons_general_newsletter_consent_text',
+			__( 'I would also like to receive the general newsletter. I can withdraw this consent at any time.', 'panda-seasons' ),
+			$calendar_id
+		);
 		ob_start();
 		?>
 		<div class="panda-seasons__subscription">
@@ -37,6 +45,7 @@ final class Panda_Seasons_Subscriptions {
 				<label><span><?php esc_html_e( 'Last name', 'panda-seasons' ); ?></span><input type="text" name="last_name" autocomplete="family-name" required></label>
 				<label><span><?php esc_html_e( 'Email address', 'panda-seasons' ); ?></span><input type="email" name="email" autocomplete="email" required></label>
 				<label class="panda-seasons__consent"><input type="checkbox" name="calendar_consent" value="1" required> <span><?php echo esc_html( $consent ); ?></span></label>
+				<?php if ( $newsletter_available ) : ?><label class="panda-seasons__consent"><input type="checkbox" name="general_newsletter_consent" value="1"> <span><?php echo esc_html( $newsletter_consent ); ?></span></label><?php endif; ?>
 				<button type="submit"><?php echo esc_html( $button ); ?></button>
 			</form>
 		</div>
@@ -51,6 +60,7 @@ final class Panda_Seasons_Subscriptions {
 		$email      = strtolower( sanitize_email( wp_unslash( $_POST['email'] ?? '' ) ) );
 		$first_name = sanitize_text_field( wp_unslash( $_POST['first_name'] ?? '' ) );
 		$last_name  = sanitize_text_field( wp_unslash( $_POST['last_name'] ?? '' ) );
+		$general_newsletter = ! empty( $_POST['general_newsletter_consent'] );
 		if ( ! is_email( $email ) || ! $first_name || ! $last_name ) self::redirect( $calendar_id, 'error' );
 
 		$contact    = ContactPanda_Plugin::extension_contact_by_email( $email );
@@ -67,17 +77,19 @@ final class Panda_Seasons_Subscriptions {
 		$token = wp_generate_password( 48, false, false );
 		$row   = self::upsert( $calendar_id, $contact_id, $email, $first_name, $last_name, $verified ? 'active' : 'pending', $token );
 		if ( ! $row ) self::redirect( $calendar_id, 'error' );
+		$source_url = wp_get_referer() ?: get_permalink( $calendar_id );
 		do_action( 'panda_seasons_contact_registered', $contact_id, array(
 			'source'       => 'panda_seasons',
 			'source_id'    => (string) $calendar_id,
 			'source_title' => get_the_title( $calendar_id ),
-			'source_url'   => wp_get_referer() ?: get_permalink( $calendar_id ),
+			'source_url'   => $source_url,
 			'tag'          => (string) get_post_meta( $calendar_id, '_ps_contact_tag', true ) ?: sprintf( __( 'Panda Seasons – %s', 'panda-seasons' ), get_the_title( $calendar_id ) ),
 			'form'         => 'calendar_email_signup',
 			'subscribed_at'=> current_time( 'mysql' ),
 		), $row );
 		self::log_event( $row, $verified ? 'subscribed' : 'confirmation_requested', 'calendar', 'calendar_form' );
-		if ( $verified ) self::redirect( $calendar_id, 'active' );
+		$newsletter_result = self::request_general_newsletter( $row, $general_newsletter, $source_url );
+		if ( $verified ) self::redirect( $calendar_id, is_wp_error( $newsletter_result ) ? 'active_newsletter_error' : 'active' );
 
 		$url = add_query_arg( array( 'action' => 'panda_seasons_confirm', 'subscription' => $row['id'], 'token' => $token ), admin_url( 'admin-post.php' ) );
 		$subject = get_post_meta( $calendar_id, '_ps_doi_subject', true ) ?: sprintf( __( 'Confirm your registration for %s', 'panda-seasons' ), get_the_title( $calendar_id ) );
@@ -87,7 +99,33 @@ final class Panda_Seasons_Subscriptions {
 		$sent = self::send( $email, $subject, $body );
 		if ( ! $sent ) self::redirect( $calendar_id, 'error' );
 		self::schedule_confirmation_reminders( $row, $token );
-		self::redirect( $calendar_id, 'pending' );
+		self::redirect( $calendar_id, is_wp_error( $newsletter_result ) ? 'pending_newsletter_error' : 'pending' );
+	}
+
+	private static function request_general_newsletter( $row, $requested, $redirect ) {
+		if ( ! $requested ) return true;
+		if ( ! method_exists( 'ContactPanda_Plugin', 'extension_request_marketing_optin' ) ) {
+			$result = new WP_Error( 'panda_seasons_newsletter_unavailable', __( 'The general newsletter signup is currently unavailable.', 'panda-seasons' ) );
+			self::log_event( $row, 'newsletter_confirmation_failed', 'general_newsletter', 'calendar_form' );
+			return $result;
+		}
+
+		$contact = ContactPanda_Plugin::extension_contact_by_email( $row['email'] );
+		$already_confirmed = $contact && ContactPanda_Plugin::extension_is_marketable( $contact );
+		$result = ContactPanda_Plugin::extension_request_marketing_optin(
+			$row['email'],
+			$row['first_name'],
+			$row['last_name'],
+			$redirect,
+			'panda_seasons'
+		);
+		self::log_event(
+			$row,
+			is_wp_error( $result ) ? 'newsletter_confirmation_failed' : ( $already_confirmed ? 'newsletter_already_active' : 'newsletter_confirmation_requested' ),
+			'general_newsletter',
+			'calendar_form'
+		);
+		return $result;
 	}
 
 	private static function schedule_confirmation_reminders( $row, $token ) {
