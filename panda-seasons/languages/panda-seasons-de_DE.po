@@ -1723,3 +1723,33 @@ msgstr "Kalenderrahmen anzeigen"
 
 msgid "Show calendar shadow"
 msgstr "Kalenderschatten anzeigen"
+
+msgid "Calendar title"
+msgstr "Kalendertitel"
+
+msgid "Show calendar signup"
+msgstr "Kalenderanmeldung anzeigen"
+
+msgid "Margin top"
+msgstr "Außenabstand oben"
+
+msgid "Margin bottom"
+msgstr "Außenabstand unten"
+
+msgid "Image fit"
+msgstr "Bildanpassung"
+
+msgid "Cover"
+msgstr "Ausfüllen"
+
+msgid "Contain"
+msgstr "Einpassen"
+
+msgid "Enable shadow"
+msgstr "Schatten aktivieren"
+
+msgid "Shadow width (px)"
+msgstr "Schattenbreite (px)"
+
+msgid "Shadow color"
+msgstr "Schattenfarbe"

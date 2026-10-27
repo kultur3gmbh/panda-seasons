@@ -1721,3 +1721,33 @@ msgstr ""
 
 msgid "Show calendar shadow"
 msgstr ""
+
+msgid "Calendar title"
+msgstr ""
+
+msgid "Show calendar signup"
+msgstr ""
+
+msgid "Margin top"
+msgstr ""
+
+msgid "Margin bottom"
+msgstr ""
+
+msgid "Image fit"
+msgstr ""
+
+msgid "Cover"
+msgstr ""
+
+msgid "Contain"
+msgstr ""
+
+msgid "Enable shadow"
+msgstr ""
+
+msgid "Shadow width (px)"
+msgstr ""
+
+msgid "Shadow color"
+msgstr ""

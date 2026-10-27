@@ -28,6 +28,7 @@ final class Panda_Seasons_Contract {
 			'default_open_label_position', 'default_label_width_mode', 'default_label_width',
 			'default_label_padding', 'default_active_border_color', 'default_label_font',
 			'default_label_font_size', 'default_label_font_weight', 'default_border_style',
+			'default_shadow_enabled', 'default_shadow_blur', 'default_shadow_color',
 			'default_closed_label_visible', 'default_open_label_visible', 'default_shape',
 			'default_opening_mode', 'default_cta_enabled', 'default_cta_title', 'default_cta_text',
 			'default_cta_type', 'default_cta_label', 'default_cta_url', 'default_cta_shortcode',
@@ -56,6 +57,7 @@ final class Panda_Seasons_Contract {
 			'open_label_shape', 'closed_label_position', 'open_label_position', 'closed_label_width_mode',
 			'open_label_width_mode', 'closed_label_width', 'open_label_width', 'closed_label_padding',
 			'open_label_padding', 'shape', 'open_effect', 'door_image_id', 'door_image_position',
+			'shadow_enabled', 'shadow_blur', 'shadow_color',
 			'closed_image_overlay', 'open_image_overlay', 'quiz_enabled', 'quiz_questions',
 			'quiz_success', 'quiz_failure', 'position_desktop', 'position_mobile',
 		);

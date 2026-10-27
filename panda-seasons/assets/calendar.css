@@ -63,4 +63,6 @@
 .panda-seasons__door.is-available .panda-seasons__door-face:hover,
 .panda-seasons__door.is-available .panda-seasons__door-face:focus-visible,
 .panda-seasons__door.is-locked .panda-seasons__door-face,
-.panda-seasons__door.is-locked .panda-seasons__door-face:hover{box-shadow:none}
+.panda-seasons__door.is-locked .panda-seasons__door-face:hover{box-shadow:var(--ps-door-shadow,none)}
+.panda-seasons__layer{box-shadow:var(--ps-layer-shadow,none)}
+.panda-seasons__layer img{object-fit:var(--ps-layer-image-fit,cover)}

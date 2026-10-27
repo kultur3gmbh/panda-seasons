@@ -158,7 +158,7 @@ trait Panda_Seasons_Runtime {
 	}
 
 	public static function shortcode( $atts ) {
-		$atts = shortcode_atts( array( 'id' => 0, 'preview' => 0, 'preview_date' => '', 'preview_time' => '', 'cover_desktop' => 0, 'cover_mobile' => 0, 'cache_bust' => '', 'show_title' => 'yes', 'frame' => 'no', 'shadow' => 'no' ), $atts, 'panda_seasons' );
+		$atts = shortcode_atts( array( 'id' => 0, 'preview' => 0, 'preview_date' => '', 'preview_time' => '', 'cover_desktop' => 0, 'cover_mobile' => 0, 'cache_bust' => '', 'show_title' => 'yes', 'show_signup' => 'yes', 'frame' => 'no', 'shadow' => 'no', 'margin_top' => '', 'margin_bottom' => '' ), $atts, 'panda_seasons' );
 		$id   = absint( $atts['id'] );
 		$is_enabled = static function ( $value, $default = false ) {
 			$value = strtolower( trim( (string) $value ) );
@@ -168,6 +168,8 @@ trait Panda_Seasons_Runtime {
 		$show_title = $is_enabled( $atts['show_title'], true );
 		$show_frame = $is_enabled( $atts['frame'] );
 		$show_shadow = $is_enabled( $atts['shadow'] );
+		$show_signup = $is_enabled( $atts['show_signup'], true );
+		$css_length = static function ( $value ) { $value = trim( (string) $value ); if ( preg_match( '/^-?\d+(?:\.\d+)?$/', $value ) ) $value .= 'px'; return preg_match( '/^-?\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw)$/', $value ) ? $value : ''; };
 		$preview_mode = ! empty( $atts['preview'] ) && current_user_can( 'edit_post', $id );
 		$preview_now = null;
 		if ( $preview_mode && preg_match( '/^\d{4}-\d{2}-\d{2}$/', (string) $atts['preview_date'] ) ) {
@@ -203,6 +205,8 @@ trait Panda_Seasons_Runtime {
 		$style .= '--ps-active-border-color:' . $active_border . ';--ps-popup-bg:' . ( (string) get_post_meta( $id, '_ps_popup_background', true ) ?: 'rgba(255,255,255,1)' ) . ';--ps-popup-color:' . ( (string) get_post_meta( $id, '_ps_popup_text_color', true ) ?: 'rgba(31,41,55,1)' ) . ';--ps-popup-border-color:' . ( (string) get_post_meta( $id, '_ps_popup_border_color', true ) ?: 'rgba(216,221,231,1)' ) . ';--ps-popup-border-width:' . min( 20, absint( get_post_meta( $id, '_ps_popup_border_width', true ) ) ) . 'px;--ps-popup-radius:' . min( 80, absint( get_post_meta( $id, '_ps_popup_radius', true ) ) ?: 16 ) . 'px;--ps-popup-padding:' . min( 100, absint( get_post_meta( $id, '_ps_popup_padding', true ) ) ?: 32 ) . 'px;--ps-popup-width:' . min( 1600, max( 320, absint( get_post_meta( $id, '_ps_popup_width', true ) ) ?: 720 ) ) . 'px;';
 		$style .= '--ps-cover-desktop:' . ( $desktop ? 'url("' . esc_url_raw( $desktop ) . '")' : 'none' ) . ';';
 		$style .= '--ps-cover-mobile:' . ( $mobile ? 'url("' . esc_url_raw( $mobile ) . '")' : 'none' ) . ';';
+		if ( $css_length( $atts['margin_top'] ) ) $style .= 'margin-top:' . $css_length( $atts['margin_top'] ) . ';';
+		if ( $css_length( $atts['margin_bottom'] ) ) $style .= 'margin-bottom:' . $css_length( $atts['margin_bottom'] ) . ';';
 
 		ob_start();
 		?>
@@ -213,7 +217,7 @@ trait Panda_Seasons_Runtime {
 				<?php foreach ( self::sanitize_design_layers( get_post_meta( $id, '_ps_design_layers', true ) ) as $layer ) :
 					$layer_image = $layer['imageId'] ? wp_get_attachment_image_url( $layer['imageId'], 'full' ) : '';
 					$lp = $layer['desktop']; $lpm = $layer['mobile'];
-					$layer_style = '--ps-layer-x:' . $lp['x'] . '%;--ps-layer-y:' . $lp['y'] . '%;--ps-layer-w:' . $lp['w'] . '%;--ps-layer-h:' . $lp['h'] . '%;--ps-layer-mobile-x:' . $lpm['x'] . '%;--ps-layer-mobile-y:' . $lpm['y'] . '%;--ps-layer-mobile-w:' . $lpm['w'] . '%;--ps-layer-mobile-h:' . $lpm['h'] . '%;--ps-layer-bg:' . $layer['background'] . ';--ps-layer-color:' . $layer['color'] . ';--ps-layer-font-size:' . $layer['fontSize'] . 'px;--ps-layer-padding:' . $layer['padding'] . 'px;--ps-layer-z:' . $layer['z'] . ';--ps-layer-radius:' . $layer['radius'] . 'px;--ps-layer-image-position:' . str_replace( '-', ' ', $layer['imagePosition'] ) . ';';
+					$layer_style = '--ps-layer-x:' . $lp['x'] . '%;--ps-layer-y:' . $lp['y'] . '%;--ps-layer-w:' . $lp['w'] . '%;--ps-layer-h:' . $lp['h'] . '%;--ps-layer-mobile-x:' . $lpm['x'] . '%;--ps-layer-mobile-y:' . $lpm['y'] . '%;--ps-layer-mobile-w:' . $lpm['w'] . '%;--ps-layer-mobile-h:' . $lpm['h'] . '%;--ps-layer-bg:' . $layer['background'] . ';--ps-layer-color:' . $layer['color'] . ';--ps-layer-font-size:' . $layer['fontSize'] . 'px;--ps-layer-padding:' . $layer['padding'] . 'px;--ps-layer-z:' . $layer['z'] . ';--ps-layer-radius:' . $layer['radius'] . 'px;--ps-layer-image-position:' . str_replace( '-', ' ', $layer['imagePosition'] ) . ';--ps-layer-image-fit:' . $layer['imageFit'] . ';--ps-layer-shadow:' . ( $layer['shadowEnabled'] ? '0 0 ' . $layer['shadowBlur'] . 'px ' . $layer['shadowColor'] : 'none' ) . ';';
 					$layer_content = 'surface' === $layer['type'] && $layer_image ? '<img src="' . esc_url( $layer_image ) . '" alt="">' : ( 'text' === $layer['type'] ? wp_kses_post( $layer['text'] ) : '' );
 				?><div class="panda-seasons__layer panda-seasons__layer--<?php echo esc_attr( $layer['type'] ); ?>" style="<?php echo esc_attr( $layer_style ); ?>"><?php if ( $layer['url'] ) : ?><a href="<?php echo esc_url( $layer['url'] ); ?>"><?php echo $layer_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a><?php else : ?><?php echo $layer_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?></div><?php endforeach; ?>
 				<?php foreach ( $doors as $index => $door ) :
@@ -232,6 +236,7 @@ trait Panda_Seasons_Runtime {
 					$closed_color = (string) get_post_meta( $door->ID, '_ps_closed_color', true ) ?: 'rgba(255,255,255,1)';
 					$open_color = (string) get_post_meta( $door->ID, '_ps_open_color', true ) ?: 'rgba(255,255,255,1)';
 					$item_style .= '--ps-closed-bg:' . $closed_bg . ';--ps-closed-color:' . $closed_color . ';--ps-open-bg:' . $open_bg . ';--ps-open-color:' . $open_color . ';';
+					$item_style .= '--ps-door-shadow:' . ( get_post_meta( $door->ID, '_ps_shadow_enabled', true ) ? '0 0 ' . min( 80, absint( get_post_meta( $door->ID, '_ps_shadow_blur', true ) ) ) . 'px ' . ( (string) get_post_meta( $door->ID, '_ps_shadow_color', true ) ?: 'rgba(0,0,0,.25)' ) : 'none' ) . ';';
 					foreach ( array( 'closed', 'open' ) as $state ) {
 						$font = (string) get_post_meta( $door->ID, '_ps_' . $state . '_font', true );
 						if ( ! in_array( $font, array( 'inherit', 'sans-serif', 'serif', 'monospace' ), true ) ) $font = 'inherit';
@@ -299,8 +304,8 @@ trait Panda_Seasons_Runtime {
 					<div class="panda-seasons__modal-content" data-season-modal-content></div>
 				</div>
 			</div>
-			<?php if ( get_post_meta( $id, '_ps_email_enabled', true ) && self::contactpanda_available() ) echo Panda_Seasons_Subscriptions::form( $id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<?php echo self::newsletter_markup( $id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- validated mode-specific markup. ?>
+			<?php if ( $show_signup && get_post_meta( $id, '_ps_email_enabled', true ) && self::contactpanda_available() ) echo Panda_Seasons_Subscriptions::form( $id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php if ( $show_signup ) echo self::newsletter_markup( $id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- validated mode-specific markup. ?>
 		</section>
 		<?php
 		$output = ob_get_clean();
@@ -321,11 +326,13 @@ trait Panda_Seasons_Runtime {
 	}
 
 	public static function subscribe_shortcode( $atts ) {
-		$atts = shortcode_atts( array( 'id' => 0 ), $atts, 'panda_seasons_subscribe' );
+		$atts = shortcode_atts( array( 'id' => 0, 'margin_top' => '', 'margin_bottom' => '' ), $atts, 'panda_seasons_subscribe' );
 		$id = absint( $atts['id'] );
 		if ( ! self::contactpanda_available() || ! get_post_meta( $id, '_ps_email_enabled', true ) || self::CALENDAR_POST_TYPE !== get_post_type( $id ) || 'publish' !== get_post_status( $id ) ) return '';
 		wp_enqueue_style( 'panda-seasons' );
-		return Panda_Seasons_Subscriptions::form( $id );
+		$style = '';
+		foreach ( array( 'margin_top' => 'margin-top', 'margin_bottom' => 'margin-bottom' ) as $key => $property ) { $value = trim( (string) $atts[ $key ] ); if ( preg_match( '/^-?\d+(?:\.\d+)?$/', $value ) ) $value .= 'px'; if ( preg_match( '/^-?\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw)$/', $value ) ) $style .= $property . ':' . $value . ';'; }
+		return '<div class="panda-seasons-signup-embed"' . ( $style ? ' style="' . esc_attr( $style ) . '"' : '' ) . '>' . Panda_Seasons_Subscriptions::form( $id ) . '</div>';
 	}
 
 	private static function newsletter_markup( $calendar_id ) {
