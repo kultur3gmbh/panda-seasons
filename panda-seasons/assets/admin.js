@@ -10,6 +10,8 @@
 	var calendarDirty = false;
 	var calendarSaving = false;
 	var pendingDoorHistory = null;
+	var doorImagePicker = null;
+	var syncingDoorImagePicker = false;
 	function calendarStatus(message, state) {
 		var status = document.querySelector('[data-calendar-save-state]');
 		if (!status) return;
@@ -81,6 +83,12 @@
 	function enhanceColorField(field){
 		if(!field||field.dataset.rgbaEnhanced)return;
 		field.dataset.rgbaEnhanced='1';
+		if(window.ContactPandaAdminUI&&typeof window.ContactPandaAdminUI.enhanceColorPicker==='function'){
+			var sharedLabel=field.closest('label');
+			if(sharedLabel)sharedLabel.classList.add('contactpanda-color-field');
+			window.ContactPandaAdminUI.enhanceColorPicker(field);
+			return;
+		}
 		var parts=rgbaParts(field.value), label=field.closest('label'), labelNode=label&&label.querySelector(':scope > span'), labelText=labelNode ? labelNode.textContent : '';
 		if(labelNode)labelNode.classList.add('panda-seasons-color-control__label');
 		var pickerLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.openColorPicker||'Open color picker', themeLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColors||'Global theme colors', themeTooltip=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.globalColorsTooltip||'Global color settings', alphaLabel=window.pandaSeasonsAdmin&&pandaSeasonsAdmin.alpha||'Transparency';
@@ -181,6 +189,11 @@
 			box.querySelector('[data-door-asset-preview]').innerHTML = url ? '<img src="' + escapeHtml(safeUrl(url)) + '" alt="">' : '<span>' + escapeHtml(adminText('noImageSelected', 'No image selected')) + '</span>';
 			box.querySelector('[data-remove-door-image="' + kind + '"]').hidden = !url;
 			modal.querySelectorAll('[data-image-overlay-wrap]').forEach(function (overlayWrap) { overlayWrap.hidden = !url; });
+			if (doorImagePicker && typeof doorImagePicker.contactPandaSetImages === 'function') {
+				syncingDoorImagePicker = true;
+				doorImagePicker.contactPandaSetImages(url ? [{ id: modal.querySelector('[data-door-field="imageId"]').value, url: url, alt: '' }] : []);
+				syncingDoorImagePicker = false;
+			}
 		});
 	}
 
@@ -214,6 +227,8 @@
 		var layers = [];
 		var activeLayer = null;
 		var activeLayerSnapshot = null;
+		var layerImagePicker = null;
+		var syncingLayerImagePicker = false;
 		var layerPointerState = null;
 		var view = 'desktop';
 		var previewState = root.dataset.previewState === 'open' ? 'open' : 'closed';
@@ -329,12 +344,17 @@
 			layerEditor.querySelectorAll('[data-layer-field]').forEach(function (field) {
 				var value = activeLayer[field.dataset.layerField];
 				field.value = value == null ? '' : value;
-				if (field.dataset.rgbaEnhanced) field.dispatchEvent(new Event('change', { bubbles: false }));
+				if (field.dataset.rgbaEnhanced) field.dispatchEvent(new Event('input', { bubbles: false }));
 			});
 			layerEditor.querySelectorAll('[data-layer-field-wrap]').forEach(function (wrap) { wrap.hidden = wrap.dataset.layerFieldWrap !== activeLayer.type; });
 			if (activeLayer.type === 'text') setEditorContent('panda_seasons_layer_text_editor', activeLayer.text || '');
 			var imagePreview = layerEditor.querySelector('[data-layer-image-preview]');
 			if (imagePreview) imagePreview.innerHTML = activeLayer.imageUrl ? '<img src="' + escapeHtml(safeUrl(activeLayer.imageUrl)) + '" alt="">' : '<span>' + escapeHtml(adminText('imageDropHint', 'Select image or drop it here')) + '</span>';
+			if (layerImagePicker && typeof layerImagePicker.contactPandaSetImages === 'function') {
+				syncingLayerImagePicker = true;
+				layerImagePicker.contactPandaSetImages(activeLayer.imageUrl ? [{ id: activeLayer.imageId, url: activeLayer.imageUrl, alt: '' }] : []);
+				syncingLayerImagePicker = false;
+			}
 			layerEditor.querySelectorAll('[data-layer-field="background"],[data-layer-field="color"]').forEach(enhanceColorField);
 		}
 
@@ -403,6 +423,29 @@
 			var frame = wp.media({ title: adminText('selectImage', 'Select image'), library: { type: 'image' }, multiple: false });
 			frame.on('select', function () { var attachment = frame.state().get('selection').first().toJSON(); activeLayer.imageId = attachment.id || 0; activeLayer.imageUrl = attachment.url || ''; syncLayerEditor(); render(); markCalendarDirty(); });
 			frame.open();
+		}
+
+		function initializeSharedLayerImagePicker() {
+			if (!layerEditor || !window.ContactPandaAdminUI || typeof window.ContactPandaAdminUI.createImagePicker !== 'function') return;
+			var legacyDropzone = layerEditor.querySelector('[data-select-layer-image]');
+			if (!legacyDropzone || legacyDropzone.dataset.sharedImageReady === '1') return;
+			legacyDropzone.dataset.sharedImageReady = '1';
+			layerImagePicker = window.ContactPandaAdminUI.createImagePicker({
+				dropLabel: adminText('imageDropHint', 'Select image or drop it here'),
+				onChange: function (selected) {
+					if (syncingLayerImagePicker || !activeLayer) return;
+					activeLayer.imageId = selected ? selected.id : 0;
+					activeLayer.imageUrl = selected ? selected.url : '';
+					var id = layerEditor.querySelector('[data-layer-field="imageId"]');
+					var url = layerEditor.querySelector('[data-layer-field="imageUrl"]');
+					if (id) id.value = activeLayer.imageId;
+					if (url) url.value = activeLayer.imageUrl;
+					render();
+					markCalendarDirty();
+				}
+			});
+			legacyDropzone.hidden = true;
+			legacyDropzone.parentNode.insertBefore(layerImagePicker, legacyDropzone);
 		}
 
 		function currentDoors() {
@@ -900,6 +943,7 @@
 		root.updateBackground = setStageAppearance;
 		root.setPreviewState = function(state){previewState=state;root.dataset.previewState=state;root.querySelectorAll('button[data-preview-state]').forEach(function(button){button.classList.toggle('button-primary',button.dataset.previewState===state);});render();};
 		if (snapControl) { stage.classList.toggle('has-grid', snapControl.checked); snapControl.addEventListener('change', function () { stage.classList.toggle('has-grid', snapControl.checked); }); }
+		initializeSharedLayerImagePicker();
 		setStageAppearance();
 		render();
 		updateHistoryButtons();
@@ -933,7 +977,7 @@
 		if (emptyPanel) emptyPanel.hidden = true;
 		composer.classList.add('has-active-door');
 		modal.querySelector('[data-door-field="number"]').focus();
-		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"],[data-door-field$="Overlay"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('change',{bubbles:true}));});
+		modal.querySelectorAll('[data-door-field$="Bg"],[data-door-field$="Color"],[data-door-field$="Overlay"]').forEach(function(field){enhanceColorField(field);field.dispatchEvent(new Event('input',{bubbles:true}));});
 		modal.querySelectorAll('[data-door-field$="LabelWidthMode"]').forEach(updateLabelWidthVisibility);
 		if (composer && composer.syncDoorDimensionFields) composer.syncDoorDimensionFields(door);
 		updateContentTypeVisibility();
@@ -1000,6 +1044,58 @@
 	}
 
 	if (composer) composerController(composer);
+
+	function initializeSharedCoverImagePickers() {
+		if (!window.ContactPandaAdminUI || typeof window.ContactPandaAdminUI.createImagePicker !== 'function') return;
+		document.querySelectorAll('[data-media-field]').forEach(function (field) {
+			if (field.dataset.sharedImageReady === '1') return;
+			field.dataset.sharedImageReady = '1';
+			var hidden = field.querySelector('input[type="hidden"]');
+			var legacyPreview = field.querySelector('.panda-seasons-media-preview');
+			var legacyRemove = field.querySelector('[data-remove-media]');
+			if (!hidden || !legacyPreview) return;
+			var image = legacyPreview.querySelector('img');
+			var targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop';
+			var picker = window.ContactPandaAdminUI.createImagePicker({
+				attachmentId: hidden.value,
+				url: image ? image.src : '',
+				dropLabel: adminText('imageDropHint', 'Select image or drop it here'),
+				onChange: function (selected) {
+					hidden.value = selected ? selected.id : '';
+					if (composer && composer.updateImage) composer.updateImage(targetView, selected ? selected.url : '');
+					markCalendarDirty();
+				}
+			});
+			legacyPreview.hidden = true;
+			if (legacyRemove) legacyRemove.hidden = true;
+			legacyPreview.parentNode.insertBefore(picker, legacyPreview);
+		});
+	}
+
+	function initializeSharedDoorImagePicker() {
+		if (!modal || !window.ContactPandaAdminUI || typeof window.ContactPandaAdminUI.createImagePicker !== 'function') return;
+		var box = modal.querySelector('[data-door-asset="image"]');
+		if (!box || box.dataset.sharedImageReady === '1') return;
+		box.dataset.sharedImageReady = '1';
+		doorImagePicker = window.ContactPandaAdminUI.createImagePicker({
+			dropLabel: adminText('imageDropHint', 'Select image or drop it here'),
+			onChange: function (selected) {
+				if (syncingDoorImagePicker) return;
+				modal.querySelector('[data-door-field="imageId"]').value = selected ? selected.id : '';
+				modal.querySelector('[data-door-field="imageUrl"]').value = selected ? selected.url : '';
+				updateDoorAssets();
+				syncDoorPreview();
+				markCalendarDirty();
+			}
+		});
+		var legacyPreview = box.querySelector('[data-door-asset-preview]');
+		var legacyActions = box.querySelector('.panda-seasons-door-image-actions');
+		if (legacyPreview) { legacyPreview.hidden = true; legacyPreview.parentNode.insertBefore(doorImagePicker, legacyPreview); }
+		if (legacyActions) legacyActions.hidden = true;
+	}
+
+	initializeSharedCoverImagePickers();
+	initializeSharedDoorImagePicker();
 
 	function selectDoorAttachment(kind) {
 		var config = kind === 'media' ? { type: ['image', 'video', 'audio'] } : {};

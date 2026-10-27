@@ -1568,7 +1568,32 @@ final class Panda_Seasons_Plugin {
 		wp_enqueue_media();
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/editor.css', array( 'wp-color-picker' ), PANDA_SEASONS_VERSION );
-		wp_enqueue_script( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/admin.js', array( 'jquery', 'wp-color-picker' ), PANDA_SEASONS_VERSION, true );
+		$admin_dependencies = array( 'jquery', 'wp-color-picker' );
+		$shared_ui_file     = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
+		if ( file_exists( $shared_ui_file ) ) {
+			wp_enqueue_script( 'contactpanda-admin-ui', plugins_url( 'contactpanda/assets/contactpanda-admin-ui.js' ), array( 'wp-api-fetch' ), (string) filemtime( $shared_ui_file ), true );
+			wp_localize_script(
+				'contactpanda-admin-ui',
+				'CONTACTPANDA_ADMIN_UI',
+				array(
+					'themeColors' => array_values( array_filter( array_column( self::theme_colors(), 'color' ) ) ),
+					'i18n'        => array(
+						'chooseColor'  => __( 'Select color', 'panda-seasons' ),
+						'colorValue'   => __( 'Color value', 'panda-seasons' ),
+						'themeColors'  => __( 'Theme and template colors', 'panda-seasons' ),
+						'invalidColor' => __( 'Enter a valid HEX, RGB or RGBA color.', 'panda-seasons' ),
+						'dropImage'    => __( 'Click or drop an image here', 'panda-seasons' ),
+						'chooseImage'  => __( 'Select image', 'panda-seasons' ),
+						'useImage'     => __( 'Use image', 'panda-seasons' ),
+						'removeImage'  => __( 'Remove image', 'panda-seasons' ),
+						'uploading'    => __( 'Uploading image…', 'panda-seasons' ),
+						'uploadFailed' => __( 'The image could not be uploaded.', 'panda-seasons' ),
+					),
+				)
+			);
+			$admin_dependencies[] = 'contactpanda-admin-ui';
+		}
+		wp_enqueue_script( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/admin.js', $admin_dependencies, PANDA_SEASONS_VERSION, true );
 		wp_localize_script(
 			'panda-seasons-admin',
 			'pandaSeasonsAdmin',
