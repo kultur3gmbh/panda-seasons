@@ -326,13 +326,17 @@ trait Panda_Seasons_Runtime {
 	}
 
 	public static function subscribe_shortcode( $atts ) {
-		$atts = shortcode_atts( array( 'id' => 0, 'margin_top' => '', 'margin_bottom' => '' ), $atts, 'panda_seasons_subscribe' );
+		$atts = shortcode_atts( array( 'id' => 0, 'heading' => '', 'frame' => 'no', 'shadow' => 'no', 'margin_top' => '', 'margin_bottom' => '' ), $atts, 'panda_seasons_subscribe' );
 		$id = absint( $atts['id'] );
 		if ( ! self::contactpanda_available() || ! get_post_meta( $id, '_ps_email_enabled', true ) || self::CALENDAR_POST_TYPE !== get_post_type( $id ) || 'publish' !== get_post_status( $id ) ) return '';
 		wp_enqueue_style( 'panda-seasons' );
 		$style = '';
 		foreach ( array( 'margin_top' => 'margin-top', 'margin_bottom' => 'margin-bottom' ) as $key => $property ) { $value = trim( (string) $atts[ $key ] ); if ( preg_match( '/^-?\d+(?:\.\d+)?$/', $value ) ) $value .= 'px'; if ( preg_match( '/^-?\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw)$/', $value ) ) $style .= $property . ':' . $value . ';'; }
-		return '<div class="panda-seasons-signup-embed"' . ( $style ? ' style="' . esc_attr( $style ) . '"' : '' ) . '>' . Panda_Seasons_Subscriptions::form( $id ) . '</div>';
+		$enabled = static function ( $value ) { return in_array( strtolower( trim( (string) $value ) ), array( '1', 'yes', 'true', 'on' ), true ); };
+		$classes = array( 'panda-seasons-signup-embed' );
+		if ( $enabled( $atts['frame'] ) ) $classes[] = 'panda-seasons-signup-embed--has-frame';
+		if ( $enabled( $atts['shadow'] ) ) $classes[] = 'panda-seasons-signup-embed--has-shadow';
+		return '<div class="' . esc_attr( implode( ' ', $classes ) ) . '"' . ( $style ? ' style="' . esc_attr( $style ) . '"' : '' ) . '>' . Panda_Seasons_Subscriptions::form( $id, array( 'heading' => sanitize_text_field( (string) $atts['heading'] ) ) ) . '</div>';
 	}
 
 	private static function newsletter_markup( $calendar_id ) {

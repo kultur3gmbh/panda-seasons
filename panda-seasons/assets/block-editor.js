@@ -31,11 +31,14 @@
 		title: (window.pandaSeasonsBlock && pandaSeasonsBlock.signupTitle) || 'Panda Seasons calendar signup',
 		icon: 'email-alt',
 		category: 'widgets',
-		attributes: { id: { type: 'integer', default: 0 }, marginTop: { type: 'string', default: '' }, marginBottom: { type: 'string', default: '' } },
+		attributes: { id: { type: 'integer', default: 0 }, heading: { type: 'string', default: '' }, frame: { type: 'boolean', default: false }, shadow: { type: 'boolean', default: false }, marginTop: { type: 'string', default: '' }, marginBottom: { type: 'string', default: '' } },
 		edit: function (props) {
 			var options = (window.pandaSeasonsBlock && pandaSeasonsBlock.calendars) || [];
 			return el('div', blockEditor.useBlockProps(),
 				el(components.SelectControl, { label: pandaSeasonsBlock.selectLabel, value: String(props.attributes.id || ''), options: options, onChange: function (value) { props.setAttributes({ id: parseInt(value, 10) || 0 }); } }),
+				el(components.TextControl, { label: pandaSeasonsBlock.signupHeading, help: pandaSeasonsBlock.signupHeadingHelp, value: props.attributes.heading || '', onChange: function (value) { props.setAttributes({ heading: value }); } }),
+				el(components.ToggleControl, { label: pandaSeasonsBlock.frame, checked: !!props.attributes.frame, onChange: function (value) { props.setAttributes({ frame: value }); } }),
+				el(components.ToggleControl, { label: pandaSeasonsBlock.shadow, checked: !!props.attributes.shadow, onChange: function (value) { props.setAttributes({ shadow: value }); } }),
 				el(components.TextControl, { label: pandaSeasonsBlock.marginTop, value: props.attributes.marginTop || '', onChange: function (value) { props.setAttributes({ marginTop: value }); } }),
 				el(components.TextControl, { label: pandaSeasonsBlock.marginBottom, value: props.attributes.marginBottom || '', onChange: function (value) { props.setAttributes({ marginBottom: value }); } }),
 				props.attributes.id ? el(ServerSideRender, { block: 'panda-seasons/signup', attributes: props.attributes }) : null,

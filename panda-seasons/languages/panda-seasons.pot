@@ -1751,3 +1751,12 @@ msgstr ""
 
 msgid "Shadow color"
 msgstr ""
+
+msgid "Leave empty to use the heading configured for this calendar."
+msgstr ""
+
+msgid "Show frame"
+msgstr ""
+
+msgid "Show shadow"
+msgstr ""

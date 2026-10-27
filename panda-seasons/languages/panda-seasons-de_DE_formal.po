@@ -1753,3 +1753,12 @@ msgstr "Schattenbreite (px)"
 
 msgid "Shadow color"
 msgstr "Schattenfarbe"
+
+msgid "Leave empty to use the heading configured for this calendar."
+msgstr "Leer lassen, um die beim Kalender hinterlegte Überschrift zu verwenden."
+
+msgid "Show frame"
+msgstr "Rahmen anzeigen"
+
+msgid "Show shadow"
+msgstr "Schatten anzeigen"

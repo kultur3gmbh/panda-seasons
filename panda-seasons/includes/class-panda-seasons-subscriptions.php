@@ -13,8 +13,9 @@ final class Panda_Seasons_Subscriptions {
 		add_action( 'panda_seasons_confirmation_reminder', array( __CLASS__, 'send_confirmation_reminder' ), 10, 3 );
 	}
 
-	public static function form( $calendar_id ) {
+	public static function form( $calendar_id, $options = array() ) {
 		if ( ! Panda_Seasons_Plugin::contactpanda_available() ) return '';
+		$options = wp_parse_args( (array) $options, array( 'heading' => '' ) );
 		$message = sanitize_key( wp_unslash( $_GET['panda_seasons_message'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only status.
 		$messages = array(
 			'active'                   => get_post_meta( $calendar_id, '_ps_signup_active_message', true ) ?: __( 'You are registered for this email calendar.', 'panda-seasons' ),
@@ -34,7 +35,7 @@ final class Panda_Seasons_Subscriptions {
 		ob_start();
 		?>
 		<div class="panda-seasons__subscription">
-			<h3><?php echo esc_html( get_post_meta( $calendar_id, '_ps_signup_title', true ) ?: __( 'Receive this calendar by email', 'panda-seasons' ) ); ?></h3>
+			<h3><?php echo esc_html( $options['heading'] ?: ( get_post_meta( $calendar_id, '_ps_signup_title', true ) ?: __( 'Receive this calendar by email', 'panda-seasons' ) ) ); ?></h3>
 			<?php if ( get_post_meta( $calendar_id, '_ps_signup_text', true ) ) : ?><p><?php echo esc_html( get_post_meta( $calendar_id, '_ps_signup_text', true ) ); ?></p><?php endif; ?>
 			<?php if ( isset( $messages[ $message ] ) ) : ?><p class="panda-seasons__notice" role="status"><?php echo esc_html( $messages[ $message ] ); ?></p><?php endif; ?>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
