@@ -9,6 +9,7 @@ trait Panda_Seasons_Runtime {
 	public static function register_frontend_assets() {
 		wp_register_style( 'panda-seasons', PANDA_SEASONS_URL . 'assets/calendar.css', array(), PANDA_SEASONS_VERSION );
 		wp_register_script( 'panda-seasons', PANDA_SEASONS_URL . 'assets/frontend.js', array(), PANDA_SEASONS_VERSION, true );
+		wp_localize_script( 'panda-seasons', 'pandaSeasonsFrontend', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ), 'clickNonce' => wp_create_nonce( 'panda_seasons_track_door_click' ) ) );
 	}
 
 	public static function calendar_columns( $columns ) {
@@ -263,7 +264,7 @@ trait Panda_Seasons_Runtime {
 					$door_effect = (string) get_post_meta( $door->ID, '_ps_open_effect', true );
 					if ( ! in_array( $door_effect, array( 'none', 'door-left', 'door-right', 'page' ), true ) ) $door_effect = $open_effect;
 					?>
-					<article class="panda-seasons__door panda-seasons__door--<?php echo esc_attr( $shape ); ?><?php echo $available ? ' is-available' : ' is-locked'; ?><?php echo $visually_open ? ' is-open-visual' : ' is-closed-visual'; ?><?php echo $available && 'manual-day' === $opening_mode ? ' is-current' : ''; ?>" role="listitem" style="<?php echo esc_attr( $item_style ); ?>" id="panda-season-door-<?php echo esc_attr( $door->ID ); ?>" data-door-effect="<?php echo esc_attr( $door_effect ); ?>">
+					<article class="panda-seasons__door panda-seasons__door--<?php echo esc_attr( $shape ); ?><?php echo $available ? ' is-available' : ' is-locked'; ?><?php echo $visually_open ? ' is-open-visual' : ' is-closed-visual'; ?><?php echo $available && 'manual-day' === $opening_mode ? ' is-current' : ''; ?>" role="listitem" style="<?php echo esc_attr( $item_style ); ?>" id="panda-season-door-<?php echo esc_attr( $door->ID ); ?>" data-door-id="<?php echo esc_attr( $door->ID ); ?>" data-door-effect="<?php echo esc_attr( $door_effect ); ?>">
 						<button type="button" class="panda-seasons__door-face" aria-haspopup="dialog" aria-controls="panda-season-content-<?php echo esc_attr( $door->ID ); ?>" <?php disabled( ! $available ); ?>>
 							<span class="panda-seasons__door-number" data-closed-label="<?php echo esc_attr( $closed_label ); ?>" data-open-label="<?php echo esc_attr( $open_label ); ?>"><?php echo esc_html( $visually_open ? $open_label : $closed_label ); ?></span>
 							<span class="screen-reader-text"><?php echo esc_html( $available ? sprintf( __( 'Open door %d', 'panda-seasons' ), $number ) : sprintf( __( 'Door %1$d opens on %2$s', 'panda-seasons' ), $number, $unlock_at ? wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $unlock_at->getTimestamp(), wp_timezone() ) : '' ) ); ?></span>

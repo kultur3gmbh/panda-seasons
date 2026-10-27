@@ -19,6 +19,7 @@ required = [
 	"assets/editor.css",
     "assets/frontend.js",
 	"assets/block-editor.js",
+	"assets/images/panda-seasons-dashboard.png",
 ]
 for filename in required:
     if not (root / filename).exists():
@@ -77,6 +78,15 @@ for newsletter_consent_contract in (
 ):
 	if newsletter_consent_contract not in subscriptions:
 		raise SystemExit(f"Missing optional general newsletter consent contract {newsletter_consent_contract}")
+for calendar_consent_contract in (
+	"extension_sync_subscription",
+	"panda_seasons_calendar_",
+	"contactpanda_sync_failed",
+	"'granted'",
+	"'revoked'",
+):
+	if calendar_consent_contract not in subscriptions:
+		raise SystemExit(f"Missing calendar-specific ContactPanda consent contract {calendar_consent_contract}")
 for media_contract in ("wp_ajax_panda_seasons_save_editor_door", "save_editor_door_ajax", "_ps_media_id"):
     if media_contract not in plugin:
         raise SystemExit(f"Missing persistent door media contract {media_contract}")
@@ -127,6 +137,11 @@ for release_contract in ("emailSettings", "panda-seasons-email-panel"):
 for release_contract in ("_ps_signup_consent", "_ps_doi_subject", "_ps_confirmation_text"):
 	if release_contract not in subscriptions:
 		raise SystemExit(f"Missing 0.6.4 subscription behavior {release_contract}")
+for release_contract in ("panda-seasons-dashboard", "panda_seasons_track_door_click", "door_clicks"):
+	if release_contract not in plugin + runtime + (root / "includes/class-panda-seasons-schema.php").read_text(encoding="utf-8"):
+		raise SystemExit(f"Missing 0.8.0 dashboard contract {release_contract}")
+if "historyLimit = 20" not in admin_js:
+	raise SystemExit("The editor must retain at least 20 undo steps")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")

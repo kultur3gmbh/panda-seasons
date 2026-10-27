@@ -154,7 +154,9 @@ final class Panda_Seasons_Subscriptions {
 		if ( ! $row ) wp_die( esc_html__( 'This confirmation link is invalid.', 'panda-seasons' ), '', array( 'response' => 403 ) );
 		global $wpdb; $table = Panda_Seasons_Schema::tables()['subscriptions']; $now = current_time( 'mysql' );
 		$wpdb->update( $table, array( 'status' => 'active', 'confirmed_at' => $now, 'verification_hash' => '', 'unsubscribed_at' => null, 'unsubscribe_scope' => '', 'updated_at' => $now ), array( 'id' => $row['id'] ) );
-		$row['status'] = 'active'; self::log_event( $row, 'confirmed', 'calendar', 'double_opt_in' );
+		$row['status'] = 'active';
+		self::log_event( $row, 'confirmed', 'calendar', 'double_opt_in' );
+		self::sync_contactpanda_subscription( $row, 'granted', sprintf( 'Calendar double opt-in confirmed for subscription %1$d at %2$s.', absint( $row['id'] ), $now ) );
 		$title = get_post_meta( $row['calendar_id'], '_ps_confirmation_title', true ) ?: __( 'Registration confirmed', 'panda-seasons' );
 		$message = get_post_meta( $row['calendar_id'], '_ps_confirmation_text', true ) ?: sprintf( __( 'You will now receive the emails for “%s”.', 'panda-seasons' ), get_the_title( $row['calendar_id'] ) );
 		self::result_page( $title, $message );
@@ -177,6 +179,7 @@ final class Panda_Seasons_Subscriptions {
 		$scope = sanitize_key( wp_unslash( $_POST['scope'] ?? '' ) );
 		if ( ! in_array( $scope, array( 'calendar', 'all_calendars', 'all_mailings' ), true ) ) wp_die( esc_html__( 'Please select what you want to unsubscribe from.', 'panda-seasons' ), '', array( 'response' => 400 ) );
 		$now = current_time( 'mysql' );
+		$affected_rows = 'calendar' === $scope ? array( $row ) : (array) $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$tables['subscriptions']}` WHERE email_hash=%s", $row['email_hash'] ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- internal table.
 		if ( 'calendar' === $scope ) {
 			$wpdb->update( $tables['subscriptions'], array( 'status' => 'calendar_unsubscribed', 'unsubscribed_at' => $now, 'unsubscribe_scope' => $scope, 'updated_at' => $now ), array( 'id' => $row['id'] ) );
 		} else {
@@ -187,6 +190,9 @@ final class Panda_Seasons_Subscriptions {
 			}
 		}
 		self::log_event( $row, 'unsubscribed', $scope, 'email_link' );
+		foreach ( $affected_rows as $affected_row ) {
+			self::sync_contactpanda_subscription( $affected_row, 'revoked', sprintf( 'Calendar subscription %1$d revoked with scope %2$s at %3$s.', absint( $affected_row['id'] ?? 0 ), $scope, $now ) );
+		}
 		$labels = array( 'calendar' => __( 'You have been finally unsubscribed from this calendar.', 'panda-seasons' ), 'all_calendars' => __( 'You have been finally unsubscribed from all email calendars.', 'panda-seasons' ), 'all_mailings' => __( 'You have been finally unsubscribed from all email mailings.', 'panda-seasons' ) );
 		self::result_page( __( 'Finally unsubscribed', 'panda-seasons' ), $labels[ $scope ] );
 	}
@@ -229,10 +235,47 @@ final class Panda_Seasons_Subscriptions {
 
 	public static function send_mail( $email, $subject, $html ) { return self::send( $email, $subject, $html ); }
 
-	private static function log_event( $row, $event, $scope, $source ) {
+	private static function subscription_context( $row ) {
+		$calendar_id = absint( $row['calendar_id'] ?? 0 );
+		$tag = (string) get_post_meta( $calendar_id, '_ps_contact_tag', true );
+		if ( ! $tag ) $tag = sprintf( __( 'Panda Seasons – %s', 'panda-seasons' ), get_the_title( $calendar_id ) );
+		return apply_filters(
+			'panda_seasons_contact_subscription_context',
+			array(
+				'source'       => 'panda_seasons',
+				'source_id'    => (string) $calendar_id,
+				'source_title' => get_the_title( $calendar_id ),
+				'source_url'   => get_permalink( $calendar_id ),
+				'purpose'      => 'panda_seasons_calendar_' . $calendar_id,
+				'tag'          => $tag,
+				'occurred_at'  => current_time( 'mysql' ),
+			),
+			$row
+		);
+	}
+
+	private static function sync_contactpanda_subscription( $row, $status, $proof = '' ) {
+		if ( ! Panda_Seasons_Plugin::contactpanda_available() || ! method_exists( 'ContactPanda_Plugin', 'extension_sync_subscription' ) ) return true;
+		$contact = absint( $row['contact_id'] ?? 0 ) ?: sanitize_email( $row['email'] ?? '' );
+		$result = ContactPanda_Plugin::extension_sync_subscription( $contact, self::subscription_context( $row ), $status, $proof );
+		if ( is_wp_error( $result ) ) {
+			self::log_event( $row, 'contactpanda_sync_failed', 'calendar', 'contactpanda', $result->get_error_code() . ': ' . $result->get_error_message() );
+			do_action( 'panda_seasons_contact_sync_failed', $result, $row, $status );
+			return $result;
+		}
+		$contact_id = absint( $result['contact_id'] ?? 0 );
+		if ( $contact_id && ! absint( $row['contact_id'] ?? 0 ) ) {
+			global $wpdb;
+			$wpdb->update( Panda_Seasons_Schema::tables()['subscriptions'], array( 'contact_id' => $contact_id, 'updated_at' => current_time( 'mysql' ) ), array( 'id' => absint( $row['id'] ) ) );
+		}
+		self::log_event( $row, 'contactpanda_sync_' . sanitize_key( $status ), 'calendar', 'contactpanda' );
+		return $result;
+	}
+
+	private static function log_event( $row, $event, $scope, $source, $details = '' ) {
 		global $wpdb; $table = Panda_Seasons_Schema::tables()['events'];
 		$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ?? '' ) );
-		$wpdb->insert( $table, array( 'subscription_id' => absint( $row['id'] ), 'calendar_id' => absint( $row['calendar_id'] ), 'email_hash' => $row['email_hash'], 'event_type' => sanitize_key( $event ), 'scope' => sanitize_key( $scope ), 'source' => sanitize_key( $source ), 'ip_hash' => $ip ? hash_hmac( 'sha256', $ip, wp_salt( 'nonce' ) ) : '', 'occurred_at' => current_time( 'mysql' ) ) );
+		$wpdb->insert( $table, array( 'subscription_id' => absint( $row['id'] ), 'calendar_id' => absint( $row['calendar_id'] ), 'email_hash' => $row['email_hash'], 'event_type' => sanitize_key( $event ), 'scope' => sanitize_key( $scope ), 'source' => sanitize_key( $source ), 'details' => sanitize_textarea_field( $details ), 'ip_hash' => $ip ? hash_hmac( 'sha256', $ip, wp_salt( 'nonce' ) ) : '', 'occurred_at' => current_time( 'mysql' ) ) );
 	}
 
 	private static function redirect( $calendar_id, $message ) {

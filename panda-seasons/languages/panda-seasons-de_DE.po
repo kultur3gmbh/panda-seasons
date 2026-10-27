@@ -1001,9 +1001,6 @@ msgstr "Template exportieren"
 msgid "Exports settings, doors, positions, content and media references. Installation-specific product, coupon and event assignments are not transferred."
 msgstr "Exportiert Einstellungen, Türen, Positionen, Inhalte und Medienreferenzen. Installationsabhängige Produkt-, Gutschein- und Veranstaltungszuordnungen werden nicht übertragen."
 
-msgid "Calendar #%d"
-msgstr "Kalender Nr. %d"
-
 msgid "Download template"
 msgstr "Template herunterladen"
 
@@ -1643,3 +1640,77 @@ msgstr "Bild wird hochgeladen …"
 
 msgid "The image could not be uploaded."
 msgstr "Das Bild konnte nicht hochgeladen werden."
+msgid "Panda Seasons dashboard"
+msgstr "Panda-Seasons-Dashboard"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "You are not allowed to view the Panda Seasons dashboard."
+msgstr "Sie sind nicht berechtigt, das Panda-Seasons-Dashboard aufzurufen."
+
+msgid "Create interactive seasonal calendars, manage registrations and keep an eye on the most important results."
+msgstr "Erstellen Sie interaktive Saisonkalender, verwalten Sie Anmeldungen und behalten Sie die wichtigsten Ergebnisse im Blick."
+
+msgid "Open templates"
+msgstr "Vorlagen öffnen"
+
+msgid "Panda Seasons calendar illustration"
+msgstr "Illustration eines Panda-Seasons-Kalenders"
+
+msgid "Your calendars"
+msgstr "Ihre Kalender"
+
+msgid "Door clicks, active email subscriptions and generated leads are counted separately for each calendar."
+msgstr "Türenklicks, aktive E-Mail-Abonnements und generierte Leads werden für jeden Kalender getrennt gezählt."
+
+msgid "No calendar has been created yet."
+msgstr "Es wurde noch kein Kalender erstellt."
+
+msgid "Preview image for %s"
+msgstr "Vorschaubild für %s"
+
+msgid "Door clicks"
+msgstr "Türenklicks"
+
+msgid "Email subscribers"
+msgstr "E-Mail-Abonnenten"
+
+msgid "Leads"
+msgstr "Leads"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "ContactPanda Basic – free"
+msgstr "ContactPanda Basic – kostenlos"
+
+msgid "ContactPanda Basic is active. Calendar registrations and newsletter functions are available."
+msgstr "ContactPanda Basic ist aktiv. Kalenderanmeldungen und Newsletter-Funktionen sind verfügbar."
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Activate the free ContactPanda Basic plugin to use calendar registrations, double opt-in and email delivery."
+msgstr "Aktivieren Sie das kostenlose Plugin ContactPanda Basic, um Kalenderanmeldungen, Double-Opt-in und den E-Mail-Versand zu verwenden."
+
+msgid "Activate ContactPanda Basic"
+msgstr "ContactPanda Basic aktivieren"
+
+msgid "Install ContactPanda Basic free of charge to add double opt-in, calendar email delivery, newsletter signups and lead management."
+msgstr "Installieren Sie ContactPanda Basic kostenlos, um Double-Opt-in, Kalender-E-Mails, Newsletter-Anmeldungen und Lead-Verwaltung zu ergänzen."
+
+msgid "Download ContactPanda Basic free"
+msgstr "ContactPanda Basic kostenlos herunterladen"
+
+msgid "More possibilities with ContactPanda Plus"
+msgstr "Mehr Möglichkeiten mit ContactPanda Plus"
+
+msgid "Expand your contact management with forms, automations and additional communication tools."
+msgstr "Erweitern Sie Ihre Kontaktverwaltung um Formulare, Automatisierungen und zusätzliche Kommunikationswerkzeuge."
+
+msgid "Discover ContactPanda Plus"
+msgstr "ContactPanda Plus entdecken"
+
+msgid "The click could not be recorded."
+msgstr "Der Klick konnte nicht erfasst werden."

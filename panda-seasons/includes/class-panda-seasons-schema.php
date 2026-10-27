@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 final class Panda_Seasons_Schema {
-	const VERSION = '1.0.1';
+	const VERSION = '1.2.0';
 	const OPTION  = 'panda_seasons_db_version';
 
 	public static function tables() {
@@ -12,6 +12,7 @@ final class Panda_Seasons_Schema {
 			'subscriptions' => $wpdb->prefix . 'ps_subscriptions',
 			'mail_log'      => $wpdb->prefix . 'ps_mail_log',
 			'events'        => $wpdb->prefix . 'ps_consent_events',
+			'door_clicks'   => $wpdb->prefix . 'ps_door_clicks',
 		);
 	}
 
@@ -73,11 +74,26 @@ final class Panda_Seasons_Schema {
 				event_type varchar(60) NOT NULL,
 				scope varchar(40) NOT NULL DEFAULT '',
 				source varchar(80) NOT NULL DEFAULT '',
+				details text NULL,
 				ip_hash char(64) NOT NULL DEFAULT '',
 				occurred_at datetime NOT NULL,
 				PRIMARY KEY  (id),
 				KEY email_event (email_hash,event_type),
 				KEY calendar_id (calendar_id)
+			) $charset;"
+		);
+
+		// Store aggregate daily click counts only. No visitor identifiers or raw IP
+		// addresses are required for the dashboard statistic.
+		dbDelta(
+			"CREATE TABLE {$tables['door_clicks']} (
+				calendar_id bigint(20) unsigned NOT NULL,
+				door_id bigint(20) unsigned NOT NULL,
+				click_date date NOT NULL,
+				click_count bigint(20) unsigned NOT NULL DEFAULT 0,
+				updated_at datetime NOT NULL,
+				PRIMARY KEY  (calendar_id,door_id,click_date),
+				KEY calendar_date (calendar_id,click_date)
 			) $charset;"
 		);
 

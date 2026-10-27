@@ -238,7 +238,7 @@
 		var selectedItems = {};
 		var undoStack = [];
 		var redoStack = [];
-		var historyLimit = 3;
+		var historyLimit = 20;
 		var pendingLayerHistory = null;
 
 		function itemKey(type, item) { return type + ':' + String(type === 'door' ? (item.id || item.clientId) : item.id); }

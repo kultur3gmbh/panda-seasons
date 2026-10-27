@@ -3,6 +3,16 @@
 
 	var lastTrigger = null;
 
+	function trackDoorClick(calendar, door) {
+		if (!calendar || !door || calendar.classList.contains('is-preview') || !window.pandaSeasonsFrontend || !pandaSeasonsFrontend.ajaxUrl) return;
+		var data = new FormData();
+		data.append('action', 'panda_seasons_track_door_click');
+		data.append('nonce', pandaSeasonsFrontend.clickNonce || '');
+		data.append('calendar_id', calendar.dataset.calendar || '');
+		data.append('door_id', door.dataset.doorId || '');
+		window.fetch(pandaSeasonsFrontend.ajaxUrl, {method: 'POST', credentials: 'same-origin', body: data, keepalive: true}).catch(function () {});
+	}
+
 	function closeModal(modal) {
 		if (!modal) return;
 		modal.hidden = true;
@@ -20,6 +30,7 @@
 			var template = door.querySelector('.panda-seasons__door-content');
 			var modal = calendar.querySelector('[data-season-modal]');
 			if (!template || !modal) return;
+			trackDoorClick(calendar, door);
 			lastTrigger = button;
 			var effect = door.dataset.doorEffect || calendar.dataset.openEffect || 'none';
 			var duration = calendar.classList.contains('panda-seasons--speed-fast') ? 320 : (calendar.classList.contains('panda-seasons--speed-slow') ? 850 : 560);

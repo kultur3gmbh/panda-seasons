@@ -16,11 +16,15 @@ final class Panda_Seasons_Plugin {
 		add_action( 'init', array( 'Panda_Seasons_Migrator', 'maybe_migrate' ), 20 );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'meta_boxes' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
+		add_filter( 'parent_file', array( __CLASS__, 'admin_parent_file' ) );
+		add_filter( 'submenu_file', array( __CLASS__, 'admin_submenu_file' ) );
 		add_action( 'save_post_' . self::CALENDAR_POST_TYPE, array( __CLASS__, 'save_calendar' ) );
 		add_action( 'save_post_' . self::DOOR_POST_TYPE, array( __CLASS__, 'save_door' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_assets' ) );
 		add_action( 'wp_ajax_panda_seasons_save_editor_door', array( __CLASS__, 'save_editor_door_ajax' ) );
 		add_action( 'wp_ajax_panda_seasons_save_calendar', array( __CLASS__, 'save_calendar_ajax' ) );
+		add_action( 'wp_ajax_panda_seasons_track_door_click', array( __CLASS__, 'track_door_click' ) );
+		add_action( 'wp_ajax_nopriv_panda_seasons_track_door_click', array( __CLASS__, 'track_door_click' ) );
 		add_action( 'admin_post_panda_seasons_preview', array( __CLASS__, 'preview_page' ) );
 		add_action( 'admin_post_panda_seasons_export_template', array( __CLASS__, 'export_template' ) );
 		add_action( 'admin_post_panda_seasons_import_template', array( __CLASS__, 'import_template' ) );
@@ -83,7 +87,7 @@ final class Panda_Seasons_Plugin {
 				),
 				'public'       => false,
 				'show_ui'      => true,
-				'show_in_menu' => true,
+				'show_in_menu' => false,
 				'menu_icon'    => 'dashicons-calendar-alt',
 				'supports'     => array( 'title' ),
 				'map_meta_cap' => true,
@@ -101,7 +105,7 @@ final class Panda_Seasons_Plugin {
 				),
 				'public'       => false,
 				'show_ui'      => true,
-				'show_in_menu' => 'edit.php?post_type=' . self::CALENDAR_POST_TYPE,
+				'show_in_menu' => false,
 				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail' ),
 				'map_meta_cap' => true,
 			)
@@ -151,14 +155,174 @@ final class Panda_Seasons_Plugin {
 	}
 
 	public static function admin_menu() {
+		add_menu_page(
+			__( 'Panda Seasons dashboard', 'panda-seasons' ),
+			__( 'Panda Seasons', 'panda-seasons' ),
+			'edit_posts',
+			'panda-seasons-dashboard',
+			array( __CLASS__, 'dashboard_page' ),
+			'dashicons-calendar-alt',
+			26
+		);
 		add_submenu_page(
-			'edit.php?post_type=' . self::CALENDAR_POST_TYPE,
+			'panda-seasons-dashboard',
+			__( 'Panda Seasons dashboard', 'panda-seasons' ),
+			__( 'Dashboard', 'panda-seasons' ),
+			'edit_posts',
+			'panda-seasons-dashboard',
+			array( __CLASS__, 'dashboard_page' )
+		);
+		add_submenu_page(
+			'panda-seasons-dashboard',
+			__( 'Calendars', 'panda-seasons' ),
+			__( 'Calendars', 'panda-seasons' ),
+			'edit_posts',
+			'edit.php?post_type=' . self::CALENDAR_POST_TYPE
+		);
+		add_submenu_page(
+			'panda-seasons-dashboard',
+			__( 'Add calendar', 'panda-seasons' ),
+			__( 'Add calendar', 'panda-seasons' ),
+			'edit_posts',
+			'post-new.php?post_type=' . self::CALENDAR_POST_TYPE
+		);
+		add_submenu_page(
+			'panda-seasons-dashboard',
+			__( 'Doors', 'panda-seasons' ),
+			__( 'Doors', 'panda-seasons' ),
+			'edit_posts',
+			'edit.php?post_type=' . self::DOOR_POST_TYPE
+		);
+		add_submenu_page(
+			'panda-seasons-dashboard',
 			__( 'Calendar templates', 'panda-seasons' ),
 			__( 'Templates', 'panda-seasons' ),
 			'edit_posts',
 			'panda-seasons-templates',
 			array( __CLASS__, 'templates_page' )
 		);
+	}
+
+	public static function admin_parent_file( $parent_file ) {
+		$screen = get_current_screen();
+		if ( $screen && in_array( $screen->post_type, array( self::CALENDAR_POST_TYPE, self::DOOR_POST_TYPE ), true ) ) return 'panda-seasons-dashboard';
+		return $parent_file;
+	}
+
+	public static function admin_submenu_file( $submenu_file ) {
+		$screen = get_current_screen();
+		if ( ! $screen ) return $submenu_file;
+		if ( self::CALENDAR_POST_TYPE === $screen->post_type ) return 'edit.php?post_type=' . self::CALENDAR_POST_TYPE;
+		if ( self::DOOR_POST_TYPE === $screen->post_type ) return 'edit.php?post_type=' . self::DOOR_POST_TYPE;
+		return $submenu_file;
+	}
+
+	public static function dashboard_page() {
+		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to view the Panda Seasons dashboard.', 'panda-seasons' ) );
+		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'orderby' => 'modified', 'order' => 'DESC' ) );
+		$stats = self::dashboard_statistics();
+		$contactpanda_active = self::contactpanda_available();
+		$contactpanda_installed = false;
+		$contactpanda_plugin = '';
+		if ( ! $contactpanda_active && current_user_can( 'activate_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			foreach ( array_keys( get_plugins() ) as $plugin_file ) {
+				if ( 'contactpanda/contactpanda.php' === $plugin_file || false !== strpos( $plugin_file, 'contactpanda.php' ) ) {
+					$contactpanda_installed = true;
+					$contactpanda_plugin = $plugin_file;
+					break;
+				}
+			}
+		}
+		?>
+		<div class="wrap panda-seasons-dashboard">
+			<section class="panda-seasons-dashboard__hero">
+				<div class="panda-seasons-dashboard__hero-copy">
+					<h1><?php esc_html_e( 'Panda Seasons', 'panda-seasons' ); ?></h1>
+					<p><?php esc_html_e( 'Create interactive seasonal calendars, manage registrations and keep an eye on the most important results.', 'panda-seasons' ); ?></p>
+					<p><a class="button button-primary" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . self::CALENDAR_POST_TYPE ) ); ?>"><?php esc_html_e( 'Create calendar', 'panda-seasons' ); ?></a> <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=panda-seasons-templates' ) ); ?>"><?php esc_html_e( 'Open templates', 'panda-seasons' ); ?></a></p>
+				</div>
+				<img src="<?php echo esc_url( PANDA_SEASONS_URL . 'assets/images/panda-seasons-dashboard.png' ); ?>" alt="<?php esc_attr_e( 'Panda Seasons calendar illustration', 'panda-seasons' ); ?>">
+			</section>
+
+			<section class="panda-seasons-dashboard__section">
+				<div class="panda-seasons-dashboard__section-heading"><div><h2><?php esc_html_e( 'Your calendars', 'panda-seasons' ); ?></h2><p><?php esc_html_e( 'Door clicks, active email subscriptions and generated leads are counted separately for each calendar.', 'panda-seasons' ); ?></p></div></div>
+				<?php if ( ! $calendars ) : ?>
+					<div class="panda-seasons-dashboard__empty"><p><?php esc_html_e( 'No calendar has been created yet.', 'panda-seasons' ); ?></p></div>
+				<?php else : ?>
+					<div class="panda-seasons-dashboard__cards">
+						<?php foreach ( $calendars as $calendar ) :
+							$calendar_id = absint( $calendar->ID );
+							$cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop_id', true ) );
+							$cover = $cover_id ? wp_get_attachment_image_url( $cover_id, 'medium_large' ) : '';
+							$calendar_stats = $stats[ $calendar_id ] ?? array( 'clicks' => 0, 'subscribers' => 0, 'leads' => 0 );
+						?>
+						<article class="panda-seasons-dashboard-card">
+							<a class="panda-seasons-dashboard-card__preview" href="<?php echo esc_url( get_edit_post_link( $calendar_id ) ); ?>">
+								<?php if ( $cover ) : ?><img src="<?php echo esc_url( $cover ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Preview image for %s', 'panda-seasons' ), get_the_title( $calendar_id ) ) ); ?>"><?php else : ?><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span><?php endif; ?>
+							</a>
+							<div class="panda-seasons-dashboard-card__body">
+								<h3><a href="<?php echo esc_url( get_edit_post_link( $calendar_id ) ); ?>"><?php echo esc_html( get_the_title( $calendar_id ) ?: sprintf( __( 'Calendar #%d', 'panda-seasons' ), $calendar_id ) ); ?></a></h3>
+								<div class="panda-seasons-dashboard-card__stats">
+									<div><strong><?php echo esc_html( number_format_i18n( $calendar_stats['clicks'] ) ); ?></strong><span><?php esc_html_e( 'Door clicks', 'panda-seasons' ); ?></span></div>
+									<div><strong><?php echo esc_html( number_format_i18n( $calendar_stats['subscribers'] ) ); ?></strong><span><?php esc_html_e( 'Email subscribers', 'panda-seasons' ); ?></span></div>
+									<div><strong><?php echo esc_html( number_format_i18n( $calendar_stats['leads'] ) ); ?></strong><span><?php esc_html_e( 'Leads', 'panda-seasons' ); ?></span></div>
+								</div>
+								<p class="panda-seasons-dashboard-card__actions"><a class="button button-primary" href="<?php echo esc_url( get_edit_post_link( $calendar_id ) ); ?>"><?php esc_html_e( 'Edit', 'panda-seasons' ); ?></a><?php if ( 'publish' === get_post_status( $calendar_id ) ) : ?> <a class="button" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_preview&calendar=' . $calendar_id ), 'panda_seasons_preview_' . $calendar_id ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></a><?php endif; ?></p>
+							</div>
+						</article>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+			</section>
+
+			<section class="panda-seasons-dashboard__products">
+				<div class="panda-seasons-dashboard-product<?php echo $contactpanda_active ? ' is-active' : ''; ?>">
+					<h2><?php esc_html_e( 'ContactPanda Basic – free', 'panda-seasons' ); ?></h2>
+					<?php if ( $contactpanda_active ) : ?><p><?php esc_html_e( 'ContactPanda Basic is active. Calendar registrations and newsletter functions are available.', 'panda-seasons' ); ?></p><span class="panda-seasons-dashboard-product__status"><?php esc_html_e( 'Active', 'panda-seasons' ); ?></span>
+					<?php elseif ( $contactpanda_installed && $contactpanda_plugin ) : ?><p><?php esc_html_e( 'Activate the free ContactPanda Basic plugin to use calendar registrations, double opt-in and email delivery.', 'panda-seasons' ); ?></p><a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $contactpanda_plugin ) ), 'activate-plugin_' . $contactpanda_plugin ) ); ?>"><?php esc_html_e( 'Activate ContactPanda Basic', 'panda-seasons' ); ?></a>
+					<?php else : ?><p><?php esc_html_e( 'Install ContactPanda Basic free of charge to add double opt-in, calendar email delivery, newsletter signups and lead management.', 'panda-seasons' ); ?></p><a class="button button-primary" href="https://mycontactpanda.com/" target="_blank" rel="noopener"><?php esc_html_e( 'Download ContactPanda Basic free', 'panda-seasons' ); ?></a><?php endif; ?>
+				</div>
+				<div class="panda-seasons-dashboard-product">
+					<h2><?php esc_html_e( 'More possibilities with ContactPanda Plus', 'panda-seasons' ); ?></h2>
+					<p><?php esc_html_e( 'Expand your contact management with forms, automations and additional communication tools.', 'panda-seasons' ); ?></p>
+					<a class="button" href="https://mycontactpanda.com/" target="_blank" rel="noopener"><?php esc_html_e( 'Discover ContactPanda Plus', 'panda-seasons' ); ?></a>
+				</div>
+			</section>
+		</div>
+		<?php
+	}
+
+	private static function dashboard_statistics() {
+		global $wpdb;
+		$tables = Panda_Seasons_Schema::tables();
+		$stats = array();
+		$click_rows = $wpdb->get_results( "SELECT calendar_id,SUM(click_count) AS clicks FROM `{$tables['door_clicks']}` GROUP BY calendar_id", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed internal table name.
+		foreach ( (array) $click_rows as $row ) $stats[ absint( $row['calendar_id'] ) ]['clicks'] = absint( $row['clicks'] );
+		$subscription_rows = $wpdb->get_results( "SELECT calendar_id,COUNT(DISTINCT CASE WHEN status='active' THEN email_hash END) AS subscribers,COUNT(DISTINCT email_hash) AS leads FROM `{$tables['subscriptions']}` GROUP BY calendar_id", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed internal table name.
+		foreach ( (array) $subscription_rows as $row ) {
+			$id = absint( $row['calendar_id'] );
+			$stats[ $id ]['subscribers'] = absint( $row['subscribers'] );
+			$stats[ $id ]['leads'] = absint( $row['leads'] );
+		}
+		foreach ( $stats as &$row ) $row = wp_parse_args( $row, array( 'clicks' => 0, 'subscribers' => 0, 'leads' => 0 ) );
+		unset( $row );
+		return $stats;
+	}
+
+	public static function track_door_click() {
+		if ( ! check_ajax_referer( 'panda_seasons_track_door_click', 'nonce', false ) ) wp_send_json_error( array( 'message' => __( 'The click could not be recorded.', 'panda-seasons' ) ), 403 );
+		$calendar_id = absint( $_POST['calendar_id'] ?? 0 );
+		$door_id = absint( $_POST['door_id'] ?? 0 );
+		if ( ! $calendar_id || ! $door_id || self::CALENDAR_POST_TYPE !== get_post_type( $calendar_id ) || self::DOOR_POST_TYPE !== get_post_type( $door_id ) || $calendar_id !== absint( wp_get_post_parent_id( $door_id ) ) ) wp_send_json_error( array( 'message' => __( 'The click could not be recorded.', 'panda-seasons' ) ), 400 );
+		if ( 'publish' !== get_post_status( $calendar_id ) || 'publish' !== get_post_status( $door_id ) ) wp_send_json_error( array( 'message' => __( 'The click could not be recorded.', 'panda-seasons' ) ), 400 );
+		global $wpdb;
+		$table = Panda_Seasons_Schema::tables()['door_clicks'];
+		$date = current_time( 'Y-m-d' );
+		$now = current_time( 'mysql' );
+		$result = $wpdb->query( $wpdb->prepare( "INSERT INTO `{$table}` (calendar_id,door_id,click_date,click_count,updated_at) VALUES (%d,%d,%s,1,%s) ON DUPLICATE KEY UPDATE click_count=click_count+1,updated_at=VALUES(updated_at)", $calendar_id, $door_id, $date, $now ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed internal table name.
+		if ( false === $result ) wp_send_json_error( array( 'message' => __( 'The click could not be recorded.', 'panda-seasons' ) ), 500 );
+		wp_send_json_success();
 	}
 
 	public static function templates_page() {
@@ -1564,10 +1728,13 @@ final class Panda_Seasons_Plugin {
 
 	public static function admin_assets( $hook ) {
 		$screen = get_current_screen();
-		if ( ! $screen || ! in_array( $screen->post_type, array( self::CALENDAR_POST_TYPE, self::DOOR_POST_TYPE ), true ) ) return;
+		$is_dashboard = 'toplevel_page_panda-seasons-dashboard' === $hook;
+		$is_editor = $screen && in_array( $screen->post_type, array( self::CALENDAR_POST_TYPE, self::DOOR_POST_TYPE ), true );
+		if ( ! $is_dashboard && ! $is_editor ) return;
+		if ( $is_editor ) wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/editor.css', $is_editor ? array( 'wp-color-picker' ) : array(), PANDA_SEASONS_VERSION );
+		if ( ! $is_editor ) return;
 		wp_enqueue_media();
-		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/editor.css', array( 'wp-color-picker' ), PANDA_SEASONS_VERSION );
 		$admin_dependencies = array( 'jquery', 'wp-color-picker' );
 		$shared_ui_file     = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
 		if ( file_exists( $shared_ui_file ) ) {

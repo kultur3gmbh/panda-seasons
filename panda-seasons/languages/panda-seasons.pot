@@ -999,9 +999,6 @@ msgstr ""
 msgid "Exports settings, doors, positions, content and media references. Installation-specific product, coupon and event assignments are not transferred."
 msgstr ""
 
-msgid "Calendar #%d"
-msgstr ""
-
 msgid "Download template"
 msgstr ""
 
@@ -1640,4 +1637,78 @@ msgid "Uploading image…"
 msgstr ""
 
 msgid "The image could not be uploaded."
+msgstr ""
+msgid "Panda Seasons dashboard"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "You are not allowed to view the Panda Seasons dashboard."
+msgstr ""
+
+msgid "Create interactive seasonal calendars, manage registrations and keep an eye on the most important results."
+msgstr ""
+
+msgid "Open templates"
+msgstr ""
+
+msgid "Panda Seasons calendar illustration"
+msgstr ""
+
+msgid "Your calendars"
+msgstr ""
+
+msgid "Door clicks, active email subscriptions and generated leads are counted separately for each calendar."
+msgstr ""
+
+msgid "No calendar has been created yet."
+msgstr ""
+
+msgid "Preview image for %s"
+msgstr ""
+
+msgid "Door clicks"
+msgstr ""
+
+msgid "Email subscribers"
+msgstr ""
+
+msgid "Leads"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "ContactPanda Basic – free"
+msgstr ""
+
+msgid "ContactPanda Basic is active. Calendar registrations and newsletter functions are available."
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Activate the free ContactPanda Basic plugin to use calendar registrations, double opt-in and email delivery."
+msgstr ""
+
+msgid "Activate ContactPanda Basic"
+msgstr ""
+
+msgid "Install ContactPanda Basic free of charge to add double opt-in, calendar email delivery, newsletter signups and lead management."
+msgstr ""
+
+msgid "Download ContactPanda Basic free"
+msgstr ""
+
+msgid "More possibilities with ContactPanda Plus"
+msgstr ""
+
+msgid "Expand your contact management with forms, automations and additional communication tools."
+msgstr ""
+
+msgid "Discover ContactPanda Plus"
+msgstr ""
+
+msgid "The click could not be recorded."
 msgstr ""
