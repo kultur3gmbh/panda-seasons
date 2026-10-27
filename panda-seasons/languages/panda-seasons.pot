@@ -1712,3 +1712,12 @@ msgstr ""
 
 msgid "The click could not be recorded."
 msgstr ""
+
+msgid "Show calendar title"
+msgstr ""
+
+msgid "Show calendar frame"
+msgstr ""
+
+msgid "Show calendar shadow"
+msgstr ""

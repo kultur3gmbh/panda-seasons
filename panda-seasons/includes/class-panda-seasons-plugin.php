@@ -188,13 +188,6 @@ final class Panda_Seasons_Plugin {
 		);
 		add_submenu_page(
 			'panda-seasons-dashboard',
-			__( 'Doors', 'panda-seasons' ),
-			__( 'Doors', 'panda-seasons' ),
-			'edit_posts',
-			'edit.php?post_type=' . self::DOOR_POST_TYPE
-		);
-		add_submenu_page(
-			'panda-seasons-dashboard',
 			__( 'Calendar templates', 'panda-seasons' ),
 			__( 'Templates', 'panda-seasons' ),
 			'edit_posts',
@@ -678,7 +671,8 @@ final class Panda_Seasons_Plugin {
 			);
 		}
 		?>
-		<p><?php esc_html_e( 'Choose the calendar image and place every door directly on it. Click a door to edit its date and content.', 'panda-seasons' ); ?></p>
+		<div class="panda-seasons-composer__primary-actions panda-seasons-composer__primary-actions--global"><button type="button" class="button" data-open-template-dialog><span class="dashicons dashicons-layout" aria-hidden="true"></span><?php esc_html_e( 'Save as template', 'panda-seasons' ); ?></button><button type="button" class="button button-secondary panda-seasons-interactive-preview" data-open-calendar-preview data-preview-url="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_preview&calendar=' . $post->ID ), 'panda_seasons_preview_' . $post->ID ) ); ?>"><span class="dashicons dashicons-visibility" aria-hidden="true"></span><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></button><button type="button" class="button button-primary" data-save-calendar><span class="dashicons dashicons-saved" aria-hidden="true"></span><?php esc_html_e( 'Save calendar', 'panda-seasons' ); ?></button></div>
+		<p class="panda-seasons-editor-intro"><?php esc_html_e( 'Choose the calendar image and place every door directly on it. Click a door to edit its date and content.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-settings-layout">
 			<div class="panda-seasons-cover-settings is-wide">
 				<div class="panda-seasons-cover-settings__row">
@@ -766,12 +760,11 @@ final class Panda_Seasons_Plugin {
 					<button type="button" class="button button-primary" data-editor-view="desktop"><span class="dashicons dashicons-desktop" aria-hidden="true"></span><?php esc_html_e( 'Desktop', 'panda-seasons' ); ?></button>
 					<button type="button" class="button" data-editor-view="mobile"><span class="dashicons dashicons-smartphone" aria-hidden="true"></span><?php esc_html_e( 'Mobile', 'panda-seasons' ); ?></button>
 				</div>
-				<div class="panda-seasons-composer__primary-actions"><button type="button" class="button" data-open-template-dialog><span class="dashicons dashicons-layout" aria-hidden="true"></span><?php esc_html_e( 'Save as template', 'panda-seasons' ); ?></button><button type="button" class="button button-secondary panda-seasons-interactive-preview" data-open-calendar-preview data-preview-url="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_preview&calendar=' . $post->ID ), 'panda_seasons_preview_' . $post->ID ) ); ?>"><span class="dashicons dashicons-visibility" aria-hidden="true"></span><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></button><button type="button" class="button button-primary" data-save-calendar><span class="dashicons dashicons-saved" aria-hidden="true"></span><?php esc_html_e( 'Save calendar', 'panda-seasons' ); ?></button></div>
 				</div>
-				<div class="panda-seasons-composer__toolbar-row panda-seasons-composer__toolbar-row--bottom">
-					<div class="panda-seasons-composer__add-actions"><button type="button" class="button button-secondary" data-add-door><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2h11v2H6v16h9v2H4V2zm5 3 10 2v12L9 21V5zm7 7.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg><?php esc_html_e( 'Add door', 'panda-seasons' ); ?></button><button type="button" class="button" data-add-layer="surface"><span class="dashicons dashicons-format-image"></span><?php esc_html_e( 'Design area', 'panda-seasons' ); ?></button><button type="button" class="button" data-add-layer="text"><span class="dashicons dashicons-editor-textcolor"></span><?php esc_html_e( 'Text area', 'panda-seasons' ); ?></button></div>
+				<div class="panda-seasons-composer__toolbar-row panda-seasons-composer__toolbar-row--grid">
 					<div class="panda-seasons-composer__grid-row"><button type="button" class="button" data-editor-undo disabled title="<?php esc_attr_e( 'Undo', 'panda-seasons' ); ?>"><span class="dashicons dashicons-undo" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Undo', 'panda-seasons' ); ?></span></button><button type="button" class="button" data-editor-redo disabled title="<?php esc_attr_e( 'Redo', 'panda-seasons' ); ?>"><span class="dashicons dashicons-redo" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Redo', 'panda-seasons' ); ?></span></button><label class="panda-seasons-composer__snap"><input type="checkbox" data-snap-grid checked> <?php esc_html_e( 'Align to grid', 'panda-seasons' ); ?></label><label class="panda-seasons-composer__grid-size"><span><?php esc_html_e( 'Grid size', 'panda-seasons' ); ?></span><select name="panda_seasons_grid_size" data-grid-size><option value="10" <?php selected( $grid_size, 10 ); ?>>10 px</option><option value="20" <?php selected( $grid_size, 20 ); ?>>20 px</option><option value="30" <?php selected( $grid_size, 30 ); ?>>30 px</option></select></label><button type="button" class="button" data-align-grid><?php esc_html_e( 'Align now', 'panda-seasons' ); ?></button></div>
 				</div>
+				<div class="panda-seasons-composer__toolbar-row panda-seasons-composer__toolbar-row--add"><div class="panda-seasons-composer__add-actions"><button type="button" class="button button-secondary" data-add-door><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2h11v2H6v16h9v2H4V2zm5 3 10 2v12L9 21V5zm7 7.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg><?php esc_html_e( 'Add door', 'panda-seasons' ); ?></button><button type="button" class="button" data-add-layer="surface"><span class="dashicons dashicons-format-image"></span><?php esc_html_e( 'Design area', 'panda-seasons' ); ?></button><button type="button" class="button" data-add-layer="text"><span class="dashicons dashicons-editor-textcolor"></span><?php esc_html_e( 'Text area', 'panda-seasons' ); ?></button></div></div>
 			</div>
 			<div class="panda-seasons-calendar-save-state" data-calendar-save-state aria-live="polite"></div>
 			<p class="description"><?php esc_html_e( 'Click Add door, Design area or Text area, or drag the corresponding button directly onto the calendar. Hold Shift while clicking to select several elements and move them together.', 'panda-seasons' ); ?></p>

@@ -1714,3 +1714,12 @@ msgstr "ContactPanda Plus entdecken"
 
 msgid "The click could not be recorded."
 msgstr "Der Klick konnte nicht erfasst werden."
+
+msgid "Show calendar title"
+msgstr "Kalendertitel anzeigen"
+
+msgid "Show calendar frame"
+msgstr "Kalenderrahmen anzeigen"
+
+msgid "Show calendar shadow"
+msgstr "Kalenderschatten anzeigen"

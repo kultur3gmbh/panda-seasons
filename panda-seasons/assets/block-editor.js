@@ -10,11 +10,14 @@
 		title: (window.pandaSeasonsBlock && pandaSeasonsBlock.title) || 'Panda Seasons calendar',
 		icon: 'calendar-alt',
 		category: 'widgets',
-		attributes: { id: { type: 'integer', default: 0 } },
+		attributes: { id: { type: 'integer', default: 0 }, showTitle: { type: 'boolean', default: true }, frame: { type: 'boolean', default: false }, shadow: { type: 'boolean', default: false } },
 		edit: function (props) {
 			var options = (window.pandaSeasonsBlock && pandaSeasonsBlock.calendars) || [];
 			return el('div', blockEditor.useBlockProps(),
 				el(components.SelectControl, { label: pandaSeasonsBlock.selectLabel, value: String(props.attributes.id || ''), options: options, onChange: function (value) { props.setAttributes({ id: parseInt(value, 10) || 0 }); } }),
+				el(components.ToggleControl, { label: pandaSeasonsBlock.showTitle, checked: props.attributes.showTitle !== false, onChange: function (value) { props.setAttributes({ showTitle: value }); } }),
+				el(components.ToggleControl, { label: pandaSeasonsBlock.frame, checked: !!props.attributes.frame, onChange: function (value) { props.setAttributes({ frame: value }); } }),
+				el(components.ToggleControl, { label: pandaSeasonsBlock.shadow, checked: !!props.attributes.shadow, onChange: function (value) { props.setAttributes({ shadow: value }); } }),
 				props.attributes.id ? el(ServerSideRender, { block: 'panda-seasons/calendar', attributes: props.attributes }) : null,
 				selectionHint(props.attributes.id, options)
 			);

@@ -158,8 +158,16 @@ trait Panda_Seasons_Runtime {
 	}
 
 	public static function shortcode( $atts ) {
-		$atts = shortcode_atts( array( 'id' => 0, 'preview' => 0, 'preview_date' => '', 'preview_time' => '', 'cover_desktop' => 0, 'cover_mobile' => 0, 'cache_bust' => '' ), $atts, 'panda_seasons' );
+		$atts = shortcode_atts( array( 'id' => 0, 'preview' => 0, 'preview_date' => '', 'preview_time' => '', 'cover_desktop' => 0, 'cover_mobile' => 0, 'cache_bust' => '', 'show_title' => 'yes', 'frame' => 'no', 'shadow' => 'no' ), $atts, 'panda_seasons' );
 		$id   = absint( $atts['id'] );
+		$is_enabled = static function ( $value, $default = false ) {
+			$value = strtolower( trim( (string) $value ) );
+			if ( '' === $value ) return $default;
+			return ! in_array( $value, array( '0', 'false', 'no', 'off' ), true );
+		};
+		$show_title = $is_enabled( $atts['show_title'], true );
+		$show_frame = $is_enabled( $atts['frame'] );
+		$show_shadow = $is_enabled( $atts['shadow'] );
 		$preview_mode = ! empty( $atts['preview'] ) && current_user_can( 'edit_post', $id );
 		$preview_now = null;
 		if ( $preview_mode && preg_match( '/^\d{4}-\d{2}-\d{2}$/', (string) $atts['preview_date'] ) ) {
@@ -198,9 +206,9 @@ trait Panda_Seasons_Runtime {
 
 		ob_start();
 		?>
-		<section class="panda-seasons panda-seasons--speed-<?php echo esc_attr( $effect_speed ); ?><?php echo $preview_mode ? ' is-preview' : ''; ?>" id="panda-seasons-<?php echo esc_attr( $id ); ?>" style="<?php echo esc_attr( $style ); ?>" data-calendar="<?php echo esc_attr( $id ); ?>" data-open-effect="<?php echo esc_attr( $open_effect ); ?>">
+		<section class="panda-seasons panda-seasons--speed-<?php echo esc_attr( $effect_speed ); ?><?php echo $preview_mode ? ' is-preview' : ''; ?><?php echo $show_frame ? ' panda-seasons--has-frame' : ''; ?><?php echo $show_shadow ? ' panda-seasons--has-shadow' : ''; ?>" id="panda-seasons-<?php echo esc_attr( $id ); ?>" style="<?php echo esc_attr( $style ); ?>" data-calendar="<?php echo esc_attr( $id ); ?>" data-open-effect="<?php echo esc_attr( $open_effect ); ?>">
 			<?php if ( $preview_mode ) : ?><p class="panda-seasons__preview-notice"><?php echo esc_html( $preview_now ? sprintf( __( 'Preview for %s – external actions are disabled.', 'panda-seasons' ), wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $preview_now->getTimestamp(), wp_timezone() ) ) : __( 'Preview mode – external actions are disabled.', 'panda-seasons' ) ); ?></p><?php endif; ?>
-			<header class="panda-seasons__header"><h2><?php echo esc_html( get_the_title( $id ) ); ?></h2><?php echo wp_kses_post( wpautop( $post->post_content ) ); ?></header>
+			<?php if ( $show_title || trim( (string) $post->post_content ) ) : ?><header class="panda-seasons__header"><?php if ( $show_title ) : ?><h2><?php echo esc_html( get_the_title( $id ) ); ?></h2><?php endif; ?><?php echo wp_kses_post( wpautop( $post->post_content ) ); ?></header><?php endif; ?>
 			<div class="panda-seasons__canvas" role="list">
 				<?php foreach ( self::sanitize_design_layers( get_post_meta( $id, '_ps_design_layers', true ) ) as $layer ) :
 					$layer_image = $layer['imageId'] ? wp_get_attachment_image_url( $layer['imageId'], 'full' ) : '';

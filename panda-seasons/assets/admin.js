@@ -1489,8 +1489,9 @@
 		settingsPanel.className='panda-seasons-main-panel';settingsPanel.dataset.mainEditorPanel='settings';settingsPanel.hidden=true;
 		emailPanel.className='panda-seasons-main-panel panda-seasons-email-panel';emailPanel.dataset.mainEditorPanel='email';emailPanel.hidden=true;
 		adminGrid.parentNode.insertBefore(mainTabs,adminGrid);mainTabs.parentNode.insertBefore(editorPanel,adminGrid);mainTabs.parentNode.insertBefore(settingsPanel,adminGrid);mainTabs.parentNode.insertBefore(emailPanel,adminGrid);
-		var titleBox=document.getElementById('titlediv');
-		if(titleBox)mainTabs.parentNode.insertBefore(titleBox,mainTabs);
+		var titleBox=document.getElementById('titlediv'),globalActions=document.querySelector('.panda-seasons-composer__primary-actions--global'),editorIntro=document.querySelector('.panda-seasons-editor-intro');
+		if(titleBox){mainTabs.parentNode.insertBefore(titleBox,mainTabs);if(globalActions)titleBox.insertAdjacentElement('afterend',globalActions);}else if(globalActions){mainTabs.parentNode.insertBefore(globalActions,mainTabs);}
+		if(editorIntro&&globalActions)globalActions.insertAdjacentElement('afterend',editorIntro);
 		editorPanel.appendChild(editorLayout);settingsPanel.appendChild(adminGrid);
 		if(emailBox){emailPanel.appendChild(emailBox);emailBox.classList.remove('closed');var emailToggle=emailBox.querySelector('.handlediv');if(emailToggle)emailToggle.setAttribute('aria-expanded','true');}
 		document.addEventListener('click',function(event){var button=event.target.closest('[data-main-editor-tab]');if(!button)return;var target=button.dataset.mainEditorTab;mainTabs.querySelectorAll('[data-main-editor-tab]').forEach(function(item){var active=item===button;item.classList.toggle('button-primary',active);item.setAttribute('aria-selected',active?'true':'false');});document.querySelectorAll('[data-main-editor-panel]').forEach(function(panel){panel.hidden=panel.dataset.mainEditorPanel!==target;});if(target==='editor'&&composer&&composer.renderDoors)composer.renderDoors();});
