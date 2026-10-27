@@ -3,8 +3,8 @@ set -euo pipefail
 repo_dir="$(cd "$(dirname "$0")/.." && pwd)"
 plugin_dir="$repo_dir/panda-seasons"
 test -f "$plugin_dir/panda-seasons.php"
-grep -q '^ \* Version: 0.8.3$' "$plugin_dir/panda-seasons.php"
-grep -q '^Stable tag: 0.8.3$' "$plugin_dir/readme.txt"
+grep -q '^ \* Version: 0.8.4$' "$plugin_dir/panda-seasons.php"
+grep -q '^Stable tag: 0.8.4$' "$plugin_dir/readme.txt"
 grep -R "Text Domain: panda-seasons" "$plugin_dir/panda-seasons.php" >/dev/null
 for translation_file in \
   "$plugin_dir/languages/panda-seasons-de_DE.po" \

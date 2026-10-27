@@ -16,6 +16,15 @@ final class Panda_Seasons_Subscriptions {
 	public static function form( $calendar_id, $options = array() ) {
 		if ( ! Panda_Seasons_Plugin::contactpanda_available() ) return '';
 		$options = wp_parse_args( (array) $options, array( 'heading' => '' ) );
+		if ( defined( 'CONTACTPANDA_URL' ) ) {
+			wp_enqueue_style( 'contactpanda-registration', CONTACTPANDA_URL . 'assets/contactpanda-registration.css', array(), defined( 'CONTACTPANDA_ASSET_VERSION' ) ? CONTACTPANDA_ASSET_VERSION : null );
+		}
+		$contactpanda_settings = (array) get_option( 'contactpanda_general_settings', array() );
+		$theme_class = '';
+		if ( ! empty( $contactpanda_settings['theme_styles'] ) ) {
+			$theme_stylesheet = sanitize_html_class( (string) ( $contactpanda_settings['theme_stylesheet'] ?? get_stylesheet() ) );
+			$theme_class = ' contactpanda-use-theme-styles contactpanda-theme-' . $theme_stylesheet;
+		}
 		$message = sanitize_key( wp_unslash( $_GET['panda_seasons_message'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only status.
 		$messages = array(
 			'active'                   => get_post_meta( $calendar_id, '_ps_signup_active_message', true ) ?: __( 'You are registered for this email calendar.', 'panda-seasons' ),
@@ -34,7 +43,7 @@ final class Panda_Seasons_Subscriptions {
 		);
 		ob_start();
 		?>
-		<div class="panda-seasons__subscription">
+		<div class="panda-seasons__subscription<?php echo esc_attr( $theme_class ); ?>">
 			<h3><?php echo esc_html( $options['heading'] ?: ( get_post_meta( $calendar_id, '_ps_signup_title', true ) ?: __( 'Receive this calendar by email', 'panda-seasons' ) ) ); ?></h3>
 			<?php if ( get_post_meta( $calendar_id, '_ps_signup_text', true ) ) : ?><p><?php echo esc_html( get_post_meta( $calendar_id, '_ps_signup_text', true ) ); ?></p><?php endif; ?>
 			<?php if ( isset( $messages[ $message ] ) ) : ?><p class="panda-seasons__notice" role="status"><?php echo esc_html( $messages[ $message ] ); ?></p><?php endif; ?>
@@ -47,7 +56,7 @@ final class Panda_Seasons_Subscriptions {
 				<label><span><?php esc_html_e( 'Email address', 'panda-seasons' ); ?></span><input type="email" name="email" autocomplete="email" required></label>
 				<label class="panda-seasons__consent"><input type="checkbox" name="calendar_consent" value="1" required> <span><?php echo esc_html( $consent ); ?></span></label>
 				<?php if ( $newsletter_available ) : ?><label class="panda-seasons__consent"><input type="checkbox" name="general_newsletter_consent" value="1"> <span><?php echo esc_html( $newsletter_consent ); ?></span></label><?php endif; ?>
-				<button type="submit"><?php echo esc_html( $button ); ?></button>
+				<button class="contactpanda-registration-submit contactpanda-theme-button" type="submit"><?php echo esc_html( $button ); ?></button>
 			</form>
 		</div>
 		<?php
