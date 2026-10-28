@@ -1229,26 +1229,26 @@ final class Panda_Seasons_Plugin {
 			: 'https://github.com/kultur3gmbh/contactpanda/releases/latest';
 		$enabled   = $available && (bool) get_post_meta( $post->ID, '_ps_email_enabled', true );
 		$time      = get_post_meta( $post->ID, '_ps_email_time', true ) ?: '09:00';
-		$subject   = get_post_meta( $post->ID, '_ps_email_subject', true ) ?: __( '{calendar}: Door {day} is open', 'panda-seasons' );
+		$subject   = get_post_meta( $post->ID, '_ps_email_subject', true ) ?: __( '{calendar}: Your door for day {day} is waiting', 'panda-seasons' );
 		$signup_title = get_post_meta( $post->ID, '_ps_signup_title', true ) ?: __( 'Receive this calendar by email', 'panda-seasons' );
-		$signup_text  = (string) get_post_meta( $post->ID, '_ps_signup_text', true );
+		$signup_text  = (string) get_post_meta( $post->ID, '_ps_signup_text', true ) ?: __( 'Sign up now and enjoy “{calendar}” day by day by email. After signing up, you will receive an email to confirm your address.', 'panda-seasons' );
 		$newsletter_mode = (string) get_post_meta( $post->ID, '_ps_newsletter_mode', true ) ?: 'none';
 		$contact_tag = (string) get_post_meta( $post->ID, '_ps_contact_tag', true );
 		if ( ! $contact_tag ) $contact_tag = sprintf( __( 'Panda Seasons – %s', 'panda-seasons' ), get_the_title( $post ) );
 		$signup_consent = (string) get_post_meta( $post->ID, '_ps_signup_consent', true ) ?: sprintf( __( 'I would like to receive the daily emails for “%s”. I can unsubscribe at any time.', 'panda-seasons' ), get_the_title( $post ) );
 		$signup_button = (string) get_post_meta( $post->ID, '_ps_signup_button_label', true ) ?: __( 'Register for email calendar', 'panda-seasons' );
-		$signup_pending = (string) get_post_meta( $post->ID, '_ps_signup_pending_message', true ) ?: __( 'Please check your inbox and confirm your email address. Also check your spam folder.', 'panda-seasons' );
-		$signup_active = (string) get_post_meta( $post->ID, '_ps_signup_active_message', true ) ?: __( 'You are registered for this email calendar.', 'panda-seasons' );
-		$signup_error = (string) get_post_meta( $post->ID, '_ps_signup_error_message', true ) ?: __( 'The registration could not be completed. Please try again.', 'panda-seasons' );
-		$doi_subject = (string) get_post_meta( $post->ID, '_ps_doi_subject', true ) ?: sprintf( __( 'Confirm your registration for %s', 'panda-seasons' ), get_the_title( $post ) );
-		$doi_text = (string) get_post_meta( $post->ID, '_ps_doi_text', true ) ?: __( 'Please confirm that you would like to receive this email calendar.', 'panda-seasons' );
-		$doi_button = (string) get_post_meta( $post->ID, '_ps_doi_button_label', true ) ?: __( 'Confirm email calendar', 'panda-seasons' );
-		$confirmation_title = (string) get_post_meta( $post->ID, '_ps_confirmation_title', true ) ?: __( 'Registration confirmed', 'panda-seasons' );
-		$confirmation_text = (string) get_post_meta( $post->ID, '_ps_confirmation_text', true ) ?: sprintf( __( 'You will now receive the emails for “%s”.', 'panda-seasons' ), get_the_title( $post ) );
+		$signup_pending = (string) get_post_meta( $post->ID, '_ps_signup_pending_message', true ) ?: __( 'Thank you for signing up for “{calendar}”. We have sent you a confirmation email. Please click the link in it to complete your registration. If you cannot find the email, please check your spam folder.', 'panda-seasons' );
+		$signup_active = (string) get_post_meta( $post->ID, '_ps_signup_active_message', true ) ?: __( 'Thank you! Your registration for “{calendar}” is confirmed. From now on, you will receive the calendar emails directly in your inbox.', 'panda-seasons' );
+		$signup_error = (string) get_post_meta( $post->ID, '_ps_signup_error_message', true ) ?: __( 'Unfortunately, your registration for “{calendar}” could not be completed. Please check your details and try again.', 'panda-seasons' );
+		$doi_subject = (string) get_post_meta( $post->ID, '_ps_doi_subject', true ) ?: __( 'One more step: confirm your registration for “{calendar}”', 'panda-seasons' );
+		$doi_text = (string) get_post_meta( $post->ID, '_ps_doi_text', true ) ?: __( 'Thank you for your interest in “{calendar}”. Please confirm your email address using the button below. Only then will your registration be complete and we can send you the calendar emails.', 'panda-seasons' );
+		$doi_button = (string) get_post_meta( $post->ID, '_ps_doi_button_label', true ) ?: __( 'Confirm registration', 'panda-seasons' );
+		$confirmation_title = (string) get_post_meta( $post->ID, '_ps_confirmation_title', true ) ?: __( 'Thank you – your registration is confirmed', 'panda-seasons' );
+		$confirmation_text = (string) get_post_meta( $post->ID, '_ps_confirmation_text', true ) ?: __( 'Welcome to “{calendar}”! Your registration was successful. You will receive the calendar emails at the scheduled time. We hope you enjoy discovering each new door.', 'panda-seasons' );
 		$doi_reminder_count = min( 3, absint( get_post_meta( $post->ID, '_ps_doi_reminder_count', true ) ) );
 		$doi_reminder_delays = (array) get_post_meta( $post->ID, '_ps_doi_reminder_delays', true );
-		$doi_reminder_subject = (string) get_post_meta( $post->ID, '_ps_doi_reminder_subject', true ) ?: sprintf( __( 'Reminder: confirm your registration for %s', 'panda-seasons' ), get_the_title( $post ) );
-		$doi_reminder_text = (string) get_post_meta( $post->ID, '_ps_doi_reminder_text', true ) ?: __( 'Please confirm your registration for the email calendar using the following link.', 'panda-seasons' );
+		$doi_reminder_subject = (string) get_post_meta( $post->ID, '_ps_doi_reminder_subject', true ) ?: __( 'A quick reminder: please confirm “{calendar}”', 'panda-seasons' );
+		$doi_reminder_text = (string) get_post_meta( $post->ID, '_ps_doi_reminder_text', true ) ?: __( 'You recently signed up for “{calendar}”, but your confirmation is still pending. If you would like to receive the calendar emails, please confirm your email address using the button below. If you did not sign up, you can simply ignore this message.', 'panda-seasons' );
 		$subscription_stats = array( 'active' => 0, 'pending' => 0, 'unsubscribed' => 0, 'total' => 0 );
 		$subscription_table = Panda_Seasons_Schema::tables()['subscriptions'];
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT status,COUNT(*) AS amount FROM `{$subscription_table}` WHERE calendar_id=%d GROUP BY status", $post->ID ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- internal table name.
@@ -1284,6 +1284,7 @@ final class Panda_Seasons_Plugin {
 		<div class="panda-seasons-signup-columns"><div class="panda-seasons-signup-column">
 		<section><h3><?php esc_html_e( 'Advance email-calendar registration', 'panda-seasons' ); ?></h3>
 		<p class="description"><?php esc_html_e( 'Publish this registration immediately, before the first door opens. New contacts receive a double opt-in email and the calendar-specific tag.', 'panda-seasons' ); ?></p>
+		<p class="description"><?php esc_html_e( 'You can use {calendar} for the calendar name. Email texts also support {first_name}; daily email subjects additionally support {day}.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-admin-grid">
 			<label><span><?php esc_html_e( 'Signup heading', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_signup_title" value="<?php echo esc_attr( $signup_title ); ?>"></label>
 			<label><span><?php esc_html_e( 'Signup description', 'panda-seasons' ); ?></span><textarea name="panda_seasons_signup_text" rows="3"><?php echo esc_textarea( $signup_text ); ?></textarea></label>
@@ -1295,7 +1296,7 @@ final class Panda_Seasons_Plugin {
 			<label class="is-wide"><span><?php esc_html_e( 'Error message', 'panda-seasons' ); ?></span><textarea name="panda_seasons_signup_error_message" rows="2"><?php echo esc_textarea( $signup_error ); ?></textarea></label>
 		</div>
 		<p class="panda-seasons-shortcode"><strong><?php esc_html_e( 'Signup shortcode', 'panda-seasons' ); ?></strong><span class="panda-seasons-copy-row"><input type="text" readonly value="[panda_seasons_subscribe id=&quot;<?php echo esc_attr( $post->ID ); ?>&quot;]"><button type="button" class="button" data-copy-shortcode><?php esc_html_e( 'Copy', 'panda-seasons' ); ?></button></span></p></section>
-		<section><h3><?php esc_html_e( 'Double opt-in email', 'panda-seasons' ); ?></h3><p class="description"><?php esc_html_e( 'These texts are sent to new, not yet confirmed contacts. The confirmation link is inserted automatically.', 'panda-seasons' ); ?></p>
+		<section><h3><?php esc_html_e( 'Double opt-in email', 'panda-seasons' ); ?></h3><p class="description"><?php esc_html_e( 'These texts are sent to new, not yet confirmed contacts. The confirmation link and the calendar reference are inserted automatically.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-admin-grid">
 			<label class="is-wide"><span><?php esc_html_e( 'Double opt-in subject', 'panda-seasons' ); ?></span><input type="text" name="panda_seasons_doi_subject" value="<?php echo esc_attr( $doi_subject ); ?>"></label>
 			<label class="is-wide"><span><?php esc_html_e( 'Double opt-in text', 'panda-seasons' ); ?></span><textarea name="panda_seasons_doi_text" rows="4"><?php echo esc_textarea( $doi_text ); ?></textarea></label>

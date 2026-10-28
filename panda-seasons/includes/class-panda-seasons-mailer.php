@@ -34,13 +34,15 @@ final class Panda_Seasons_Mailer {
 			$attempts = absint( $subscription['log_attempts'] ?? 0 ) + 1;
 			$wpdb->update( $tables['mail_log'], array( 'status' => 'sending', 'attempts' => $attempts, 'error_message' => '' ), array( 'id' => $log_id ) );
 			$subject = get_post_meta( $door->ID, '_ps_email_subject', true ) ?: get_post_meta( $calendar->ID, '_ps_email_subject', true );
+			if ( '' === trim( (string) $subject ) ) $subject = __( '{calendar}: Your door for day {day} is waiting', 'panda-seasons' );
 			$number = absint( get_post_meta( $door->ID, '_ps_door_number', true ) );
 			$subject = strtr( $subject, array( '{calendar}' => $calendar->post_title, '{day}' => (string) $number, '{first_name}' => $subscription['first_name'] ) );
 			$calendar_url = apply_filters( 'panda_seasons_calendar_url', home_url( '/' ), $calendar->ID );
 			$unsubscribe = Panda_Seasons_Subscriptions::unsubscribe_url( $subscription['id'] );
 			$email_content = (string) get_post_meta( $door->ID, '_ps_email_content', true );
 			if ( '' === trim( $email_content ) ) $email_content = $door->post_content;
-			$html = '<h1>' . esc_html( $door->post_title ?: sprintf( __( 'Door %d', 'panda-seasons' ), $number ) ) . '</h1>' . apply_filters( 'the_content', $email_content );
+			$intro = sprintf( __( 'Hello %1$s, a new door in “%2$s” is ready for you. We hope you enjoy discovering today’s surprise.', 'panda-seasons' ), $subscription['first_name'], $calendar->post_title );
+			$html = '<p>' . esc_html( $intro ) . '</p><h1>' . esc_html( $door->post_title ?: sprintf( __( 'Door %d', 'panda-seasons' ), $number ) ) . '</h1>' . apply_filters( 'the_content', $email_content );
 			$html .= Panda_Seasons_Plugin::door_content_markup( $door, 'email' );
 			$html .= '<p><a href="' . esc_url( $calendar_url . '#panda-season-door-' . $door->ID ) . '">' . esc_html__( 'Open calendar', 'panda-seasons' ) . '</a></p>';
 			$html .= '<hr><p><a href="' . esc_url( $unsubscribe ) . '">' . esc_html__( 'Manage or unsubscribe from calendar emails', 'panda-seasons' ) . '</a></p>';

@@ -1762,3 +1762,51 @@ msgstr "Rahmen anzeigen"
 
 msgid "Show shadow"
 msgstr "Schatten anzeigen"
+
+msgid "{calendar}: Your door for day {day} is waiting"
+msgstr "{calendar}: Ihre Türe für Tag {day} wartet auf Sie"
+
+msgid "Hello %1$s, a new door in “%2$s” is ready for you. We hope you enjoy discovering today’s surprise."
+msgstr "Hallo %1$s, im Kalender „%2$s“ wartet eine neue Türe auf Sie. Wir wünschen Ihnen viel Freude mit der heutigen Überraschung."
+
+msgid "Sign up now and enjoy “{calendar}” day by day by email. After signing up, you will receive an email to confirm your address."
+msgstr "Melden Sie sich jetzt an und genießen Sie „{calendar}“ Tag für Tag per E-Mail. Nach der Anmeldung erhalten Sie eine Nachricht, mit der Sie Ihre E-Mail-Adresse bestätigen."
+
+msgid "Thank you for signing up for “{calendar}”. We have sent you a confirmation email. Please click the link in it to complete your registration. If you cannot find the email, please check your spam folder."
+msgstr "Vielen Dank für Ihre Anmeldung zu „{calendar}“. Wir haben Ihnen eine Bestätigungs-E-Mail gesendet. Bitte klicken Sie auf den darin enthaltenen Link, um Ihre Anmeldung abzuschließen. Falls Sie die Nachricht nicht finden, prüfen Sie bitte auch Ihren Spam-Ordner."
+
+msgid "Thank you! Your registration for “{calendar}” is confirmed. From now on, you will receive the calendar emails directly in your inbox."
+msgstr "Vielen Dank! Ihre Anmeldung zu „{calendar}“ ist bestätigt. Ab jetzt erhalten Sie die Kalender-E-Mails direkt in Ihr Postfach."
+
+msgid "Unfortunately, your registration for “{calendar}” could not be completed. Please check your details and try again."
+msgstr "Leider konnte Ihre Anmeldung zu „{calendar}“ nicht abgeschlossen werden. Bitte prüfen Sie Ihre Angaben und versuchen Sie es erneut."
+
+msgid "One more step: confirm your registration for “{calendar}”"
+msgstr "Nur noch ein Schritt: Bitte bestätigen Sie Ihre Anmeldung zu „{calendar}“"
+
+msgid "Thank you for your interest in “{calendar}”. Please confirm your email address using the button below. Only then will your registration be complete and we can send you the calendar emails."
+msgstr "Vielen Dank für Ihr Interesse an „{calendar}“. Bitte bestätigen Sie Ihre E-Mail-Adresse über die Schaltfläche unten. Erst danach ist Ihre Anmeldung vollständig und wir dürfen Ihnen die Kalender-E-Mails zusenden."
+
+msgid "Confirm registration"
+msgstr "Anmeldung bestätigen"
+
+msgid "Hello {first_name},"
+msgstr "Hallo {first_name},"
+
+msgid "Thank you – your registration is confirmed"
+msgstr "Vielen Dank – Ihre Anmeldung ist bestätigt"
+
+msgid "Welcome to “{calendar}”! Your registration was successful. You will receive the calendar emails at the scheduled time. We hope you enjoy discovering each new door."
+msgstr "Willkommen bei „{calendar}“! Ihre Anmeldung war erfolgreich. Sie erhalten die Kalender-E-Mails künftig zum vorgesehenen Zeitpunkt. Wir wünschen Ihnen viel Freude beim Entdecken der einzelnen Türen."
+
+msgid "A quick reminder: please confirm “{calendar}”"
+msgstr "Eine kurze Erinnerung: Bitte bestätigen Sie „{calendar}“"
+
+msgid "You recently signed up for “{calendar}”, but your confirmation is still pending. If you would like to receive the calendar emails, please confirm your email address using the button below. If you did not sign up, you can simply ignore this message."
+msgstr "Sie haben sich vor Kurzem für „{calendar}“ angemeldet, Ihre Bestätigung steht jedoch noch aus. Wenn Sie die Kalender-E-Mails erhalten möchten, bestätigen Sie Ihre E-Mail-Adresse bitte über die Schaltfläche unten. Falls Sie sich nicht angemeldet haben, können Sie diese Nachricht einfach ignorieren."
+
+msgid "You can use {calendar} for the calendar name. Email texts also support {first_name}; daily email subjects additionally support {day}."
+msgstr "Für den Kalendernamen können Sie {calendar} verwenden. E-Mail-Texte unterstützen außerdem {first_name}; in Betreffzeilen der täglichen E-Mails steht zusätzlich {day} zur Verfügung."
+
+msgid "These texts are sent to new, not yet confirmed contacts. The confirmation link and the calendar reference are inserted automatically."
+msgstr "Diese Texte werden an neue, noch nicht bestätigte Kontakte gesendet. Der Bestätigungslink und der Bezug zum jeweiligen Kalender werden automatisch eingefügt."

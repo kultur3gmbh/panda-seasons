@@ -27,9 +27,9 @@ final class Panda_Seasons_Subscriptions {
 		}
 		$message = sanitize_key( wp_unslash( $_GET['panda_seasons_message'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only status.
 		$messages = array(
-			'active'                   => get_post_meta( $calendar_id, '_ps_signup_active_message', true ) ?: __( 'You are registered for this email calendar.', 'panda-seasons' ),
-			'pending'                  => get_post_meta( $calendar_id, '_ps_signup_pending_message', true ) ?: __( 'Please check your inbox and confirm your email address. Also check your spam folder.', 'panda-seasons' ),
-			'error'                    => get_post_meta( $calendar_id, '_ps_signup_error_message', true ) ?: __( 'The registration could not be completed. Please try again.', 'panda-seasons' ),
+			'active'                   => get_post_meta( $calendar_id, '_ps_signup_active_message', true ) ?: __( 'Thank you! Your registration for “{calendar}” is confirmed. From now on, you will receive the calendar emails directly in your inbox.', 'panda-seasons' ),
+			'pending'                  => get_post_meta( $calendar_id, '_ps_signup_pending_message', true ) ?: __( 'Thank you for signing up for “{calendar}”. We have sent you a confirmation email. Please click the link in it to complete your registration. If you cannot find the email, please check your spam folder.', 'panda-seasons' ),
+			'error'                    => get_post_meta( $calendar_id, '_ps_signup_error_message', true ) ?: __( 'Unfortunately, your registration for “{calendar}” could not be completed. Please check your details and try again.', 'panda-seasons' ),
 			'active_newsletter_error'  => __( 'You are registered for this email calendar. The general newsletter signup could not be completed.', 'panda-seasons' ),
 			'pending_newsletter_error' => __( 'Please confirm your email-calendar registration using the email we sent. The general newsletter signup could not be completed.', 'panda-seasons' ),
 		);
@@ -44,9 +44,10 @@ final class Panda_Seasons_Subscriptions {
 		ob_start();
 		?>
 		<div class="panda-seasons__subscription<?php echo esc_attr( $theme_class ); ?>">
-			<h3><?php echo esc_html( $options['heading'] ?: ( get_post_meta( $calendar_id, '_ps_signup_title', true ) ?: __( 'Receive this calendar by email', 'panda-seasons' ) ) ); ?></h3>
-			<?php if ( get_post_meta( $calendar_id, '_ps_signup_text', true ) ) : ?><p><?php echo esc_html( get_post_meta( $calendar_id, '_ps_signup_text', true ) ); ?></p><?php endif; ?>
-			<?php if ( isset( $messages[ $message ] ) ) : ?><p class="panda-seasons__notice" role="status"><?php echo esc_html( $messages[ $message ] ); ?></p><?php endif; ?>
+			<h3><?php echo esc_html( self::personalize( $options['heading'] ?: ( get_post_meta( $calendar_id, '_ps_signup_title', true ) ?: __( 'Receive this calendar by email', 'panda-seasons' ) ), $calendar_id ) ); ?></h3>
+			<?php $signup_text = get_post_meta( $calendar_id, '_ps_signup_text', true ) ?: __( 'Sign up now and enjoy “{calendar}” day by day by email. After signing up, you will receive an email to confirm your address.', 'panda-seasons' ); ?>
+			<p><?php echo esc_html( self::personalize( $signup_text, $calendar_id ) ); ?></p>
+			<?php if ( isset( $messages[ $message ] ) ) : ?><p class="panda-seasons__notice" role="status"><?php echo esc_html( self::personalize( $messages[ $message ], $calendar_id ) ); ?></p><?php endif; ?>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="panda_seasons_subscribe">
 				<input type="hidden" name="calendar_id" value="<?php echo esc_attr( $calendar_id ); ?>">
@@ -61,6 +62,13 @@ final class Panda_Seasons_Subscriptions {
 		</div>
 		<?php
 		return ob_get_clean();
+	}
+
+	private static function personalize( $text, $calendar_id, $first_name = '' ) {
+		return strtr( (string) $text, array(
+			'{calendar}'   => get_the_title( $calendar_id ),
+			'{first_name}' => (string) $first_name,
+		) );
 	}
 
 	public static function subscribe() {
@@ -102,10 +110,10 @@ final class Panda_Seasons_Subscriptions {
 		if ( $verified ) self::redirect( $calendar_id, is_wp_error( $newsletter_result ) ? 'active_newsletter_error' : 'active' );
 
 		$url = add_query_arg( array( 'action' => 'panda_seasons_confirm', 'subscription' => $row['id'], 'token' => $token ), admin_url( 'admin-post.php' ) );
-		$subject = get_post_meta( $calendar_id, '_ps_doi_subject', true ) ?: sprintf( __( 'Confirm your registration for %s', 'panda-seasons' ), get_the_title( $calendar_id ) );
-		$doi_text = get_post_meta( $calendar_id, '_ps_doi_text', true ) ?: __( 'Please confirm that you would like to receive this email calendar.', 'panda-seasons' );
-		$doi_button = get_post_meta( $calendar_id, '_ps_doi_button_label', true ) ?: __( 'Confirm email calendar', 'panda-seasons' );
-		$body = '<p>' . esc_html( sprintf( __( 'Hello %s,', 'panda-seasons' ), $first_name ) ) . '</p><p>' . nl2br( esc_html( $doi_text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $doi_button ) . '</a></p>';
+		$subject = self::personalize( get_post_meta( $calendar_id, '_ps_doi_subject', true ) ?: __( 'One more step: confirm your registration for “{calendar}”', 'panda-seasons' ), $calendar_id, $first_name );
+		$doi_text = self::personalize( get_post_meta( $calendar_id, '_ps_doi_text', true ) ?: __( 'Thank you for your interest in “{calendar}”. Please confirm your email address using the button below. Only then will your registration be complete and we can send you the calendar emails.', 'panda-seasons' ), $calendar_id, $first_name );
+		$doi_button = get_post_meta( $calendar_id, '_ps_doi_button_label', true ) ?: __( 'Confirm registration', 'panda-seasons' );
+		$body = '<p>' . esc_html( self::personalize( __( 'Hello {first_name},', 'panda-seasons' ), $calendar_id, $first_name ) ) . '</p><p>' . nl2br( esc_html( $doi_text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $doi_button ) . '</a></p>';
 		$sent = self::send( $email, $subject, $body );
 		if ( ! $sent ) self::redirect( $calendar_id, 'error' );
 		self::schedule_confirmation_reminders( $row, $token );
@@ -152,10 +160,10 @@ final class Panda_Seasons_Subscriptions {
 		if ( ! $row || 'pending' !== $row['status'] || ! is_email( $row['email'] ) ) return;
 		$calendar_id = absint( $row['calendar_id'] );
 		$url = add_query_arg( array( 'action' => 'panda_seasons_confirm', 'subscription' => $row['id'], 'token' => $token ), admin_url( 'admin-post.php' ) );
-		$subject = get_post_meta( $calendar_id, '_ps_doi_reminder_subject', true ) ?: sprintf( __( 'Reminder: confirm your registration for %s', 'panda-seasons' ), get_the_title( $calendar_id ) );
-		$text = get_post_meta( $calendar_id, '_ps_doi_reminder_text', true ) ?: __( 'Please confirm your registration for the email calendar using the following link.', 'panda-seasons' );
-		$button = get_post_meta( $calendar_id, '_ps_doi_button_label', true ) ?: __( 'Confirm email calendar', 'panda-seasons' );
-		$body = '<p>' . esc_html( sprintf( __( 'Hello %s,', 'panda-seasons' ), $row['first_name'] ) ) . '</p><p>' . nl2br( esc_html( $text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $button ) . '</a></p>';
+		$subject = self::personalize( get_post_meta( $calendar_id, '_ps_doi_reminder_subject', true ) ?: __( 'A quick reminder: please confirm “{calendar}”', 'panda-seasons' ), $calendar_id, $row['first_name'] );
+		$text = self::personalize( get_post_meta( $calendar_id, '_ps_doi_reminder_text', true ) ?: __( 'You recently signed up for “{calendar}”, but your confirmation is still pending. If you would like to receive the calendar emails, please confirm your email address using the button below. If you did not sign up, you can simply ignore this message.', 'panda-seasons' ), $calendar_id, $row['first_name'] );
+		$button = get_post_meta( $calendar_id, '_ps_doi_button_label', true ) ?: __( 'Confirm registration', 'panda-seasons' );
+		$body = '<p>' . esc_html( self::personalize( __( 'Hello {first_name},', 'panda-seasons' ), $calendar_id, $row['first_name'] ) ) . '</p><p>' . nl2br( esc_html( $text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $button ) . '</a></p>';
 		if ( self::send( $row['email'], $subject, $body ) ) self::log_event( $row, 'confirmation_reminder_' . absint( $number ), 'calendar', 'double_opt_in' );
 	}
 
@@ -167,8 +175,8 @@ final class Panda_Seasons_Subscriptions {
 		$row['status'] = 'active';
 		self::log_event( $row, 'confirmed', 'calendar', 'double_opt_in' );
 		self::sync_contactpanda_subscription( $row, 'granted', sprintf( 'Calendar double opt-in confirmed for subscription %1$d at %2$s.', absint( $row['id'] ), $now ) );
-		$title = get_post_meta( $row['calendar_id'], '_ps_confirmation_title', true ) ?: __( 'Registration confirmed', 'panda-seasons' );
-		$message = get_post_meta( $row['calendar_id'], '_ps_confirmation_text', true ) ?: sprintf( __( 'You will now receive the emails for “%s”.', 'panda-seasons' ), get_the_title( $row['calendar_id'] ) );
+		$title = self::personalize( get_post_meta( $row['calendar_id'], '_ps_confirmation_title', true ) ?: __( 'Thank you – your registration is confirmed', 'panda-seasons' ), $row['calendar_id'], $row['first_name'] );
+		$message = self::personalize( get_post_meta( $row['calendar_id'], '_ps_confirmation_text', true ) ?: __( 'Welcome to “{calendar}”! Your registration was successful. You will receive the calendar emails at the scheduled time. We hope you enjoy discovering each new door.', 'panda-seasons' ), $row['calendar_id'], $row['first_name'] );
 		self::result_page( $title, $message );
 	}
 
