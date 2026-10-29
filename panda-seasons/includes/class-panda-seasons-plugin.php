@@ -1267,6 +1267,17 @@ final class Panda_Seasons_Plugin {
 				<p><?php esc_html_e( 'Install the free ContactPanda plugin to send calendar doors by email, collect advance calendar registrations and use the integrated newsletter signup. The standalone web calendar remains fully available without it.', 'panda-seasons' ); ?></p>
 				<p><a class="button button-primary" href="<?php echo esc_url( $contactpanda_action_url ); ?>"<?php echo $contactpanda_installed ? '' : ' target="_blank" rel="noopener noreferrer"'; ?>><?php echo esc_html( $contactpanda_installed ? __( 'Activate ContactPanda', 'panda-seasons' ) : __( 'Get ContactPanda free', 'panda-seasons' ) ); ?></a><?php if ( ! $contactpanda_installed ) : ?> <a class="button" href="<?php echo esc_url( self_admin_url( 'plugin-install.php?tab=upload' ) ); ?>"><?php esc_html_e( 'Upload plugin ZIP', 'panda-seasons' ); ?></a><?php endif; ?></p>
 			</div>
+		<?php elseif ( is_callable( array( 'ContactPanda_System_Emails', 'send' ) ) ) : ?>
+			<div class="notice notice-info inline">
+				<p><strong><?php esc_html_e( 'Central email design from ContactPanda Basic', 'panda-seasons' ); ?></strong></p>
+				<p><?php esc_html_e( 'Double opt-in, reminder and daily calendar emails use the central transactional email template from ContactPanda Basic. Configure the email design, footer and unsubscribe information there.', 'panda-seasons' ); ?></p>
+				<p><a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=contactpanda-settings&tab=general&general_section=system_emails' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Open central email settings', 'panda-seasons' ); ?></a></p>
+			</div>
+		<?php else : ?>
+			<div class="notice notice-warning inline">
+				<p><strong><?php esc_html_e( 'ContactPanda Basic email template not yet available', 'panda-seasons' ); ?></strong></p>
+				<p><?php esc_html_e( 'Panda Seasons will continue to send its existing HTML emails. Update ContactPanda Basic to use the central transactional email design for all calendar emails.', 'panda-seasons' ); ?></p>
+			</div>
 		<?php endif; ?>
 		<section><h3><?php esc_html_e( 'Daily calendar email', 'panda-seasons' ); ?></h3><p class="description"><?php esc_html_e( 'Sends the newly opened door to registered calendar subscribers at the selected time.', 'panda-seasons' ); ?></p>
 		<p><label><input type="checkbox" name="panda_seasons_email_enabled" value="1" <?php checked( $enabled ); ?> <?php disabled( ! $available ); ?>> <?php esc_html_e( 'Enable daily delivery', 'panda-seasons' ); ?></label></p>

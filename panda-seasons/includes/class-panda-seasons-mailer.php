@@ -44,7 +44,7 @@ final class Panda_Seasons_Mailer {
 			$intro = sprintf( __( 'Hello %1$s, a new door in “%2$s” is ready for you. We hope you enjoy discovering today’s surprise.', 'panda-seasons' ), $subscription['first_name'], $calendar->post_title );
 			$html = '<p>' . esc_html( $intro ) . '</p><h1>' . esc_html( $door->post_title ?: sprintf( __( 'Door %d', 'panda-seasons' ), $number ) ) . '</h1>' . apply_filters( 'the_content', $email_content );
 			$html .= Panda_Seasons_Plugin::door_content_markup( $door, 'email' );
-			$html .= '<p><a href="' . esc_url( $calendar_url . '#panda-season-door-' . $door->ID ) . '">' . esc_html__( 'Open calendar', 'panda-seasons' ) . '</a></p>';
+			$html .= '<p><a class="contactpanda-email-button" href="' . esc_url( $calendar_url . '#panda-season-door-' . $door->ID ) . '">' . esc_html__( 'Open calendar', 'panda-seasons' ) . '</a></p>';
 			$html .= '<hr><p><a href="' . esc_url( $unsubscribe ) . '">' . esc_html__( 'Manage or unsubscribe from calendar emails', 'panda-seasons' ) . '</a></p>';
 			$payload = apply_filters( 'panda_seasons_door_email', array( 'email' => $subscription['email'], 'subject' => $subject, 'html' => $html ), $calendar, $door, $subscription );
 			$sent = Panda_Seasons_Subscriptions::send_mail( $payload['email'], $payload['subject'], $payload['html'] );

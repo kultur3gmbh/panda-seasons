@@ -87,6 +87,22 @@ for calendar_consent_contract in (
 ):
 	if calendar_consent_contract not in subscriptions:
 		raise SystemExit(f"Missing calendar-specific ContactPanda consent contract {calendar_consent_contract}")
+for system_email_contract in (
+	"ContactPanda_System_Emails",
+	"is_callable( array( 'ContactPanda_System_Emails', 'send' ) )",
+	"contactpanda-email-button",
+	"panda_seasons_send_email",
+	"wp_mail",
+):
+	if system_email_contract not in subscriptions:
+		raise SystemExit(f"Missing central system-email contract {system_email_contract}")
+for system_email_ui_contract in (
+	"Central email design from ContactPanda Basic",
+	"general_section=system_emails",
+	"ContactPanda Basic email template not yet available",
+):
+	if system_email_ui_contract not in plugin:
+		raise SystemExit(f"Missing central system-email settings notice {system_email_ui_contract}")
 for media_contract in ("wp_ajax_panda_seasons_save_editor_door", "save_editor_door_ajax", "_ps_media_id"):
     if media_contract not in plugin:
         raise SystemExit(f"Missing persistent door media contract {media_contract}")

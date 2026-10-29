@@ -113,7 +113,7 @@ final class Panda_Seasons_Subscriptions {
 		$subject = self::personalize( get_post_meta( $calendar_id, '_ps_doi_subject', true ) ?: __( 'One more step: confirm your registration for “{calendar}”', 'panda-seasons' ), $calendar_id, $first_name );
 		$doi_text = self::personalize( get_post_meta( $calendar_id, '_ps_doi_text', true ) ?: __( 'Thank you for your interest in “{calendar}”. Please confirm your email address using the button below. Only then will your registration be complete and we can send you the calendar emails.', 'panda-seasons' ), $calendar_id, $first_name );
 		$doi_button = get_post_meta( $calendar_id, '_ps_doi_button_label', true ) ?: __( 'Confirm registration', 'panda-seasons' );
-		$body = '<p>' . esc_html( self::personalize( __( 'Hello {first_name},', 'panda-seasons' ), $calendar_id, $first_name ) ) . '</p><p>' . nl2br( esc_html( $doi_text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $doi_button ) . '</a></p>';
+		$body = '<p>' . esc_html( self::personalize( __( 'Hello {first_name},', 'panda-seasons' ), $calendar_id, $first_name ) ) . '</p><p>' . nl2br( esc_html( $doi_text ) ) . '</p><p><a class="contactpanda-email-button" href="' . esc_url( $url ) . '">' . esc_html( $doi_button ) . '</a></p>';
 		$sent = self::send( $email, $subject, $body );
 		if ( ! $sent ) self::redirect( $calendar_id, 'error' );
 		self::schedule_confirmation_reminders( $row, $token );
@@ -163,7 +163,7 @@ final class Panda_Seasons_Subscriptions {
 		$subject = self::personalize( get_post_meta( $calendar_id, '_ps_doi_reminder_subject', true ) ?: __( 'A quick reminder: please confirm “{calendar}”', 'panda-seasons' ), $calendar_id, $row['first_name'] );
 		$text = self::personalize( get_post_meta( $calendar_id, '_ps_doi_reminder_text', true ) ?: __( 'You recently signed up for “{calendar}”, but your confirmation is still pending. If you would like to receive the calendar emails, please confirm your email address using the button below. If you did not sign up, you can simply ignore this message.', 'panda-seasons' ), $calendar_id, $row['first_name'] );
 		$button = get_post_meta( $calendar_id, '_ps_doi_button_label', true ) ?: __( 'Confirm registration', 'panda-seasons' );
-		$body = '<p>' . esc_html( self::personalize( __( 'Hello {first_name},', 'panda-seasons' ), $calendar_id, $row['first_name'] ) ) . '</p><p>' . nl2br( esc_html( $text ) ) . '</p><p><a href="' . esc_url( $url ) . '">' . esc_html( $button ) . '</a></p>';
+		$body = '<p>' . esc_html( self::personalize( __( 'Hello {first_name},', 'panda-seasons' ), $calendar_id, $row['first_name'] ) ) . '</p><p>' . nl2br( esc_html( $text ) ) . '</p><p><a class="contactpanda-email-button" href="' . esc_url( $url ) . '">' . esc_html( $button ) . '</a></p>';
 		if ( self::send( $row['email'], $subject, $body ) ) self::log_event( $row, 'confirmation_reminder_' . absint( $number ), 'calendar', 'double_opt_in' );
 	}
 
@@ -248,7 +248,13 @@ final class Panda_Seasons_Subscriptions {
 	private static function send( $email, $subject, $html ) {
 		$payload = array( 'to' => $email, 'subject' => $subject, 'html' => $html, 'headers' => array( 'Content-Type: text/html; charset=UTF-8' ) );
 		$result = apply_filters( 'panda_seasons_send_email', null, $payload );
-		return null === $result ? wp_mail( $payload['to'], $payload['subject'], $payload['html'], $payload['headers'] ) : (bool) $result;
+		if ( null !== $result ) return (bool) $result;
+
+		if ( is_callable( array( 'ContactPanda_System_Emails', 'send' ) ) ) {
+			return (bool) ContactPanda_System_Emails::send( $payload['to'], $payload['subject'], $payload['html'], $payload['headers'] );
+		}
+
+		return wp_mail( $payload['to'], $payload['subject'], $payload['html'], $payload['headers'] );
 	}
 
 	public static function send_mail( $email, $subject, $html ) { return self::send( $email, $subject, $html ); }
