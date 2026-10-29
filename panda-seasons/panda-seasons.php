@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Panda Seasons
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.8.7
+ * Version: 0.8.8
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.8.7' );
+define( 'PANDA_SEASONS_VERSION', '0.8.8' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_URL', plugin_dir_url( __FILE__ ) );
@@ -33,6 +33,24 @@ require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-updater.php';
 // Register the Abilities API hooks immediately. Some MCP adapters initialize
 // their registries before the later plugins_loaded callbacks run.
 Panda_Seasons_MCP::boot();
+
+/** Integrate Seasons into ContactPanda's shared license center when Basic is active. */
+function panda_seasons_contactpanda_license_modules( $modules ) {
+	$modules['seasons'] = __( 'Panda Seasons', 'panda-seasons' );
+	return $modules;
+}
+add_filter( 'contactpanda_license_modules', 'panda_seasons_contactpanda_license_modules' );
+
+function panda_seasons_contactpanda_license_product( $products ) {
+	$products['panda-seasons'] = array(
+		'label'       => __( 'Panda Seasons', 'panda-seasons' ),
+		'entitlement' => 'seasons',
+		'version'     => PANDA_SEASONS_VERSION,
+		'modules'     => array( 'seasons' ),
+	);
+	return $products;
+}
+add_filter( 'contactpanda_license_products', 'panda_seasons_contactpanda_license_product' );
 
 add_action(
 	'plugins_loaded',
