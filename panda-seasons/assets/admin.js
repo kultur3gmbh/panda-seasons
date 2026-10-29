@@ -525,6 +525,19 @@
 				var labelVisible = isOpen ? door.openLabelVisible !== false : door.closedLabelVisible !== false;
 				element.innerHTML = '<span class="panda-seasons-composer__door-actions"><button type="button" data-duplicate-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.duplicateDoor ? pandaSeasonsAdmin.duplicateDoor : 'Duplicate door') + '"><span class="dashicons dashicons-admin-page" aria-hidden="true"></span></button><button type="button" data-delete-stage-door aria-label="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '" title="' + escapeHtml(window.pandaSeasonsAdmin && pandaSeasonsAdmin.deleteDoor ? pandaSeasonsAdmin.deleteDoor : 'Delete door') + '"><span class="dashicons dashicons-trash" aria-hidden="true"></span></button></span>' + (labelVisible ? '<span class="panda-seasons-composer__door-number">' + escapeHtml(stateLabel) + '</span>' : '') + '<span class="panda-seasons-composer__resize" data-resize-door aria-hidden="true"></span>';
 				stage.appendChild(element);
+				if (labelVisible && labelWidthMode === 'content' && roundLabel) {
+					var renderedLabel = element.querySelector('.panda-seasons-composer__door-number');
+					if (renderedLabel) {
+						renderedLabel.style.width = 'max-content';
+						renderedLabel.style.height = 'auto';
+						var labelBounds = renderedLabel.getBoundingClientRect();
+						var labelDiameter = Math.ceil(Math.max(labelBounds.width, labelBounds.height));
+						if (labelDiameter > 0) {
+							renderedLabel.style.width = labelDiameter + 'px';
+							renderedLabel.style.height = labelDiameter + 'px';
+						}
+					}
+				}
 			});
 			empty.hidden = currentDoors().length > 0 || layers.some(function (layer) { return !layer.deleted; });
 			writeData();

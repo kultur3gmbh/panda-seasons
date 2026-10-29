@@ -67,3 +67,4 @@
 .panda-seasons__layer{box-shadow:var(--ps-layer-shadow,none)}
 .panda-seasons__layer img{object-fit:var(--ps-layer-image-fit,cover)}
 .panda-seasons-signup-embed{box-sizing:border-box}.panda-seasons-signup-embed--has-frame{padding:clamp(12px,2vw,24px);border:1px solid #d8dde7;border-radius:16px}.panda-seasons-signup-embed--has-shadow{padding:clamp(12px,2vw,24px);border-radius:16px;box-shadow:0 16px 45px rgba(20,30,50,.18)}.panda-seasons-signup-embed>.panda-seasons__subscription{margin-top:0}
+.panda-seasons__door-number{line-height:1.2;vertical-align:middle}

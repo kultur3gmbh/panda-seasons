@@ -3,6 +3,30 @@
 
 	var lastTrigger = null;
 
+	function fitAutomaticLabel(door) {
+		if (!door) return;
+		var label = door.querySelector('.panda-seasons__door-number');
+		if (!label) return;
+		var state = door.classList.contains('is-open-visual') ? 'open' : 'closed';
+		var mode = label.dataset[state + 'WidthMode'];
+		var shape = label.dataset[state + 'Shape'];
+		label.style.removeProperty('width');
+		label.style.removeProperty('height');
+		if (mode !== 'content' || (shape !== 'round' && shape !== 'square')) return;
+		label.style.width = 'max-content';
+		label.style.height = 'auto';
+		var bounds = label.getBoundingClientRect();
+		var diameter = Math.ceil(Math.max(bounds.width, bounds.height));
+		if (diameter > 0) {
+			label.style.width = diameter + 'px';
+			label.style.height = diameter + 'px';
+		}
+	}
+
+	function fitAllAutomaticLabels() {
+		document.querySelectorAll('.panda-seasons__door').forEach(fitAutomaticLabel);
+	}
+
 	function trackDoorClick(calendar, door) {
 		if (!calendar || !door || calendar.classList.contains('is-preview') || !window.pandaSeasonsFrontend || !pandaSeasonsFrontend.ajaxUrl) return;
 		var data = new FormData();
@@ -40,6 +64,7 @@
 				door.classList.remove('is-closed-visual', 'is-current');
 				door.classList.add('is-open-visual');
 				if (numberLabel && numberLabel.dataset.openLabel) numberLabel.textContent = numberLabel.dataset.openLabel;
+				fitAutomaticLabel(door);
 			};
 			var showContent = function () {
 				markOpened();
@@ -67,6 +92,11 @@
 		if (event.key !== 'Escape') return;
 		var modal = document.querySelector('[data-season-modal]:not([hidden])');
 		if (modal) closeModal(modal);
+	});
+
+	document.addEventListener('DOMContentLoaded', function () {
+		fitAllAutomaticLabels();
+		if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllAutomaticLabels);
 	});
 
 	document.addEventListener('submit', function (event) {

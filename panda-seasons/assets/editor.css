@@ -343,3 +343,4 @@ body.post-type-panda_calendar #titlediv{margin:8px 0 12px}.panda-seasons-admin-g
 .panda-seasons-door-image-actions[hidden],
 [data-door-asset-preview][hidden],
 [data-select-layer-image][hidden]{display:none!important}
+.panda-seasons-composer__door-number{line-height:1.2;vertical-align:middle}

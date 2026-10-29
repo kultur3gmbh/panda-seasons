@@ -237,6 +237,8 @@ trait Panda_Seasons_Runtime {
 					$open_color = (string) get_post_meta( $door->ID, '_ps_open_color', true ) ?: 'rgba(255,255,255,1)';
 					$item_style .= '--ps-closed-bg:' . $closed_bg . ';--ps-closed-color:' . $closed_color . ';--ps-open-bg:' . $open_bg . ';--ps-open-color:' . $open_color . ';';
 					$item_style .= '--ps-door-shadow:' . ( get_post_meta( $door->ID, '_ps_shadow_enabled', true ) ? '0 0 ' . min( 80, absint( get_post_meta( $door->ID, '_ps_shadow_blur', true ) ) ) . 'px ' . ( (string) get_post_meta( $door->ID, '_ps_shadow_color', true ) ?: 'rgba(0,0,0,.25)' ) : 'none' ) . ';';
+					$label_width_modes = array();
+					$label_shapes = array();
 					foreach ( array( 'closed', 'open' ) as $state ) {
 						$font = (string) get_post_meta( $door->ID, '_ps_' . $state . '_font', true );
 						if ( ! in_array( $font, array( 'inherit', 'sans-serif', 'serif', 'monospace' ), true ) ) $font = 'inherit';
@@ -258,6 +260,8 @@ trait Panda_Seasons_Runtime {
 						$label_width = min( 'px' === $label_width_mode ? 300 : 100, max( 10, absint( get_post_meta( $door->ID, '_ps_' . $state . '_label_width', true ) ) ?: 60 ) );
 						$label_shape = (string) get_post_meta( $door->ID, '_ps_' . $state . '_label_shape', true );
 						if ( ! in_array( $label_shape, array( 'rectangle', 'rounded', 'square', 'round' ), true ) ) $label_shape = 'rounded';
+						$label_width_modes[ $state ] = $label_width_mode;
+						$label_shapes[ $state ] = $label_shape;
 						$label_position = self::sanitize_image_position( get_post_meta( $door->ID, '_ps_' . $state . '_label_position', true ) ?: get_post_meta( $id, '_ps_default_' . $state . '_label_position', true ) );
 						list( $label_vertical, $label_horizontal ) = array_pad( explode( '-', 'center' === $label_position ? 'center-center' : $label_position, 2 ), 2, 'center' );
 						$label_align = array( 'top' => 'start', 'center' => 'center', 'bottom' => 'end' )[ $label_vertical ] ?? 'center';
@@ -279,7 +283,7 @@ trait Panda_Seasons_Runtime {
 					?>
 					<article class="panda-seasons__door panda-seasons__door--<?php echo esc_attr( $shape ); ?><?php echo $available ? ' is-available' : ' is-locked'; ?><?php echo $visually_open ? ' is-open-visual' : ' is-closed-visual'; ?><?php echo $available && 'manual-day' === $opening_mode ? ' is-current' : ''; ?>" role="listitem" style="<?php echo esc_attr( $item_style ); ?>" id="panda-season-door-<?php echo esc_attr( $door->ID ); ?>" data-door-id="<?php echo esc_attr( $door->ID ); ?>" data-door-effect="<?php echo esc_attr( $door_effect ); ?>">
 						<button type="button" class="panda-seasons__door-face" aria-haspopup="dialog" aria-controls="panda-season-content-<?php echo esc_attr( $door->ID ); ?>" <?php disabled( ! $available ); ?>>
-							<span class="panda-seasons__door-number" data-closed-label="<?php echo esc_attr( $closed_label ); ?>" data-open-label="<?php echo esc_attr( $open_label ); ?>"><?php echo esc_html( $visually_open ? $open_label : $closed_label ); ?></span>
+							<span class="panda-seasons__door-number" data-closed-label="<?php echo esc_attr( $closed_label ); ?>" data-open-label="<?php echo esc_attr( $open_label ); ?>" data-closed-width-mode="<?php echo esc_attr( $label_width_modes['closed'] ); ?>" data-open-width-mode="<?php echo esc_attr( $label_width_modes['open'] ); ?>" data-closed-shape="<?php echo esc_attr( $label_shapes['closed'] ); ?>" data-open-shape="<?php echo esc_attr( $label_shapes['open'] ); ?>"><?php echo esc_html( $visually_open ? $open_label : $closed_label ); ?></span>
 							<span class="screen-reader-text"><?php echo esc_html( $available ? sprintf( __( 'Open door %d', 'panda-seasons' ), $number ) : sprintf( __( 'Door %1$d opens on %2$s', 'panda-seasons' ), $number, $unlock_at ? wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $unlock_at->getTimestamp(), wp_timezone() ) : '' ) ); ?></span>
 						</button>
 						<?php
