@@ -1226,7 +1226,7 @@ final class Panda_Seasons_Plugin {
 		$contactpanda_installed = file_exists( WP_PLUGIN_DIR . '/' . $contactpanda_file );
 		$contactpanda_action_url = $contactpanda_installed && current_user_can( 'activate_plugins' )
 			? wp_nonce_url( self_admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $contactpanda_file ) ), 'activate-plugin_' . $contactpanda_file )
-			: 'https://github.com/kultur3gmbh/contactpanda/releases/latest';
+			: 'https://github.com/kultur3gmbh/contactpanda-basic/releases/latest';
 		$enabled   = $available && (bool) get_post_meta( $post->ID, '_ps_email_enabled', true );
 		$time      = get_post_meta( $post->ID, '_ps_email_time', true ) ?: '09:00';
 		$subject   = get_post_meta( $post->ID, '_ps_email_subject', true ) ?: __( '{calendar}: Your door for day {day} is waiting', 'panda-seasons' );
