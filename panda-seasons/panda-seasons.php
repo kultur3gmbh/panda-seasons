@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Panda Seasons
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.8.11
+ * Version: 0.8.12
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.8.11' );
+define( 'PANDA_SEASONS_VERSION', '0.8.12' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_URL', plugin_dir_url( __FILE__ ) );
@@ -55,10 +55,24 @@ add_filter( 'contactpanda_license_products', 'panda_seasons_contactpanda_license
 add_action(
 	'plugins_loaded',
 	static function () {
-		new Panda_Seasons_Updater( plugin_basename( PANDA_SEASONS_FILE ), PANDA_SEASONS_VERSION );
+		if ( class_exists( 'ContactPanda_Licensed_Updater' ) ) {
+			new ContactPanda_Licensed_Updater(
+				array(
+					'product'     => 'panda-seasons',
+					'entitlement' => 'seasons',
+					'plugin'      => plugin_basename( PANDA_SEASONS_FILE ),
+					'slug'        => 'panda-seasons',
+					'name'        => 'Panda Seasons',
+					'version'     => PANDA_SEASONS_VERSION,
+					'channel'     => defined( 'CONTACTPANDA_UPDATE_CHANNEL' ) ? CONTACTPANDA_UPDATE_CHANNEL : 'stable',
+				)
+			);
+		} else {
+			new Panda_Seasons_Updater( plugin_basename( PANDA_SEASONS_FILE ), PANDA_SEASONS_VERSION );
+		}
 		Panda_Seasons_Integrations::boot();
 	},
-	20
+	22
 );
 
 register_activation_hook( __FILE__, array( 'Panda_Seasons_Plugin', 'activate' ) );
