@@ -35,6 +35,9 @@ admin_css = (root / "assets/editor.css").read_text(encoding="utf-8")
 frontend_css = (root / "assets/calendar.css").read_text(encoding="utf-8")
 if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin + runtime:
     raise SystemExit("Calendar contract missing")
+dashboard_cover_lookup = "get_post_meta( $calendar_id, '_ps_cover_desktop', true )"
+if dashboard_cover_lookup not in plugin:
+	raise SystemExit("The dashboard must use the canonical desktop cover image for calendar previews")
 for composer_contract in ("_ps_position_desktop", "_ps_position_mobile", "data-door-modal", "panda-seasons__canvas"):
     if composer_contract not in plugin + runtime:
         raise SystemExit(f"Missing visual composer contract {composer_contract}")

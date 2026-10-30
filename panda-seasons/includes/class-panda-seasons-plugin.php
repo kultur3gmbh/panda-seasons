@@ -250,7 +250,9 @@ final class Panda_Seasons_Plugin {
 					<div class="panda-seasons-dashboard__cards">
 						<?php foreach ( $calendars as $calendar ) :
 							$calendar_id = absint( $calendar->ID );
-							$cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop_id', true ) );
+							$cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop', true ) );
+							if ( ! $cover_id ) $cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_mobile', true ) );
+							if ( ! $cover_id ) $cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop_id', true ) ); // Legacy fallback for early test calendars.
 							$cover = $cover_id ? wp_get_attachment_image_url( $cover_id, 'medium_large' ) : '';
 							$calendar_stats = $stats[ $calendar_id ] ?? array( 'clicks' => 0, 'subscribers' => 0, 'leads' => 0 );
 						?>
