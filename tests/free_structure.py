@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+from pathlib import Path
+
+root = Path(__file__).resolve().parents[1]
+plugin = root / "panda-seasons-free"
+main = (plugin / "panda-seasons-free.php").read_text()
+code = (plugin / "includes/class-panda-seasons-free-plugin.php").read_text()
+readme = (plugin / "readme.txt").read_text()
+
+assert "Plugin Name: Panda Seasons Free" in main
+assert "Version: 0.1.0" in main
+assert "Update URI:" not in main
+assert "Stable tag: 0.1.0" in readme
+assert "panda-seasons/panda-seasons.php" in main
+assert "_ps_cover_desktop" in code
+assert "_ps_position_desktop" in code
+assert "_ps_position_mobile" in code
+assert "_ps_content_type', 'general'" in code
+assert "if ( $is_new )" in code
+assert "'panda-seasons/calendar'" in code
+for forbidden in ("wc_get_product", "quiz_enabled", "newsletter", "ContactPanda", "_ps_media_id", "_ps_door_image_id"):
+    assert forbidden not in code, forbidden
+
+print("Panda Seasons Free structure checks passed")
+

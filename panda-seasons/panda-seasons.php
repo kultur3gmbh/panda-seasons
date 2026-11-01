@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Panda Seasons
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.8.12
+ * Version: 0.8.13
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,7 +13,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.8.12' );
+define( 'PANDA_SEASONS_VERSION', '0.8.13' );
+define( 'PANDA_SEASONS_EDITION', 'full' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_URL', plugin_dir_url( __FILE__ ) );
@@ -75,7 +76,19 @@ add_action(
 	22
 );
 
-register_activation_hook( __FILE__, array( 'Panda_Seasons_Plugin', 'activate' ) );
+/**
+ * The complete product replaces Panda Seasons Free instead of running beside
+ * it. Both editions intentionally share the same calendar data contract.
+ */
+function panda_seasons_activate_full_edition() {
+	if ( ! function_exists( 'deactivate_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+	deactivate_plugins( 'panda-seasons-free/panda-seasons-free.php', true );
+	Panda_Seasons_Plugin::activate();
+}
+
+register_activation_hook( __FILE__, 'panda_seasons_activate_full_edition' );
 register_deactivation_hook( __FILE__, array( 'Panda_Seasons_Plugin', 'deactivate' ) );
 
 add_action( 'plugins_loaded', array( 'Panda_Seasons_Plugin', 'boot' ), 40 );

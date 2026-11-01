@@ -1,0 +1,171 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Panda Seasons Free 0.1.0\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Add calendar"
+msgstr "Kalender hinzufügen"
+
+msgid "Add door"
+msgstr "Türe hinzufügen"
+
+msgid "All closed"
+msgstr "Alle geschlossen"
+
+msgid "All opened"
+msgstr "Alle geöffnet"
+
+msgid "Apply door"
+msgstr "Türe übernehmen"
+
+msgid "Background"
+msgstr "Hintergrund"
+
+msgid "Background color"
+msgstr "Hintergrundfarbe"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Calendar door"
+msgstr "Kalendertüre"
+
+msgid "Calendar saved."
+msgstr "Kalender gespeichert."
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Closed background"
+msgstr "Hintergrund geschlossen"
+
+msgid "Closed door"
+msgstr "Türe geschlossen"
+
+msgid "Closed text"
+msgstr "Text geschlossen"
+
+msgid "Content heading"
+msgstr "Überschrift des Inhalts"
+
+msgid "Default door colors"
+msgstr "Standardfarben der Türen"
+
+msgid "Delete this door?"
+msgstr "Möchten Sie diese Türe löschen?"
+
+msgid "Desktop"
+msgstr "Desktop"
+
+msgid "Desktop aspect ratio"
+msgstr "Seitenverhältnis Desktop"
+
+msgid "Door"
+msgstr "Türe"
+
+msgid "Door %d"
+msgstr "Türe %d"
+
+msgid "Door %d is not available yet"
+msgstr "Türe %d ist noch nicht verfügbar"
+
+msgid "Door number"
+msgstr "Türnummer"
+
+msgid "Doors"
+msgstr "Türen"
+
+msgid "Drag doors to position them. Use the handle in the lower-right corner to resize them. Desktop and mobile positions are saved separately."
+msgstr "Ziehen Sie Türen an die gewünschte Position. Mit dem Griff rechts unten ändern Sie die Größe. Die Positionen für Desktop und Mobilgeräte werden getrennt gespeichert."
+
+msgid "Edit calendar"
+msgstr "Kalender bearbeiten"
+
+msgid "Edit door"
+msgstr "Türe bearbeiten"
+
+msgid "Mobile"
+msgstr "Mobil"
+
+msgid "Mobile aspect ratio"
+msgstr "Seitenverhältnis Mobilgeräte"
+
+msgid "Move door to trash"
+msgstr "Türe in den Papierkorb verschieben"
+
+msgid "Open door %d"
+msgstr "Türe %d öffnen"
+
+msgid "Opened background"
+msgstr "Hintergrund geöffnet"
+
+msgid "Opened door"
+msgstr "Türe geöffnet"
+
+msgid "Opened text"
+msgstr "Text geöffnet"
+
+msgid "Panda Seasons Free"
+msgstr "Panda Seasons Free"
+
+msgid "Panda Seasons Free is inactive while the complete Panda Seasons edition is active. Your calendars use the same saved data."
+msgstr "Panda Seasons Free ist inaktiv, solange die vollständige Version von Panda Seasons aktiv ist. Ihre Kalender verwenden dieselben gespeicherten Daten."
+
+msgid "Panda Seasons is already active"
+msgstr "Panda Seasons ist bereits aktiv"
+
+msgid "Please deactivate Panda Seasons before activating Panda Seasons Free. Both editions use the same calendar data and must not run at the same time."
+msgstr "Bitte deaktivieren Sie Panda Seasons, bevor Sie Panda Seasons Free aktivieren. Beide Versionen verwenden dieselben Kalenderdaten und dürfen nicht gleichzeitig aktiv sein."
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Remove background image"
+msgstr "Hintergrundbild entfernen"
+
+msgid "Seasons Free"
+msgstr "Seasons Free"
+
+msgid "Select calendar"
+msgstr "Kalender auswählen"
+
+msgid "Select calendar background"
+msgstr "Kalenderhintergrund auswählen"
+
+msgid "Select one general background image"
+msgstr "Ein allgemeines Hintergrundbild auswählen"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "Show title"
+msgstr "Titel anzeigen"
+
+msgid "Text color"
+msgstr "Textfarbe"
+
+msgid "Text content"
+msgstr "Textinhalt"
+
+msgid "This calendar does not have any doors yet."
+msgstr "Dieser Kalender enthält noch keine Türen."
+
+msgid "Unlock date"
+msgstr "Freigabedatum"
+
+msgid "Unlock time"
+msgstr "Freigabezeit"
+
+msgid "Use this image"
+msgstr "Dieses Bild verwenden"
+
+msgid "Visual calendar editor"
+msgstr "Visueller Kalendereditor"
+
+msgid "You are not allowed to preview this calendar."
+msgstr "Sie dürfen diesen Kalender nicht in der Vorschau anzeigen."
+

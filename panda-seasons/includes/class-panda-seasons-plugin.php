@@ -1365,6 +1365,9 @@ final class Panda_Seasons_Plugin {
 
 	public static function save_calendar( $post_id ) {
 		if ( ! self::can_save( $post_id, 'panda_seasons_calendar_nonce', 'panda_seasons_save_calendar' ) ) return array();
+		// Once a Free calendar is saved with the complete editor, its separate
+		// desktop/mobile Pro settings must no longer be collapsed by Free.
+		delete_post_meta( $post_id, '_ps_origin_edition' );
 		update_post_meta( $post_id, '_ps_cover_desktop', absint( $_POST['panda_seasons_cover_desktop'] ?? 0 ) );
 		update_post_meta( $post_id, '_ps_cover_mobile', absint( $_POST['panda_seasons_cover_mobile'] ?? 0 ) );
 		self::update_css_color_meta( $post_id, '_ps_cover_desktop_background', wp_unslash( $_POST['panda_seasons_cover_desktop_background'] ?? 'rgba(23, 32, 51, 1)' ) );
