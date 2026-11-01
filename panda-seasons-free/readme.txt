@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.1.6
+Stable tag: 0.1.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,10 @@ Yes. Deactivate Panda Seasons Free, install and activate Panda Seasons. Existing
 They remain stored. Panda Seasons Free does not display or overwrite advanced media, shop, quiz, CTA, email or design-layer fields.
 
 == Changelog ==
+
+= 0.1.7 =
+* Applies the neutral-grey action style to every large Panda Seasons Free administration button.
+* Detects action words anywhere in descriptive labels and adds the matching shared icon.
 
 = 0.1.6 =
 * Adds the shared neutral-grey Panda action system to the standalone free edition.

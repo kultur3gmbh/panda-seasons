@@ -53,10 +53,23 @@
 		[/^(clear|leeren)( .+)?$/i, 'reset'], [/^(open|öffnen)( .+)?$/i, 'external'], [/^(edit|bearbeiten)( .+)?$/i, 'edit'],
 		[/^(search|suchen)( .+)?$/i, 'search'], [/^(filter|filtern)( .+)?$/i, 'filter']
 	];
+	var largeSuffixes = [
+		[/\b(draft|entwurf)\b/i, 'draft'],
+		[/\b(publish|publishing|veröffentlichen|veröffentlichung)\b/i, 'publish'], [/\b(schedule|scheduled|scheduling|planen|geplant)\b/i, 'schedule'],
+		[/\b(deactivate|disable|deaktivieren|sperren)\b/i, 'deactivate'], [/\b(activate|enable|aktivieren|freischalten)\b/i, 'activate'],
+		[/\b(save|saving|saved|speichern|gespeichert)\b/i, 'save'], [/\b(apply|applying|anwenden)\b/i, 'apply'],
+		[/\b(accept|adopt|use)\b|übernehmen/i, 'accept'],
+		[/\b(update|updates|updating|updated|updaten|refresh|sync|fetch|retrieve|reload|aktualisieren|aktualisierung|aktualisierungen|erneuern|synchronisieren|abrufen)\b|neu laden/i, 'refresh'],
+		[/\b(reset|restore|zurücksetzen|wiederherstellen)\b/i, 'reset'], [/\b(test|check|validate|testen|prüfen|validieren)\b/i, 'test'],
+		[/\b(send|sending|versenden|senden)\b/i, 'email'], [/\b(import|importieren)\b/i, 'import'],
+		[/\b(export|exportieren)\b/i, 'export'], [/\b(download|herunterladen)\b/i, 'download'],
+		[/\b(start|run|execute|starten|ausführen)\b/i, 'start'], [/\b(add|create|new|hinzufügen|erstellen|neu)\b/i, 'add'],
+		[/\b(copy|duplicate|kopieren|duplizieren)\b/i, 'duplicate'], [/\b(search|suchen)\b/i, 'search'], [/\b(filter|filtern)\b/i, 'filter']
+	];
 	var compactContainers = [
 		'td', '.contactpanda-list-action', '.contactpanda-inline-row-action', '.contactpanda-template-actions',
 		'.contactpanda-gallery-row-actions', '.contactpanda-system-email-block-actions', '.cpb-actions', '.cpb-card-actions',
-		'.pandawoo-template-actions', '.pandawoo-inline-actions', '.pandawoo-pro-license-actions', '.panda-seasons-actions',
+		'.pandawoo-template-actions', '.pandawoo-pro-license-actions', '.panda-seasons-actions',
 		'.panda-seasons-composer__door-actions', '.panda-seasons-composer__layer-actions', '.cpls-actions', '.cpls-row-actions'
 	].join(',');
 	var selector = [
@@ -77,6 +90,25 @@
 		var matches = [];
 		if (root.nodeType === 1 && root.matches(query)) matches.push(root);
 		return matches.concat(Array.prototype.slice.call(root.querySelectorAll(query)));
+	}
+
+	function proxyInputAction(control, text) {
+		if (control.tagName !== 'INPUT') return control;
+		var proxy = document.createElement('button');
+		proxy.type = 'button';
+		proxy.className = control.className;
+		proxy.textContent = text;
+		proxy.disabled = control.disabled;
+		Array.prototype.slice.call(control.attributes).forEach(function (attribute) {
+			if (attribute.name.indexOf('data-') === 0 || attribute.name.indexOf('aria-') === 0 || attribute.name === 'title') proxy.setAttribute(attribute.name, attribute.value);
+		});
+		control.dataset.contactpandaLargeActionReady = '1';
+		control.hidden = true;
+		control.tabIndex = -1;
+		control.setAttribute('aria-hidden', 'true');
+		control.parentNode.insertBefore(proxy, control);
+		proxy.addEventListener('click', function () { if (!control.disabled) control.click(); });
+		return proxy;
 	}
 
 	function enhance(control) {
@@ -117,16 +149,19 @@
 		if (control.matches('.button-small,.button-link,.button-link-delete,[data-contactpanda-action-mode="icon"]') || control.closest(compactContainers)) return;
 		var text = (control.value || control.textContent || control.getAttribute('aria-label') || control.getAttribute('title') || '').trim().replace(/\s+/g, ' ');
 		var action = control.dataset.contactpandaAction || '';
+		if (!action) largeSuffixes.some(function (entry) { if (entry[0].test(text)) { action = entry[1]; return true; } return false; });
 		if (!action) largeLabels.some(function (entry) { if (entry[0].test(text)) { action = entry[1]; return true; } return false; });
 		var definition = definitions[action];
-		if (!definition || !text) return;
+		if (!text) return;
+		if (definition) control = proxyInputAction(control, text);
 		control.dataset.contactpandaLargeActionReady = '1';
-		control.dataset.contactpandaActionReady = '1';
-		control.dataset.contactpandaAction = action;
-		control.classList.add('contactpanda-large-action', 'contactpanda-large-action-' + action.replace(/([A-Z])/g, '-$1').toLowerCase());
+		control.classList.add('contactpanda-large-action');
 		if (control.classList.contains('button-primary') || action === 'publish') control.classList.add('is-primary');
 		if (control.disabled || control.getAttribute('aria-disabled') === 'true') control.classList.add('is-disabled');
-		if (control.tagName === 'INPUT') return;
+		if (!definition) return;
+		control.dataset.contactpandaActionReady = '1';
+		control.dataset.contactpandaAction = action;
+		control.classList.add('contactpanda-large-action-' + action.replace(/([A-Z])/g, '-$1').toLowerCase());
 		Array.prototype.slice.call(control.children).forEach(function (child) {
 			if (child.classList.contains('dashicons') || child.classList.contains('contactpanda-action-icon')) child.remove();
 		});
