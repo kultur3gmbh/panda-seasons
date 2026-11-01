@@ -61,9 +61,13 @@ final class Panda_Seasons_Integrations {
 
 	public static function register_block() {
 		wp_register_script( 'panda-seasons-block-editor', PANDA_SEASONS_URL . 'assets/block-editor.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-server-side-render' ), PANDA_SEASONS_VERSION, true );
-		$calendars = array();
-		foreach ( self::calendars() as $value => $label ) $calendars[] = array( 'value' => $value, 'label' => $label );
-		wp_localize_script( 'panda-seasons-block-editor', 'pandaSeasonsBlock', array( 'calendars' => $calendars, 'title' => __( 'Panda Seasons calendar', 'panda-seasons' ), 'signupTitle' => __( 'Panda Seasons calendar signup', 'panda-seasons' ), 'selectLabel' => __( 'Calendar', 'panda-seasons' ), 'selectedLabel' => __( 'Selected calendar: %s', 'panda-seasons' ), 'noneSelected' => __( 'No calendar selected', 'panda-seasons' ), 'showTitle' => __( 'Show calendar title', 'panda-seasons' ), 'showSignup' => __( 'Show calendar signup', 'panda-seasons' ), 'signupHeading' => __( 'Signup heading', 'panda-seasons' ), 'signupHeadingHelp' => __( 'Leave empty to use the heading configured for this calendar.', 'panda-seasons' ), 'frame' => __( 'Show frame', 'panda-seasons' ), 'shadow' => __( 'Show shadow', 'panda-seasons' ), 'marginTop' => __( 'Margin top', 'panda-seasons' ), 'marginBottom' => __( 'Margin bottom', 'panda-seasons' ) ) );
+		// The calendar list is editor-only. Avoid querying up to 200 posts on every
+		// public request merely because the dynamic block is registered.
+		if ( is_admin() || self::is_builder_preview() ) {
+			$calendars = array();
+			foreach ( self::calendars() as $value => $label ) $calendars[] = array( 'value' => $value, 'label' => $label );
+			wp_localize_script( 'panda-seasons-block-editor', 'pandaSeasonsBlock', array( 'calendars' => $calendars, 'title' => __( 'Panda Seasons calendar', 'panda-seasons' ), 'signupTitle' => __( 'Panda Seasons calendar signup', 'panda-seasons' ), 'selectLabel' => __( 'Calendar', 'panda-seasons' ), 'selectedLabel' => __( 'Selected calendar: %s', 'panda-seasons' ), 'noneSelected' => __( 'No calendar selected', 'panda-seasons' ), 'showTitle' => __( 'Show calendar title', 'panda-seasons' ), 'showSignup' => __( 'Show calendar signup', 'panda-seasons' ), 'signupHeading' => __( 'Signup heading', 'panda-seasons' ), 'signupHeadingHelp' => __( 'Leave empty to use the heading configured for this calendar.', 'panda-seasons' ), 'frame' => __( 'Show frame', 'panda-seasons' ), 'shadow' => __( 'Show shadow', 'panda-seasons' ), 'marginTop' => __( 'Margin top', 'panda-seasons' ), 'marginBottom' => __( 'Margin bottom', 'panda-seasons' ) ) );
+		}
 		register_block_type( 'panda-seasons/calendar', array(
 			'api_version'     => 2,
 			'editor_script'   => 'panda-seasons-block-editor',
