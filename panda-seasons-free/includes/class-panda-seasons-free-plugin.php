@@ -9,14 +9,15 @@ final class Panda_Seasons_Free_Plugin {
 	public static function boot() {
 		add_action( 'init', array( __CLASS__, 'register_post_types' ) );
 		add_action( 'init', array( __CLASS__, 'register_block' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_frontend_assets' ) );
+		add_shortcode( 'panda_seasons', array( __CLASS__, 'shortcode' ) );
+		if ( ! is_admin() ) return;
 		add_action( 'add_meta_boxes', array( __CLASS__, 'meta_boxes' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_assets' ) );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_frontend_assets' ) );
 		add_action( 'save_post_' . self::CALENDAR_POST_TYPE, array( __CLASS__, 'save_calendar' ) );
 		add_action( 'wp_after_insert_post', array( __CLASS__, 'mark_free_calendar' ), 10, 3 );
 		add_action( 'admin_post_panda_seasons_free_preview', array( __CLASS__, 'preview_page' ) );
-		add_shortcode( 'panda_seasons', array( __CLASS__, 'shortcode' ) );
 		add_filter( 'manage_' . self::CALENDAR_POST_TYPE . '_posts_columns', array( __CLASS__, 'calendar_columns' ) );
 		add_action( 'manage_' . self::CALENDAR_POST_TYPE . '_posts_custom_column', array( __CLASS__, 'calendar_column' ), 10, 2 );
 	}
@@ -116,7 +117,8 @@ final class Panda_Seasons_Free_Plugin {
 				'post_type'      => self::DOOR_POST_TYPE,
 				'post_parent'    => absint( $calendar_id ),
 				'post_status'    => array( 'publish', 'draft', 'private', 'pending' ),
-				'posts_per_page' => -1,
+				'posts_per_page' => 100,
+				'no_found_rows'  => true,
 				'meta_key'       => '_ps_door_number',
 				'orderby'        => 'meta_value_num',
 				'order'          => 'ASC',
@@ -423,7 +425,9 @@ final class Panda_Seasons_Free_Plugin {
 	public static function register_block() {
 		wp_register_script( 'panda-seasons-free-block', PANDA_SEASONS_FREE_URL . 'assets/block.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-server-side-render' ), PANDA_SEASONS_FREE_VERSION, true );
 		$choices = array();
-		foreach ( get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft' ), 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC' ) ) as $calendar ) $choices[] = array( 'label' => $calendar->post_title, 'value' => (int) $calendar->ID );
+		if ( is_admin() ) {
+			foreach ( get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft' ), 'posts_per_page' => 200, 'no_found_rows' => true, 'orderby' => 'title', 'order' => 'ASC' ) ) as $calendar ) $choices[] = array( 'label' => $calendar->post_title, 'value' => (int) $calendar->ID );
+		}
 		wp_localize_script( 'panda-seasons-free-block', 'pandaSeasonsFreeBlock', array( 'calendars' => $choices, 'selectCalendar' => __( 'Select calendar', 'panda-seasons-free' ), 'showTitle' => __( 'Show title', 'panda-seasons-free' ) ) );
 		register_block_type(
 			'panda-seasons/calendar',

@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,11 @@ Yes. Deactivate Panda Seasons Free, install and activate Panda Seasons. Existing
 They remain stored. Panda Seasons Free does not display or overwrite advanced media, shop, quiz, CTA, email or design-layer fields.
 
 == Changelog ==
+
+= 0.1.1 =
+* Loads administration hooks only in the WordPress back office.
+* Bounds calendar and door queries for predictable memory use.
+* Keeps frontend assets registered without loading editor assets.
 
 = 0.1.0 =
 * Initial free edition with a responsive visual editor, scheduled doors, open and closed colors, text content, shortcode and block.

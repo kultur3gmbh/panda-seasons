@@ -2,6 +2,7 @@
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent / "panda-seasons"
+main = (root / "panda-seasons.php").read_text(encoding="utf-8")
 required = [
     "panda-seasons.php",
     "includes/class-panda-seasons-plugin.php",
@@ -33,6 +34,15 @@ subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_t
 admin_js = (root / "assets/admin.js").read_text(encoding="utf-8")
 admin_css = (root / "assets/editor.css").read_text(encoding="utf-8")
 frontend_css = (root / "assets/calendar.css").read_text(encoding="utf-8")
+mailer = (root / "includes/class-panda-seasons-mailer.php").read_text(encoding="utf-8")
+if "panda_seasons_autoload" not in main:
+	raise SystemExit("The complete edition must lazy-load feature classes")
+if "if ( ! $is_backoffice ) return;" not in plugin:
+	raise SystemExit("Administration hooks must not load into ordinary frontend requests")
+if "'posts_per_page' => 100" not in runtime or "'no_found_rows'  => true" not in runtime:
+	raise SystemExit("Door rendering must use a bounded, count-free query")
+if "'posts_per_page' => 50" not in mailer or "'no_found_rows' => true" not in mailer:
+	raise SystemExit("Email processing must use a bounded calendar batch")
 if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin + runtime:
     raise SystemExit("Calendar contract missing")
 dashboard_cover_lookup = "get_post_meta( $calendar_id, '_ps_cover_desktop', true )"

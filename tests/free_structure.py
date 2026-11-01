@@ -8,10 +8,15 @@ code = (plugin / "includes/class-panda-seasons-free-plugin.php").read_text()
 readme = (plugin / "readme.txt").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
-assert "Version: 0.1.0" in main
+assert "Version: 0.1.1" in main
 assert "Update URI:" not in main
-assert "Stable tag: 0.1.0" in readme
+assert "Stable tag: 0.1.1" in readme
 assert "panda-seasons/panda-seasons.php" in main
+assert "panda_seasons_free_autoload" in main
+assert "if ( ! is_admin() ) return;" in code
+assert "'posts_per_page' => 100" in code
+assert "'no_found_rows'  => true" in code
+assert "'posts_per_page' => -1" not in code
 assert "_ps_cover_desktop" in code
 assert "_ps_position_desktop" in code
 assert "_ps_position_mobile" in code
