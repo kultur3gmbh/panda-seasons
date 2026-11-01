@@ -209,6 +209,15 @@ final class Panda_Seasons_Free_Plugin {
 		if ( ! $is_dashboard && ( ! $screen || self::CALENDAR_POST_TYPE !== $screen->post_type ) ) return;
 		if ( $is_dashboard ) {
 			wp_enqueue_style( 'panda-seasons-free-ui', PANDA_SEASONS_FREE_URL . 'assets/free-ui.css', array(), PANDA_SEASONS_FREE_VERSION );
+			wp_enqueue_style( 'contactpanda-admin-ui-contract', PANDA_SEASONS_FREE_URL . 'assets/contactpanda-admin-ui.css', array( 'panda-seasons-free-ui' ), PANDA_SEASONS_FREE_VERSION );
+			$shared_ui = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
+			wp_enqueue_script(
+				'contactpanda-admin-ui',
+				file_exists( $shared_ui ) ? plugins_url( 'contactpanda/assets/contactpanda-admin-ui.js' ) : PANDA_SEASONS_FREE_URL . 'assets/contactpanda-admin-ui.js',
+				array( 'wp-api-fetch' ),
+				file_exists( $shared_ui ) ? (string) filemtime( $shared_ui ) : PANDA_SEASONS_FREE_VERSION,
+				true
+			);
 			return;
 		}
 		wp_enqueue_media();

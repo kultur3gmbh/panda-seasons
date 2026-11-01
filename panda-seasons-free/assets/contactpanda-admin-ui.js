@@ -13,24 +13,50 @@
 		undo: {icon: 'undo'}, redo: {icon: 'redo'}, image: {icon: 'format-image'}, desktop: {icon: 'desktop'}, tablet: {icon: 'tablet'}, mobile: {icon: 'smartphone'},
 		template: {icon: 'layout'}, templateCreate: {icon: 'insert', state: 'primary'}, templateGallery: {icon: 'grid-view'}, draft: {icon: 'edit-page'}, save: {icon: 'saved', state: 'success'},
 		schedule: {icon: 'calendar-alt'}, levelUp: {customIcon: 'corner-left-up'}, back: {icon: 'arrow-left-alt2'}, print: {icon: 'printer'}, attachment: {icon: 'paperclip'},
-		search: {icon: 'search'}, filter: {icon: 'filter'}, list: {icon: 'list-view'}, unlock: {icon: 'unlock'}, restore: {icon: 'undo'}
+		search: {icon: 'search'}, filter: {icon: 'filter'}, list: {icon: 'list-view'}, unlock: {icon: 'unlock'}, restore: {icon: 'undo'},
+		apply: {icon: 'yes-alt'}, accept: {customIcon: 'arrow-right-to-line'}, activate: {customIcon: 'power'}, reset: {icon: 'undo'},
+		test: {icon: 'admin-tools'}, start: {icon: 'controls-play'}
 	};
 	var actionIcons = [
 		[/^(view|preview|details|show|anzeigen|ansehen|vorschau|details anzeigen|view \/ edit|ansehen \/ bearbeiten)$/i, 'view'],
-		[/^(edit|bearbeiten|ändern)$/i, 'edit'], [/^(delete|trash|löschen|in den papierkorb|in papierkorb verschieben)$/i, 'delete'],
-		[/^(remove assignment|zuordnung entfernen)$/i, 'remove'], [/^(remove|entfernen)$/i, 'delete'], [/^(duplicate|copy|duplizieren|kopieren)$/i, 'duplicate'],
+		[/^(edit|bearbeiten|ändern)( .+)?$/i, 'edit'], [/^(delete|trash|löschen|in den papierkorb|in papierkorb verschieben)( .+)?$/i, 'delete'],
+		[/^(remove assignment|zuordnung entfernen|remove|entfernen)$/i, 'remove'], [/^(duplicate|copy|duplizieren|kopieren)( .+)?$/i, 'duplicate'],
 		[/^(export|exportieren)$/i, 'export'], [/^(import|importieren)$/i, 'import'], [/^(download|herunterladen)$/i, 'download'], [/^(restore|wiederherstellen)$/i, 'restore'],
 		[/^(view records|datensätze anzeigen|show records)$/i, 'list'], [/^(rollback import|import zurückrollen|import rückgängig machen)$/i, 'undo'],
 		[/^(allow address again|adresse wieder zulassen)$/i, 'unlock'], [/^(open review|prüfung öffnen|kontrolle öffnen|review|inspect|prüfen|kontrollieren)$/i, 'search'],
 		[/^(activate|approve|confirm|aktivieren|genehmigen|bestätigen)$/i, 'confirm'], [/^(cancel|close|abbrechen|schließen)$/i, 'cancel'],
-		[/^(deactivate|disable|deaktivieren|sperren)$/i, 'deactivate'], [/^(send|resend|versenden|erneut senden|email|e-mail)$/i, 'email'],
+		[/^(deactivate|disable|pause|deaktivieren|sperren|pausieren)$/i, 'deactivate'], [/^(send|resend|send test|versenden|erneut senden|test senden|email|e-mail)$/i, 'email'],
 		[/^(publish|veröffentlichen)$/i, 'publish'], [/^(save as draft|draft|als entwurf speichern|entwurf speichern)$/i, 'draft'],
 		[/^(save|save changes|speichern|änderungen speichern)$/i, 'save'], [/^(schedule|schedule publication|planen|veröffentlichung planen)$/i, 'schedule'],
 		[/^(archive|archivieren)$/i, 'archive'], [/^(refresh|sync|synchronisieren|aktualisieren)$/i, 'refresh'],
 		[/^(report|log|reporting|bericht|protokoll|auswertung)$/i, 'report'], [/^(template|vorlage)$/i, 'template'],
 		[/^(create template|vorlage erstellen)$/i, 'templateCreate'], [/^(template gallery|vorlagengalerie)$/i, 'templateGallery'],
-		[/^(one level up|up one level|eine ebene höher|zur übergeordneten ebene)$/i, 'levelUp'], [/^(back|zurück)$/i, 'back'], [/^(open|öffnen)$/i, 'external']
+		[/^(one level up|up one level|eine ebene höher|zur übergeordneten ebene)$/i, 'levelUp'], [/^(back|zurück)$/i, 'back'],
+		[/^(print|print list|drucken|liste drucken)$/i, 'print'], [/^(search|suchen)$/i, 'search'], [/^(filter|filtern)$/i, 'filter'],
+		[/^(open|öffnen)$/i, 'external']
 	];
+	var largeActionLabels = [
+		[/^(save as draft|save draft|draft|als entwurf speichern|entwurf speichern)$/i, 'draft'],
+		[/^(publish|publish automation|publish \/ update|update \/ publish|veröffentlichen|automatisierung veröffentlichen)( .+)?$/i, 'publish'],
+		[/^(schedule|schedule publication|planen|veröffentlichung planen)( .+)?$/i, 'schedule'],
+		[/^(save|save changes|save and use|speichern|änderungen speichern|speichern und verwenden|portaleinstellungen speichern)( .+)?$/i, 'save'],
+		[/^(apply|apply changes|anwenden)( .+)?$/i, 'apply'], [/^(accept|adopt|use|übernehmen)( .+)?$/i, 'accept'],
+		[/^(update|refresh|sync|aktualisieren|erneuern|synchronisieren)( .+)?$/i, 'refresh'],
+		[/^(activate|enable|aktivieren|freischalten)( .+)?$/i, 'activate'], [/^(deactivate|disable|deaktivieren|sperren)( .+)?$/i, 'deactivate'],
+		[/^(reset|restore defaults|zurücksetzen|standard wiederherstellen)( .+)?$/i, 'reset'],
+		[/^(test|test connection|verbindung testen|prüfen)( .+)?$/i, 'test'], [/^(cancel|abbrechen|close|schließen)$/i, 'cancel'],
+		[/^(check for updates|nach updates suchen|retry|erneut versuchen)( .+)?$/i, 'refresh'],
+		[/^(confirm|bestätigen)( .+)?$/i, 'apply'], [/^(continue|fortfahren)( .+)?$/i, 'accept'],
+		[/^(preview|vorschau)( .+)?$/i, 'view'], [/^(send test|test senden|send|versenden)( .+)?$/i, 'email'],
+		[/^(import|importieren)( .+)?$/i, 'import'], [/^(export|exportieren)( .+)?$/i, 'export'],
+		[/^(download|herunterladen)( .+)?$/i, 'download'], [/^(print|drucken)( .+)?$/i, 'print'],
+		[/^(start|run|execute|migration starten|starten|ausführen)( .+)?$/i, 'start'],
+		[/^(add|new|create|hinzufügen|neu|erstellen)( .+)?$/i, 'add'], [/^(copy|duplicate|kopieren|duplizieren)( .+)?$/i, 'duplicate'],
+		[/^(clear|leeren)( .+)?$/i, 'reset'], [/^(open|öffnen)( .+)?$/i, 'external'], [/^(edit|bearbeiten)( .+)?$/i, 'edit'],
+		[/^(search|suchen)( .+)?$/i, 'search'], [/^(filter|filtern)( .+)?$/i, 'filter']
+	];
+	var largeActionRootSelector = '.panda-seasons-free-dashboard,.panda-seasons-dashboard,.panda-seasons-templates-page,.panda-seasons-preview-page';
+	var compactActionContainers = 'td,.contactpanda-list-action,.contactpanda-inline-row-action,.panda-seasons-actions,.panda-seasons-composer__door-actions,.panda-seasons-composer__layer-actions';
 
 	function findAll(root, selector) {
 		root = root || document;
@@ -311,16 +337,48 @@
 				actionColumns.forEach(function (index) { var cell = row.children[index]; if (cell) cell.querySelectorAll('a,button').forEach(actionIcon); });
 			});
 		});
-		findAll(root, '[data-contactpanda-action],.contactpanda-form-actions a,.contactpanda-form-actions button,.contactpanda-order-actions a,.contactpanda-order-actions button,.contactpanda-template-actions a,.contactpanda-template-actions button,.contactpanda-gallery-row-actions a,.contactpanda-gallery-row-actions button,.contactpanda-system-email-block-actions a,.contactpanda-system-email-block-actions button,.cpb-actions a,.cpb-actions button,.cpb-card-actions a,.cpb-card-actions button').forEach(actionIcon);
+		findAll(root, [
+			'[data-contactpanda-action]', '.contactpanda-list-action', '.contactpanda-person-row-action', '.contactpanda-inline-row-action', '.contactpanda-eye-action', '.contactpanda-trash-row-action',
+			'.contactpanda-form-actions a', '.contactpanda-form-actions button', '.contactpanda-order-actions a', '.contactpanda-order-actions button',
+			'.contactpanda-template-actions a', '.contactpanda-template-actions button', '.contactpanda-gallery-row-actions a', '.contactpanda-gallery-row-actions button',
+			'.contactpanda-system-email-block-actions a', '.contactpanda-system-email-block-actions button', '.contactpanda-system-email-add a', '.contactpanda-system-email-add button',
+			'.cpb-actions a', '.cpb-actions button', '.cpb-card-actions a', '.cpb-card-actions button',
+			'.pandawoo-template-actions a', '.pandawoo-template-actions button', '.pandawoo-inline-actions a', '.pandawoo-inline-actions button',
+			'.pandawoo-pro-license-actions a', '.pandawoo-pro-license-actions button', '.panda-seasons-actions a', '.panda-seasons-actions button',
+			'.panda-seasons-composer__door-actions button', '.panda-seasons-composer__layer-actions button',
+			'.cpls-actions a', '.cpls-actions button', '.cpls-row-actions a', '.cpls-row-actions button'
+		].join(',')).forEach(actionIcon);
+	}
+
+	function largeActionIcon(control) {
+		if (!control || control.dataset.contactpandaLargeActionReady === '1') return;
+		if (control.matches('.button-small,.button-link,.button-link-delete,[data-contactpanda-action-mode="icon"]') || control.closest(compactActionContainers)) return;
+		var label = (control.value || control.textContent || control.getAttribute('aria-label') || control.getAttribute('title') || '').trim().replace(/\s+/g, ' ');
+		var action = control.dataset.contactpandaAction || '';
+		if (!action) largeActionLabels.some(function (entry) { if (entry[0].test(label)) { action = entry[1]; return true; } return false; });
+		var definition = actionDefinitions[action];
+		if (!definition || !label) return;
+		control.dataset.contactpandaLargeActionReady = '1'; control.dataset.contactpandaActionReady = '1'; control.dataset.contactpandaAction = action;
+		control.classList.add('contactpanda-large-action', 'contactpanda-large-action-' + action.replace(/([A-Z])/g, '-$1').toLowerCase());
+		if (control.classList.contains('button-primary') || action === 'publish') control.classList.add('is-primary');
+		if (control.disabled || control.getAttribute('aria-disabled') === 'true') control.classList.add('is-disabled');
+		if (control.tagName === 'INPUT') return;
+		Array.prototype.slice.call(control.children).forEach(function (child) { if (child.classList.contains('dashicons') || child.classList.contains('contactpanda-action-icon')) child.remove(); });
+		var glyph = document.createElement('span'); glyph.className = definition.customIcon ? 'contactpanda-action-icon contactpanda-action-icon-' + definition.customIcon : 'dashicons dashicons-' + definition.icon; glyph.setAttribute('aria-hidden', 'true'); control.prepend(glyph);
+	}
+
+	function enhanceLargeActions(root) {
+		findAll(root, 'button.button,a.button,input.button,[data-contactpanda-action-mode="labelled"]').forEach(function (control) { if (control.closest(largeActionRootSelector)) largeActionIcon(control); });
 	}
 
 	function enhance(root) {
 		findAll(root, '.contactpanda-wrap input[type="color"],.contactpanda-business-wrap input[type="color"],.contactpanda-pro-wrap input[type="color"]').forEach(enhanceColorPicker);
 		findAll(root, '.contactpanda-image-picker-source,.contactpanda-newsletter-logo-setting').forEach(enhanceStaticImagePicker);
+		enhanceLargeActions(root || document);
 		enhanceListActions(root || document);
 	}
 
-	window.ContactPandaAdminUI = {enhance: enhance, enhanceColorPicker: enhanceColorPicker, createImagePicker: createImagePicker, enhanceListActions: enhanceListActions, actionDefinitions: actionDefinitions};
+	window.ContactPandaAdminUI = {enhance: enhance, enhanceColorPicker: enhanceColorPicker, createImagePicker: createImagePicker, enhanceListActions: enhanceListActions, enhanceLargeActions: enhanceLargeActions, actionDefinitions: actionDefinitions};
 	document.addEventListener('pointerdown', function (event) {
 		document.querySelectorAll('.contactpanda-unified-color.is-open').forEach(function (picker) {
 			if (picker.contains(event.target)) return;

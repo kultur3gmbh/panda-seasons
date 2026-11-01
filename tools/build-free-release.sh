@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-VERSION="${1:-0.1.5}"
+VERSION="${1:-0.1.6}"
 SOURCE="$ROOT/panda-seasons-free"
 TARGET="$ROOT/dist/panda-seasons-free-$VERSION.zip"
 

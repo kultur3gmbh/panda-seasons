@@ -1770,10 +1770,17 @@ final class Panda_Seasons_Plugin {
 		if ( ! $is_dashboard && ! $is_editor ) return;
 		if ( $is_editor ) wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/editor.css', $is_editor ? array( 'wp-color-picker' ) : array(), PANDA_SEASONS_VERSION );
-		if ( ! $is_editor ) return;
+		$shared_ui_file     = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
+		if ( $is_dashboard ) {
+			if ( file_exists( $shared_ui_file ) ) {
+				wp_enqueue_script( 'contactpanda-admin-ui', plugins_url( 'contactpanda/assets/contactpanda-admin-ui.js' ), array( 'wp-api-fetch' ), (string) filemtime( $shared_ui_file ), true );
+			} else {
+				wp_enqueue_script( 'panda-seasons-action-buttons', PANDA_SEASONS_URL . 'assets/panda-action-buttons.js', array(), PANDA_SEASONS_VERSION, true );
+			}
+			return;
+		}
 		wp_enqueue_media();
 		$admin_dependencies = array( 'jquery', 'wp-color-picker' );
-		$shared_ui_file     = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
 		if ( file_exists( $shared_ui_file ) ) {
 			wp_enqueue_script( 'contactpanda-admin-ui', plugins_url( 'contactpanda/assets/contactpanda-admin-ui.js' ), array( 'wp-api-fetch' ), (string) filemtime( $shared_ui_file ), true );
 			wp_localize_script(
@@ -1796,6 +1803,9 @@ final class Panda_Seasons_Plugin {
 				)
 			);
 			$admin_dependencies[] = 'contactpanda-admin-ui';
+		} else {
+			wp_enqueue_script( 'panda-seasons-action-buttons', PANDA_SEASONS_URL . 'assets/panda-action-buttons.js', array(), PANDA_SEASONS_VERSION, true );
+			$admin_dependencies[] = 'panda-seasons-action-buttons';
 		}
 		wp_enqueue_script( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/admin.js', $admin_dependencies, PANDA_SEASONS_VERSION, true );
 		wp_localize_script(
