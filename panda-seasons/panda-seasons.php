@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Panda Seasons
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.8.13
+ * Version: 0.8.14
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,27 +13,34 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.8.13' );
+define( 'PANDA_SEASONS_VERSION', '0.8.14' );
 define( 'PANDA_SEASONS_EDITION', 'full' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_URL', plugin_dir_url( __FILE__ ) );
 
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-schema.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-contract.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-migrator.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-transfer.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-subscriptions.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-mailer.php';
-require_once PANDA_SEASONS_PATH . 'includes/trait-panda-seasons-runtime.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-plugin.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-integrations.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-mcp.php';
-require_once PANDA_SEASONS_PATH . 'includes/class-panda-seasons-updater.php';
+/** Keep the always-loaded bootstrap small; feature implementations are lazy. */
+function panda_seasons_autoload( $class ) {
+	$map = array(
+		'Panda_Seasons_Schema'        => 'class-panda-seasons-schema.php',
+		'Panda_Seasons_Contract'      => 'class-panda-seasons-contract.php',
+		'Panda_Seasons_Migrator'      => 'class-panda-seasons-migrator.php',
+		'Panda_Seasons_Transfer'      => 'class-panda-seasons-transfer.php',
+		'Panda_Seasons_Subscriptions' => 'class-panda-seasons-subscriptions.php',
+		'Panda_Seasons_Mailer'        => 'class-panda-seasons-mailer.php',
+		'Panda_Seasons_Plugin'        => 'class-panda-seasons-plugin.php',
+		'Panda_Seasons_Integrations'  => 'class-panda-seasons-integrations.php',
+		'Panda_Seasons_MCP'           => 'class-panda-seasons-mcp.php',
+		'Panda_Seasons_Updater'       => 'class-panda-seasons-updater.php',
+	);
+	if ( 'Panda_Seasons_Runtime' === $class ) require_once PANDA_SEASONS_PATH . 'includes/trait-panda-seasons-runtime.php';
+	if ( isset( $map[ $class ] ) ) require_once PANDA_SEASONS_PATH . 'includes/' . $map[ $class ];
+}
+spl_autoload_register( 'panda_seasons_autoload' );
 
-// Register the Abilities API hooks immediately. Some MCP adapters initialize
-// their registries before the later plugins_loaded callbacks run.
-Panda_Seasons_MCP::boot();
+// Register MCP callback references without parsing the MCP implementation.
+add_action( 'wp_abilities_api_categories_init', array( 'Panda_Seasons_MCP', 'register_category' ) );
+add_action( 'wp_abilities_api_init', array( 'Panda_Seasons_MCP', 'register_abilities' ) );
 
 /** Integrate Seasons into ContactPanda's shared license center when Basic is active. */
 function panda_seasons_contactpanda_license_modules( $modules ) {

@@ -11,9 +11,17 @@ final class Panda_Seasons_Plugin {
 
 	public static function boot() {
 		load_plugin_textdomain( 'panda-seasons', false, dirname( plugin_basename( PANDA_SEASONS_FILE ) ) . '/languages' );
-		Panda_Seasons_Schema::maybe_upgrade();
+		$is_backoffice = is_admin() || ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) || ( defined( 'REST_REQUEST' ) && REST_REQUEST );
+		if ( $is_backoffice ) Panda_Seasons_Schema::maybe_upgrade();
 		add_action( 'init', array( __CLASS__, 'register_post_types' ) );
-		add_action( 'init', array( 'Panda_Seasons_Migrator', 'maybe_migrate' ), 20 );
+		if ( $is_backoffice ) add_action( 'init', array( 'Panda_Seasons_Migrator', 'maybe_migrate' ), 20 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_frontend_assets' ) );
+		add_shortcode( 'panda_seasons', array( __CLASS__, 'shortcode' ) );
+		add_shortcode( 'panda_seasons_subscribe', array( __CLASS__, 'subscribe_shortcode' ) );
+		add_filter( 'cron_schedules', array( __CLASS__, 'cron_schedules' ) );
+		add_action( self::CRON_HOOK, array( 'Panda_Seasons_Mailer', 'process' ) );
+		Panda_Seasons_Subscriptions::boot();
+		if ( ! $is_backoffice ) return;
 		add_action( 'add_meta_boxes', array( __CLASS__, 'meta_boxes' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
 		add_filter( 'parent_file', array( __CLASS__, 'admin_parent_file' ) );
@@ -31,17 +39,11 @@ final class Panda_Seasons_Plugin {
 		add_action( 'admin_post_panda_seasons_import_template', array( __CLASS__, 'import_template' ) );
 		add_action( 'admin_post_panda_seasons_refresh_template_library', array( __CLASS__, 'refresh_template_library' ) );
 		add_action( 'admin_post_panda_seasons_import_library_template', array( __CLASS__, 'import_library_template' ) );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_frontend_assets' ) );
 		add_filter( 'manage_' . self::CALENDAR_POST_TYPE . '_posts_columns', array( __CLASS__, 'calendar_columns' ) );
 		add_action( 'manage_' . self::CALENDAR_POST_TYPE . '_posts_custom_column', array( __CLASS__, 'calendar_column' ), 10, 2 );
 		add_filter( 'manage_' . self::DOOR_POST_TYPE . '_posts_columns', array( __CLASS__, 'door_columns' ) );
 		add_action( 'manage_' . self::DOOR_POST_TYPE . '_posts_custom_column', array( __CLASS__, 'door_column' ), 10, 2 );
-		add_shortcode( 'panda_seasons', array( __CLASS__, 'shortcode' ) );
-		add_shortcode( 'panda_seasons_subscribe', array( __CLASS__, 'subscribe_shortcode' ) );
-		add_filter( 'cron_schedules', array( __CLASS__, 'cron_schedules' ) );
 		add_filter( 'gettext', array( __CLASS__, 'normalize_german_door_terms' ), 20, 3 );
-		add_action( self::CRON_HOOK, array( 'Panda_Seasons_Mailer', 'process' ) );
-		Panda_Seasons_Subscriptions::boot();
 	}
 
 	public static function normalize_german_door_terms( $translation, $text, $domain ) {
@@ -1348,7 +1350,7 @@ final class Panda_Seasons_Plugin {
 
 	public static function door_box( $post ) {
 		wp_nonce_field( 'panda_seasons_save_door', 'panda_seasons_door_nonce' );
-		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
+		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 200, 'no_found_rows' => true, 'orderby' => 'title', 'order' => 'ASC' ) );
 		$calendar  = (int) $post->post_parent;
 		$number    = absint( get_post_meta( $post->ID, '_ps_door_number', true ) ) ?: 1;
 		$date      = get_post_meta( $post->ID, '_ps_unlock_date', true );

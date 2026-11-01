@@ -12,7 +12,7 @@ final class Panda_Seasons_Integrations {
 
 	private static function calendars() {
 		$choices = array( '' => __( 'Select a calendar', 'panda-seasons' ) );
-		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => 'publish', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC' ) ) as $calendar ) {
+		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => 'publish', 'posts_per_page' => 200, 'no_found_rows' => true, 'orderby' => 'title', 'order' => 'ASC' ) ) as $calendar ) {
 			$choices[ (string) $calendar->ID ] = $calendar->post_title ?: sprintf( __( 'Calendar #%d', 'panda-seasons' ), $calendar->ID );
 		}
 		return $choices;
