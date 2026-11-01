@@ -3,7 +3,7 @@
  * Plugin Name: Panda Seasons Free
  * Plugin URI: https://mycontactpanda.com/panda-seasons/
  * Description: Create simple responsive seasonal calendars with colored doors and text content.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Author: Kultur3 GmbH
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_FREE_VERSION', '0.1.2' );
+define( 'PANDA_SEASONS_FREE_VERSION', '0.1.3' );
 define( 'PANDA_SEASONS_FREE_FILE', __FILE__ );
 define( 'PANDA_SEASONS_FREE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_FREE_URL', plugin_dir_url( __FILE__ ) );

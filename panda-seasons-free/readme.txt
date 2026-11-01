@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.1.2
+Stable tag: 0.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,12 @@ Yes. Deactivate Panda Seasons Free, install and activate Panda Seasons. Existing
 They remain stored. Panda Seasons Free does not display or overwrite advanced media, shop, quiz, CTA, email or design-layer fields.
 
 == Changelog ==
+
+= 0.1.3 =
+* Uses the shared ContactPanda color and image controls consistently.
+* Adds theme color palettes, including WordPress, Avada, Elementor and Divi colors when available.
+* Adds configurable border color, width and style for closed and opened doors.
+* Improves image previews and keeps the controls compatible with Panda Seasons.
 
 = 0.1.2 =
 * Uses the unified ContactPanda color picker with transparency and the family image uploader design.
