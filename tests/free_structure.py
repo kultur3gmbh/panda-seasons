@@ -21,6 +21,10 @@ assert "_ps_cover_desktop" in code
 assert "_ps_position_desktop" in code
 assert "_ps_position_mobile" in code
 assert "_ps_default_shape" in code
+assert "_ps_default_closed_border_color" in code
+assert "_ps_default_open_border_color" in code
+assert "contactpanda-admin-ui.js" in code
+assert "contactpanda-admin-ui.css" in code
 assert "Panda Seasons', 'panda-seasons-free'" in code
 assert "data-template=\"classic\"" in code
 assert "data-template=\"modern\"" in code

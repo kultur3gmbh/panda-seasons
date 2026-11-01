@@ -173,7 +173,55 @@ final class Panda_Seasons_Free_Plugin {
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'panda-seasons-free-admin', PANDA_SEASONS_FREE_URL . 'assets/admin.css', array( 'wp-color-picker' ), PANDA_SEASONS_FREE_VERSION );
 		wp_enqueue_style( 'panda-seasons-free-ui', PANDA_SEASONS_FREE_URL . 'assets/free-ui.css', array( 'panda-seasons-free-admin' ), PANDA_SEASONS_FREE_VERSION );
-		wp_enqueue_script( 'panda-seasons-free-admin', PANDA_SEASONS_FREE_URL . 'assets/admin.js', array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-resizable', 'wp-editor', 'wp-color-picker' ), PANDA_SEASONS_FREE_VERSION, true );
+		wp_enqueue_style( 'contactpanda-admin-ui-contract', PANDA_SEASONS_FREE_URL . 'assets/contactpanda-admin-ui.css', array( 'panda-seasons-free-ui' ), PANDA_SEASONS_FREE_VERSION );
+		$theme_colors = array_values( array_filter( array_column( self::theme_colors(), 'color' ) ) );
+		$dependencies = array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-resizable', 'wp-editor', 'wp-color-picker' );
+		$shared_ui    = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
+		if ( file_exists( $shared_ui ) ) {
+			wp_enqueue_script( 'contactpanda-admin-ui', plugins_url( 'contactpanda/assets/contactpanda-admin-ui.js' ), array( 'wp-api-fetch' ), (string) filemtime( $shared_ui ), true );
+			wp_localize_script(
+				'contactpanda-admin-ui',
+				'CONTACTPANDA_ADMIN_UI',
+				array(
+					'themeColors' => $theme_colors,
+					'i18n'        => array(
+						'chooseColor'  => __( 'Select color', 'panda-seasons-free' ),
+						'colorValue'   => __( 'Color value', 'panda-seasons-free' ),
+						'themeColors'  => __( 'Theme colors', 'panda-seasons-free' ),
+						'invalidColor' => __( 'Enter a valid HEX, RGB or RGBA color.', 'panda-seasons-free' ),
+						'dropImage'    => __( 'Select an image or drop it here', 'panda-seasons-free' ),
+						'chooseImage'  => __( 'Select image', 'panda-seasons-free' ),
+						'useImage'     => __( 'Use this image', 'panda-seasons-free' ),
+						'removeImage'  => __( 'Remove image', 'panda-seasons-free' ),
+						'uploading'    => __( 'Uploading image…', 'panda-seasons-free' ),
+						'uploadFailed' => __( 'The image could not be uploaded.', 'panda-seasons-free' ),
+					),
+				)
+			);
+		} else {
+			wp_enqueue_script( 'contactpanda-admin-ui', PANDA_SEASONS_FREE_URL . 'assets/contactpanda-admin-ui.js', array( 'wp-api-fetch' ), PANDA_SEASONS_FREE_VERSION, true );
+			wp_localize_script(
+				'contactpanda-admin-ui',
+				'CONTACTPANDA_ADMIN_UI',
+				array(
+					'themeColors' => $theme_colors,
+					'i18n'        => array(
+						'chooseColor'  => __( 'Select color', 'panda-seasons-free' ),
+						'colorValue'   => __( 'Color value', 'panda-seasons-free' ),
+						'themeColors'  => __( 'Theme colors', 'panda-seasons-free' ),
+						'invalidColor' => __( 'Enter a valid HEX, RGB or RGBA color.', 'panda-seasons-free' ),
+						'dropImage'    => __( 'Select an image or drop it here', 'panda-seasons-free' ),
+						'chooseImage'  => __( 'Select image', 'panda-seasons-free' ),
+						'useImage'     => __( 'Use this image', 'panda-seasons-free' ),
+						'removeImage'  => __( 'Remove image', 'panda-seasons-free' ),
+						'uploading'    => __( 'Uploading image…', 'panda-seasons-free' ),
+						'uploadFailed' => __( 'The image could not be uploaded.', 'panda-seasons-free' ),
+					),
+				)
+			);
+		}
+		$dependencies[] = 'contactpanda-admin-ui';
+		wp_enqueue_script( 'panda-seasons-free-admin', PANDA_SEASONS_FREE_URL . 'assets/admin.js', $dependencies, PANDA_SEASONS_FREE_VERSION, true );
 		wp_localize_script(
 			'panda-seasons-free-admin',
 			'pandaSeasonsFreeAdmin',
@@ -188,9 +236,58 @@ final class Panda_Seasons_Free_Plugin {
 				'uploadNonce'   => wp_create_nonce( 'media-form' ),
 				'openColorPicker' => __( 'Open color picker', 'panda-seasons-free' ),
 				'alpha'         => __( 'Transparency', 'panda-seasons-free' ),
+				'themeColors'   => __( 'Theme colors', 'panda-seasons-free' ),
+				'themeColorValues' => $theme_colors,
 				'confirmTemplate' => __( 'Apply this template? Existing text content is retained.', 'panda-seasons-free' ),
 			)
 		);
+	}
+
+	/** Return the palette of the active WordPress theme and supported builders. */
+	private static function theme_colors() {
+		$colors = array();
+		if ( class_exists( 'ContactPanda_Basic_Newsletters' ) && is_callable( array( 'ContactPanda_Basic_Newsletters', 'detected_theme_colors' ) ) ) {
+			self::append_theme_palette( $colors, ContactPanda_Basic_Newsletters::detected_theme_colors(), 'ContactPanda' );
+		}
+		$settings = function_exists( 'wp_get_global_settings' ) ? wp_get_global_settings() : array();
+		$palettes = $settings['color']['palette'] ?? array();
+		foreach ( array( 'theme', 'default', 'custom' ) as $group ) self::append_theme_palette( $colors, $palettes[ $group ] ?? array(), 'WordPress' );
+		self::append_theme_palette( $colors, get_theme_support( 'editor-color-palette' ), 'Theme' );
+		$background = sanitize_hex_color( '#' . ltrim( (string) get_theme_mod( 'background_color', '' ), '#' ) );
+		$text       = sanitize_hex_color( '#' . ltrim( (string) get_theme_mod( 'header_textcolor', '' ), '#' ) );
+		if ( $background ) $colors[ strtolower( $background ) ] = array( 'color' => $background, 'name' => __( 'Theme background', 'panda-seasons-free' ) );
+		if ( $text ) $colors[ strtolower( $text ) ] = array( 'color' => $text, 'name' => __( 'Theme text', 'panda-seasons-free' ) );
+
+		$fusion = (array) get_option( 'fusion_options', array() );
+		foreach ( array( 'global_colors_palette', 'fusion_global_colors', 'color_palette' ) as $key ) self::append_theme_palette( $colors, $fusion[ $key ] ?? array(), 'Avada' );
+		$kit_id = absint( get_option( 'elementor_active_kit' ) );
+		$kit    = $kit_id ? (array) get_post_meta( $kit_id, '_elementor_page_settings', true ) : array();
+		self::append_theme_palette( $colors, $kit['system_colors'] ?? array(), 'Elementor' );
+		self::append_theme_palette( $colors, $kit['custom_colors'] ?? array(), 'Elementor' );
+		$divi = (array) get_option( 'et_divi', array() );
+		foreach ( array( 'accent_color', 'header_color', 'font_color', 'primary_nav_font_color', 'secondary_nav_font_color', 'footer_bg' ) as $key ) {
+			if ( ! empty( $divi[ $key ] ) ) self::append_theme_palette( $colors, array( array( 'name' => ucwords( str_replace( '_', ' ', $key ) ), 'color' => $divi[ $key ] ) ), 'Divi' );
+		}
+		if ( ! $colors ) self::append_theme_palette( $colors, array( '#000000', '#ffffff', '#2271b1', '#3858e9' ), 'WordPress' );
+		return array_values( apply_filters( 'panda_seasons_free_theme_colors', $colors ) );
+	}
+
+	private static function append_theme_palette( &$colors, $palette, $source ) {
+		if ( is_string( $palette ) ) {
+			$decoded = json_decode( $palette, true );
+			if ( is_array( $decoded ) ) $palette = $decoded;
+		}
+		foreach ( (array) $palette as $key => $item ) {
+			if ( is_array( $item ) ) {
+				$color = sanitize_hex_color( $item['color'] ?? $item['value'] ?? '' );
+				$name  = sanitize_text_field( $item['name'] ?? $item['title'] ?? $item['_id'] ?? $key );
+				if ( ! $color ) { self::append_theme_palette( $colors, $item, $source ); continue; }
+			} else {
+				$color = sanitize_hex_color( $item );
+				$name  = sanitize_text_field( is_string( $key ) ? $key : $color );
+			}
+			if ( $color ) $colors[ strtolower( $color ) ] = array( 'color' => $color, 'name' => trim( $source . ' – ' . $name, ' –' ) );
+		}
 	}
 
 	private static function doors( $calendar_id ) {
@@ -234,8 +331,14 @@ final class Panda_Seasons_Free_Plugin {
 				'content'     => (string) $door->post_content,
 				'closedBg'    => (string) get_post_meta( $door->ID, '_ps_closed_background', true ),
 				'closedColor' => (string) get_post_meta( $door->ID, '_ps_closed_color', true ),
+				'closedBorderColor' => (string) get_post_meta( $door->ID, '_ps_closed_border_color', true ),
+				'closedBorderWidth' => (string) get_post_meta( $door->ID, '_ps_closed_border_width', true ),
+				'closedBorderStyle' => (string) get_post_meta( $door->ID, '_ps_closed_border_style', true ),
 				'openBg'      => (string) get_post_meta( $door->ID, '_ps_open_background', true ),
 				'openColor'   => (string) get_post_meta( $door->ID, '_ps_open_color', true ),
+				'openBorderColor' => (string) get_post_meta( $door->ID, '_ps_open_border_color', true ),
+				'openBorderWidth' => (string) get_post_meta( $door->ID, '_ps_open_border_width', true ),
+				'openBorderStyle' => (string) get_post_meta( $door->ID, '_ps_open_border_style', true ),
 				'shape'       => (string) get_post_meta( $door->ID, '_ps_shape', true ) ?: 'rounded',
 				'desktop'     => self::position( $door->ID, 'desktop', $index, count( $doors ) ),
 				'mobile'      => self::position( $door->ID, 'mobile', $index, count( $doors ) ),
@@ -255,6 +358,11 @@ final class Panda_Seasons_Free_Plugin {
 		$closed_color = self::color( get_post_meta( $post->ID, '_ps_default_closed_text_color', true ), '#ffffff' );
 		$open_bg = self::color( get_post_meta( $post->ID, '_ps_default_open_background', true ), 'rgba(255,255,255,.80)' );
 		$open_color = self::color( get_post_meta( $post->ID, '_ps_default_open_text_color', true ), '#1f2937' );
+		$closed_border_color = self::color( get_post_meta( $post->ID, '_ps_default_closed_border_color', true ), '#ffffff' );
+		$open_border_color = self::color( get_post_meta( $post->ID, '_ps_default_open_border_color', true ), '#ffffff' );
+		$closed_border_width = min( 20, absint( get_post_meta( $post->ID, '_ps_default_closed_border_width', true ) ) );
+		$open_border_width = min( 20, absint( get_post_meta( $post->ID, '_ps_default_open_border_width', true ) ) );
+		$default_border_style = self::border_style( get_post_meta( $post->ID, '_ps_default_border_style', true ) );
 		$default_shape = self::shape( get_post_meta( $post->ID, '_ps_default_shape', true ) );
 		$doors = self::editor_doors( $post->ID );
 		$preview = wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_free_preview&calendar=' . $post->ID ), 'panda_seasons_free_preview_' . $post->ID );
@@ -265,8 +373,9 @@ final class Panda_Seasons_Free_Plugin {
 					<button type="button" class="contactpanda-image-picker-drop" data-select-cover>
 						<span class="dashicons dashicons-format-image" aria-hidden="true"></span>
 						<strong><?php esc_html_e( 'Select an image or drop it here', 'panda-seasons-free' ); ?></strong>
+						<span class="contactpanda-image-picker-preview" data-cover-preview><?php if ( $cover ) : ?><img src="<?php echo esc_url( $cover ); ?>" alt=""><?php endif; ?></span>
+						<small class="contactpanda-image-picker-status" aria-live="polite"></small>
 					</button>
-					<div class="contactpanda-image-picker-preview" data-cover-preview><?php if ( $cover ) : ?><img src="<?php echo esc_url( $cover ); ?>" alt=""><?php endif; ?></div>
 					<button type="button" class="contactpanda-image-picker-remove" data-remove-cover<?php echo $cover ? '' : ' hidden'; ?> aria-label="<?php esc_attr_e( 'Remove background image', 'panda-seasons-free' ); ?>"><span class="dashicons dashicons-trash" aria-hidden="true"></span></button>
 					<input type="hidden" name="panda_seasons_free_cover" value="<?php echo esc_attr( $cover_id ); ?>" data-cover-id>
 				</div>
@@ -284,8 +393,13 @@ final class Panda_Seasons_Free_Plugin {
 				<div class="panda-seasons-free-settings-grid is-four">
 					<label><span><?php esc_html_e( 'Closed background', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" name="panda_seasons_free_closed_bg" value="<?php echo esc_attr( $closed_bg ); ?>" data-default="closedBg"></label>
 					<label><span><?php esc_html_e( 'Closed text', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" name="panda_seasons_free_closed_color" value="<?php echo esc_attr( $closed_color ); ?>" data-default="closedColor"></label>
+					<label><span><?php esc_html_e( 'Closed border color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" name="panda_seasons_free_closed_border_color" value="<?php echo esc_attr( $closed_border_color ); ?>" data-default="closedBorderColor"></label>
+					<label><span><?php esc_html_e( 'Closed border width (px)', 'panda-seasons-free' ); ?></span><input type="number" min="0" max="20" name="panda_seasons_free_closed_border_width" value="<?php echo esc_attr( $closed_border_width ); ?>" data-default="closedBorderWidth"></label>
 					<label><span><?php esc_html_e( 'Opened background', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" name="panda_seasons_free_open_bg" value="<?php echo esc_attr( $open_bg ); ?>" data-default="openBg"></label>
 					<label><span><?php esc_html_e( 'Opened text', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" name="panda_seasons_free_open_color" value="<?php echo esc_attr( $open_color ); ?>" data-default="openColor"></label>
+					<label><span><?php esc_html_e( 'Opened border color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" name="panda_seasons_free_open_border_color" value="<?php echo esc_attr( $open_border_color ); ?>" data-default="openBorderColor"></label>
+					<label><span><?php esc_html_e( 'Opened border width (px)', 'panda-seasons-free' ); ?></span><input type="number" min="0" max="20" name="panda_seasons_free_open_border_width" value="<?php echo esc_attr( $open_border_width ); ?>" data-default="openBorderWidth"></label>
+					<label><span><?php esc_html_e( 'Border style', 'panda-seasons-free' ); ?></span><select name="panda_seasons_free_border_style" data-default="borderStyle"><option value="none"<?php selected( $default_border_style, 'none' ); ?>><?php esc_html_e( 'No border', 'panda-seasons-free' ); ?></option><option value="solid"<?php selected( $default_border_style, 'solid' ); ?>><?php esc_html_e( 'Solid', 'panda-seasons-free' ); ?></option><option value="dashed"<?php selected( $default_border_style, 'dashed' ); ?>><?php esc_html_e( 'Dashed', 'panda-seasons-free' ); ?></option><option value="dotted"<?php selected( $default_border_style, 'dotted' ); ?>><?php esc_html_e( 'Dotted', 'panda-seasons-free' ); ?></option></select></label>
 				</div>
 			</div>
 			<div class="panda-seasons-free-templates">
@@ -312,8 +426,8 @@ final class Panda_Seasons_Free_Plugin {
 						<label><span><?php esc_html_e( 'Unlock time', 'panda-seasons-free' ); ?></span><input type="time" data-door-field="unlockTime"></label>
 					</div>
 					<div class="panda-seasons-free-state-colors">
-						<h4><?php esc_html_e( 'Closed door', 'panda-seasons-free' ); ?></h4><label><span><?php esc_html_e( 'Background', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="closedBg"></label><label><span><?php esc_html_e( 'Text color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="closedColor"></label>
-						<h4><?php esc_html_e( 'Opened door', 'panda-seasons-free' ); ?></h4><label><span><?php esc_html_e( 'Background', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="openBg"></label><label><span><?php esc_html_e( 'Text color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="openColor"></label>
+						<h4><?php esc_html_e( 'Closed door', 'panda-seasons-free' ); ?></h4><label><span><?php esc_html_e( 'Background', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="closedBg"></label><label><span><?php esc_html_e( 'Text color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="closedColor"></label><label><span><?php esc_html_e( 'Border color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="closedBorderColor"></label><label><span><?php esc_html_e( 'Border width (px)', 'panda-seasons-free' ); ?></span><input type="number" min="0" max="20" data-door-field="closedBorderWidth"></label><label><span><?php esc_html_e( 'Border style', 'panda-seasons-free' ); ?></span><select data-door-field="closedBorderStyle"><option value="none"><?php esc_html_e( 'No border', 'panda-seasons-free' ); ?></option><option value="solid"><?php esc_html_e( 'Solid', 'panda-seasons-free' ); ?></option><option value="dashed"><?php esc_html_e( 'Dashed', 'panda-seasons-free' ); ?></option><option value="dotted"><?php esc_html_e( 'Dotted', 'panda-seasons-free' ); ?></option></select></label>
+						<h4><?php esc_html_e( 'Opened door', 'panda-seasons-free' ); ?></h4><label><span><?php esc_html_e( 'Background', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="openBg"></label><label><span><?php esc_html_e( 'Text color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="openColor"></label><label><span><?php esc_html_e( 'Border color', 'panda-seasons-free' ); ?></span><input type="text" class="panda-seasons-free-color" data-door-field="openBorderColor"></label><label><span><?php esc_html_e( 'Border width (px)', 'panda-seasons-free' ); ?></span><input type="number" min="0" max="20" data-door-field="openBorderWidth"></label><label><span><?php esc_html_e( 'Border style', 'panda-seasons-free' ); ?></span><select data-door-field="openBorderStyle"><option value="none"><?php esc_html_e( 'No border', 'panda-seasons-free' ); ?></option><option value="solid"><?php esc_html_e( 'Solid', 'panda-seasons-free' ); ?></option><option value="dashed"><?php esc_html_e( 'Dashed', 'panda-seasons-free' ); ?></option><option value="dotted"><?php esc_html_e( 'Dotted', 'panda-seasons-free' ); ?></option></select></label>
 					</div>
 					<label class="panda-seasons-free-content-heading"><span><?php esc_html_e( 'Content heading', 'panda-seasons-free' ); ?></span><input type="text" data-door-field="heading"></label>
 					<div class="panda-seasons-free-content-editor"><strong><?php esc_html_e( 'Text content', 'panda-seasons-free' ); ?></strong><?php wp_editor( '', 'panda_seasons_free_door_content', array( 'textarea_name' => 'panda_seasons_free_door_content_visual', 'textarea_rows' => 10, 'media_buttons' => false, 'teeny' => false, 'quicktags' => true, 'tinymce' => array( 'block_formats' => 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4', 'toolbar1' => 'formatselect,bold,italic,bullist,numlist,alignleft,aligncenter,alignright,link,unlink,undo,redo' ) ) ); ?></div>
@@ -347,9 +461,15 @@ final class Panda_Seasons_Free_Plugin {
 			'_ps_default_closed_text_color' => self::color( wp_unslash( $_POST['panda_seasons_free_closed_color'] ?? '' ), '#ffffff' ),
 			'_ps_default_open_background'   => self::color( wp_unslash( $_POST['panda_seasons_free_open_bg'] ?? '' ), 'rgba(255,255,255,.80)' ),
 			'_ps_default_open_text_color'   => self::color( wp_unslash( $_POST['panda_seasons_free_open_color'] ?? '' ), '#1f2937' ),
+			'_ps_default_closed_border_color' => self::color( wp_unslash( $_POST['panda_seasons_free_closed_border_color'] ?? '' ), '#ffffff' ),
+			'_ps_default_open_border_color' => self::color( wp_unslash( $_POST['panda_seasons_free_open_border_color'] ?? '' ), '#ffffff' ),
+			'_ps_default_closed_border_width' => min( 20, absint( $_POST['panda_seasons_free_closed_border_width'] ?? 0 ) ),
+			'_ps_default_open_border_width' => min( 20, absint( $_POST['panda_seasons_free_open_border_width'] ?? 0 ) ),
 		);
 		$default_shape = self::shape( wp_unslash( $_POST['panda_seasons_free_default_shape'] ?? 'rounded' ) );
 		update_post_meta( $post_id, '_ps_default_shape', $default_shape );
+		$default_border_style = self::border_style( wp_unslash( $_POST['panda_seasons_free_border_style'] ?? 'none' ) );
+		update_post_meta( $post_id, '_ps_default_border_style', $default_border_style );
 		foreach ( $defaults as $key => $value ) update_post_meta( $post_id, $key, $value );
 
 		$items = json_decode( wp_unslash( $_POST['panda_seasons_free_doors'] ?? '[]' ), true );
@@ -391,8 +511,14 @@ final class Panda_Seasons_Free_Plugin {
 			}
 			update_post_meta( $door_id, '_ps_closed_background', self::color( $item['closedBg'] ?? '', $defaults['_ps_default_closed_background'] ) );
 			update_post_meta( $door_id, '_ps_closed_color', self::color( $item['closedColor'] ?? '', $defaults['_ps_default_closed_text_color'] ) );
+			update_post_meta( $door_id, '_ps_closed_border_color', self::color( $item['closedBorderColor'] ?? '', $defaults['_ps_default_closed_border_color'] ) );
+			update_post_meta( $door_id, '_ps_closed_border_width', min( 20, absint( $item['closedBorderWidth'] ?? $defaults['_ps_default_closed_border_width'] ) ) );
+			update_post_meta( $door_id, '_ps_closed_border_style', self::border_style( $item['closedBorderStyle'] ?? $default_border_style ) );
 			update_post_meta( $door_id, '_ps_open_background', self::color( $item['openBg'] ?? '', $defaults['_ps_default_open_background'] ) );
 			update_post_meta( $door_id, '_ps_open_color', self::color( $item['openColor'] ?? '', $defaults['_ps_default_open_text_color'] ) );
+			update_post_meta( $door_id, '_ps_open_border_color', self::color( $item['openBorderColor'] ?? '', $defaults['_ps_default_open_border_color'] ) );
+			update_post_meta( $door_id, '_ps_open_border_width', min( 20, absint( $item['openBorderWidth'] ?? $defaults['_ps_default_open_border_width'] ) ) );
+			update_post_meta( $door_id, '_ps_open_border_style', self::border_style( $item['openBorderStyle'] ?? $default_border_style ) );
 			update_post_meta( $door_id, '_ps_shape', self::shape( $item['shape'] ?? $default_shape ) );
 			update_post_meta( $door_id, '_ps_position_desktop', self::sanitize_position( $item['desktop'] ?? array() ) );
 			update_post_meta( $door_id, '_ps_position_mobile', self::sanitize_position( $item['mobile'] ?? array() ) );
@@ -400,8 +526,6 @@ final class Panda_Seasons_Free_Plugin {
 			// Pro-only styling remains untouched while the free edition is active.
 			if ( $is_new ) {
 				foreach ( array( 'closed', 'open' ) as $state ) {
-					update_post_meta( $door_id, '_ps_' . $state . '_border_width', 0 );
-					update_post_meta( $door_id, '_ps_' . $state . '_border_style', 'none' );
 					update_post_meta( $door_id, '_ps_' . $state . '_label_background', 'rgba(0,0,0,0)' );
 					update_post_meta( $door_id, '_ps_' . $state . '_label_border_width', 0 );
 					update_post_meta( $door_id, '_ps_' . $state . '_label_visible', 1 );
@@ -430,6 +554,11 @@ final class Panda_Seasons_Free_Plugin {
 	private static function shape( $value ) {
 		$value = sanitize_key( (string) $value );
 		return in_array( $value, array( 'square', 'rounded', 'round' ), true ) ? $value : 'rounded';
+	}
+
+	private static function border_style( $value ) {
+		$value = sanitize_key( (string) $value );
+		return in_array( $value, array( 'none', 'solid', 'dashed', 'dotted' ), true ) ? $value : 'none';
 	}
 
 	private static function date( $value ) {
@@ -486,6 +615,11 @@ final class Panda_Seasons_Free_Plugin {
 		$default_closed_color = self::color( get_post_meta( $id, '_ps_default_closed_text_color', true ), '#ffffff' );
 		$default_open_bg = self::color( get_post_meta( $id, '_ps_default_open_background', true ), 'rgba(255,255,255,.80)' );
 		$default_open_color = self::color( get_post_meta( $id, '_ps_default_open_text_color', true ), '#1f2937' );
+		$default_closed_border_color = self::color( get_post_meta( $id, '_ps_default_closed_border_color', true ), '#ffffff' );
+		$default_open_border_color = self::color( get_post_meta( $id, '_ps_default_open_border_color', true ), '#ffffff' );
+		$default_closed_border_width = min( 20, absint( get_post_meta( $id, '_ps_default_closed_border_width', true ) ) );
+		$default_open_border_width = min( 20, absint( get_post_meta( $id, '_ps_default_open_border_width', true ) ) );
+		$default_border_style = self::border_style( get_post_meta( $id, '_ps_default_border_style', true ) );
 		$default_shape = self::shape( get_post_meta( $id, '_ps_default_shape', true ) );
 		$show_title = ! in_array( strtolower( (string) $atts['show_title'] ), array( '0', 'false', 'no', 'off' ), true );
 		$now = new DateTimeImmutable( 'now', wp_timezone() );
@@ -504,8 +638,14 @@ final class Panda_Seasons_Free_Plugin {
 					$closed_color = self::color( get_post_meta( $door->ID, '_ps_closed_color', true ), $default_closed_color );
 					$open_bg = self::color( get_post_meta( $door->ID, '_ps_open_background', true ), $default_open_bg );
 					$open_color = self::color( get_post_meta( $door->ID, '_ps_open_color', true ), $default_open_color );
+					$closed_border_color = self::color( get_post_meta( $door->ID, '_ps_closed_border_color', true ), $default_closed_border_color );
+					$open_border_color = self::color( get_post_meta( $door->ID, '_ps_open_border_color', true ), $default_open_border_color );
+					$closed_border_width = '' !== get_post_meta( $door->ID, '_ps_closed_border_width', true ) ? min( 20, absint( get_post_meta( $door->ID, '_ps_closed_border_width', true ) ) ) : $default_closed_border_width;
+					$open_border_width = '' !== get_post_meta( $door->ID, '_ps_open_border_width', true ) ? min( 20, absint( get_post_meta( $door->ID, '_ps_open_border_width', true ) ) ) : $default_open_border_width;
+					$closed_border_style = self::border_style( get_post_meta( $door->ID, '_ps_closed_border_style', true ) ?: $default_border_style );
+					$open_border_style = self::border_style( get_post_meta( $door->ID, '_ps_open_border_style', true ) ?: $default_border_style );
 					$shape = self::shape( get_post_meta( $door->ID, '_ps_shape', true ) ?: $default_shape );
-					$style = '--psf-x:' . $desktop['x'] . '%;--psf-y:' . $desktop['y'] . '%;--psf-w:' . $desktop['w'] . '%;--psf-h:' . $desktop['h'] . '%;--psf-mx:' . $mobile['x'] . '%;--psf-my:' . $mobile['y'] . '%;--psf-mw:' . $mobile['w'] . '%;--psf-mh:' . $mobile['h'] . '%;--psf-closed-bg:' . $closed_bg . ';--psf-closed-color:' . $closed_color . ';--psf-open-bg:' . $open_bg . ';--psf-open-color:' . $open_color . ';';
+					$style = '--psf-x:' . $desktop['x'] . '%;--psf-y:' . $desktop['y'] . '%;--psf-w:' . $desktop['w'] . '%;--psf-h:' . $desktop['h'] . '%;--psf-mx:' . $mobile['x'] . '%;--psf-my:' . $mobile['y'] . '%;--psf-mw:' . $mobile['w'] . '%;--psf-mh:' . $mobile['h'] . '%;--psf-closed-bg:' . $closed_bg . ';--psf-closed-color:' . $closed_color . ';--psf-open-bg:' . $open_bg . ';--psf-open-color:' . $open_color . ';--psf-closed-border-color:' . $closed_border_color . ';--psf-open-border-color:' . $open_border_color . ';--psf-closed-border-width:' . $closed_border_width . 'px;--psf-open-border-width:' . $open_border_width . 'px;--psf-closed-border-style:' . $closed_border_style . ';--psf-open-border-style:' . $open_border_style . ';';
 					$heading = (string) get_post_meta( $door->ID, '_ps_content_heading', true ) ?: sprintf( __( 'Door %d', 'panda-seasons-free' ), $number );
 					?>
 					<article class="panda-seasons-free__door panda-seasons-free__door--<?php echo esc_attr( $shape ); ?> <?php echo $available ? 'is-available' : 'is-locked'; ?>" style="<?php echo esc_attr( $style ); ?>" role="listitem">

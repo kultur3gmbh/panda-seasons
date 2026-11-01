@@ -200,3 +200,66 @@ msgstr ""
 msgid "You are not allowed to preview this calendar."
 msgstr ""
 
++msgid "Theme colors"
+msgstr ""
+
+msgid "Select color"
+msgstr ""
+
+msgid "Color value"
+msgstr ""
+
+msgid "Enter a valid HEX, RGB or RGBA color."
+msgstr ""
+
+msgid "Theme background"
+msgstr ""
+
+msgid "Theme text"
+msgstr ""
+
+msgid "Select image"
+msgstr ""
+
+msgid "Remove image"
+msgstr ""
+
+msgid "Uploading image…"
+msgstr ""
+
+msgid "The image could not be uploaded."
+msgstr ""
+
+msgid "Closed border color"
+msgstr ""
+
+msgid "Closed border width (px)"
+msgstr ""
+
+msgid "Opened border color"
+msgstr ""
+
+msgid "Opened border width (px)"
+msgstr ""
+
+msgid "Border style"
+msgstr ""
+
+msgid "No border"
+msgstr ""
+
+msgid "Solid"
+msgstr ""
+
+msgid "Dashed"
+msgstr ""
+
+msgid "Dotted"
+msgstr ""
+
+msgid "Border color"
+msgstr ""
+
+msgid "Border width (px)"
+msgstr ""
+

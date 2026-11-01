@@ -7,50 +7,16 @@
 		return node.innerHTML;
 	}
 
-	function colorParts(value) {
-		var match = String(value || '').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/i);
-		if (match) return {hex: '#' + [match[1], match[2], match[3]].map(function (item) { return Math.max(0, Math.min(255, +item)).toString(16).padStart(2, '0'); }).join(''), alpha: match[4] == null ? 1 : Math.max(0, Math.min(1, +match[4]))};
-		return {hex: /^#[0-9a-f]{6}$/i.test(value) ? value : '#636363', alpha: String(value).toLowerCase() === 'transparent' ? 0 : 1};
-	}
-
 	function enhanceColorField(field, render) {
 		if (!field || field.dataset.rgbaEnhanced) return;
 		field.dataset.rgbaEnhanced = '1';
 		var label = field.closest('label');
 		if (label) label.classList.add('contactpanda-color-field');
-		if (window.ContactPandaAdminUI && typeof window.ContactPandaAdminUI.enhanceColorPicker === 'function') {
-			window.ContactPandaAdminUI.enhanceColorPicker(field);
-			field.addEventListener('change', render);
-			field.addEventListener('input', render);
-			return;
-		}
-		var initial = colorParts(field.value);
-		var control = document.createElement('div');
-		control.className = 'contactpanda-unified-color';
-		control.innerHTML = '<div class="contactpanda-unified-color-summary"><button type="button" class="contactpanda-unified-color-preview" aria-label="' + escapeHtml(pandaSeasonsFreeAdmin.openColorPicker) + '"><span></span></button><input type="text" class="contactpanda-unified-color-text"><button type="button" class="contactpanda-unified-color-theme" hidden aria-hidden="true"><span class="dashicons dashicons-admin-site-alt3"></span></button></div><div class="contactpanda-unified-color-popover" hidden><input type="text" data-iris-color value="' + initial.hex + '"><div class="contactpanda-unified-color-alpha"><input type="range" min="0" max="1" step="0.01" value="' + initial.alpha + '" aria-label="' + escapeHtml(pandaSeasonsFreeAdmin.alpha) + '"></div></div>';
-		field.parentNode.insertBefore(control, field);
-		control.appendChild(field);
-		field.hidden = true;
-		var preview = control.querySelector('.contactpanda-unified-color-preview span');
-		var code = control.querySelector('.contactpanda-unified-color-text');
-		var panel = control.querySelector('.contactpanda-unified-color-popover');
-		var iris = control.querySelector('[data-iris-color]');
-		var alpha = control.querySelector('[type=range]');
-		var parts = initial;
-		var syncing = false;
-		function rgba(hex, opacity) { return 'rgba(' + parseInt(hex.slice(1, 3), 16) + ', ' + parseInt(hex.slice(3, 5), 16) + ', ' + parseInt(hex.slice(5, 7), 16) + ', ' + Number(opacity.toFixed(2)) + ')'; }
-		function paint() { var current = colorParts(field.value); preview.style.background = field.value; code.value = current.alpha >= 1 ? current.hex : field.value; alpha.value = current.alpha; }
-		function setHex(hex) { if (syncing) return; parts.hex = colorParts(hex).hex; field.value = +alpha.value >= 1 ? parts.hex : rgba(parts.hex, +alpha.value); paint(); field.dispatchEvent(new Event('input', {bubbles: true})); field.dispatchEvent(new Event('change', {bubbles: true})); }
-		control.querySelector('.contactpanda-unified-color-preview').addEventListener('click', function () { panel.hidden = !panel.hidden; });
-		alpha.addEventListener('input', function () { field.value = +alpha.value >= 1 ? parts.hex : rgba(parts.hex, +alpha.value); paint(); field.dispatchEvent(new Event('input', {bubbles: true})); field.dispatchEvent(new Event('change', {bubbles: true})); });
-		code.addEventListener('change', function () { parts = colorParts(code.value); field.value = parts.alpha >= 1 ? parts.hex : rgba(parts.hex, parts.alpha); alpha.value = parts.alpha; if ($.fn.iris) $(iris).iris('color', parts.hex); paint(); field.dispatchEvent(new Event('change', {bubbles: true})); });
-		field.addEventListener('change', function () { parts = colorParts(field.value); paint(); render(); });
+		if (!window.ContactPandaAdminUI || typeof window.ContactPandaAdminUI.enhanceColorPicker !== 'function') return;
+		window.ContactPandaAdminUI.enhanceColorPicker(field);
+		field.addEventListener('change', render);
 		field.addEventListener('input', render);
-		if ($.fn.iris) $(iris).iris({hide: false, palettes: false, width: 238, change: function (event, ui) { syncing = false; setHex(ui.color.toString()); }});
-		else { iris.type = 'color'; iris.addEventListener('input', function () { setHex(iris.value); }); }
-		paint();
 	}
-
 	function uploadAttachment(file, callback) {
 		if (!file || !pandaSeasonsFreeAdmin.uploadUrl || !pandaSeasonsFreeAdmin.uploadNonce) return;
 		var data = new FormData();
@@ -137,6 +103,9 @@
 				el.style.cssText = positionStyle(door[layout]);
 				el.style.background = door[state + 'Bg'] || fallback[state + 'Bg'];
 				el.style.color = door[state + 'Color'] || fallback[state + 'Color'];
+				el.style.borderColor = door[state + 'BorderColor'] || fallback[state + 'BorderColor'] || 'transparent';
+				el.style.borderWidth = Math.max(0, parseInt(door[state + 'BorderWidth'] || fallback[state + 'BorderWidth'], 10) || 0) + 'px';
+				el.style.borderStyle = door[state + 'BorderStyle'] || fallback.borderStyle || 'none';
 				el.dataset.shape = door.shape || fallback.shape || 'rounded';
 				el.innerHTML = '<span>' + String(door.number || '') + '</span><i aria-hidden="true"></i>';
 				el.addEventListener('click', function (event) {
@@ -180,7 +149,8 @@
 				key: 'new-' + Date.now() + '-' + number + '-' + Math.random().toString(16).slice(2),
 				number: number,
 				unlockDate: '', unlockTime: '', heading: '', content: '', shape: fallback.shape || 'rounded',
-				closedBg: '', closedColor: '', openBg: '', openColor: '',
+				closedBg: '', closedColor: '', closedBorderColor: '', closedBorderWidth: '', closedBorderStyle: fallback.borderStyle || 'none',
+				openBg: '', openColor: '', openBorderColor: '', openBorderWidth: '', openBorderStyle: fallback.borderStyle || 'none',
 				desktop: {x: x == null ? 0 : x, y: y == null ? 0 : y, w: 100 / 6, h: 16},
 				mobile: {x: ((number - 1) % 3) * (100 / 3), y: Math.min(88, Math.floor((number - 1) / 3) * 12), w: 100 / 3, h: 12}
 			};
@@ -262,7 +232,8 @@
 				door.desktop = {x: (index % columns) * (100 / columns), y: Math.floor(index / columns) * (100 / rows), w: 100 / columns, h: 100 / rows};
 				door.mobile = {x: (index % 3) * (100 / 3), y: Math.floor(index / 3) * 12.5, w: 100 / 3, h: 12.5};
 				door.shape = modern ? 'round' : 'square';
-				door.closedBg = ''; door.closedColor = ''; door.openBg = ''; door.openColor = '';
+				door.closedBg = ''; door.closedColor = ''; door.closedBorderColor = ''; door.closedBorderWidth = ''; door.closedBorderStyle = '';
+				door.openBg = ''; door.openColor = ''; door.openBorderColor = ''; door.openBorderWidth = ''; door.openBorderStyle = '';
 			});
 			if (selected) loadInspector(selected);
 			render();

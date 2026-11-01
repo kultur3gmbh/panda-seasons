@@ -255,3 +255,66 @@ msgstr "Visueller Kalendereditor"
 msgid "You are not allowed to preview this calendar."
 msgstr "Sie dürfen diesen Kalender nicht in der Vorschau anzeigen."
 
++msgid "Theme colors"
+msgstr "Theme-Farben"
+
+msgid "Select color"
+msgstr "Farbe auswählen"
+
+msgid "Color value"
+msgstr "Farbwert"
+
+msgid "Enter a valid HEX, RGB or RGBA color."
+msgstr "Geben Sie eine gültige HEX-, RGB- oder RGBA-Farbe ein."
+
+msgid "Theme background"
+msgstr "Theme-Hintergrund"
+
+msgid "Theme text"
+msgstr "Theme-Text"
+
+msgid "Select image"
+msgstr "Bild auswählen"
+
+msgid "Remove image"
+msgstr "Bild entfernen"
+
+msgid "Uploading image…"
+msgstr "Bild wird hochgeladen …"
+
+msgid "The image could not be uploaded."
+msgstr "Das Bild konnte nicht hochgeladen werden."
+
+msgid "Closed border color"
+msgstr "Rahmenfarbe geschlossen"
+
+msgid "Closed border width (px)"
+msgstr "Rahmenbreite geschlossen (px)"
+
+msgid "Opened border color"
+msgstr "Rahmenfarbe geöffnet"
+
+msgid "Opened border width (px)"
+msgstr "Rahmenbreite geöffnet (px)"
+
+msgid "Border style"
+msgstr "Rahmenart"
+
+msgid "No border"
+msgstr "Kein Rahmen"
+
+msgid "Solid"
+msgstr "Durchgehend"
+
+msgid "Dashed"
+msgstr "Gestrichelt"
+
+msgid "Dotted"
+msgstr "Gepunktet"
+
+msgid "Border color"
+msgstr "Rahmenfarbe"
+
+msgid "Border width (px)"
+msgstr "Rahmenbreite (px)"
+
