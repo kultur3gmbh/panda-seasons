@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons Free 0.1.4\n"
+"Project-Id-Version: Panda Seasons Free 0.1.5\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -347,4 +347,136 @@ msgstr "Es wurde keine gültige veröffentlichte Aktualisierung gefunden."
 
 msgid "You are not allowed to check for updates."
 msgstr "Sie dürfen nicht nach Aktualisierungen suchen."
+
+msgid "Turn every door into a campaign that generates attention, contacts and sales"
+msgstr "Machen Sie jede Türe zu einer Kampagne, die Aufmerksamkeit, Kontakte und Verkäufe erzeugt"
+
+msgid "Free gives you a beautiful seasonal calendar. Pro turns it into a complete marketing tool: present products, collect newsletter registrations, create quizzes, deliver daily emails and measure the success of your campaign."
+msgstr "Free bietet Ihnen einen schönen Saisonkalender. Pro macht daraus ein vollständiges Marketingwerkzeug: Präsentieren Sie Produkte, sammeln Sie Newsletter-Anmeldungen, erstellen Sie Quizfragen, versenden Sie tägliche E-Mails und messen Sie den Erfolg Ihrer Kampagne."
+
+msgid "Individual images and content for every door"
+msgstr "Individuelle Bilder und Inhalte für jede Türe"
+
+msgid "Products, daily discounts and direct shop links"
+msgstr "Produkte, Tagesrabatte und direkte Shop-Links"
+
+msgid "Newsletter forms, double opt-in and daily calendar emails"
+msgstr "Newsletter-Formulare, Double-Opt-in und tägliche Kalender-E-Mails"
+
+msgid "Your existing calendars remain available after the upgrade."
+msgstr "Ihre bestehenden Kalender bleiben nach dem Upgrade erhalten."
+
+msgid "Selected templates for a professional start"
+msgstr "Ausgewählte Vorlagen für einen professionellen Start"
+
+msgid "These selected designs show how different a calendar can look. Pro gives you the creative tools and the growing template library for campaigns that match your brand."
+msgstr "Diese ausgewählten Designs zeigen, wie unterschiedlich ein Kalender aussehen kann. Pro bietet Ihnen die kreativen Werkzeuge und die wachsende Vorlagenbibliothek für Kampagnen, die zu Ihrer Marke passen."
+
+msgid "View Pro and templates"
+msgstr "Pro und Vorlagen ansehen"
+
+msgid "Winter village"
+msgstr "Winterdorf"
+
+msgid "Elegant night"
+msgstr "Elegante Nacht"
+
+msgid "Photo mosaic"
+msgstr "Fotomosaik"
+
+msgid "Botanical light"
+msgstr "Botanisch hell"
+
+msgid "Modern Nordic"
+msgstr "Modern nordisch"
+
+msgid "Botanical circles"
+msgstr "Botanische Kreise"
+
+msgid "Pro template preview"
+msgstr "Vorschau einer Pro-Vorlage"
+
+msgid "More than an Advent calendar"
+msgstr "Mehr als ein Adventkalender"
+
+msgid "What Pro adds to your campaign"
+msgstr "Was Pro Ihrer Kampagne hinzufügt"
+
+msgid "Creative freedom"
+msgstr "Kreative Freiheit"
+
+msgid "Use individual door images, design layers, text areas, overlays, shadows, fonts and opening effects."
+msgstr "Verwenden Sie individuelle Türbilder, Gestaltungsflächen, Textbereiche, Overlays, Schatten, Schriftarten und Öffnungseffekte."
+
+msgid "Sell products"
+msgstr "Produkte verkaufen"
+
+msgid "Connect WooCommerce products, use calendar-only discounts and guide visitors directly to the offer."
+msgstr "Verbinden Sie WooCommerce-Produkte, nutzen Sie exklusive Kalenderrabatte und führen Sie Besucher direkt zum Angebot."
+
+msgid "Grow your audience"
+msgstr "Reichweite aufbauen"
+
+msgid "Collect calendar and newsletter registrations with double opt-in and calendar-specific contact tags."
+msgstr "Sammeln Sie Kalender- und Newsletter-Anmeldungen mit Double-Opt-in und kalenderspezifischen Kontakt-Tags."
+
+msgid "Increase interaction"
+msgstr "Interaktion steigern"
+
+msgid "Add quizzes, downloads, videos, calls to action and linked content to individual doors."
+msgstr "Ergänzen Sie einzelne Türen um Quizfragen, Downloads, Videos, Handlungsaufforderungen und verknüpfte Inhalte."
+
+msgid "Automate delivery"
+msgstr "Versand automatisieren"
+
+msgid "Send each day automatically by email and remind contacts who have not yet confirmed their registration."
+msgstr "Versenden Sie jeden Tag automatisch per E-Mail und erinnern Sie Kontakte, die ihre Anmeldung noch nicht bestätigt haben."
+
+msgid "Understand results"
+msgstr "Ergebnisse verstehen"
+
+msgid "Track door clicks, registrations and generated leads directly for each calendar."
+msgstr "Erfassen Sie Tür-Klicks, Anmeldungen und generierte Leads direkt für jeden Kalender."
+
+msgid "Free or Pro?"
+msgstr "Free oder Pro?"
+
+msgid "Choose the edition that fits your goal"
+msgstr "Wählen Sie die Edition, die zu Ihrem Ziel passt"
+
+msgid "Stay with Free for a simple text calendar. Upgrade when the calendar should actively support marketing, sales and customer communication."
+msgstr "Bleiben Sie bei Free für einen einfachen Textkalender. Wechseln Sie zu Pro, wenn der Kalender Marketing, Verkauf und Kundenkommunikation aktiv unterstützen soll."
+
+msgid "Comparison of Free and Pro"
+msgstr "Vergleich von Free und Pro"
+
+msgid "Function"
+msgstr "Funktion"
+
+msgid "Colored doors and text content"
+msgstr "Farbige Türen und Textinhalte"
+
+msgid "Individual images and multimedia"
+msgstr "Individuelle Bilder und Multimedia"
+
+msgid "Products and calendar discounts"
+msgstr "Produkte und Kalenderrabatte"
+
+msgid "Quizzes, calls to action and downloads"
+msgstr "Quizfragen, Handlungsaufforderungen und Downloads"
+
+msgid "Email delivery and newsletter registration"
+msgstr "E-Mail-Versand und Newsletter-Anmeldung"
+
+msgid "Advanced templates and import/export"
+msgstr "Erweiterte Vorlagen und Import/Export"
+
+msgid "Ready for a calendar that does more?"
+msgstr "Bereit für einen Kalender, der mehr leistet?"
+
+msgid "Keep every calendar you have already created and unlock the complete campaign toolkit with Pro."
+msgstr "Behalten Sie alle bereits erstellten Kalender und schalten Sie mit Pro das vollständige Kampagnenwerkzeug frei."
+
+msgid "Upgrade to Panda Seasons Pro"
+msgstr "Auf Panda Seasons Pro upgraden"
 

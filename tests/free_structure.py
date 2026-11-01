@@ -8,9 +8,9 @@ code = (plugin / "includes/class-panda-seasons-free-plugin.php").read_text()
 readme = (plugin / "readme.txt").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
-assert "Version: 0.1.4" in main
+assert "Version: 0.1.5" in main
 assert "Update URI: https://github.com/kultur3gmbh/panda-seasons/releases" in main
-assert "Stable tag: 0.1.4" in readme
+assert "Stable tag: 0.1.5" in readme
 assert "panda-seasons/panda-seasons.php" in main
 assert "panda_seasons_free_autoload" in main
 assert "if ( ! is_admin() ) return;" in code
@@ -32,6 +32,10 @@ assert (plugin / "includes/class-panda-seasons-free-updater.php").exists()
 assert "Panda Seasons', 'panda-seasons-free'" in code
 assert "data-template=\"classic\"" in code
 assert "data-template=\"modern\"" in code
+assert "panda-seasons-free-dashboard__template-gallery" in code
+assert "panda-seasons-free-dashboard__comparison-table" in code
+for selected_template in ("winter-village", "elegant-night", "photo-mosaic", "botanical-light", "modern-nordic", "botanical-circles"):
+    assert selected_template in code
 assert "_ps_content_type', 'general'" in code
 assert "if ( $is_new )" in code
 assert "'panda-seasons/calendar'" in code

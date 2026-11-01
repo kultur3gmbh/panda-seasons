@@ -142,9 +142,52 @@ final class Panda_Seasons_Free_Plugin {
 				</div><?php endif; ?>
 			</section>
 			<section class="panda-seasons-free-dashboard__pro">
-				<div class="panda-seasons-free-dashboard__pro-copy"><p class="panda-seasons-free-dashboard__eyebrow">Panda Seasons Pro</p><h2><?php esc_html_e( 'Turn your calendar into an interactive campaign', 'panda-seasons-free' ); ?></h2><p><?php esc_html_e( 'Use individual door images, design layers, products and discounts, quizzes, calls to action, newsletter forms, email delivery, imports and a growing template library.', 'panda-seasons-free' ); ?></p><a class="button button-primary button-hero" href="<?php echo esc_url( $pro_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Discover Panda Seasons Pro', 'panda-seasons-free' ); ?></a></div>
-				<div class="panda-seasons-free-dashboard__pro-gallery" aria-label="<?php esc_attr_e( 'Examples from the Pro template library', 'panda-seasons-free' ); ?>"><div class="is-winter"><strong>Winter Village</strong></div><div class="is-elegant"><strong>Elegant Gold</strong></div><div class="is-photo"><strong>Photo Mosaic</strong></div><div class="is-modern"><strong>Modern Green</strong></div></div>
+				<div class="panda-seasons-free-dashboard__pro-copy">
+					<p class="panda-seasons-free-dashboard__eyebrow">Panda Seasons Pro</p>
+					<h2><?php esc_html_e( 'Turn every door into a campaign that generates attention, contacts and sales', 'panda-seasons-free' ); ?></h2>
+					<p><?php esc_html_e( 'Free gives you a beautiful seasonal calendar. Pro turns it into a complete marketing tool: present products, collect newsletter registrations, create quizzes, deliver daily emails and measure the success of your campaign.', 'panda-seasons-free' ); ?></p>
+					<ul class="panda-seasons-free-dashboard__hero-benefits"><li><?php esc_html_e( 'Individual images and content for every door', 'panda-seasons-free' ); ?></li><li><?php esc_html_e( 'Products, daily discounts and direct shop links', 'panda-seasons-free' ); ?></li><li><?php esc_html_e( 'Newsletter forms, double opt-in and daily calendar emails', 'panda-seasons-free' ); ?></li></ul>
+					<div class="panda-seasons-free-dashboard__actions"><a class="button button-primary button-hero" href="<?php echo esc_url( $pro_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Discover Panda Seasons Pro', 'panda-seasons-free' ); ?></a><span><?php esc_html_e( 'Your existing calendars remain available after the upgrade.', 'panda-seasons-free' ); ?></span></div>
+				</div>
+				<div class="panda-seasons-free-dashboard__pro-visual" aria-hidden="true"><span class="is-large">24</span><span>7</span><span>18</span><span>3</span><span>12</span><span class="is-wide">21</span></div>
 			</section>
+			<section class="panda-seasons-free-dashboard__section panda-seasons-free-dashboard__templates-showcase">
+				<div class="panda-seasons-free-dashboard__section-heading"><div><p class="panda-seasons-free-dashboard__eyebrow">Panda Seasons Pro</p><h2><?php esc_html_e( 'Selected templates for a professional start', 'panda-seasons-free' ); ?></h2><p><?php esc_html_e( 'These selected designs show how different a calendar can look. Pro gives you the creative tools and the growing template library for campaigns that match your brand.', 'panda-seasons-free' ); ?></p></div><a class="button" href="<?php echo esc_url( $pro_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'View Pro and templates', 'panda-seasons-free' ); ?></a></div>
+				<div class="panda-seasons-free-dashboard__template-gallery" aria-label="<?php esc_attr_e( 'Examples from the Pro template library', 'panda-seasons-free' ); ?>">
+					<?php
+					$templates = array(
+						1 => array( 'winter-village', __( 'Winter village', 'panda-seasons-free' ) ),
+						3 => array( 'elegant-night', __( 'Elegant night', 'panda-seasons-free' ) ),
+						4 => array( 'photo-mosaic', __( 'Photo mosaic', 'panda-seasons-free' ) ),
+						5 => array( 'botanical-light', __( 'Botanical light', 'panda-seasons-free' ) ),
+						7 => array( 'modern-nordic', __( 'Modern Nordic', 'panda-seasons-free' ) ),
+						9 => array( 'botanical-circles', __( 'Botanical circles', 'panda-seasons-free' ) ),
+					);
+					foreach ( $templates as $number => $template ) :
+					?>
+					<article class="panda-seasons-free-dashboard-template is-<?php echo esc_attr( $template[0] ); ?>"><div class="panda-seasons-free-dashboard-template__preview"><span class="panda-seasons-free-dashboard-template__number"><?php echo esc_html( $number ); ?></span><span class="panda-seasons-free-dashboard-template__doors" aria-hidden="true"><i>13</i><i>7</i><i>24</i><i>2</i><i>19</i><i>8</i></span></div><div><strong><?php echo esc_html( $template[1] ); ?></strong><small><?php esc_html_e( 'Pro template preview', 'panda-seasons-free' ); ?></small></div></article>
+					<?php endforeach; ?>
+				</div>
+			</section>
+			<section class="panda-seasons-free-dashboard__section">
+				<div class="panda-seasons-free-dashboard__section-heading"><div><p class="panda-seasons-free-dashboard__eyebrow"><?php esc_html_e( 'More than an Advent calendar', 'panda-seasons-free' ); ?></p><h2><?php esc_html_e( 'What Pro adds to your campaign', 'panda-seasons-free' ); ?></h2></div></div>
+				<div class="panda-seasons-free-dashboard__feature-grid">
+					<article><span class="dashicons dashicons-format-image"></span><h3><?php esc_html_e( 'Creative freedom', 'panda-seasons-free' ); ?></h3><p><?php esc_html_e( 'Use individual door images, design layers, text areas, overlays, shadows, fonts and opening effects.', 'panda-seasons-free' ); ?></p></article>
+					<article><span class="dashicons dashicons-cart"></span><h3><?php esc_html_e( 'Sell products', 'panda-seasons-free' ); ?></h3><p><?php esc_html_e( 'Connect WooCommerce products, use calendar-only discounts and guide visitors directly to the offer.', 'panda-seasons-free' ); ?></p></article>
+					<article><span class="dashicons dashicons-email-alt"></span><h3><?php esc_html_e( 'Grow your audience', 'panda-seasons-free' ); ?></h3><p><?php esc_html_e( 'Collect calendar and newsletter registrations with double opt-in and calendar-specific contact tags.', 'panda-seasons-free' ); ?></p></article>
+					<article><span class="dashicons dashicons-welcome-learn-more"></span><h3><?php esc_html_e( 'Increase interaction', 'panda-seasons-free' ); ?></h3><p><?php esc_html_e( 'Add quizzes, downloads, videos, calls to action and linked content to individual doors.', 'panda-seasons-free' ); ?></p></article>
+					<article><span class="dashicons dashicons-clock"></span><h3><?php esc_html_e( 'Automate delivery', 'panda-seasons-free' ); ?></h3><p><?php esc_html_e( 'Send each day automatically by email and remind contacts who have not yet confirmed their registration.', 'panda-seasons-free' ); ?></p></article>
+					<article><span class="dashicons dashicons-chart-bar"></span><h3><?php esc_html_e( 'Understand results', 'panda-seasons-free' ); ?></h3><p><?php esc_html_e( 'Track door clicks, registrations and generated leads directly for each calendar.', 'panda-seasons-free' ); ?></p></article>
+				</div>
+			</section>
+			<section class="panda-seasons-free-dashboard__section panda-seasons-free-dashboard__comparison">
+				<div><p class="panda-seasons-free-dashboard__eyebrow"><?php esc_html_e( 'Free or Pro?', 'panda-seasons-free' ); ?></p><h2><?php esc_html_e( 'Choose the edition that fits your goal', 'panda-seasons-free' ); ?></h2><p><?php esc_html_e( 'Stay with Free for a simple text calendar. Upgrade when the calendar should actively support marketing, sales and customer communication.', 'panda-seasons-free' ); ?></p></div>
+				<div class="panda-seasons-free-dashboard__comparison-table" role="table" aria-label="<?php esc_attr_e( 'Comparison of Free and Pro', 'panda-seasons-free' ); ?>">
+					<div class="is-head" role="row"><span role="columnheader"><?php esc_html_e( 'Function', 'panda-seasons-free' ); ?></span><strong role="columnheader">Free</strong><strong role="columnheader">Pro</strong></div>
+					<?php foreach ( array( __( 'Colored doors and text content', 'panda-seasons-free' ) => array( true, true ), __( 'Individual images and multimedia', 'panda-seasons-free' ) => array( false, true ), __( 'Products and calendar discounts', 'panda-seasons-free' ) => array( false, true ), __( 'Quizzes, calls to action and downloads', 'panda-seasons-free' ) => array( false, true ), __( 'Email delivery and newsletter registration', 'panda-seasons-free' ) => array( false, true ), __( 'Advanced templates and import/export', 'panda-seasons-free' ) => array( false, true ) ) as $feature => $availability ) : ?><div role="row"><span role="cell"><?php echo esc_html( $feature ); ?></span><i role="cell" class="<?php echo $availability[0] ? 'is-yes' : 'is-no'; ?>"><?php echo $availability[0] ? '✓' : '–'; ?></i><i role="cell" class="is-yes">✓</i></div><?php endforeach; ?>
+				</div>
+			</section>
+			<section class="panda-seasons-free-dashboard__final-cta"><div><p class="panda-seasons-free-dashboard__eyebrow">Panda Seasons Pro</p><h2><?php esc_html_e( 'Ready for a calendar that does more?', 'panda-seasons-free' ); ?></h2><p><?php esc_html_e( 'Keep every calendar you have already created and unlock the complete campaign toolkit with Pro.', 'panda-seasons-free' ); ?></p></div><a class="button button-primary button-hero" href="<?php echo esc_url( $pro_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Upgrade to Panda Seasons Pro', 'panda-seasons-free' ); ?></a></section>
 		</div>
 		<?php
 	}
