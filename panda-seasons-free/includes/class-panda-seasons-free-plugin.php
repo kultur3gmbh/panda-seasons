@@ -239,6 +239,8 @@ final class Panda_Seasons_Free_Plugin {
 				'themeColors'   => __( 'Theme colors', 'panda-seasons-free' ),
 				'themeColorValues' => $theme_colors,
 				'confirmTemplate' => __( 'Apply this template? Existing text content is retained.', 'panda-seasons-free' ),
+				'desktop'        => __( 'Desktop', 'panda-seasons-free' ),
+				'mobile'         => __( 'Mobile', 'panda-seasons-free' ),
 			)
 		);
 	}
@@ -419,6 +421,16 @@ final class Panda_Seasons_Free_Plugin {
 				<div class="panda-seasons-free-canvas-wrap"><div class="panda-seasons-free-canvas" data-canvas></div></div>
 				<aside class="panda-seasons-free-inspector" data-inspector hidden>
 					<h3><?php esc_html_e( 'Edit door', 'panda-seasons-free' ); ?> <span data-door-title></span></h3>
+					<section class="panda-seasons-free-position">
+						<h4><?php esc_html_e( 'Position and size', 'panda-seasons-free' ); ?> – <span data-position-layout><?php esc_html_e( 'Desktop', 'panda-seasons-free' ); ?></span></h4>
+						<p class="description"><?php esc_html_e( 'Move the door directly on the calendar or enter exact percentage values. Drag the blue handle in the lower-right corner to resize it.', 'panda-seasons-free' ); ?></p>
+						<div class="panda-seasons-free-position-grid">
+							<label><span><?php esc_html_e( 'Left (%)', 'panda-seasons-free' ); ?></span><input type="number" min="0" max="98" step="0.01" data-position-field="x"></label>
+							<label><span><?php esc_html_e( 'Top (%)', 'panda-seasons-free' ); ?></span><input type="number" min="0" max="98" step="0.01" data-position-field="y"></label>
+							<label><span><?php esc_html_e( 'Width (%)', 'panda-seasons-free' ); ?></span><input type="number" min="2" max="100" step="0.01" data-position-field="w"></label>
+							<label><span><?php esc_html_e( 'Height (%)', 'panda-seasons-free' ); ?></span><input type="number" min="2" max="100" step="0.01" data-position-field="h"></label>
+						</div>
+					</section>
 					<div class="panda-seasons-free-settings-grid">
 						<label><span><?php esc_html_e( 'Door number', 'panda-seasons-free' ); ?></span><input type="number" min="1" max="999" data-door-field="number"></label>
 						<label><span><?php esc_html_e( 'Door shape', 'panda-seasons-free' ); ?></span><select data-door-field="shape"><option value="square"><?php esc_html_e( 'Square', 'panda-seasons-free' ); ?></option><option value="rounded"><?php esc_html_e( 'Rounded', 'panda-seasons-free' ); ?></option><option value="round"><?php esc_html_e( 'Round', 'panda-seasons-free' ); ?></option></select></label>

@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.1.3
+Stable tag: 0.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,11 @@ Yes. Deactivate Panda Seasons Free, install and activate Panda Seasons. Existing
 They remain stored. Panda Seasons Free does not display or overwrite advanced media, shop, quiz, CTA, email or design-layer fields.
 
 == Changelog ==
+
+= 0.1.4 =
+* Makes door movement and resizing clearer and provides exact percentage fields for position and size.
+* Stores separate desktop and mobile geometry for every door.
+* Adds a public GitHub update channel with an immediate manual update check.
 
 = 0.1.3 =
 * Uses the shared ContactPanda color and image controls consistently.

@@ -3,7 +3,8 @@
  * Plugin Name: Panda Seasons Free
  * Plugin URI: https://mycontactpanda.com/panda-seasons/
  * Description: Create simple responsive seasonal calendars with colored doors and text content.
- * Version: 0.1.3
+ * Version: 0.1.4
+ * Update URI: https://github.com/kultur3gmbh/panda-seasons/releases
  * Author: Kultur3 GmbH
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -15,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_FREE_VERSION', '0.1.3' );
+define( 'PANDA_SEASONS_FREE_VERSION', '0.1.4' );
 define( 'PANDA_SEASONS_FREE_FILE', __FILE__ );
 define( 'PANDA_SEASONS_FREE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_FREE_URL', plugin_dir_url( __FILE__ ) );
@@ -24,6 +25,9 @@ define( 'PANDA_SEASONS_FREE_URL', plugin_dir_url( __FILE__ ) );
 function panda_seasons_free_autoload( $class ) {
 	if ( 'Panda_Seasons_Free_Plugin' === $class ) {
 		require_once PANDA_SEASONS_FREE_PATH . 'includes/class-panda-seasons-free-plugin.php';
+	}
+	if ( 'Panda_Seasons_Free_Updater' === $class ) {
+		require_once PANDA_SEASONS_FREE_PATH . 'includes/class-panda-seasons-free-updater.php';
 	}
 }
 spl_autoload_register( 'panda_seasons_free_autoload' );
@@ -57,6 +61,7 @@ add_action(
 			);
 			return;
 		}
+		if ( is_admin() ) new Panda_Seasons_Free_Updater( plugin_basename( PANDA_SEASONS_FREE_FILE ), PANDA_SEASONS_FREE_VERSION );
 		Panda_Seasons_Free_Plugin::boot();
 	},
 	40

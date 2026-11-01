@@ -8,9 +8,9 @@ code = (plugin / "includes/class-panda-seasons-free-plugin.php").read_text()
 readme = (plugin / "readme.txt").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
-assert "Version: 0.1.3" in main
-assert "Update URI:" not in main
-assert "Stable tag: 0.1.3" in readme
+assert "Version: 0.1.4" in main
+assert "Update URI: https://github.com/kultur3gmbh/panda-seasons/releases" in main
+assert "Stable tag: 0.1.4" in readme
 assert "panda-seasons/panda-seasons.php" in main
 assert "panda_seasons_free_autoload" in main
 assert "if ( ! is_admin() ) return;" in code
@@ -25,6 +25,10 @@ assert "_ps_default_closed_border_color" in code
 assert "_ps_default_open_border_color" in code
 assert "contactpanda-admin-ui.js" in code
 assert "contactpanda-admin-ui.css" in code
+assert "data-position-field=\"x\"" in code
+assert "data-position-field=\"w\"" in code
+assert "Panda_Seasons_Free_Updater" in main
+assert (plugin / "includes/class-panda-seasons-free-updater.php").exists()
 assert "Panda Seasons', 'panda-seasons-free'" in code
 assert "data-template=\"classic\"" in code
 assert "data-template=\"modern\"" in code

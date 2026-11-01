@@ -3,23 +3,33 @@
 
 	var config = window.CONTACTPANDA_ADMIN_UI || {};
 	var i18n = config.i18n || {};
+	/* Public Panda action contract. Prefer data-contactpanda-action in markup. */
+	var actionDefinitions = {
+		view: {icon: 'visibility'}, edit: {icon: 'edit'}, duplicate: {icon: 'admin-page'}, delete: {icon: 'trash', state: 'danger'},
+		confirm: {icon: 'yes-alt', state: 'success'}, cancel: {icon: 'dismiss', state: 'danger'}, email: {icon: 'email-alt'}, report: {icon: 'chart-bar'},
+		external: {icon: 'external'}, publish: {icon: 'megaphone', state: 'primary'}, archive: {icon: 'archive'}, deactivate: {customIcon: 'power', state: 'danger'},
+		remove: {icon: 'minus'}, refresh: {icon: 'update'}, website: {icon: 'admin-site-alt3'}, export: {customIcon: 'file-output'}, import: {customIcon: 'file-input'},
+		download: {icon: 'download'}, add: {icon: 'plus-alt2', state: 'primary'}, drag: {icon: 'move'}, moveUp: {icon: 'arrow-up-alt2'}, moveDown: {icon: 'arrow-down-alt2'},
+		undo: {icon: 'undo'}, redo: {icon: 'redo'}, image: {icon: 'format-image'}, desktop: {icon: 'desktop'}, tablet: {icon: 'tablet'}, mobile: {icon: 'smartphone'},
+		template: {icon: 'layout'}, templateCreate: {icon: 'insert', state: 'primary'}, templateGallery: {icon: 'grid-view'}, draft: {icon: 'edit-page'}, save: {icon: 'saved', state: 'success'},
+		schedule: {icon: 'calendar-alt'}, levelUp: {customIcon: 'corner-left-up'}, back: {icon: 'arrow-left-alt2'}, print: {icon: 'printer'}, attachment: {icon: 'paperclip'},
+		search: {icon: 'search'}, filter: {icon: 'filter'}, list: {icon: 'list-view'}, unlock: {icon: 'unlock'}, restore: {icon: 'undo'}
+	};
 	var actionIcons = [
-		[/^(view|preview|details|show|anzeigen|ansehen|vorschau|details anzeigen|view \/ edit|ansehen \/ bearbeiten)$/i, 'visibility'],
-		[/^(edit|bearbeiten|ändern)$/i, 'edit'],
-		[/^(delete|remove|trash|löschen|entfernen|in den papierkorb|in papierkorb verschieben)$/i, 'trash'],
-		[/^(duplicate|copy|duplizieren|kopieren)$/i, 'admin-page'],
-		[/^(download|herunterladen)$/i, 'download'],
-		[/^(restore|wiederherstellen)$/i, 'undo'],
-		[/^(view records|datensätze anzeigen|show records)$/i, 'list-view'],
-		[/^(rollback import|import zurückrollen|import rückgängig machen)$/i, 'undo'],
-		[/^(allow address again|adresse wieder zulassen)$/i, 'unlock'],
-		[/^(open review|prüfung öffnen|kontrolle öffnen)$/i, 'search'],
-		[/^(activate|approve|aktivieren|genehmigen)$/i, 'yes-alt'],
-		[/^(deactivate|disable|deaktivieren|sperren)$/i, 'hidden'],
-		[/^(send|resend|versenden|erneut senden)$/i, 'email-alt'],
-		[/^(archive|archivieren)$/i, 'archive'],
-		[/^(review|inspect|prüfen|kontrollieren)$/i, 'search'],
-		[/^(open|öffnen)$/i, 'external']
+		[/^(view|preview|details|show|anzeigen|ansehen|vorschau|details anzeigen|view \/ edit|ansehen \/ bearbeiten)$/i, 'view'],
+		[/^(edit|bearbeiten|ändern)$/i, 'edit'], [/^(delete|trash|löschen|in den papierkorb|in papierkorb verschieben)$/i, 'delete'],
+		[/^(remove assignment|zuordnung entfernen)$/i, 'remove'], [/^(remove|entfernen)$/i, 'delete'], [/^(duplicate|copy|duplizieren|kopieren)$/i, 'duplicate'],
+		[/^(export|exportieren)$/i, 'export'], [/^(import|importieren)$/i, 'import'], [/^(download|herunterladen)$/i, 'download'], [/^(restore|wiederherstellen)$/i, 'restore'],
+		[/^(view records|datensätze anzeigen|show records)$/i, 'list'], [/^(rollback import|import zurückrollen|import rückgängig machen)$/i, 'undo'],
+		[/^(allow address again|adresse wieder zulassen)$/i, 'unlock'], [/^(open review|prüfung öffnen|kontrolle öffnen|review|inspect|prüfen|kontrollieren)$/i, 'search'],
+		[/^(activate|approve|confirm|aktivieren|genehmigen|bestätigen)$/i, 'confirm'], [/^(cancel|close|abbrechen|schließen)$/i, 'cancel'],
+		[/^(deactivate|disable|deaktivieren|sperren)$/i, 'deactivate'], [/^(send|resend|versenden|erneut senden|email|e-mail)$/i, 'email'],
+		[/^(publish|veröffentlichen)$/i, 'publish'], [/^(save as draft|draft|als entwurf speichern|entwurf speichern)$/i, 'draft'],
+		[/^(save|save changes|speichern|änderungen speichern)$/i, 'save'], [/^(schedule|schedule publication|planen|veröffentlichung planen)$/i, 'schedule'],
+		[/^(archive|archivieren)$/i, 'archive'], [/^(refresh|sync|synchronisieren|aktualisieren)$/i, 'refresh'],
+		[/^(report|log|reporting|bericht|protokoll|auswertung)$/i, 'report'], [/^(template|vorlage)$/i, 'template'],
+		[/^(create template|vorlage erstellen)$/i, 'templateCreate'], [/^(template gallery|vorlagengalerie)$/i, 'templateGallery'],
+		[/^(one level up|up one level|eine ebene höher|zur übergeordneten ebene)$/i, 'levelUp'], [/^(back|zurück)$/i, 'back'], [/^(open|öffnen)$/i, 'external']
 	];
 
 	function findAll(root, selector) {
@@ -266,21 +276,28 @@
 
 	function actionIcon(control) {
 		if (!control || control.dataset.contactpandaActionReady === '1') return;
-		if (control.querySelector('.dashicons')) {
-			control.dataset.contactpandaActionReady = '1';
-			control.classList.add('contactpanda-list-action');
+		var label = (control.getAttribute('aria-label') || control.getAttribute('title') || control.textContent || '').trim().replace(/\s+/g, ' ');
+		var action = control.dataset.contactpandaAction || '';
+		if (!action) actionIcons.some(function (entry) { if (entry[0].test(label)) { action = entry[1]; return true; } return false; });
+		var definition = actionDefinitions[action];
+		if (!definition) {
+			if (control.querySelector('.dashicons')) { control.dataset.contactpandaActionReady = '1'; control.classList.add('contactpanda-list-action'); }
 			return;
 		}
-		var label = (control.getAttribute('aria-label') || control.getAttribute('title') || control.textContent || '').trim().replace(/\s+/g, ' ');
-		var icon = '';
-		actionIcons.some(function (entry) { if (entry[0].test(label)) { icon = entry[1]; return true; } return false; });
-		if (!icon) return;
+		if (!label) label = action.replace(/([A-Z])/g, ' $1').replace(/^./, function (letter) { return letter.toUpperCase(); });
 		control.dataset.contactpandaActionReady = '1';
-		control.classList.add('contactpanda-list-action');
+		control.dataset.contactpandaAction = action;
+		var labelled = control.dataset.contactpandaActionMode === 'labelled' || control.classList.contains('contactpanda-action-labelled');
+		control.classList.add(labelled ? 'contactpanda-action-labelled' : 'contactpanda-list-action', 'contactpanda-action-' + action.replace(/([A-Z])/g, '-$1').toLowerCase());
+		if (definition.state) control.classList.add('is-' + definition.state);
+		if (control.disabled || control.getAttribute('aria-disabled') === 'true') control.classList.add('is-disabled');
 		control.title = label;
 		control.setAttribute('aria-label', label);
-		control.replaceChildren();
-		var glyph = document.createElement('span'); glyph.className = 'dashicons dashicons-' + icon; glyph.setAttribute('aria-hidden', 'true'); control.appendChild(glyph);
+		var glyph = document.createElement('span');
+		glyph.className = definition.customIcon ? 'contactpanda-action-icon contactpanda-action-icon-' + definition.customIcon : 'dashicons dashicons-' + definition.icon;
+		glyph.setAttribute('aria-hidden', 'true');
+		if (labelled) { control.prepend(glyph); return; }
+		control.replaceChildren(); control.appendChild(glyph);
 		var text = document.createElement('span'); text.className = 'screen-reader-text'; text.textContent = label; control.appendChild(text);
 	}
 
@@ -294,7 +311,7 @@
 				actionColumns.forEach(function (index) { var cell = row.children[index]; if (cell) cell.querySelectorAll('a,button').forEach(actionIcon); });
 			});
 		});
-		findAll(root, '.contactpanda-form-actions a,.contactpanda-form-actions button,.contactpanda-order-actions a,.contactpanda-order-actions button,.cpb-actions a,.cpb-actions button,.cpb-card-actions a,.cpb-card-actions button').forEach(actionIcon);
+		findAll(root, '[data-contactpanda-action],.contactpanda-form-actions a,.contactpanda-form-actions button,.contactpanda-order-actions a,.contactpanda-order-actions button,.contactpanda-template-actions a,.contactpanda-template-actions button,.contactpanda-gallery-row-actions a,.contactpanda-gallery-row-actions button,.contactpanda-system-email-block-actions a,.contactpanda-system-email-block-actions button,.cpb-actions a,.cpb-actions button,.cpb-card-actions a,.cpb-card-actions button').forEach(actionIcon);
 	}
 
 	function enhance(root) {
@@ -303,7 +320,7 @@
 		enhanceListActions(root || document);
 	}
 
-	window.ContactPandaAdminUI = {enhance: enhance, enhanceColorPicker: enhanceColorPicker, createImagePicker: createImagePicker, enhanceListActions: enhanceListActions};
+	window.ContactPandaAdminUI = {enhance: enhance, enhanceColorPicker: enhanceColorPicker, createImagePicker: createImagePicker, enhanceListActions: enhanceListActions, actionDefinitions: actionDefinitions};
 	document.addEventListener('pointerdown', function (event) {
 		document.querySelectorAll('.contactpanda-unified-color.is-open').forEach(function (picker) {
 			if (picker.contains(event.target)) return;

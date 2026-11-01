@@ -67,6 +67,28 @@
 			selected.content = editorContent();
 		}
 
+		function syncPositionFields() {
+			if (!selected || !selected[layout]) return;
+			inspector.querySelectorAll('[data-position-field]').forEach(function (input) {
+				var key = input.dataset.positionField;
+				var value = parseFloat(input.value);
+				if (Number.isFinite(value)) selected[layout][key] = value;
+			});
+			selected[layout].w = Math.max(2, Math.min(100 - selected[layout].x, selected[layout].w));
+			selected[layout].h = Math.max(2, Math.min(100 - selected[layout].y, selected[layout].h));
+			selected[layout].x = Math.max(0, Math.min(100 - selected[layout].w, selected[layout].x));
+			selected[layout].y = Math.max(0, Math.min(100 - selected[layout].h, selected[layout].y));
+		}
+
+		function loadPositionFields() {
+			if (!selected || !selected[layout]) return;
+			var label = inspector.querySelector('[data-position-layout]');
+			if (label) label.textContent = layout === 'mobile' ? pandaSeasonsFreeAdmin.mobile : pandaSeasonsFreeAdmin.desktop;
+			inspector.querySelectorAll('[data-position-field]').forEach(function (input) {
+				input.value = Math.round((selected[layout][input.dataset.positionField] || 0) * 100) / 100;
+			});
+		}
+
 		function loadInspector(door) {
 			selected = door;
 			inspector.hidden = false;
@@ -77,6 +99,7 @@
 				if (input.classList.contains('panda-seasons-free-color')) input.dispatchEvent(new Event('change', {bubbles: true}));
 			});
 			setEditorContent(door.content || '');
+			loadPositionFields();
 		}
 
 		function positionStyle(position) {
@@ -121,6 +144,7 @@
 						var rect = canvas.getBoundingClientRect();
 						door[layout].x = Math.max(0, Math.min(100 - door[layout].w, ui.position.left / rect.width * 100));
 						door[layout].y = Math.max(0, Math.min(100 - door[layout].h, ui.position.top / rect.height * 100));
+						loadPositionFields();
 						render();
 					}
 				}).resizable({
@@ -132,6 +156,7 @@
 						var rect = canvas.getBoundingClientRect();
 						door[layout].w = Math.max(2, Math.min(100 - door[layout].x, ui.size.width / rect.width * 100));
 						door[layout].h = Math.max(2, Math.min(100 - door[layout].y, ui.size.height / rect.height * 100));
+						loadPositionFields();
 						render();
 					}
 				});
@@ -184,6 +209,7 @@
 			button.addEventListener('click', function () {
 				layout = button.dataset.layout;
 				root.querySelectorAll('[data-layout]').forEach(function (item) { item.setAttribute('aria-pressed', item === button ? 'true' : 'false'); });
+				loadPositionFields();
 				render();
 			});
 		});
@@ -195,6 +221,9 @@
 			});
 		});
 		root.querySelector('[data-apply-door]').addEventListener('click', function () { syncInspector(); render(); });
+		inspector.querySelectorAll('[data-position-field]').forEach(function (input) {
+			input.addEventListener('change', function () { syncPositionFields(); loadPositionFields(); render(); });
+		});
 		root.querySelector('[data-delete-door]').addEventListener('click', function () {
 			if (!selected || !window.confirm(pandaSeasonsFreeAdmin.confirmDelete)) return;
 			if (selected.id) deleted.push(selected.id);

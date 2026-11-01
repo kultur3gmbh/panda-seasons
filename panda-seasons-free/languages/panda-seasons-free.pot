@@ -263,3 +263,33 @@ msgstr ""
 msgid "Border width (px)"
 msgstr ""
 
+msgid "Position and size"
+msgstr ""
+
+msgid "Move the door directly on the calendar or enter exact percentage values. Drag the blue handle in the lower-right corner to resize it."
+msgstr ""
+
+msgid "Left (%)"
+msgstr ""
+
+msgid "Top (%)"
+msgstr ""
+
+msgid "Width (%)"
+msgstr ""
+
+msgid "Height (%)"
+msgstr ""
+
+msgid "Check for updates"
+msgstr ""
+
+msgid "The update service could not be reached."
+msgstr ""
+
+msgid "No valid published update was found."
+msgstr ""
+
+msgid "You are not allowed to check for updates."
+msgstr ""
+

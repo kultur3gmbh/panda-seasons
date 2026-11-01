@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons Free 0.1.2\n"
+"Project-Id-Version: Panda Seasons Free 0.1.4\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -255,7 +255,7 @@ msgstr "Visueller Kalendereditor"
 msgid "You are not allowed to preview this calendar."
 msgstr "Sie dürfen diesen Kalender nicht in der Vorschau anzeigen."
 
-+msgid "Theme colors"
+msgid "Theme colors"
 msgstr "Theme-Farben"
 
 msgid "Select color"
@@ -317,4 +317,34 @@ msgstr "Rahmenfarbe"
 
 msgid "Border width (px)"
 msgstr "Rahmenbreite (px)"
+
+msgid "Position and size"
+msgstr "Position und Größe"
+
+msgid "Move the door directly on the calendar or enter exact percentage values. Drag the blue handle in the lower-right corner to resize it."
+msgstr "Verschieben Sie die Türe direkt im Kalender oder geben Sie exakte Prozentwerte ein. Ziehen Sie am blauen Griff rechts unten, um die Größe zu ändern."
+
+msgid "Left (%)"
+msgstr "Links (%)"
+
+msgid "Top (%)"
+msgstr "Oben (%)"
+
+msgid "Width (%)"
+msgstr "Breite (%)"
+
+msgid "Height (%)"
+msgstr "Höhe (%)"
+
+msgid "Check for updates"
+msgstr "Auf Aktualisierungen prüfen"
+
+msgid "The update service could not be reached."
+msgstr "Der Aktualisierungsdienst konnte nicht erreicht werden."
+
+msgid "No valid published update was found."
+msgstr "Es wurde keine gültige veröffentlichte Aktualisierung gefunden."
+
+msgid "You are not allowed to check for updates."
+msgstr "Sie dürfen nicht nach Aktualisierungen suchen."
 
