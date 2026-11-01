@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons Free 0.1.1\n"
+"Project-Id-Version: Panda Seasons Free 0.1.2\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -147,6 +147,92 @@ msgstr "Titel anzeigen"
 
 msgid "Text color"
 msgstr "Textfarbe"
+
+msgid "Panda Seasons"
+msgstr "Panda Seasons"
+
+msgid "Select an image or drop it here"
+msgstr "Bild auswählen oder hierher ziehen"
+
+msgid "Open color picker"
+msgstr "Farbwähler öffnen"
+
+msgid "Transparency"
+msgstr "Transparenz"
+
+msgid "Apply this template? Existing text content is retained."
+msgstr "Diese Vorlage anwenden? Vorhandene Textinhalte bleiben erhalten."
+
+msgid "Default door shape"
+msgstr "Standard-Türform"
+
+msgid "Door shape"
+msgstr "Türform"
+
+msgid "Square"
+msgstr "Eckig"
+
+msgid "Rounded"
+msgstr "Abgerundet"
+
+msgid "Round"
+msgstr "Rund"
+
+msgid "Starter templates"
+msgstr "Startvorlagen"
+
+msgid "Apply a ready-made layout and color scheme. Existing door content is retained."
+msgstr "Wenden Sie ein fertiges Layout mit Farbschema an. Vorhandene Türinhalte bleiben erhalten."
+
+msgid "Classic grid"
+msgstr "Klassisches Raster"
+
+msgid "Modern circles"
+msgstr "Moderne Kreise"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Calendars"
+msgstr "Kalender"
+
+msgid "You are not allowed to view the Panda Seasons dashboard."
+msgstr "Sie dürfen das Panda-Seasons-Dashboard nicht anzeigen."
+
+msgid "Create simple seasonal calendars and upgrade to Pro whenever you need images, products, quizzes, email delivery and advanced design tools."
+msgstr "Erstellen Sie einfache Saisonkalender und wechseln Sie zu Pro, sobald Sie Bilder, Produkte, Quiz, E-Mail-Versand und erweiterte Gestaltungswerkzeuge benötigen."
+
+msgid "Create calendar"
+msgstr "Kalender erstellen"
+
+msgid "Your calendars"
+msgstr "Ihre Kalender"
+
+msgid "No calendar has been created yet."
+msgstr "Es wurde noch kein Kalender erstellt."
+
+msgid "Calendar #%d"
+msgstr "Kalender Nr. %d"
+
+msgid "%d door"
+msgid_plural "%d doors"
+msgstr[0] "%d Türe"
+msgstr[1] "%d Türen"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Turn your calendar into an interactive campaign"
+msgstr "Machen Sie Ihren Kalender zu einer interaktiven Kampagne"
+
+msgid "Use individual door images, design layers, products and discounts, quizzes, calls to action, newsletter forms, email delivery, imports and a growing template library."
+msgstr "Nutzen Sie individuelle Türbilder, Gestaltungsflächen, Produkte und Rabatte, Quiz, Call-to-Actions, Newsletter-Formulare, E-Mail-Versand, Importe und eine wachsende Vorlagenbibliothek."
+
+msgid "Discover Panda Seasons Pro"
+msgstr "Panda Seasons Pro entdecken"
+
+msgid "Examples from the Pro template library"
+msgstr "Beispiele aus der Pro-Vorlagenbibliothek"
 
 msgid "Text content"
 msgstr "Textinhalt"

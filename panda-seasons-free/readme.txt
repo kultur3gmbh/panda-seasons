@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ The free edition does not include images inside individual doors, design layers,
 
 1. Upload the `panda-seasons-free` folder to `/wp-content/plugins/` or install the ZIP in WordPress.
 2. Activate Panda Seasons Free.
-3. Create a calendar under Seasons Free.
+3. Create a calendar under Panda Seasons.
 4. Publish it and insert the block or shortcode on a page.
 
 Panda Seasons and Panda Seasons Free use the same calendar records and must not be active at the same time.
@@ -42,6 +42,13 @@ Yes. Deactivate Panda Seasons Free, install and activate Panda Seasons. Existing
 They remain stored. Panda Seasons Free does not display or overwrite advanced media, shop, quiz, CTA, email or design-layer fields.
 
 == Changelog ==
+
+= 0.1.2 =
+* Uses the unified ContactPanda color picker with transparency and the family image uploader design.
+* Adds click and drag-and-drop creation of doors.
+* Adds square, rounded and round door shapes.
+* Includes two starter templates.
+* Improves the order of door appearance and content fields.
 
 = 0.1.1 =
 * Loads administration hooks only in the WordPress back office.

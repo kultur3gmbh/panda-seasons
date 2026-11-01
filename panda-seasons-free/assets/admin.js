@@ -1,6 +1,66 @@
 (function ($) {
 	'use strict';
 
+	function escapeHtml(value) {
+		var node = document.createElement('div');
+		node.textContent = String(value == null ? '' : value);
+		return node.innerHTML;
+	}
+
+	function colorParts(value) {
+		var match = String(value || '').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/i);
+		if (match) return {hex: '#' + [match[1], match[2], match[3]].map(function (item) { return Math.max(0, Math.min(255, +item)).toString(16).padStart(2, '0'); }).join(''), alpha: match[4] == null ? 1 : Math.max(0, Math.min(1, +match[4]))};
+		return {hex: /^#[0-9a-f]{6}$/i.test(value) ? value : '#636363', alpha: String(value).toLowerCase() === 'transparent' ? 0 : 1};
+	}
+
+	function enhanceColorField(field, render) {
+		if (!field || field.dataset.rgbaEnhanced) return;
+		field.dataset.rgbaEnhanced = '1';
+		var label = field.closest('label');
+		if (label) label.classList.add('contactpanda-color-field');
+		if (window.ContactPandaAdminUI && typeof window.ContactPandaAdminUI.enhanceColorPicker === 'function') {
+			window.ContactPandaAdminUI.enhanceColorPicker(field);
+			field.addEventListener('change', render);
+			field.addEventListener('input', render);
+			return;
+		}
+		var initial = colorParts(field.value);
+		var control = document.createElement('div');
+		control.className = 'contactpanda-unified-color';
+		control.innerHTML = '<div class="contactpanda-unified-color-summary"><button type="button" class="contactpanda-unified-color-preview" aria-label="' + escapeHtml(pandaSeasonsFreeAdmin.openColorPicker) + '"><span></span></button><input type="text" class="contactpanda-unified-color-text"><button type="button" class="contactpanda-unified-color-theme" hidden aria-hidden="true"><span class="dashicons dashicons-admin-site-alt3"></span></button></div><div class="contactpanda-unified-color-popover" hidden><input type="text" data-iris-color value="' + initial.hex + '"><div class="contactpanda-unified-color-alpha"><input type="range" min="0" max="1" step="0.01" value="' + initial.alpha + '" aria-label="' + escapeHtml(pandaSeasonsFreeAdmin.alpha) + '"></div></div>';
+		field.parentNode.insertBefore(control, field);
+		control.appendChild(field);
+		field.hidden = true;
+		var preview = control.querySelector('.contactpanda-unified-color-preview span');
+		var code = control.querySelector('.contactpanda-unified-color-text');
+		var panel = control.querySelector('.contactpanda-unified-color-popover');
+		var iris = control.querySelector('[data-iris-color]');
+		var alpha = control.querySelector('[type=range]');
+		var parts = initial;
+		var syncing = false;
+		function rgba(hex, opacity) { return 'rgba(' + parseInt(hex.slice(1, 3), 16) + ', ' + parseInt(hex.slice(3, 5), 16) + ', ' + parseInt(hex.slice(5, 7), 16) + ', ' + Number(opacity.toFixed(2)) + ')'; }
+		function paint() { var current = colorParts(field.value); preview.style.background = field.value; code.value = current.alpha >= 1 ? current.hex : field.value; alpha.value = current.alpha; }
+		function setHex(hex) { if (syncing) return; parts.hex = colorParts(hex).hex; field.value = +alpha.value >= 1 ? parts.hex : rgba(parts.hex, +alpha.value); paint(); field.dispatchEvent(new Event('input', {bubbles: true})); field.dispatchEvent(new Event('change', {bubbles: true})); }
+		control.querySelector('.contactpanda-unified-color-preview').addEventListener('click', function () { panel.hidden = !panel.hidden; });
+		alpha.addEventListener('input', function () { field.value = +alpha.value >= 1 ? parts.hex : rgba(parts.hex, +alpha.value); paint(); field.dispatchEvent(new Event('input', {bubbles: true})); field.dispatchEvent(new Event('change', {bubbles: true})); });
+		code.addEventListener('change', function () { parts = colorParts(code.value); field.value = parts.alpha >= 1 ? parts.hex : rgba(parts.hex, parts.alpha); alpha.value = parts.alpha; if ($.fn.iris) $(iris).iris('color', parts.hex); paint(); field.dispatchEvent(new Event('change', {bubbles: true})); });
+		field.addEventListener('change', function () { parts = colorParts(field.value); paint(); render(); });
+		field.addEventListener('input', render);
+		if ($.fn.iris) $(iris).iris({hide: false, palettes: false, width: 238, change: function (event, ui) { syncing = false; setHex(ui.color.toString()); }});
+		else { iris.type = 'color'; iris.addEventListener('input', function () { setHex(iris.value); }); }
+		paint();
+	}
+
+	function uploadAttachment(file, callback) {
+		if (!file || !pandaSeasonsFreeAdmin.uploadUrl || !pandaSeasonsFreeAdmin.uploadNonce) return;
+		var data = new FormData();
+		data.append('name', file.name);
+		data.append('action', 'upload-attachment');
+		data.append('_wpnonce', pandaSeasonsFreeAdmin.uploadNonce);
+		data.append('async-upload', file, file.name);
+		fetch(pandaSeasonsFreeAdmin.uploadUrl, {method: 'POST', credentials: 'same-origin', body: data}).then(function (response) { return response.json(); }).then(function (result) { if (result && result.success && result.data) callback(result.data); });
+	}
+
 	function start(root) {
 		var json = root.querySelector('[data-doors-json]');
 		var doors = [];
@@ -12,10 +72,7 @@
 		var canvas = root.querySelector('[data-canvas]');
 		var inspector = root.querySelector('[data-inspector]');
 		var contentId = 'panda_seasons_free_door_content';
-		$(root).find('.panda-seasons-free-color').wpColorPicker({
-			change: function () { window.setTimeout(render, 0); },
-			clear: function () { window.setTimeout(render, 0); }
-		});
+		root.querySelectorAll('.panda-seasons-free-color').forEach(function (field) { enhanceColorField(field, render); });
 
 		function defaults() {
 			var result = {};
@@ -51,7 +108,7 @@
 			inspector.querySelectorAll('[data-door-field]').forEach(function (input) {
 				var value = door[input.dataset.doorField] || '';
 				input.value = value;
-				if (input.classList.contains('panda-seasons-free-color')) $(input).wpColorPicker('color', value);
+				if (input.classList.contains('panda-seasons-free-color')) input.dispatchEvent(new Event('change', {bubbles: true}));
 			});
 			setEditorContent(door.content || '');
 		}
@@ -80,6 +137,7 @@
 				el.style.cssText = positionStyle(door[layout]);
 				el.style.background = door[state + 'Bg'] || fallback[state + 'Bg'];
 				el.style.color = door[state + 'Color'] || fallback[state + 'Color'];
+				el.dataset.shape = door.shape || fallback.shape || 'rounded';
 				el.innerHTML = '<span>' + String(door.number || '') + '</span><i aria-hidden="true"></i>';
 				el.addEventListener('click', function (event) {
 					event.stopPropagation();
@@ -115,27 +173,43 @@
 			return doors.reduce(function (highest, door) { return Math.max(highest, parseInt(door.number, 10) || 0); }, 0) + 1;
 		}
 
-		function addDoor() {
+		function makeDoor(number, x, y) {
+			var fallback = defaults();
+			return {
+				id: 0,
+				key: 'new-' + Date.now() + '-' + number + '-' + Math.random().toString(16).slice(2),
+				number: number,
+				unlockDate: '', unlockTime: '', heading: '', content: '', shape: fallback.shape || 'rounded',
+				closedBg: '', closedColor: '', openBg: '', openColor: '',
+				desktop: {x: x == null ? 0 : x, y: y == null ? 0 : y, w: 100 / 6, h: 16},
+				mobile: {x: ((number - 1) % 3) * (100 / 3), y: Math.min(88, Math.floor((number - 1) / 3) * 12), w: 100 / 3, h: 12}
+			};
+		}
+
+		function addDoor(position) {
 			syncInspector();
 			var number = nextNumber();
 			var column = (doors.length % 6) * (100 / 6);
 			var row = Math.floor(doors.length / 6) * 16;
-			var door = {
-				id: 0,
-				key: 'new-' + Date.now() + '-' + number,
-				number: number,
-				unlockDate: '', unlockTime: '', heading: '', content: '',
-				closedBg: '', closedColor: '', openBg: '', openColor: '',
-				desktop: {x: column, y: Math.min(84, row), w: 100 / 6, h: 16},
-				mobile: {x: (doors.length % 3) * (100 / 3), y: Math.min(88, Math.floor(doors.length / 3) * 12), w: 100 / 3, h: 12}
-			};
+			var door = makeDoor(number, position ? position.x : column, position ? position.y : Math.min(84, row));
 			doors.push(door);
 			loadInspector(door);
 			render();
 		}
 
 		doors.forEach(function (door, index) { door.key = door.id ? 'door-' + door.id : 'door-' + index; });
-		root.querySelector('[data-add-door]').addEventListener('click', addDoor);
+		var addButton = root.querySelector('[data-add-door]');
+		addButton.addEventListener('click', function () { addDoor(); });
+		addButton.addEventListener('dragstart', function (event) { event.dataTransfer.setData('text/panda-seasons-free', 'door'); event.dataTransfer.effectAllowed = 'copy'; });
+		canvas.addEventListener('dragover', function (event) { if (Array.prototype.indexOf.call(event.dataTransfer.types, 'text/panda-seasons-free') !== -1) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; canvas.classList.add('is-door-drop-target'); } });
+		canvas.addEventListener('dragleave', function () { canvas.classList.remove('is-door-drop-target'); });
+		canvas.addEventListener('drop', function (event) {
+			if (event.dataTransfer.getData('text/panda-seasons-free') !== 'door') return;
+			event.preventDefault(); canvas.classList.remove('is-door-drop-target');
+			var rect = canvas.getBoundingClientRect();
+			var width = layout === 'mobile' ? 100 / 3 : 100 / 6, height = layout === 'mobile' ? 12 : 16;
+			addDoor({x: Math.max(0, Math.min(100 - width, (event.clientX - rect.left) / rect.width * 100 - width / 2)), y: Math.max(0, Math.min(100 - height, (event.clientY - rect.top) / rect.height * 100 - height / 2))});
+		});
 		root.querySelectorAll('[data-layout]').forEach(function (button) {
 			button.addEventListener('click', function () {
 				layout = button.dataset.layout;
@@ -161,31 +235,73 @@
 		});
 		root.querySelectorAll('[data-default],[data-calendar-color],[data-ratio]').forEach(function (input) { input.addEventListener('change', render); });
 
+		function setFieldValue(selector, value) {
+			var input = root.querySelector(selector);
+			if (!input) return;
+			input.value = value;
+			input.dispatchEvent(new Event('change', {bubbles: true}));
+		}
+
+		function ensureTwentyFourDoors() {
+			while (doors.length < 24) doors.push(makeDoor(nextNumber(), 0, 0));
+		}
+
+		function applyTemplate(name) {
+			if (!window.confirm(pandaSeasonsFreeAdmin.confirmTemplate)) return;
+			syncInspector();
+			ensureTwentyFourDoors();
+			var modern = name === 'modern';
+			setFieldValue('[data-default="shape"]', modern ? 'round' : 'square');
+			setFieldValue('[data-default="closedBg"]', modern ? 'rgba(20, 92, 82, 0.88)' : 'rgba(143, 34, 45, 0.9)');
+			setFieldValue('[data-default="closedColor"]', '#ffffff');
+			setFieldValue('[data-default="openBg"]', modern ? 'rgba(235, 224, 190, 0.82)' : 'rgba(250, 244, 226, 0.88)');
+			setFieldValue('[data-default="openColor"]', modern ? '#173f39' : '#6e1d27');
+			doors.slice(0, 24).forEach(function (door, index) {
+				var columns = 6;
+				var rows = 4;
+				door.desktop = {x: (index % columns) * (100 / columns), y: Math.floor(index / columns) * (100 / rows), w: 100 / columns, h: 100 / rows};
+				door.mobile = {x: (index % 3) * (100 / 3), y: Math.floor(index / 3) * 12.5, w: 100 / 3, h: 12.5};
+				door.shape = modern ? 'round' : 'square';
+				door.closedBg = ''; door.closedColor = ''; door.openBg = ''; door.openColor = '';
+			});
+			if (selected) loadInspector(selected);
+			render();
+		}
+
+		root.querySelectorAll('[data-template]').forEach(function (button) { button.addEventListener('click', function () { applyTemplate(button.dataset.template); }); });
+
 		var mediaFrame;
+		var coverPicker = root.querySelector('[data-cover-picker]');
+		function setCover(image) {
+			root.querySelector('[data-cover-id]').value = image.id || '';
+			root.dataset.coverUrl = image.url || (image.sizes && image.sizes.large ? image.sizes.large.url : '');
+			var preview = root.querySelector('[data-cover-preview]');
+			preview.innerHTML = root.dataset.coverUrl ? '<img src="' + escapeHtml(root.dataset.coverUrl) + '" alt="">' : '';
+			root.querySelector('[data-remove-cover]').hidden = !root.dataset.coverUrl;
+			coverPicker.classList.toggle('has-image', Boolean(root.dataset.coverUrl));
+			render();
+		}
 		root.querySelector('[data-select-cover]').addEventListener('click', function () {
 			if (!mediaFrame) {
 				mediaFrame = wp.media({title: pandaSeasonsFreeAdmin.selectImage, button: {text: pandaSeasonsFreeAdmin.useImage}, multiple: false, library: {type: 'image'}});
 				mediaFrame.on('select', function () {
 					var image = mediaFrame.state().get('selection').first().toJSON();
-					root.querySelector('[data-cover-id]').value = image.id;
-					root.dataset.coverUrl = (image.sizes && image.sizes.large ? image.sizes.large.url : image.url);
-					var preview = root.querySelector('[data-cover-preview]');
-					preview.style.backgroundImage = 'url("' + root.dataset.coverUrl.replace(/"/g, '\\"') + '")';
-					preview.querySelector('span').hidden = true;
-					root.querySelector('[data-remove-cover]').hidden = false;
-					render();
+					setCover({id: image.id, url: image.sizes && image.sizes.large ? image.sizes.large.url : image.url});
 				});
 			}
 			mediaFrame.open();
 		});
+		coverPicker.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); coverPicker.classList.add('is-dragging'); } });
+		coverPicker.addEventListener('dragleave', function () { coverPicker.classList.remove('is-dragging'); });
+		coverPicker.addEventListener('drop', function (event) {
+			if (!event.dataTransfer || !event.dataTransfer.files.length) return;
+			event.preventDefault(); coverPicker.classList.remove('is-dragging');
+			var file = event.dataTransfer.files[0];
+			if (!/^image\//.test(file.type)) return;
+			uploadAttachment(file, function (image) { setCover({id: image.id, url: image.sizes && image.sizes.large ? image.sizes.large.url : image.url}); });
+		});
 		root.querySelector('[data-remove-cover]').addEventListener('click', function () {
-			root.querySelector('[data-cover-id]').value = '';
-			root.dataset.coverUrl = '';
-			var preview = root.querySelector('[data-cover-preview]');
-			preview.style.backgroundImage = 'none';
-			preview.querySelector('span').hidden = false;
-			this.hidden = true;
-			render();
+			setCover({id: '', url: ''});
 		});
 
 		var form = root.closest('form');
