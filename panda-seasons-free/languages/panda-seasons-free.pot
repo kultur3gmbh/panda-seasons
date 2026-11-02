@@ -281,15 +281,9 @@ msgstr ""
 msgid "Height (%)"
 msgstr ""
 
-msgid "Check for updates"
+msgid "Create simple seasonal calendars with responsive doors and scheduled text content."
 msgstr ""
 
-msgid "The update service could not be reached."
-msgstr ""
-
-msgid "No valid published update was found."
-msgstr ""
-
-msgid "You are not allowed to check for updates."
+msgid "Need more options for your campaign?"
 msgstr ""
 

@@ -480,3 +480,9 @@ msgstr "Behalten Sie alle bereits erstellten Kalender und schalten Sie mit Pro d
 msgid "Upgrade to Panda Seasons Pro"
 msgstr "Auf Panda Seasons Pro upgraden"
 
+msgid "Create simple seasonal calendars with responsive doors and scheduled text content."
+msgstr "Erstellen Sie einfache saisonale Kalender mit responsiven Türen und zeitgesteuerten Textinhalten."
+
+msgid "Need more options for your campaign?"
+msgstr "Benötigen Sie mehr Möglichkeiten für Ihre Kampagne?"
+

@@ -201,6 +201,24 @@
 		});
 	}
 
+	function createImagePicker(options) {
+		options = options || {};
+		var item = options.url ? {id:Number(options.attachmentId || 0),url:options.url,alt:options.alt || ''} : null;
+		var root = document.createElement('div'); root.className = 'contactpanda-image-picker';
+		var drop = document.createElement('button'); drop.type = 'button'; drop.className = 'contactpanda-image-picker-drop'; drop.innerHTML = '<span class="dashicons dashicons-format-image" aria-hidden="true"></span><strong>' + (options.dropLabel || 'Bild auswählen oder hier ablegen') + '</strong><span class="contactpanda-image-picker-preview"></span><small class="contactpanda-image-picker-status" aria-live="polite"></small>';
+		var remove = document.createElement('button'); remove.type = 'button'; remove.className = 'contactpanda-image-picker-remove contactpanda-list-action'; remove.setAttribute('aria-label', options.removeLabel || 'Bild entfernen'); remove.innerHTML = '<span class="dashicons dashicons-trash" aria-hidden="true"></span>';
+		function render(notify) { var preview=drop.querySelector('.contactpanda-image-picker-preview'); preview.innerHTML=item?'<img src="'+String(item.url).replace(/"/g,'&quot;')+'" alt="">':''; remove.hidden=!item; if(notify&&options.onChange)options.onChange(item); }
+		function select(image) { item=image?{id:Number(image.id||image.attachment_id||0),url:image.url||image.source_url||'',alt:image.alt||image.alt_text||''}:null; render(true); }
+		function open() { if(!window.wp||!wp.media)return; var frame=wp.media({title:options.title||'Bild auswählen',button:{text:options.buttonLabel||'Bild verwenden'},multiple:false,library:{type:'image'}}); frame.on('select',function(){select(frame.state().get('selection').first().toJSON());}); frame.open(); }
+		function upload(files) { var file=Array.prototype.find.call(files||[],function(candidate){return /^image\//.test(candidate.type);}); if(!file||!window.wp||!wp.apiFetch)return; var data=new FormData(); data.append('file',file,file.name); wp.apiFetch({path:'/wp/v2/media',method:'POST',body:data}).then(select); }
+		drop.addEventListener('click',open); drop.addEventListener('dragover',function(event){event.preventDefault();}); drop.addEventListener('drop',function(event){event.preventDefault();upload(event.dataTransfer.files);}); remove.addEventListener('click',function(){select(null);});
+		root.append(drop,remove); root.contactPandaSetImages=function(items){select(items&&items[0]?items[0]:null);}; render(false); return root;
+	}
+
+	window.ContactPandaAdminUI = window.ContactPandaAdminUI || {};
+	if (typeof window.ContactPandaAdminUI.createImagePicker !== 'function') window.ContactPandaAdminUI.createImagePicker = createImagePicker;
+	window.ContactPandaAdminUI.enhanceLargeActions = window.ContactPandaAdminUI.enhanceLargeActions || scan;
+
 	document.addEventListener('DOMContentLoaded', function () {
 		scan(document);
 		new MutationObserver(function (records) {

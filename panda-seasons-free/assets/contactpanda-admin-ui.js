@@ -70,8 +70,8 @@
 		[/\b(preview|view|show|anzeigen|ansehen|vorschau)\b/i, 'view'], [/\b(print|drucken)\b/i, 'print'],
 		[/\b(open|öffnen)\b/i, 'external'], [/\b(search|suchen)\b/i, 'search'], [/\b(filter|filtern)\b/i, 'filter']
 	];
-	var largeActionRootSelector = '.panda-seasons-free-dashboard,.panda-seasons-dashboard,.panda-seasons-templates-page,.panda-seasons-preview-page';
-	var compactActionContainers = 'td,.contactpanda-list-action,.contactpanda-inline-row-action,.panda-seasons-actions,.panda-seasons-composer__door-actions,.panda-seasons-composer__layer-actions';
+	var largeActionRootSelector = '.contactpanda-wrap,.contactpanda-business-wrap,.contactpanda-dashboard,.pandawoo-pro-admin,.pandawoo-page,.pandawoo-page-shell,.panda-seasons-free-dashboard,.panda-seasons-dashboard,.panda-seasons-templates-page,.panda-seasons-preview-page,.cpls-wrap,.wrap';
+	var compactActionContainers = 'td,.contactpanda-list-action,.contactpanda-inline-row-action,.contactpanda-template-actions,.contactpanda-gallery-row-actions,.cpb-actions,.cpb-card-actions,.pandawoo-template-actions,.pandawoo-pro-license-actions,.panda-seasons-actions,.panda-seasons-composer__door-actions,.panda-seasons-composer__layer-actions,.cpls-actions,.cpls-row-actions';
 
 	function findAll(root, selector) {
 		root = root || document;

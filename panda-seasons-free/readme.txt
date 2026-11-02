@@ -2,8 +2,9 @@
 Contributors: kultur3gmbh
 Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.1.8
+Stable tag: 0.1.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +44,14 @@ They remain stored. Panda Seasons Free does not display or overwrite advanced me
 
 == Changelog ==
 
+= 0.1.10 =
+* Aligns standalone controls, responsive color fields, media uploads, and action icons with the Panda family design system.
+
+= 0.1.9 =
+
+* Adds the official WordPress Plugin Check to continuous validation for WordPress.org readiness.
+* Keeps the standalone free package separate from protected update code.
+
 = 0.1.8 =
 
 * Unified administration actions with the grayscale Panda button system and centered icons.
@@ -64,7 +73,7 @@ They remain stored. Panda Seasons Free does not display or overwrite advanced me
 = 0.1.4 =
 * Makes door movement and resizing clearer and provides exact percentage fields for position and size.
 * Stores separate desktop and mobile geometry for every door.
-* Adds a public GitHub update channel with an immediate manual update check.
+* Prepares the plugin for updates from the official WordPress.org directory.
 
 = 0.1.3 =
 * Uses the shared ContactPanda color and image controls consistently.
