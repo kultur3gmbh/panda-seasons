@@ -6,6 +6,7 @@ VERSION="${1:-0.1.8}"
 SOURCE="$ROOT/panda-seasons-free"
 TARGET="$ROOT/dist/panda-seasons-free-$VERSION.zip"
 
+mkdir -p "$ROOT/dist"
 python3 "$ROOT/tools/compile_mo.py" "$SOURCE/languages/panda-seasons-free-de_DE.po" "$SOURCE/languages/panda-seasons-free-de_DE.mo"
 python3 "$ROOT/tools/compile_mo.py" "$SOURCE/languages/panda-seasons-free-de_DE_formal.po" "$SOURCE/languages/panda-seasons-free-de_DE_formal.mo"
 rm -f "$TARGET"

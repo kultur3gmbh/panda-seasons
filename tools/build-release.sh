@@ -5,6 +5,7 @@ version="${1:-0.8.18}"
 archive="$repo_dir/dist/panda-seasons-$version.zip"
 manifest="$repo_dir/dist/panda-seasons-update.json"
 cd "$repo_dir"
+mkdir -p "$repo_dir/dist"
 rm -f "$archive" "$manifest"
 zip -qr "$archive" panda-seasons -x '*.DS_Store'
 sha256="$(shasum -a 256 "$archive" | awk '{print $1}')"
