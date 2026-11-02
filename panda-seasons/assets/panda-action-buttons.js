@@ -64,7 +64,11 @@
 		[/\b(send|sending|versenden|senden)\b/i, 'email'], [/\b(import|importieren)\b/i, 'import'],
 		[/\b(export|exportieren)\b/i, 'export'], [/\b(download|herunterladen)\b/i, 'download'],
 		[/\b(start|run|execute|starten|ausführen)\b/i, 'start'], [/\b(add|create|new|hinzufügen|erstellen|neu)\b/i, 'add'],
-		[/\b(copy|duplicate|kopieren|duplizieren)\b/i, 'duplicate'], [/\b(search|suchen)\b/i, 'search'], [/\b(filter|filtern)\b/i, 'filter']
+		[/\b(copy|duplicate|kopieren|duplizieren)\b/i, 'duplicate'],
+		[/\b(delete|trash|löschen|papierkorb)\b/i, 'delete'], [/\b(confirm|approve|bestätigen|genehmigen)\b/i, 'confirm'],
+		[/\b(cancel|close|abbrechen|schließen)\b/i, 'cancel'], [/\b(disconnect|separate|trennen)\b/i, 'deactivate'],
+		[/\b(preview|view|show|anzeigen|ansehen|vorschau)\b/i, 'view'], [/\b(print|drucken)\b/i, 'print'],
+		[/\b(open|öffnen)\b/i, 'external'], [/\b(search|suchen)\b/i, 'search'], [/\b(filter|filtern)\b/i, 'filter']
 	];
 	var compactContainers = [
 		'td', '.contactpanda-list-action', '.contactpanda-inline-row-action', '.contactpanda-template-actions',
@@ -95,19 +99,29 @@
 	function proxyInputAction(control, text) {
 		if (control.tagName !== 'INPUT') return control;
 		var proxy = document.createElement('button');
-		proxy.type = 'button';
+		var inputType = (control.getAttribute('type') || 'submit').toLowerCase();
+		proxy.type = inputType === 'reset' ? 'reset' : inputType === 'submit' ? 'submit' : 'button';
 		proxy.className = control.className;
 		proxy.textContent = text;
 		proxy.disabled = control.disabled;
 		Array.prototype.slice.call(control.attributes).forEach(function (attribute) {
-			if (attribute.name.indexOf('data-') === 0 || attribute.name.indexOf('aria-') === 0 || attribute.name === 'title') proxy.setAttribute(attribute.name, attribute.value);
+			if (attribute.name !== 'type' && attribute.name !== 'value' && attribute.name !== 'class') proxy.setAttribute(attribute.name, attribute.value);
 		});
+		if (control.name) proxy.name = control.name;
+		if (control.value) proxy.value = control.value;
+		proxy.dataset.contactpandaLargeActionReady = '1';
 		control.dataset.contactpandaLargeActionReady = '1';
-		control.hidden = true;
-		control.tabIndex = -1;
-		control.setAttribute('aria-hidden', 'true');
-		control.parentNode.insertBefore(proxy, control);
-		proxy.addEventListener('click', function () { if (!control.disabled) control.click(); });
+		if (proxy.type === 'button') {
+			control.classList.add('contactpanda-large-action-source');
+			control.hidden = true;
+			control.style.setProperty('display', 'none', 'important');
+			control.tabIndex = -1;
+			control.setAttribute('aria-hidden', 'true');
+			control.parentNode.insertBefore(proxy, control);
+			proxy.addEventListener('click', function () { if (!control.disabled) control.click(); });
+		} else {
+			control.parentNode.replaceChild(proxy, control);
+		}
 		return proxy;
 	}
 
@@ -146,7 +160,7 @@
 
 	function enhanceLarge(control) {
 		if (!control || control.dataset.contactpandaLargeActionReady === '1') return;
-		if (control.matches('.button-small,.button-link,.button-link-delete,[data-contactpanda-action-mode="icon"]') || control.closest(compactContainers)) return;
+		if (control.matches('.button-small,.button-link,.button-link-delete,[data-contactpanda-action-mode="icon"]') || control.closest(compactContainers + ',.wp-picker-container,.contactpanda-unified-color,.media-modal,.wp-editor-wrap,.mce-toolbar,.components-toolbar')) return;
 		var text = (control.value || control.textContent || control.getAttribute('aria-label') || control.getAttribute('title') || '').trim().replace(/\s+/g, ' ');
 		var action = control.dataset.contactpandaAction || '';
 		if (!action) largeSuffixes.some(function (entry) { if (entry[0].test(text)) { action = entry[1]; return true; } return false; });
@@ -172,7 +186,7 @@
 	}
 
 	function scan(root) {
-		findAll(root, 'button.button,a.button,input.button,[data-contactpanda-action-mode="labelled"]').forEach(enhanceLarge);
+		findAll(root, 'button.button,a.button,input.button,input[type="submit"],input[type="button"],input[type="reset"],button[type="submit"],[data-contactpanda-action-mode="labelled"]').forEach(enhanceLarge);
 		findAll(root, selector).forEach(enhance);
 		findAll(root, 'table').forEach(function (table) {
 			var indexes = [];

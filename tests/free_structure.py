@@ -8,9 +8,9 @@ code = (plugin / "includes/class-panda-seasons-free-plugin.php").read_text()
 readme = (plugin / "readme.txt").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
-assert "Version: 0.1.7" in main
+assert "Version: 0.1.8" in main
 assert "Update URI: https://github.com/kultur3gmbh/panda-seasons/releases" in main
-assert "Stable tag: 0.1.7" in readme
+assert "Stable tag: 0.1.8" in readme
 assert "panda-seasons/panda-seasons.php" in main
 assert "panda_seasons_free_autoload" in main
 assert "if ( ! is_admin() ) return;" in code
