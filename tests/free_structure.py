@@ -12,9 +12,9 @@ free_ui = (plugin / "assets/free-ui.css").read_text()
 editor_ui = (plugin / "assets/panda-editor-ui.js").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
-assert "Version: 0.1.12" in main
+assert "Version: 0.1.13" in main
 assert "Update URI:" not in main
-assert "Stable tag: 0.1.12" in readme
+assert "Stable tag: 0.1.13" in readme
 assert "panda-seasons/panda-seasons.php" in main
 assert "panda_seasons_free_autoload" in main
 assert "if ( ! is_admin() ) return;" in code

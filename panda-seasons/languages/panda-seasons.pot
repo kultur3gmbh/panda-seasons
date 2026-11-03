@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.8.23\n"
+"Project-Id-Version: Panda Seasons 0.8.24\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1834,4 +1834,18 @@ msgid "ContactPanda Basic email template not yet available"
 msgstr ""
 
 msgid "Panda Seasons will continue to send its existing HTML emails. Update ContactPanda Basic to use the central transactional email design for all calendar emails."
+msgstr ""
+msgid "Edit image"
+msgstr ""
+
+msgid "Selected image"
+msgstr ""
+
+msgid "JPG, PNG, WebP or SVG"
+msgstr ""
+
+msgid "Link external image"
+msgstr ""
+
+msgid "Enter the external image URL:"
 msgstr ""

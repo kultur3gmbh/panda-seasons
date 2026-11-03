@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons Free 0.1.7\n"
+"Project-Id-Version: Panda Seasons Free 0.1.13\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -504,3 +504,17 @@ msgstr "Türe auswählen"
 msgid "Click a door in the calendar to edit its settings here."
 msgstr "Klicken Sie im Kalender auf eine Türe, um ihre Einstellungen hier zu bearbeiten."
 
+msgid "Edit image"
+msgstr "Bild bearbeiten"
+
+msgid "Selected image"
+msgstr "Ausgewähltes Bild"
+
+msgid "JPG, PNG, WebP or SVG"
+msgstr "JPG, PNG, WebP oder SVG"
+
+msgid "Link external image"
+msgstr "Externes Bild verknüpfen"
+
+msgid "Enter the external image URL:"
+msgstr "URL des externen Bildes eingeben:"
