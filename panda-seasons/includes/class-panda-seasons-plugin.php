@@ -239,7 +239,7 @@ final class Panda_Seasons_Plugin {
 				<div class="panda-seasons-dashboard__hero-copy">
 					<h1><?php esc_html_e( 'Panda Seasons', 'panda-seasons' ); ?></h1>
 					<p><?php esc_html_e( 'Create interactive seasonal calendars, manage registrations and keep an eye on the most important results.', 'panda-seasons' ); ?></p>
-					<p><a class="button button-primary" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . self::CALENDAR_POST_TYPE ) ); ?>"><?php esc_html_e( 'Create calendar', 'panda-seasons' ); ?></a> <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=panda-seasons-templates' ) ); ?>"><?php esc_html_e( 'Open templates', 'panda-seasons' ); ?></a></p>
+					<p class="panda-seasons-page-actions"><a class="button button-primary contactpanda-large-action is-primary" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=' . self::CALENDAR_POST_TYPE ) ); ?>"><?php esc_html_e( 'Create calendar', 'panda-seasons' ); ?></a><a class="button contactpanda-large-action" href="<?php echo esc_url( admin_url( 'admin.php?page=panda-seasons-templates' ) ); ?>"><?php esc_html_e( 'Open templates', 'panda-seasons' ); ?></a></p>
 				</div>
 				<img src="<?php echo esc_url( PANDA_SEASONS_URL . 'assets/images/panda-seasons-dashboard.png' ); ?>" alt="<?php esc_attr_e( 'Panda Seasons calendar illustration', 'panda-seasons' ); ?>">
 			</section>

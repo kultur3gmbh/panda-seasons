@@ -1,6 +1,14 @@
 (function () {
 	'use strict';
 
+	function removeUnrelatedAdminNotices() {
+		document.querySelectorAll('.notice, .updated, .error').forEach(function (notice) {
+			var text = (notice.textContent || '').replace(/\s+/g, ' ').trim();
+			if (/Final Tiles Grid Gallery - Image Gallery/i.test(text) || /Your license has expired.*Ultimate features/i.test(text)) notice.remove();
+		});
+	}
+	document.addEventListener('DOMContentLoaded', removeUnrelatedAdminNotices);
+
 	var composer = document.querySelector('[data-panda-seasons-composer]');
 	var modal = document.querySelector('[data-door-modal]');
 	var activeDoor = null;

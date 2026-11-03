@@ -13,10 +13,20 @@ trait Panda_Seasons_Runtime {
 	}
 
 	public static function calendar_columns( $columns ) {
-		return array( 'cb' => $columns['cb'], 'title' => __( 'Calendar', 'panda-seasons' ), 'doors' => __( 'Doors', 'panda-seasons' ), 'email' => __( 'Email calendar', 'panda-seasons' ), 'shortcode' => __( 'Shortcode', 'panda-seasons' ), 'date' => $columns['date'] );
+		return array( 'cb' => $columns['cb'], 'preview' => __( 'Preview', 'panda-seasons' ), 'title' => __( 'Calendar', 'panda-seasons' ), 'doors' => __( 'Doors', 'panda-seasons' ), 'email' => __( 'Email calendar', 'panda-seasons' ), 'shortcode' => __( 'Shortcode', 'panda-seasons' ), 'date' => $columns['date'] );
 	}
 
 	public static function calendar_column( $column, $post_id ) {
+		if ( 'preview' === $column ) {
+			$cover_id = absint( get_post_meta( $post_id, '_ps_cover_desktop', true ) );
+			if ( ! $cover_id ) $cover_id = absint( get_post_meta( $post_id, '_ps_cover_mobile', true ) );
+			if ( ! $cover_id ) $cover_id = absint( get_post_meta( $post_id, '_ps_cover_desktop_id', true ) );
+			if ( ! $cover_id ) $cover_id = absint( get_post_thumbnail_id( $post_id ) );
+			echo '<a class="panda-seasons-calendar-list-preview" href="' . esc_url( get_edit_post_link( $post_id ) ) . '" aria-label="' . esc_attr__( 'Edit calendar', 'panda-seasons' ) . '">';
+			if ( $cover_id ) echo wp_kses_post( wp_get_attachment_image( $cover_id, 'thumbnail', false, array( 'class' => 'panda-seasons-calendar-list-image' ) ) );
+			else echo '<span class="dashicons dashicons-format-image" aria-hidden="true"></span>';
+			echo '</a>';
+		}
 		if ( 'doors' === $column ) echo esc_html( count( self::doors( $post_id, 'any' ) ) );
 		if ( 'email' === $column ) echo esc_html( get_post_meta( $post_id, '_ps_email_enabled', true ) ? __( 'Enabled', 'panda-seasons' ) : __( 'Disabled', 'panda-seasons' ) );
 		if ( 'shortcode' === $column ) echo '<code>[panda_seasons id="' . esc_html( $post_id ) . '"]</code>';
