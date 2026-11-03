@@ -2,8 +2,13 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-VERSION="${1:-0.1.13}"
 SOURCE="$ROOT/panda-seasons-free"
+DETECTED_VERSION="$(awk -F': ' '/^ \* Version:/{print $2; exit}' "$SOURCE/panda-seasons-free.php")"
+VERSION="${1:-$DETECTED_VERSION}"
+if [[ -z "$VERSION" ]]; then
+	echo "Could not read the Panda Seasons Free version." >&2
+	exit 1
+fi
 TARGET="$ROOT/dist/panda-seasons-free-$VERSION.zip"
 
 mkdir -p "$ROOT/dist"
