@@ -24,11 +24,11 @@
     {
       "id": "geometrisches-markenraster-04",
       "title": "Geometrisches Markenraster",
-      "description": "24 echte Türen in einem asymmetrischen geometrischen Raster mit Gold-, Grün- und Rotakzenten. Präzises Desktop-Layout, eigene Mobilanordnung und keine redaktionellen Inhalte.",
+      "description": "24 exakt positionierte Türen in einem asymmetrischen geometrischen Raster mit getrennten Bildern für den geschlossenen und geöffneten Zustand, Gold-, Grün- und Rotakzenten sowie eigener Mobilanordnung.",
       "thumbnail": "assets/04-geometrisches-markenraster/thumbnail.jpg",
       "template": "04-geometrisches-markenraster.json",
-      "sha256": "a6d28f99cf379879c1d0321092a03ece1c364f312d03cf09e5f1a5e3f0078303",
-      "min_plugin_version": "0.8.16",
+      "sha256": "ccd80037e0a5bbcfea86cd254dbf33f7153fc6d1cfebc2fe4ef428ed77234e69",
+      "min_plugin_version": "0.8.25",
       "has_images": true
     }
   ]
