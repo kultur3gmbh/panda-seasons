@@ -18,7 +18,7 @@
       "thumbnail": "assets/03-skandinavisch-minimal/thumbnail.jpg",
       "template": "03-skandinavisch-minimal.json",
       "sha256": "0fad128ea6edecc298c9b6a46f2af3e981ff99ce262035b674a1d1b8a9f9a7f7",
-      "min_plugin_version": "0.8.21",
+      "min_plugin_version": "0.8.16",
       "has_images": true
     },
     {
@@ -28,7 +28,7 @@
       "thumbnail": "assets/04-geometrisches-markenraster/thumbnail.jpg",
       "template": "04-geometrisches-markenraster.json",
       "sha256": "a6d28f99cf379879c1d0321092a03ece1c364f312d03cf09e5f1a5e3f0078303",
-      "min_plugin_version": "0.8.21",
+      "min_plugin_version": "0.8.16",
       "has_images": true
     }
   ]
