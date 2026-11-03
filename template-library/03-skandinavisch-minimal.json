@@ -1,0 +1,1093 @@
+{
+  "format": "panda-seasons-template",
+  "format_version": 1,
+  "plugin_version": "0.8.21",
+  "calendar": {
+    "title": "Adventskalender – Skandinavisch minimal",
+    "content": "",
+    "excerpt": "",
+    "meta": {
+      "_ps_aspect_ratio": "1.333333",
+      "_ps_mobile_aspect_ratio": "0.75",
+      "_ps_cover_desktop_background": "rgba(247, 244, 236, 1)",
+      "_ps_cover_mobile_background": "rgba(247, 244, 236, 1)",
+      "_ps_default_closed_background": "rgba(255, 255, 255, 0)",
+      "_ps_default_open_background": "rgba(255, 255, 255, 0)",
+      "_ps_default_closed_image_overlay": "rgba(0, 0, 0, 0)",
+      "_ps_default_open_image_overlay": "rgba(0, 0, 0, 0)",
+      "_ps_default_closed_border_color": "rgba(255, 255, 255, 0)",
+      "_ps_default_open_border_color": "rgba(255, 255, 255, 0)",
+      "_ps_default_closed_border_width": "0",
+      "_ps_default_open_border_width": "0",
+      "_ps_default_border_style": "none",
+      "_ps_default_closed_label_visible": "0",
+      "_ps_default_open_label_visible": "0",
+      "_ps_default_shape": "rounded",
+      "_ps_default_shadow_enabled": "1",
+      "_ps_default_shadow_blur": "8",
+      "_ps_default_shadow_color": "rgba(42, 35, 28, 0.14)",
+      "_ps_open_effect": "page",
+      "_ps_effect_speed": "normal",
+      "_ps_default_opening_mode": "auto-permanent"
+    },
+    "media": {}
+  },
+  "doors": [
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 13,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 3.0387,
+          "y": 7.3665,
+          "w": 14.5718,
+          "h": 18.7845
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-13.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 7,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 18.8536,
+          "y": 7.3665,
+          "w": 14.5718,
+          "h": 18.7845
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-7.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 2,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 34.7376,
+          "y": 7.3665,
+          "w": 14.5718,
+          "h": 18.7845
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-2.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 10,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 50.6215,
+          "y": 7.3665,
+          "w": 14.5718,
+          "h": 18.7845
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 14.1,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-10.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 8,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 66.5746,
+          "y": 7.3665,
+          "w": 14.5718,
+          "h": 18.7845
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 14.1,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-8.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 15,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 82.5276,
+          "y": 7.3665,
+          "w": 14.4337,
+          "h": 18.7845
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 14.1,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-15.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 4,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 3.0387,
+          "y": 28.361,
+          "w": 14.5718,
+          "h": 19.337
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 26.2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-4.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 11,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 18.8536,
+          "y": 28.361,
+          "w": 14.5718,
+          "h": 19.337
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 26.2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-11.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 1,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 34.7376,
+          "y": 28.361,
+          "w": 14.5718,
+          "h": 19.337
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 26.2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-1.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 14,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 50.6215,
+          "y": 28.361,
+          "w": 14.5718,
+          "h": 19.337
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 38.3,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-14.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 9,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 66.5746,
+          "y": 28.361,
+          "w": 14.5718,
+          "h": 19.337
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 38.3,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-9.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 18,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 82.5276,
+          "y": 28.361,
+          "w": 14.4337,
+          "h": 19.337
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 38.3,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-18.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 6,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 3.0387,
+          "y": 49.2634,
+          "w": 14.5718,
+          "h": 20.5341
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 50.4,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-6.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 23,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 18.8536,
+          "y": 49.2634,
+          "w": 14.5718,
+          "h": 20.5341
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 50.4,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-23.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 12,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 34.7376,
+          "y": 49.2634,
+          "w": 14.5718,
+          "h": 20.5341
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 50.4,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-12.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 19,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 50.6215,
+          "y": 49.2634,
+          "w": 14.5718,
+          "h": 20.5341
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 62.5,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-19.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 24,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 66.5746,
+          "y": 49.2634,
+          "w": 14.5718,
+          "h": 20.5341
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 62.5,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-24.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 3,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 82.5276,
+          "y": 49.2634,
+          "w": 14.4337,
+          "h": 20.5341
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 62.5,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-3.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 17,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 3.0387,
+          "y": 71.8232,
+          "w": 14.5718,
+          "h": 19.9816
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 74.6,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-17.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 5,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 18.8536,
+          "y": 71.8232,
+          "w": 14.5718,
+          "h": 19.9816
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 74.6,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-5.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 20,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 34.7376,
+          "y": 71.8232,
+          "w": 14.5718,
+          "h": 19.9816
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 74.6,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-20.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 16,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 50.6215,
+          "y": 71.8232,
+          "w": 14.5718,
+          "h": 19.9816
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 86.7,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-16.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 21,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 66.5746,
+          "y": 71.8232,
+          "w": 14.5718,
+          "h": 19.9816
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 86.7,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-21.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 22,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 82.5276,
+          "y": 71.8232,
+          "w": 14.4337,
+          "h": 19.9816
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 86.7,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "rounded",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 1,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-22.jpg"
+      }
+    }
+  ]
+}
