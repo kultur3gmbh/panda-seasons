@@ -17,8 +17,8 @@
       "description": "24 echte, bildbasierte Türen im ruhigen skandinavischen Stil. Präzises Desktop-Layout, eigene Mobilanordnung und keine redaktionellen Inhalte.",
       "thumbnail": "assets/03-skandinavisch-minimal/thumbnail.jpg",
       "template": "03-skandinavisch-minimal.json",
-      "sha256": "0fad128ea6edecc298c9b6a46f2af3e981ff99ce262035b674a1d1b8a9f9a7f7",
-      "min_plugin_version": "0.8.16",
+      "sha256": "2c5e919ce4085142e7d22449bfab973e5a6cd89873edbcf64fd3f49322570074",
+      "min_plugin_version": "0.8.25",
       "has_images": true
     },
     {
