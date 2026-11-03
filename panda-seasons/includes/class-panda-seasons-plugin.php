@@ -218,7 +218,7 @@ final class Panda_Seasons_Plugin {
 
 	public static function dashboard_page() {
 		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to view the Panda Seasons dashboard.', 'panda-seasons' ) );
-		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'orderby' => 'modified', 'order' => 'DESC' ) );
+		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'no_found_rows' => true, 'orderby' => 'modified', 'order' => 'DESC' ) );
 		$stats = self::dashboard_statistics();
 		$contactpanda_active = self::contactpanda_available();
 		$contactpanda_installed = false;
@@ -328,7 +328,7 @@ final class Panda_Seasons_Plugin {
 
 	public static function templates_page() {
 		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to manage calendar templates.', 'panda-seasons' ) );
-		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'orderby' => 'title', 'order' => 'ASC' ) );
+		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'no_found_rows' => true, 'orderby' => 'title', 'order' => 'ASC' ) );
 		$library   = self::template_library();
 		?>
 		<div class="wrap panda-seasons-templates-page">
@@ -1527,7 +1527,7 @@ final class Panda_Seasons_Plugin {
 		if ( ! is_array( $items ) ) return $saved_door_ids;
 		$event_options = self::event_options();
 
-		foreach ( $items as $item ) {
+		foreach ( array_slice( $items, 0, 366 ) as $item ) {
 			if ( ! is_array( $item ) ) continue;
 			$door_id = absint( $item['id'] ?? 0 );
 			if ( $door_id && self::DOOR_POST_TYPE !== get_post_type( $door_id ) ) continue;

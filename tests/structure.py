@@ -40,7 +40,7 @@ if "panda_seasons_autoload" not in main:
 	raise SystemExit("The complete edition must lazy-load feature classes")
 if "if ( ! $is_backoffice ) return;" not in plugin:
 	raise SystemExit("Administration hooks must not load into ordinary frontend requests")
-if "'posts_per_page' => 100" not in runtime or "'no_found_rows'  => true" not in runtime:
+if "'posts_per_page' => 366" not in runtime or "'no_found_rows'  => true" not in runtime:
 	raise SystemExit("Door rendering must use a bounded, count-free query")
 if "'posts_per_page' => 50" not in mailer or "'no_found_rows' => true" not in mailer:
 	raise SystemExit("Email processing must use a bounded calendar batch")
@@ -172,6 +172,11 @@ for release_contract in ("panda-seasons-dashboard", "panda_seasons_track_door_cl
 		raise SystemExit(f"Missing 0.8.0 dashboard contract {release_contract}")
 if "historyLimit = 20" not in admin_js:
 	raise SystemExit("The editor must retain at least 20 undo steps")
+if "'numberposts' => -1" in mcp:
+	raise SystemExit("MCP calendar and door queries must stay explicitly bounded")
+for memory_contract in ("'posts_per_page' => 250", "'posts_per_page' => 366", "'maxItems' => 366", "array_slice( $items, 0, 366 )"):
+	if memory_contract not in plugin + runtime + mcp:
+		raise SystemExit(f"Missing bounded calendar-builder contract {memory_contract}")
 for editor_contract in (
 	'data-panda-editor-tab="elements"',
 	'data-panda-editor-tab="edit"',

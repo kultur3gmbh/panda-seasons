@@ -39,7 +39,7 @@ trait Panda_Seasons_Runtime {
 				'post_type'      => self::DOOR_POST_TYPE,
 				'post_parent'    => absint( $calendar_id ),
 				'post_status'    => $statuses,
-				'posts_per_page' => 100,
+				'posts_per_page' => 366,
 				'no_found_rows'  => true,
 				'meta_key'       => '_ps_door_number',
 				'orderby'        => 'meta_value_num',

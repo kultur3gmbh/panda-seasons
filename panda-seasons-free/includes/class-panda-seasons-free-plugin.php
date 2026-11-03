@@ -112,7 +112,7 @@ final class Panda_Seasons_Free_Plugin {
 			array(
 				'post_type'      => self::CALENDAR_POST_TYPE,
 				'post_status'    => array( 'publish', 'draft', 'private' ),
-				'posts_per_page' => 100,
+				'posts_per_page' => 250,
 				'no_found_rows'  => true,
 				'orderby'        => 'modified',
 				'order'          => 'DESC',
@@ -324,12 +324,12 @@ final class Panda_Seasons_Free_Plugin {
 	}
 
 	private static function doors( $calendar_id ) {
-		return get_posts( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Door number is the persisted calendar order and is bounded to 100 rows.
+		return get_posts( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Door number is the persisted calendar order and is bounded to the supported 366 doors.
 			array(
 				'post_type'      => self::DOOR_POST_TYPE,
 				'post_parent'    => absint( $calendar_id ),
 				'post_status'    => array( 'publish', 'draft', 'private', 'pending' ),
-				'posts_per_page' => 100,
+				'posts_per_page' => 366,
 				'no_found_rows'  => true,
 				'meta_key'       => '_ps_door_number',
 				'orderby'        => 'meta_value_num',

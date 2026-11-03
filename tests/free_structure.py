@@ -8,6 +8,7 @@ code = (plugin / "includes/class-panda-seasons-free-plugin.php").read_text()
 readme = (plugin / "readme.txt").read_text()
 admin_css = (plugin / "assets/admin.css").read_text()
 shared_css = (plugin / "assets/contactpanda-admin-ui.css").read_text()
+free_ui = (plugin / "assets/free-ui.css").read_text()
 editor_ui = (plugin / "assets/panda-editor-ui.js").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
@@ -17,9 +18,14 @@ assert "Stable tag: 0.1.11" in readme
 assert "panda-seasons/panda-seasons.php" in main
 assert "panda_seasons_free_autoload" in main
 assert "if ( ! is_admin() ) return;" in code
-assert "'posts_per_page' => 100" in code
+assert "'posts_per_page' => 250" in code
+assert "'posts_per_page' => 366" in code
 assert "'no_found_rows'  => true" in code
 assert "'posts_per_page' => -1" not in code
+assert ".contactpanda-unified-color-popover" not in free_ui
+assert ".contactpanda-image-picker{" not in free_ui
+assert ".contactpanda-unified-color-popover" in shared_css
+assert ".contactpanda-image-picker{" in shared_css
 assert "_ps_cover_desktop" in code
 assert "_ps_position_desktop" in code
 assert "_ps_position_mobile" in code
