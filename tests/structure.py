@@ -62,6 +62,8 @@ for content_contract in (
     "_ps_email_content",
     "_ps_closed_background",
 	"_ps_door_image_id",
+	"_ps_closed_image_id",
+	"_ps_open_image_id",
 	"_ps_door_image_position",
 	"_ps_quiz_questions",
 	"panda_seasons_subscribe",
@@ -81,6 +83,9 @@ for content_contract in (
 ):
     if content_contract not in plugin + runtime:
         raise SystemExit(f"Missing door content contract {content_contract}")
+for state_image_contract in ("closedImageId", "closedImageUrl", "openImageId", "openImageUrl"):
+	if state_image_contract not in plugin + admin_js:
+		raise SystemExit(f"Missing state-specific door image contract {state_image_contract}")
 for scope in ("calendar", "all_calendars", "all_mailings"):
     if scope not in subscriptions:
         raise SystemExit(f"Missing unsubscribe scope {scope}")

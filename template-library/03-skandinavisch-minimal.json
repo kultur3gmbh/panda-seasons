@@ -1,7 +1,7 @@
 {
   "format": "panda-seasons-template",
   "format_version": 1,
-  "plugin_version": "0.8.23",
+  "plugin_version": "0.8.25",
   "calendar": {
     "title": "Adventskalender – Skandinavisch minimal",
     "content": "",
@@ -13,7 +13,7 @@
       "_ps_cover_mobile_background": "rgba(247, 244, 236, 1)",
       "_ps_default_closed_background": "rgba(255, 255, 255, 0)",
       "_ps_default_open_background": "rgba(255, 255, 255, 0)",
-      "_ps_default_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+      "_ps_default_closed_image_overlay": "rgba(255, 255, 255, 0)",
       "_ps_default_open_image_overlay": "rgba(255, 255, 255, 0)",
       "_ps_default_closed_border_color": "rgba(255, 255, 255, 0)",
       "_ps_default_open_border_color": "rgba(255, 255, 255, 0)",
@@ -22,15 +22,15 @@
       "_ps_default_border_style": "none",
       "_ps_default_closed_label_visible": "1",
       "_ps_default_open_label_visible": "1",
-      "_ps_default_shape": "rounded",
-      "_ps_default_shadow_enabled": "1",
+      "_ps_default_shape": "square",
+      "_ps_default_shadow_enabled": "0",
       "_ps_default_shadow_blur": "8",
       "_ps_default_shadow_color": "rgba(42, 35, 28, 0.14)",
       "_ps_open_effect": "page",
       "_ps_effect_speed": "normal",
       "_ps_default_opening_mode": "auto-permanent",
-      "_ps_default_closed_text_color": "rgba(28, 23, 20, 0.92)",
-      "_ps_default_open_text_color": "rgba(28, 23, 20, 0.92)",
+      "_ps_default_closed_text_color": "rgba(184, 120, 30, 1)",
+      "_ps_default_open_text_color": "rgba(184, 120, 30, 1)",
       "_ps_default_closed_label_background": "rgba(255, 255, 255, 0)",
       "_ps_default_open_label_background": "rgba(255, 255, 255, 0)",
       "_ps_default_closed_label_border_color": "rgba(255, 255, 255, 0)",
@@ -44,8 +44,8 @@
       "_ps_default_label_width_mode": "content",
       "_ps_default_label_width": "60",
       "_ps_default_label_padding": "0",
-      "_ps_default_label_font": "serif",
-      "_ps_default_label_font_size": "38",
+      "_ps_default_label_font": "Georgia, serif",
+      "_ps_default_label_font_size": "30",
       "_ps_default_label_font_weight": "400"
     },
     "media": {}
@@ -62,18 +62,18 @@
           "x": 3.0387,
           "y": 7.3665,
           "w": 14.5718,
-          "h": 18.7845
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 2,
-          "w": 31,
-          "h": 10.5
+          "x": 4,
+          "y": 1.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -82,20 +82,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -116,7 +116,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-13.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door13-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door13-open.jpg"
       }
     },
     {
@@ -127,21 +128,21 @@
         "_ps_door_number": 7,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 18.8536,
+          "x": 18.91214,
           "y": 7.3665,
           "w": 14.5718,
-          "h": 18.7845
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 2,
-          "w": 31,
-          "h": 10.5
+          "x": 28,
+          "y": 1.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -150,20 +151,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 26,
-        "_ps_open_font_size": 26,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -180,11 +181,12 @@
         "_ps_open_label_width": 60,
         "_ps_closed_label_padding": 0,
         "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-7.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door07-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door07-open.jpg"
       }
     },
     {
@@ -195,21 +197,21 @@
         "_ps_door_number": 2,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 34.7376,
+          "x": 34.78558,
           "y": 7.3665,
           "w": 14.5718,
-          "h": 18.7845
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 67,
-          "y": 2,
-          "w": 31,
-          "h": 10.5
+          "x": 52,
+          "y": 1.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -218,20 +220,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 26,
-        "_ps_open_font_size": 26,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -248,11 +250,12 @@
         "_ps_open_label_width": 60,
         "_ps_closed_label_padding": 0,
         "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-2.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door02-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door02-open.jpg"
       }
     },
     {
@@ -263,21 +266,21 @@
         "_ps_door_number": 10,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 50.6215,
+          "x": 50.65902,
           "y": 7.3665,
           "w": 14.5718,
-          "h": 18.7845
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 14.1,
-          "w": 31,
-          "h": 10.5
+          "x": 76,
+          "y": 1.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -286,20 +289,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -320,7 +323,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-10.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door10-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door10-open.jpg"
       }
     },
     {
@@ -331,21 +335,21 @@
         "_ps_door_number": 8,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 66.5746,
+          "x": 66.53246,
           "y": 7.3665,
           "w": 14.5718,
-          "h": 18.7845
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 14.1,
-          "w": 31,
-          "h": 10.5
+          "x": 4,
+          "y": 18,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -354,88 +358,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 26,
-        "_ps_open_font_size": 26,
-        "_ps_closed_text_align": "center",
-        "_ps_open_text_align": "center",
-        "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
-        "_ps_open_label_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_label_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_open_label_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_closed_label_border_width": 0,
-        "_ps_open_label_border_width": 0,
-        "_ps_closed_label_shape": "rectangle",
-        "_ps_open_label_shape": "rectangle",
-        "_ps_closed_label_width_mode": "content",
-        "_ps_open_label_width_mode": "content",
-        "_ps_closed_label_width": 60,
-        "_ps_open_label_width": 60,
-        "_ps_closed_label_padding": 0,
-        "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
-      },
-      "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-8.jpg"
-      }
-    },
-    {
-      "title": "",
-      "content": "",
-      "excerpt": "",
-      "meta": {
-        "_ps_door_number": 15,
-        "_ps_opening_mode": "auto-permanent",
-        "_ps_position_desktop": {
-          "x": 82.5276,
-          "y": 7.3665,
-          "w": 14.4337,
-          "h": 18.7845
-        },
-        "_ps_position_mobile": {
-          "x": 67,
-          "y": 14.1,
-          "w": 31,
-          "h": 10.5
-        },
-        "_ps_closed_background": "rgba(255, 255, 255, 0)",
-        "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_closed_label_visible": 1,
-        "_ps_open_label_visible": 1,
-        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_closed_border_width": 0,
-        "_ps_open_border_width": 0,
-        "_ps_closed_border_style": "none",
-        "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
-        "_ps_open_effect": "page",
-        "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
-        "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
-        "_ps_shadow_blur": 8,
-        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
-        "_ps_closed_font_weight": "400",
-        "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -456,7 +392,77 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-15.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door08-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door08-open.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 15,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 82.4059,
+          "y": 7.3665,
+          "w": 14.5718,
+          "h": 19.4291
+        },
+        "_ps_position_mobile": {
+          "x": 28,
+          "y": 18,
+          "w": 21,
+          "h": 15.75
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
+        "_ps_closed_label_visible": 1,
+        "_ps_open_label_visible": 1,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
+        "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
+        "_ps_closed_font_weight": "400",
+        "_ps_open_font_weight": "400",
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
+        "_ps_closed_text_align": "center",
+        "_ps_open_text_align": "center",
+        "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_label_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_label_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_border_width": 0,
+        "_ps_open_label_border_width": 0,
+        "_ps_closed_label_shape": "rectangle",
+        "_ps_open_label_shape": "rectangle",
+        "_ps_closed_label_width_mode": "content",
+        "_ps_open_label_width_mode": "content",
+        "_ps_closed_label_width": 60,
+        "_ps_open_label_width": 60,
+        "_ps_closed_label_padding": 0,
+        "_ps_open_label_padding": 0,
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
+      },
+      "media": {
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door15-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door15-open.jpg"
       }
     },
     {
@@ -468,20 +474,20 @@
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
           "x": 3.0387,
-          "y": 28.361,
+          "y": 29.033500000000004,
           "w": 14.5718,
-          "h": 19.337
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 26.2,
-          "w": 31,
-          "h": 10.5
+          "x": 52,
+          "y": 18,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -490,20 +496,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 26,
-        "_ps_open_font_size": 26,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -520,11 +526,12 @@
         "_ps_open_label_width": 60,
         "_ps_closed_label_padding": 0,
         "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-4.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door04-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door04-open.jpg"
       }
     },
     {
@@ -535,21 +542,21 @@
         "_ps_door_number": 11,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 18.8536,
-          "y": 28.361,
+          "x": 18.91214,
+          "y": 29.033500000000004,
           "w": 14.5718,
-          "h": 19.337
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 26.2,
-          "w": 31,
-          "h": 10.5
+          "x": 76,
+          "y": 18,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -558,20 +565,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 26,
-        "_ps_open_font_size": 26,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -588,11 +595,12 @@
         "_ps_open_label_width": 60,
         "_ps_closed_label_padding": 0,
         "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-11.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door11-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door11-open.jpg"
       }
     },
     {
@@ -603,21 +611,21 @@
         "_ps_door_number": 1,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 34.7376,
-          "y": 28.361,
+          "x": 34.78558,
+          "y": 29.033500000000004,
           "w": 14.5718,
-          "h": 19.337
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 67,
-          "y": 26.2,
-          "w": 31,
-          "h": 10.5
+          "x": 4,
+          "y": 34.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -626,20 +634,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -660,7 +668,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-1.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door01-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door01-open.jpg"
       }
     },
     {
@@ -671,21 +680,21 @@
         "_ps_door_number": 14,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 50.6215,
-          "y": 28.361,
+          "x": 50.65902,
+          "y": 29.033500000000004,
           "w": 14.5718,
-          "h": 19.337
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 38.3,
-          "w": 31,
-          "h": 10.5
+          "x": 28,
+          "y": 34.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -694,88 +703,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
-        "_ps_closed_text_align": "center",
-        "_ps_open_text_align": "center",
-        "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
-        "_ps_open_label_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_label_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_open_label_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_closed_label_border_width": 0,
-        "_ps_open_label_border_width": 0,
-        "_ps_closed_label_shape": "rectangle",
-        "_ps_open_label_shape": "rectangle",
-        "_ps_closed_label_width_mode": "content",
-        "_ps_open_label_width_mode": "content",
-        "_ps_closed_label_width": 60,
-        "_ps_open_label_width": 60,
-        "_ps_closed_label_padding": 0,
-        "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
-      },
-      "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-14.jpg"
-      }
-    },
-    {
-      "title": "",
-      "content": "",
-      "excerpt": "",
-      "meta": {
-        "_ps_door_number": 9,
-        "_ps_opening_mode": "auto-permanent",
-        "_ps_position_desktop": {
-          "x": 66.5746,
-          "y": 28.361,
-          "w": 14.5718,
-          "h": 19.337
-        },
-        "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 38.3,
-          "w": 31,
-          "h": 10.5
-        },
-        "_ps_closed_background": "rgba(255, 255, 255, 0)",
-        "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_closed_label_visible": 1,
-        "_ps_open_label_visible": 1,
-        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
-        "_ps_closed_border_width": 0,
-        "_ps_open_border_width": 0,
-        "_ps_closed_border_style": "none",
-        "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
-        "_ps_open_effect": "page",
-        "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
-        "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
-        "_ps_shadow_blur": 8,
-        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
-        "_ps_closed_font_weight": "400",
-        "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -796,7 +737,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-9.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door14-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door14-open.jpg"
       }
     },
     {
@@ -804,24 +746,24 @@
       "content": "",
       "excerpt": "",
       "meta": {
-        "_ps_door_number": 18,
+        "_ps_door_number": 9,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 82.5276,
-          "y": 28.361,
-          "w": 14.4337,
-          "h": 19.337
+          "x": 66.53246,
+          "y": 29.033500000000004,
+          "w": 14.5718,
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 67,
-          "y": 38.3,
-          "w": 31,
-          "h": 10.5
+          "x": 52,
+          "y": 34.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -830,20 +772,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -860,11 +802,81 @@
         "_ps_open_label_width": 60,
         "_ps_closed_label_padding": 0,
         "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-18.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door09-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door09-open.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 18,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 82.4059,
+          "y": 29.033500000000004,
+          "w": 14.5718,
+          "h": 19.4291
+        },
+        "_ps_position_mobile": {
+          "x": 76,
+          "y": 34.5,
+          "w": 21,
+          "h": 15.75
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
+        "_ps_closed_label_visible": 1,
+        "_ps_open_label_visible": 1,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "page",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
+        "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 8,
+        "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
+        "_ps_closed_font_weight": "400",
+        "_ps_open_font_weight": "400",
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
+        "_ps_closed_text_align": "center",
+        "_ps_open_text_align": "center",
+        "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_label_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_label_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_border_width": 0,
+        "_ps_open_label_border_width": 0,
+        "_ps_closed_label_shape": "rectangle",
+        "_ps_open_label_shape": "rectangle",
+        "_ps_closed_label_width_mode": "content",
+        "_ps_open_label_width_mode": "content",
+        "_ps_closed_label_width": 60,
+        "_ps_open_label_width": 60,
+        "_ps_closed_label_padding": 0,
+        "_ps_open_label_padding": 0,
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
+      },
+      "media": {
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door18-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door18-open.jpg"
       }
     },
     {
@@ -876,20 +888,20 @@
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
           "x": 3.0387,
-          "y": 49.2634,
+          "y": 50.700500000000005,
           "w": 14.5718,
-          "h": 20.5341
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 50.4,
-          "w": 31,
-          "h": 10.5
+          "x": 4,
+          "y": 51,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -898,20 +910,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 26,
-        "_ps_open_font_size": 26,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -928,11 +940,12 @@
         "_ps_open_label_width": 60,
         "_ps_closed_label_padding": 0,
         "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-6.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door06-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door06-open.jpg"
       }
     },
     {
@@ -943,21 +956,21 @@
         "_ps_door_number": 23,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 18.8536,
-          "y": 49.2634,
+          "x": 18.91214,
+          "y": 50.700500000000005,
           "w": 14.5718,
-          "h": 20.5341
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 50.4,
-          "w": 31,
-          "h": 10.5
+          "x": 28,
+          "y": 51,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -966,20 +979,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1000,7 +1013,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-23.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door23-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door23-open.jpg"
       }
     },
     {
@@ -1011,21 +1025,21 @@
         "_ps_door_number": 12,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 34.7376,
-          "y": 49.2634,
+          "x": 34.78558,
+          "y": 50.700500000000005,
           "w": 14.5718,
-          "h": 20.5341
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 67,
-          "y": 50.4,
-          "w": 31,
-          "h": 10.5
+          "x": 52,
+          "y": 51,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1034,20 +1048,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1068,7 +1082,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-12.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door12-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door12-open.jpg"
       }
     },
     {
@@ -1079,21 +1094,21 @@
         "_ps_door_number": 19,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 50.6215,
-          "y": 49.2634,
+          "x": 50.65902,
+          "y": 50.700500000000005,
           "w": 14.5718,
-          "h": 20.5341
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 62.5,
-          "w": 31,
-          "h": 10.5
+          "x": 76,
+          "y": 51,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1102,20 +1117,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1136,7 +1151,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-19.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door19-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door19-open.jpg"
       }
     },
     {
@@ -1147,21 +1163,21 @@
         "_ps_door_number": 24,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 66.5746,
-          "y": 49.2634,
+          "x": 66.53246,
+          "y": 50.700500000000005,
           "w": 14.5718,
-          "h": 20.5341
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 62.5,
-          "w": 31,
-          "h": 10.5
+          "x": 4,
+          "y": 67.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1170,20 +1186,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1204,7 +1220,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-24.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door24-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door24-open.jpg"
       }
     },
     {
@@ -1215,21 +1232,21 @@
         "_ps_door_number": 3,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 82.5276,
-          "y": 49.2634,
-          "w": 14.4337,
-          "h": 20.5341
+          "x": 82.4059,
+          "y": 50.700500000000005,
+          "w": 14.5718,
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 67,
-          "y": 62.5,
-          "w": 31,
-          "h": 10.5
+          "x": 28,
+          "y": 67.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1238,20 +1255,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1272,7 +1289,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-3.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door03-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door03-open.jpg"
       }
     },
     {
@@ -1284,20 +1302,20 @@
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
           "x": 3.0387,
-          "y": 71.8232,
+          "y": 72.3675,
           "w": 14.5718,
-          "h": 19.9816
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 74.6,
-          "w": 31,
-          "h": 10.5
+          "x": 52,
+          "y": 67.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1306,20 +1324,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1340,7 +1358,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-17.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door17-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door17-open.jpg"
       }
     },
     {
@@ -1351,21 +1370,21 @@
         "_ps_door_number": 5,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 18.8536,
-          "y": 71.8232,
+          "x": 18.91214,
+          "y": 72.3675,
           "w": 14.5718,
-          "h": 19.9816
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 74.6,
-          "w": 31,
-          "h": 10.5
+          "x": 76,
+          "y": 67.5,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1374,20 +1393,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1408,7 +1427,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-5.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door05-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door05-open.jpg"
       }
     },
     {
@@ -1419,21 +1439,21 @@
         "_ps_door_number": 20,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 34.7376,
-          "y": 71.8232,
+          "x": 34.78558,
+          "y": 72.3675,
           "w": 14.5718,
-          "h": 19.9816
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 67,
-          "y": 74.6,
-          "w": 31,
-          "h": 10.5
+          "x": 4,
+          "y": 84,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1442,20 +1462,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1476,7 +1496,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-20.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door20-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door20-open.jpg"
       }
     },
     {
@@ -1487,21 +1508,21 @@
         "_ps_door_number": 16,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 50.6215,
-          "y": 71.8232,
+          "x": 50.65902,
+          "y": 72.3675,
           "w": 14.5718,
-          "h": 19.9816
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 2,
-          "y": 86.7,
-          "w": 31,
-          "h": 10.5
+          "x": 28,
+          "y": 84,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1510,20 +1531,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 26,
-        "_ps_open_font_size": 26,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1540,11 +1561,12 @@
         "_ps_open_label_width": 60,
         "_ps_closed_label_padding": 0,
         "_ps_open_label_padding": 0,
-        "_ps_closed_label_position": "top-left",
-        "_ps_open_label_position": "top-left"
+        "_ps_closed_label_position": "top-center",
+        "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-16.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door16-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door16-open.jpg"
       }
     },
     {
@@ -1555,21 +1577,21 @@
         "_ps_door_number": 21,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 66.5746,
-          "y": 71.8232,
+          "x": 66.53246,
+          "y": 72.3675,
           "w": 14.5718,
-          "h": 19.9816
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 34.5,
-          "y": 86.7,
-          "w": 31,
-          "h": 10.5
+          "x": 52,
+          "y": 84,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1578,20 +1600,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1612,7 +1634,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-21.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door21-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door21-open.jpg"
       }
     },
     {
@@ -1623,21 +1646,21 @@
         "_ps_door_number": 22,
         "_ps_opening_mode": "auto-permanent",
         "_ps_position_desktop": {
-          "x": 82.5276,
-          "y": 71.8232,
-          "w": 14.4337,
-          "h": 19.9816
+          "x": 82.4059,
+          "y": 72.3675,
+          "w": 14.5718,
+          "h": 19.4291
         },
         "_ps_position_mobile": {
-          "x": 67,
-          "y": 86.7,
-          "w": 31,
-          "h": 10.5
+          "x": 76,
+          "y": 84,
+          "w": 21,
+          "h": 15.75
         },
         "_ps_closed_background": "rgba(255, 255, 255, 0)",
         "_ps_open_background": "rgba(255, 255, 255, 0)",
-        "_ps_closed_color": "rgba(28, 23, 20, 0.92)",
-        "_ps_open_color": "rgba(28, 23, 20, 0.92)",
+        "_ps_closed_color": "rgba(184, 120, 30, 1)",
+        "_ps_open_color": "rgba(184, 120, 30, 1)",
         "_ps_closed_label_visible": 1,
         "_ps_open_label_visible": 1,
         "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
@@ -1646,20 +1669,20 @@
         "_ps_open_border_width": 0,
         "_ps_closed_border_style": "none",
         "_ps_open_border_style": "none",
-        "_ps_shape": "rounded",
+        "_ps_shape": "square",
         "_ps_open_effect": "page",
         "_ps_door_image_position": "center",
-        "_ps_closed_image_overlay": "rgba(247, 244, 236, 0.42)",
+        "_ps_closed_image_overlay": "rgba(255, 255, 255, 0)",
         "_ps_open_image_overlay": "rgba(255, 255, 255, 0)",
-        "_ps_shadow_enabled": 1,
+        "_ps_shadow_enabled": 0,
         "_ps_shadow_blur": 8,
         "_ps_shadow_color": "rgba(42, 35, 28, 0.14)",
-        "_ps_closed_font": "serif",
-        "_ps_open_font": "serif",
+        "_ps_closed_font": "Georgia, serif",
+        "_ps_open_font": "Georgia, serif",
         "_ps_closed_font_weight": "400",
         "_ps_open_font_weight": "400",
-        "_ps_closed_font_size": 38,
-        "_ps_open_font_size": 38,
+        "_ps_closed_font_size": 30,
+        "_ps_open_font_size": 30,
         "_ps_closed_text_align": "center",
         "_ps_open_text_align": "center",
         "_ps_closed_label_background": "rgba(255, 255, 255, 0)",
@@ -1680,7 +1703,8 @@
         "_ps_open_label_position": "top-center"
       },
       "media": {
-        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/doors/door-22.jpg"
+        "_ps_closed_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door22-closed.jpg",
+        "_ps_open_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/03-skandinavisch-minimal/door-states/KAL3-Door22-open.jpg"
       }
     }
   ]

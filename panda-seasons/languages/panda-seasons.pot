@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.8.24\n"
+"Project-Id-Version: Panda Seasons 0.8.25\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1848,4 +1848,10 @@ msgid "Link external image"
 msgstr ""
 
 msgid "Enter the external image URL:"
+msgstr ""
+
+msgid "Image when closed"
+msgstr ""
+
+msgid "Image when opened"
 msgstr ""

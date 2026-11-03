@@ -18,7 +18,7 @@
 	var calendarDirty = false;
 	var calendarSaving = false;
 	var pendingDoorHistory = null;
-	var doorImagePicker = null;
+	var doorImagePickers = {};
 	var syncingDoorImagePicker = false;
 	function calendarStatus(message, state) {
 		var status = document.querySelector('[data-calendar-save-state]');
@@ -190,16 +190,21 @@
 			downloadBox.querySelector('[data-door-asset-preview]').innerHTML = downloadUrl ? '<span>' + escapeHtml(downloadUrl.split('/').pop()) + '</span><span class="dashicons dashicons-media-document" aria-hidden="true"></span>' : '<span>' + escapeHtml(adminText('selectDownload', 'Select a download file')) + '</span><span class="dashicons dashicons-media-document" aria-hidden="true"></span>';
 			downloadBox.querySelector('[data-remove-door-download]').hidden = !downloadUrl;
 		}
-		['image'].forEach(function (kind) {
+		['closedImage', 'openImage'].forEach(function (kind) {
 			var box = modal.querySelector('[data-door-asset="' + kind + '"]');
 			if (!box) return;
-			var url = modal.querySelector('[data-door-field="imageUrl"]').value;
+			var urlField = modal.querySelector('[data-door-field="' + kind + 'Url"]');
+			var idField = modal.querySelector('[data-door-field="' + kind + 'Id"]');
+			if (!urlField || !idField) return;
+			var url = urlField.value;
 			box.querySelector('[data-door-asset-preview]').innerHTML = url ? '<img src="' + escapeHtml(safeUrl(url)) + '" alt="">' : '<span>' + escapeHtml(adminText('noImageSelected', 'No image selected')) + '</span>';
 			box.querySelector('[data-remove-door-image="' + kind + '"]').hidden = !url;
-			modal.querySelectorAll('[data-image-overlay-wrap]').forEach(function (overlayWrap) { overlayWrap.hidden = !url; });
-			if (doorImagePicker && typeof doorImagePicker.contactPandaSetImages === 'function') {
+			var state = kind === 'closedImage' ? 'closed' : 'open';
+			var overlayWrap = modal.querySelector('[data-image-overlay-wrap="' + state + '"]');
+			if (overlayWrap) overlayWrap.hidden = !url;
+			if (doorImagePickers[kind] && typeof doorImagePickers[kind].contactPandaSetImages === 'function') {
 				syncingDoorImagePicker = true;
-				doorImagePicker.contactPandaSetImages(url ? [{ id: modal.querySelector('[data-door-field="imageId"]').value, url: url, alt: '' }] : []);
+				doorImagePickers[kind].contactPandaSetImages(url ? [{ id: idField.value, url: url, alt: '' }] : []);
 				syncingDoorImagePicker = false;
 			}
 		});
@@ -431,13 +436,6 @@
 			markCalendarDirty();
 		}
 
-		function selectLayerImage() {
-			if (!activeLayer || !window.wp || !wp.media) return;
-			var frame = wp.media({ title: adminText('selectImage', 'Select image'), library: { type: 'image' }, multiple: false });
-			frame.on('select', function () { var attachment = frame.state().get('selection').first().toJSON(); activeLayer.imageId = attachment.id || 0; activeLayer.imageUrl = attachment.url || ''; syncLayerEditor(); render(); markCalendarDirty(); });
-			frame.open();
-		}
-
 		function initializeSharedLayerImagePicker() {
 			if (!layerEditor || !window.ContactPandaAdminUI || typeof window.ContactPandaAdminUI.createImagePicker !== 'function') return;
 			var legacyDropzone = layerEditor.querySelector('[data-select-layer-image]');
@@ -524,7 +522,7 @@
 				var placement = labelPlacement(isOpen ? door.openLabelPosition : door.closedLabelPosition);
 				element.style.setProperty('--ps-door-label-align', placement.align);
 				element.style.setProperty('--ps-door-label-justify', placement.justify);
-					var stateImage = door.imageUrl;
+				var stateImage = isOpen ? (door.openImageUrl || door.imageUrl) : (door.closedImageUrl || door.imageUrl);
 				var stateImageOverlay = isOpen ? door.openImageOverlay : door.closedImageOverlay;
 				element.style.setProperty('--ps-door-image', stateImage ? 'url("' + stateImage.replace(/"/g, '\\"') + '")' : 'none');
 				element.style.setProperty('--ps-door-image-overlay', stateImage ? (stateImageOverlay || 'rgba(0,0,0,0)') : 'rgba(0,0,0,0)');
@@ -617,6 +615,10 @@
 				openEffect: 'inherit',
 					imageId: 0,
 					imageUrl: '',
+					closedImageId: 0,
+					closedImageUrl: '',
+					openImageId: 0,
+					openImageUrl: '',
 					imagePosition: 'center',
 					shadowEnabled: root.dataset.defaultShadowEnabled === '1',
 					shadowBlur: +(root.dataset.defaultShadowBlur || 0),
@@ -877,7 +879,6 @@
 			layerEditor.addEventListener('input', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; if (pendingLayerHistory) { recordHistory(pendingLayerHistory); pendingLayerHistory = null; } var name = field.dataset.layerField; activeLayer[name] = field.type === 'checkbox' ? field.checked : (['imageId','fontSize','padding','z','radius','shadowBlur'].indexOf(name) !== -1 ? Math.max(0, parseInt(field.value, 10) || 0) : field.value); render(); });
 			layerEditor.addEventListener('change', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; if (pendingLayerHistory) { recordHistory(pendingLayerHistory); pendingLayerHistory = null; } activeLayer[field.dataset.layerField] = field.type === 'checkbox' ? field.checked : field.value; render(); });
 			layerEditor.addEventListener('click', function (event) {
-				if (event.target.closest('[data-select-layer-image]')) { selectLayerImage(); return; }
 				if (event.target.closest('[data-delete-layer]') && activeLayer) { recordHistory(); activeLayer.deleted = true; closeLayerEditor(true); return; }
 				if (event.target.closest('[data-apply-layer-editor]')) { saveLayerEditor(); return; }
 				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor(false);
@@ -1037,7 +1038,7 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
-		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'ctaMode', 'ctaEnabled', 'ctaTitle', 'ctaType', 'ctaLabel', 'ctaUrl', 'ctaShortcode', 'eventId', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelPosition', 'openLabelPosition', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'shape', 'openEffect', 'shadowEnabled', 'shadowBlur', 'shadowColor', 'imageId', 'imageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
+		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'ctaMode', 'ctaEnabled', 'ctaTitle', 'ctaType', 'ctaLabel', 'ctaUrl', 'ctaShortcode', 'eventId', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelPosition', 'openLabelPosition', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'shape', 'openEffect', 'shadowEnabled', 'shadowBlur', 'shadowColor', 'imageId', 'imageUrl', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
 			activeDoor[name] = field.type === 'checkbox' ? field.checked : (name === 'number' ? Math.max(1, parseInt(field.value, 10) || 1) : (/Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value));
@@ -1106,24 +1107,30 @@
 
 	function initializeSharedDoorImagePicker() {
 		if (!modal || !window.ContactPandaAdminUI || typeof window.ContactPandaAdminUI.createImagePicker !== 'function') return;
-		var box = modal.querySelector('[data-door-asset="image"]');
-		if (!box || box.dataset.sharedImageReady === '1') return;
-		box.dataset.sharedImageReady = '1';
-		doorImagePicker = window.ContactPandaAdminUI.createImagePicker({
-			dropLabel: adminText('imageDropHint', 'Select image or drop it here'),
-			onChange: function (selected) {
-				if (syncingDoorImagePicker) return;
-				modal.querySelector('[data-door-field="imageId"]').value = selected ? selected.id : '';
-				modal.querySelector('[data-door-field="imageUrl"]').value = selected ? selected.url : '';
-				updateDoorAssets();
-				syncDoorPreview();
-				markCalendarDirty();
-			}
+		['closedImage', 'openImage'].forEach(function (kind) {
+			var box = modal.querySelector('[data-door-asset="' + kind + '"]');
+			if (!box || box.dataset.sharedImageReady === '1') return;
+			var idField = modal.querySelector('[data-door-field="' + kind + 'Id"]');
+			var urlField = modal.querySelector('[data-door-field="' + kind + 'Url"]');
+			if (!idField || !urlField) return;
+			box.dataset.sharedImageReady = '1';
+			var picker = window.ContactPandaAdminUI.createImagePicker({
+				dropLabel: adminText('imageDropHint', 'Select image or drop it here'),
+				onChange: function (selected) {
+					if (syncingDoorImagePicker) return;
+					idField.value = selected ? selected.id : '';
+					urlField.value = selected ? selected.url : '';
+					updateDoorAssets();
+					syncDoorPreview();
+					markCalendarDirty();
+				}
+			});
+			doorImagePickers[kind] = picker;
+			var legacyPreview = box.querySelector('[data-door-asset-preview]');
+			var legacyActions = box.querySelector('.panda-seasons-door-image-actions');
+			if (legacyPreview) { legacyPreview.hidden = true; legacyPreview.parentNode.insertBefore(picker, legacyPreview); }
+			if (legacyActions) legacyActions.hidden = true;
 		});
-		var legacyPreview = box.querySelector('[data-door-asset-preview]');
-		var legacyActions = box.querySelector('.panda-seasons-door-image-actions');
-		if (legacyPreview) { legacyPreview.hidden = true; legacyPreview.parentNode.insertBefore(doorImagePicker, legacyPreview); }
-		if (legacyActions) legacyActions.hidden = true;
 	}
 
 	initializeSharedCoverImagePickers();
@@ -1201,27 +1208,6 @@
 		markCalendarDirty();
 	}
 
-	function selectDoorStateImage(kind) {
-		var frame = wp.media({ title: window.pandaSeasonsAdmin && pandaSeasonsAdmin.selectImage ? pandaSeasonsAdmin.selectImage : 'Select image', library: { type: 'image' }, multiple: false });
-		frame.on('select', function () {
-			var attachment = frame.state().get('selection').first().toJSON();
-			modal.querySelector('[data-door-field="' + kind + 'Id"]').value = attachment.id || 0;
-			modal.querySelector('[data-door-field="' + kind + 'Url"]').value = attachment.url || '';
-			updateDoorAssets();
-			syncDoorPreview();
-			markCalendarDirty();
-		});
-		frame.open();
-	}
-
-	function clearDoorStateImage(kind) {
-		modal.querySelector('[data-door-field="' + kind + 'Id"]').value = '';
-		modal.querySelector('[data-door-field="' + kind + 'Url"]').value = '';
-		updateDoorAssets();
-		syncDoorPreview();
-		markCalendarDirty();
-	}
-
 	function previewDoor(scrollToPreview) {
 		var preview = modal.querySelector('[data-door-preview]');
 		if (!preview) return;
@@ -1265,7 +1251,7 @@
 			if(!selected.length)return;
 			syncDoorPreview();
 			var groups={
-				appearance:['shape','openEffect','shadowEnabled','shadowBlur','shadowColor','imagePosition','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelPosition','openLabelPosition','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay'],
+				appearance:['shape','openEffect','shadowEnabled','shadowBlur','shadowColor','imagePosition','closedImageId','closedImageUrl','openImageId','openImageUrl','closedBg','openBg','closedColor','openColor','closedLabelVisible','openLabelVisible','closedFont','openFont','closedFontSize','openFontSize','closedFontWeight','openFontWeight','closedTextAlign','openTextAlign','closedBorderColor','openBorderColor','closedBorderWidth','openBorderWidth','closedBorderStyle','openBorderStyle','closedLabelBg','openLabelBg','closedLabelBorderColor','openLabelBorderColor','closedLabelBorderWidth','openLabelBorderWidth','closedLabelShape','openLabelShape','closedLabelPosition','openLabelPosition','closedLabelWidthMode','openLabelWidthMode','closedLabelWidth','openLabelWidth','closedImageOverlay','openImageOverlay'],
 				related:['buttonLabel','buttonUrl','eventId'],
 				cta:['ctaMode','ctaEnabled','ctaTitle','ctaText','ctaType','ctaLabel','ctaUrl','ctaShortcode']
 			};
@@ -1299,44 +1285,11 @@
 		if (event.target.closest('[data-add-quiz-question]')) { var questions = collectQuizQuestions(); questions.push({ question: '', answers: ['', ''], correct: 1 }); renderQuizQuestions(questions); return; }
 		var removeQuestion = event.target.closest('[data-remove-quiz-question]');
 		if (removeQuestion) { var remaining = collectQuizQuestions(); remaining.splice(Array.prototype.indexOf.call(modal.querySelectorAll('[data-quiz-question-editor]'), removeQuestion.closest('[data-quiz-question-editor]')), 1); renderQuizQuestions(remaining); return; }
-		var selectStateImage = event.target.closest('[data-select-door-image]');
-		if (selectStateImage) { selectDoorStateImage(selectStateImage.dataset.selectDoorImage); return; }
-		var removeStateImage = event.target.closest('[data-remove-door-image]');
-		if (removeStateImage) { clearDoorStateImage(removeStateImage.dataset.removeDoorImage); return; }
 		if (event.target.closest('[data-select-door-media]')) { selectDoorAttachment('media'); return; }
 		if (event.target.closest('[data-select-door-download]')) { selectDoorAttachment('download'); return; }
 		if (event.target.closest('[data-remove-door-media]')) { clearDoorAttachment('media'); return; }
 		if (event.target.closest('[data-remove-door-download]')) { clearDoorAttachment('download'); return; }
 		if (event.target.closest('[data-preview-door]')) { previewDoor(); return; }
-
-		var select = event.target.closest('[data-select-media]');
-		var remove = event.target.closest('[data-remove-media]');
-		if (select || remove) {
-			var field = event.target.closest('[data-media-field]');
-			if (!field) return;
-			var hidden = field.querySelector('input[type="hidden"]');
-			var targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop';
-			if (remove) {
-				hidden.value = '';
-					field.querySelector('.panda-seasons-media-preview').innerHTML = '<span>' + escapeHtml(adminText('imageDropHint', 'Select image or drop it here')) + '</span>';
-				remove.hidden = true;
-				if (composer && composer.updateImage) composer.updateImage(targetView, '');
-				markCalendarDirty();
-				return;
-			}
-			var frame = wp.media({ title: adminText('selectImage', 'Select image'), library: { type: 'image' }, multiple: false });
-			frame.on('select', function () {
-				var attachment = frame.state().get('selection').first().toJSON();
-				var previewUrl = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
-				hidden.value = attachment.id;
-				field.querySelector('.panda-seasons-media-preview').innerHTML = '<img src="' + previewUrl + '" alt="">';
-				field.querySelector('[data-remove-media]').hidden = false;
-				if (composer && composer.updateImage) composer.updateImage(targetView, attachment.url);
-				markCalendarDirty();
-			});
-			frame.open();
-			return;
-		}
 
 		if (event.target.closest('[data-close-door-modal]')) closeDoorModal();
 
@@ -1386,21 +1339,11 @@
 	}
 
 	document.addEventListener('keydown', function (event) {
-		if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-select-media],[data-select-door-media],[data-select-door-download],[data-select-layer-image]')) { event.preventDefault(); event.target.click(); }
+		if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-select-door-media],[data-select-door-download]')) { event.preventDefault(); event.target.click(); }
 		if (!composer || !(event.ctrlKey || event.metaKey) || String(event.key).toLowerCase() !== 'z') return;
 		if (event.target.matches('input,textarea,select,[contenteditable="true"]') || event.target.closest('.wp-editor-wrap')) return;
 		event.preventDefault();
 		if (event.shiftKey && composer.redoEditor) composer.redoEditor(); else if (composer.undoEditor) composer.undoEditor();
-	});
-	document.querySelectorAll('[data-media-field] .panda-seasons-media-preview').forEach(function (dropzone) {
-		dropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); dropzone.classList.add('is-dragover'); } });
-		dropzone.addEventListener('dragleave', function () { dropzone.classList.remove('is-dragover'); });
-		dropzone.addEventListener('drop', function (event) {
-			if (!event.dataTransfer || !event.dataTransfer.files.length) return;
-			event.preventDefault(); dropzone.classList.remove('is-dragover');
-			var file = event.dataTransfer.files[0]; if (!/^image\//.test(file.type)) return;
-			uploadAttachment(file, function (attachment) { var field = dropzone.closest('[data-media-field]'), hidden = field.querySelector('input[type="hidden"]'), targetView = hidden.name.indexOf('mobile') !== -1 ? 'mobile' : 'desktop'; hidden.value = attachment.id || 0; dropzone.innerHTML = '<img src="' + escapeHtml(attachment.url || '') + '" alt="">'; field.querySelector('[data-remove-media]').hidden = false; if (composer && composer.updateImage) composer.updateImage(targetView, attachment.url || ''); markCalendarDirty(); });
-		});
 	});
 	document.querySelectorAll('[data-door-asset="media"] [data-select-door-media]').forEach(function (dropzone) {
 		function carriesFiles(event) {
@@ -1418,24 +1361,6 @@
 			uploadAttachment(event.dataTransfer.files[0], function (attachment) { setDoorAttachment('media', attachment); });
 		}, true);
 	});
-	var layerDropzone = document.querySelector('[data-select-layer-image]');
-	if (layerDropzone) {
-		layerDropzone.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); layerDropzone.classList.add('is-dragover'); } });
-		layerDropzone.addEventListener('dragleave', function () { layerDropzone.classList.remove('is-dragover'); });
-		layerDropzone.addEventListener('drop', function (event) {
-			if (!event.dataTransfer || !event.dataTransfer.files.length) return;
-			event.preventDefault(); layerDropzone.classList.remove('is-dragover');
-			var file = event.dataTransfer.files[0]; if (!/^image\//.test(file.type)) return;
-			uploadAttachment(file, function (attachment) {
-				var id = layerDropzone.parentNode.querySelector('[data-layer-field="imageId"]'), url = layerDropzone.parentNode.querySelector('[data-layer-field="imageUrl"]');
-				if (id) id.value = attachment.id || 0;
-				if (url) url.value = attachment.url || '';
-				layerDropzone.querySelector('[data-layer-image-preview]').innerHTML = '<img src="' + escapeHtml(attachment.url || '') + '" alt="">';
-				if (activeLayer) { activeLayer.imageId = attachment.id || 0; activeLayer.imageUrl = attachment.url || ''; if (composer && composer.renderDoors) composer.renderDoors(); }
-				markCalendarDirty();
-			});
-		});
-	}
 
 	document.addEventListener('input', function (event) {
 		if (event.target.closest('[data-door-modal]') && event.target.matches('[data-door-field]')) syncDoorPreview();

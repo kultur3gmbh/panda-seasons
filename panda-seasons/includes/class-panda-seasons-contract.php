@@ -56,7 +56,8 @@ final class Panda_Seasons_Contract {
 			'closed_label_border_width', 'open_label_border_width', 'closed_label_shape',
 			'open_label_shape', 'closed_label_position', 'open_label_position', 'closed_label_width_mode',
 			'open_label_width_mode', 'closed_label_width', 'open_label_width', 'closed_label_padding',
-			'open_label_padding', 'shape', 'open_effect', 'door_image_id', 'door_image_position',
+			'open_label_padding', 'shape', 'open_effect', 'door_image_id', 'closed_image_id',
+			'open_image_id', 'door_image_position',
 			'shadow_enabled', 'shadow_blur', 'shadow_color',
 			'closed_image_overlay', 'open_image_overlay', 'quiz_enabled', 'quiz_questions',
 			'quiz_success', 'quiz_failure', 'position_desktop', 'position_mobile',
@@ -68,7 +69,7 @@ final class Panda_Seasons_Contract {
 	}
 
 	public static function door_media() {
-		return array( 'media_id', 'download_id', 'door_image_id' );
+		return array( 'media_id', 'download_id', 'door_image_id', 'closed_image_id', 'open_image_id' );
 	}
 
 	public static function local_relations() {
@@ -78,7 +79,7 @@ final class Panda_Seasons_Contract {
 	public static function legacy_door_meta() {
 		return array(
 			'calendar_id', 'unlock_behavior', 'availability_window', 'quiz_question', 'quiz_answers',
-			'quiz_correct', 'closed_opacity', 'open_opacity', 'closed_image_id', 'open_image_id',
+			'quiz_correct', 'closed_opacity', 'open_opacity',
 		);
 	}
 

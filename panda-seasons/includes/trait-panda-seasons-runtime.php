@@ -281,11 +281,15 @@ trait Panda_Seasons_Runtime {
 						$label_css_width = 'percent' === $label_width_mode ? $label_width . '%' : ( 'px' === $label_width_mode ? $label_width . 'px' : 'auto' );
 						$item_style .= '--ps-' . $state . '-font:' . $font . ';--ps-' . $state . '-font-size:' . $font_size . 'px;--ps-' . $state . '-font-weight:' . $weight . ';--ps-' . $state . '-text-align:' . $align . ';--ps-' . $state . '-border-color:' . $border_color . ';--ps-' . $state . '-border-width:' . $border_width . 'px;--ps-' . $state . '-border-style:' . $border_style . ';--ps-' . $state . '-label-display:' . ( $label_visible ? 'inline-grid' : 'none' ) . ';--ps-' . $state . '-label-bg:' . $label_bg . ';--ps-' . $state . '-label-border-color:' . $label_border_color . ';--ps-' . $state . '-label-border-width:' . $label_border_width . 'px;--ps-' . $state . '-label-width:' . $label_css_width . ';--ps-' . $state . '-label-height:' . ( $equal_sides ? $label_css_width : 'auto' ) . ';--ps-' . $state . '-label-aspect:' . ( $equal_sides ? '1' : 'auto' ) . ';--ps-' . $state . '-label-radius:' . ( 'round' === $label_shape ? '999px' : ( 'rounded' === $label_shape ? '8px' : '0' ) ) . ';--ps-' . $state . '-label-padding:4px;--ps-' . $state . '-label-align:' . $label_align . ';--ps-' . $state . '-label-justify:' . $label_justify . ';';
 					}
-					$door_image = wp_get_attachment_image_url( absint( get_post_meta( $door->ID, '_ps_door_image_id', true ) ), 'large' );
-					if ( $door_image ) {
+					$shared_door_image_id = absint( get_post_meta( $door->ID, '_ps_door_image_id', true ) );
+					$closed_door_image_id = absint( get_post_meta( $door->ID, '_ps_closed_image_id', true ) ) ?: $shared_door_image_id;
+					$open_door_image_id   = absint( get_post_meta( $door->ID, '_ps_open_image_id', true ) ) ?: $shared_door_image_id;
+					$closed_door_image    = wp_get_attachment_image_url( $closed_door_image_id, 'large' );
+					$open_door_image      = wp_get_attachment_image_url( $open_door_image_id, 'large' );
+					if ( $closed_door_image || $open_door_image ) {
 						$closed_overlay = (string) get_post_meta( $door->ID, '_ps_closed_image_overlay', true ) ?: ( (string) get_post_meta( $id, '_ps_default_closed_image_overlay', true ) ?: 'rgba(0,0,0,0)' );
 						$open_overlay = (string) get_post_meta( $door->ID, '_ps_open_image_overlay', true ) ?: ( (string) get_post_meta( $id, '_ps_default_open_image_overlay', true ) ?: 'rgba(0,0,0,0)' );
-						$item_style .= '--ps-closed-image:url("' . esc_url_raw( $door_image ) . '");--ps-open-image:url("' . esc_url_raw( $door_image ) . '");--ps-closed-image-overlay:' . $closed_overlay . ';--ps-open-image-overlay:' . $open_overlay . ';--ps-door-image-position:' . str_replace( '-', ' ', self::sanitize_image_position( get_post_meta( $door->ID, '_ps_door_image_position', true ) ) ) . ';';
+						$item_style .= '--ps-closed-image:' . ( $closed_door_image ? 'url("' . esc_url_raw( $closed_door_image ) . '")' : 'none' ) . ';--ps-open-image:' . ( $open_door_image ? 'url("' . esc_url_raw( $open_door_image ) . '")' : 'none' ) . ';--ps-closed-image-overlay:' . $closed_overlay . ';--ps-open-image-overlay:' . $open_overlay . ';--ps-door-image-position:' . str_replace( '-', ' ', self::sanitize_image_position( get_post_meta( $door->ID, '_ps_door_image_position', true ) ) ) . ';';
 					}
 					$shape = get_post_meta( $door->ID, '_ps_shape', true );
 					if ( ! in_array( $shape, array( 'square', 'rounded', 'round' ), true ) ) $shape = 'rounded';

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.8.24\n"
+"Project-Id-Version: Panda Seasons 0.8.25\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1851,3 +1851,9 @@ msgstr "Externes Bild verknüpfen"
 
 msgid "Enter the external image URL:"
 msgstr "URL des externen Bildes eingeben:"
+
+msgid "Image when closed"
+msgstr "Bild bei geschlossener Türe"
+
+msgid "Image when opened"
+msgstr "Bild bei geöffneter Türe"

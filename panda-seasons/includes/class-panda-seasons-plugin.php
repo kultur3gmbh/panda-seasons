@@ -597,6 +597,9 @@ final class Panda_Seasons_Plugin {
 			$quiz_questions = get_post_meta( $door->ID, '_ps_quiz_questions', true );
 			if ( ! is_array( $quiz_questions ) ) $quiz_questions = array();
 			$opening_mode = (string) get_post_meta( $door->ID, '_ps_opening_mode', true ) ?: 'auto-permanent';
+			$shared_image_id = absint( get_post_meta( $door->ID, '_ps_door_image_id', true ) );
+			$closed_image_id = absint( get_post_meta( $door->ID, '_ps_closed_image_id', true ) ) ?: $shared_image_id;
+			$open_image_id   = absint( get_post_meta( $door->ID, '_ps_open_image_id', true ) ) ?: $shared_image_id;
 			$editor_doors[] = array(
 				'id'            => $door->ID,
 				'title'         => $door->post_title,
@@ -667,8 +670,12 @@ final class Panda_Seasons_Plugin {
 				'openLabelWidth' => absint( get_post_meta( $door->ID, '_ps_open_label_width', true ) ) ?: 60,
 				'openLabelPadding' => '' !== get_post_meta( $door->ID, '_ps_open_label_padding', true ) ? absint( get_post_meta( $door->ID, '_ps_open_label_padding', true ) ) : 4,
 				'shape'         => (string) get_post_meta( $door->ID, '_ps_shape', true ) ?: 'rounded',
-				'imageId'       => absint( get_post_meta( $door->ID, '_ps_door_image_id', true ) ),
-				'imageUrl'      => wp_get_attachment_image_url( absint( get_post_meta( $door->ID, '_ps_door_image_id', true ) ), 'medium' ) ?: '',
+				'imageId'       => $shared_image_id,
+				'imageUrl'      => wp_get_attachment_image_url( $shared_image_id, 'medium' ) ?: '',
+				'closedImageId' => $closed_image_id,
+				'closedImageUrl'=> wp_get_attachment_image_url( $closed_image_id, 'medium' ) ?: '',
+				'openImageId'   => $open_image_id,
+				'openImageUrl'  => wp_get_attachment_image_url( $open_image_id, 'medium' ) ?: '',
 				'imagePosition' => self::sanitize_image_position( get_post_meta( $door->ID, '_ps_door_image_position', true ) ?: 'center' ),
 				'closedImageOverlay' => (string) get_post_meta( $door->ID, '_ps_closed_image_overlay', true ) ?: $default_closed_image_overlay,
 				'openImageOverlay' => (string) get_post_meta( $door->ID, '_ps_open_image_overlay', true ) ?: $default_open_image_overlay,
@@ -902,11 +909,12 @@ final class Panda_Seasons_Plugin {
 							<div class="panda-seasons-door-modal__section-grid">
 								<label><span><?php esc_html_e( 'Door shape', 'panda-seasons' ); ?></span><select data-door-field="shape"><option value="square"><?php esc_html_e( 'Square', 'panda-seasons' ); ?></option><option value="rounded"><?php esc_html_e( 'Rounded', 'panda-seasons' ); ?></option><option value="round"><?php esc_html_e( 'Round', 'panda-seasons' ); ?></option></select></label>
 								<label><span><?php esc_html_e( 'Opening effect', 'panda-seasons' ); ?></span><select data-door-field="openEffect"><option value="inherit"><?php esc_html_e( 'Use calendar setting', 'panda-seasons' ); ?></option><option value="none"><?php esc_html_e( 'No effect', 'panda-seasons' ); ?></option><option value="door-left"><?php esc_html_e( 'Door opens to the left', 'panda-seasons' ); ?></option><option value="door-right"><?php esc_html_e( 'Door opens to the right', 'panda-seasons' ); ?></option><option value="page"><?php esc_html_e( 'Turn page', 'panda-seasons' ); ?></option></select></label>
-								<div class="is-wide panda-seasons-door-modal__asset panda-seasons-door-background-image" data-door-asset="image"><strong><?php esc_html_e( 'Background image', 'panda-seasons' ); ?></strong><div class="panda-seasons-door-modal__asset-preview" data-door-asset-preview><span><?php esc_html_e( 'No image selected', 'panda-seasons' ); ?></span></div><input type="hidden" data-door-field="imageId"><input type="hidden" data-door-field="imageUrl"><div class="panda-seasons-door-image-actions"><button type="button" class="button" data-select-door-image="image"><?php esc_html_e( 'Select image', 'panda-seasons' ); ?></button> <button type="button" class="button-link-delete" data-remove-door-image="image"><?php esc_html_e( 'Remove', 'panda-seasons' ); ?></button></div><label><span><?php esc_html_e( 'Image position', 'panda-seasons' ); ?></span><select data-door-field="imagePosition"><?php foreach ( self::image_position_options() as $position_value => $position_label ) : ?><option value="<?php echo esc_attr( $position_value ); ?>"><?php echo esc_html( $position_label ); ?></option><?php endforeach; ?></select></label></div>
+				<label class="is-wide"><span><?php esc_html_e( 'Image position', 'panda-seasons' ); ?></span><select data-door-field="imagePosition"><?php foreach ( self::image_position_options() as $position_value => $position_label ) : ?><option value="<?php echo esc_attr( $position_value ); ?>"><?php echo esc_html( $position_label ); ?></option><?php endforeach; ?></select></label>
 								<div class="is-wide panda-seasons-shadow-settings"><label class="panda-seasons-quiz-toggle"><input type="checkbox" data-door-field="shadowEnabled"> <span><?php esc_html_e( 'Enable shadow', 'panda-seasons' ); ?></span></label><label><span><?php esc_html_e( 'Shadow width (px)', 'panda-seasons' ); ?></span><input type="number" min="0" max="80" data-door-field="shadowBlur"></label><label><span><?php esc_html_e( 'Shadow color', 'panda-seasons' ); ?></span><input type="text" data-door-field="shadowColor"></label></div>
 								<div class="is-wide panda-seasons-door-state-tabs"><button type="button" class="button button-primary" data-door-state-tab="closed"><?php esc_html_e( 'Door closed', 'panda-seasons' ); ?></button><button type="button" class="button" data-door-state-tab="open"><?php esc_html_e( 'Door opened', 'panda-seasons' ); ?></button></div>
 				<?php foreach ( array( 'closed' => __( 'Door closed', 'panda-seasons' ), 'open' => __( 'Door opened', 'panda-seasons' ) ) as $state => $state_label ) : ?>
 				<div class="is-wide panda-seasons-door-state-panel" data-door-state-panel="<?php echo esc_attr( $state ); ?>"<?php echo 'open' === $state ? ' hidden' : ''; ?>>
+					<div class="is-wide panda-seasons-door-modal__asset panda-seasons-door-background-image" data-door-asset="<?php echo esc_attr( $state ); ?>Image"><strong><?php echo esc_html( 'closed' === $state ? __( 'Image when closed', 'panda-seasons' ) : __( 'Image when opened', 'panda-seasons' ) ); ?></strong><div class="panda-seasons-door-modal__asset-preview" data-door-asset-preview><span><?php esc_html_e( 'No image selected', 'panda-seasons' ); ?></span></div><input type="hidden" data-door-field="<?php echo esc_attr( $state ); ?>ImageId"><input type="hidden" data-door-field="<?php echo esc_attr( $state ); ?>ImageUrl"><div class="panda-seasons-door-image-actions"><button type="button" class="button" data-select-door-image="<?php echo esc_attr( $state ); ?>Image"><?php esc_html_e( 'Select image', 'panda-seasons' ); ?></button> <button type="button" class="button-link-delete" data-remove-door-image="<?php echo esc_attr( $state ); ?>Image"><?php esc_html_e( 'Remove', 'panda-seasons' ); ?></button></div></div>
 					<div class="is-wide panda-seasons-door-frame-row">
 						<label><span><?php esc_html_e( 'Background color', 'panda-seasons' ); ?></span><input type="text" data-door-field="<?php echo esc_attr( $state ); ?>Bg" placeholder="rgba(31, 41, 55, 1)"></label>
 						<label><span><?php esc_html_e( 'Border color', 'panda-seasons' ); ?></span><input type="text" data-door-field="<?php echo esc_attr( $state ); ?>BorderColor" value="rgba(255, 255, 255, 0.9)"></label>
@@ -1062,7 +1070,7 @@ final class Panda_Seasons_Plugin {
 			$door_id = wp_insert_post( array( 'post_type' => self::DOOR_POST_TYPE, 'post_status' => 'publish', 'post_parent' => $calendar_id, 'post_title' => sprintf( __( 'Door %d', 'panda-seasons' ), $number ?: 1 ), 'post_content' => '', 'post_excerpt' => '' ), true );
 			if ( is_wp_error( $door_id ) ) continue;
 			$meta = array_diff_key( (array) ( $door['meta'] ?? array() ), array_flip( self::content_meta_keys() ) );
-			self::import_template_meta( $door_id, $meta, $with_images ? array_intersect_key( (array) ( $door['media'] ?? array() ), array( '_ps_door_image_id' => true ) ) : array() );
+			self::import_template_meta( $door_id, $meta, $with_images ? array_intersect_key( (array) ( $door['media'] ?? array() ), array( '_ps_door_image_id' => true, '_ps_closed_image_id' => true, '_ps_open_image_id' => true ) ) : array() );
 		}
 		wp_safe_redirect( add_query_arg( 'panda_seasons_imported', 1, get_edit_post_link( $calendar_id, 'url' ) ) ); exit;
 	}
@@ -1627,8 +1635,10 @@ final class Panda_Seasons_Plugin {
 			update_post_meta( $door_id, '_ps_shadow_enabled', ! empty( $item['shadowEnabled'] ) ? 1 : 0 );
 			update_post_meta( $door_id, '_ps_shadow_blur', min( 80, absint( $item['shadowBlur'] ?? 0 ) ) );
 			self::update_css_color_meta( $door_id, '_ps_shadow_color', $item['shadowColor'] ?? 'rgba(0, 0, 0, 0.25)' );
-				self::update_attachment_meta( $door_id, '_ps_door_image_id', $item['imageId'] ?? 0 );
-				update_post_meta( $door_id, '_ps_door_image_position', self::sanitize_image_position( $item['imagePosition'] ?? 'center' ) );
+			self::update_attachment_meta( $door_id, '_ps_door_image_id', $item['imageId'] ?? 0 );
+			self::update_attachment_meta( $door_id, '_ps_closed_image_id', $item['closedImageId'] ?? 0 );
+			self::update_attachment_meta( $door_id, '_ps_open_image_id', $item['openImageId'] ?? 0 );
+			update_post_meta( $door_id, '_ps_door_image_position', self::sanitize_image_position( $item['imagePosition'] ?? 'center' ) );
 			self::update_css_color_meta( $door_id, '_ps_closed_image_overlay', $item['closedImageOverlay'] ?? 'rgba(0, 0, 0, 0)' );
 			self::update_css_color_meta( $door_id, '_ps_open_image_overlay', $item['openImageOverlay'] ?? 'rgba(0, 0, 0, 0)' );
 			update_post_meta( $door_id, '_ps_quiz_enabled', ! empty( $item['quizEnabled'] ) ? 1 : 0 );
