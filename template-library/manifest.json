@@ -30,6 +30,16 @@
       "sha256": "ccd80037e0a5bbcfea86cd254dbf33f7153fc6d1cfebc2fe4ef428ed77234e69",
       "min_plugin_version": "0.8.25",
       "has_images": true
+    },
+    {
+      "id": "luxury-night-05",
+      "title": "Luxury Night",
+      "description": "24 luxuriöse Türen im exakt ausgerichteten 6 × 4-Raster mit dunkelblauen Flächen, goldener Typografie, getrennten Bildern für geschlossen und geöffnet sowie einer winterlichen Nachtkulisse.",
+      "thumbnail": "assets/05-luxury-night/thumbnail.jpg",
+      "template": "05-luxury-night.json",
+      "sha256": "f076a99ec06b2ee567e3439d00fb092953e359f39f85f66818a2043338ccff1e",
+      "min_plugin_version": "0.8.25",
+      "has_images": true
     }
   ]
 }
