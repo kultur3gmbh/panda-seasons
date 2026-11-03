@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Panda Seasons
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.8.22
+ * Version: 0.8.23
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.8.22' );
+define( 'PANDA_SEASONS_VERSION', '0.8.23' );
 define( 'PANDA_SEASONS_EDITION', 'full' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
