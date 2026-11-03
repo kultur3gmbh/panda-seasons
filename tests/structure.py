@@ -33,6 +33,7 @@ mcp = (root / "includes/class-panda-seasons-mcp.php").read_text(encoding="utf-8"
 subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_text(encoding="utf-8")
 admin_js = (root / "assets/admin.js").read_text(encoding="utf-8")
 admin_css = (root / "assets/editor.css").read_text(encoding="utf-8")
+editor_ui = (root / "assets/panda-editor-ui.js").read_text(encoding="utf-8")
 frontend_css = (root / "assets/calendar.css").read_text(encoding="utf-8")
 mailer = (root / "includes/class-panda-seasons-mailer.php").read_text(encoding="utf-8")
 if "panda_seasons_autoload" not in main:
@@ -171,6 +172,25 @@ for release_contract in ("panda-seasons-dashboard", "panda_seasons_track_door_cl
 		raise SystemExit(f"Missing 0.8.0 dashboard contract {release_contract}")
 if "historyLimit = 20" not in admin_js:
 	raise SystemExit("The editor must retain at least 20 undo steps")
+for editor_contract in (
+	'data-panda-editor-tab="elements"',
+	'data-panda-editor-tab="edit"',
+	'data-panda-editor-panel="elements"',
+	'data-panda-editor-panel="edit"',
+	'data-panda-editor-element',
+	'panda-seasons-editor-sidebar',
+):
+	if editor_contract not in plugin:
+		raise SystemExit(f"Missing shared calendar-builder contract {editor_contract}")
+for scroll_contract in ("canvas.scrollTop = canvasScroll", "window.scrollTo(window.scrollX, pageScroll)"):
+	if scroll_contract not in editor_ui:
+		raise SystemExit(f"Calendar-builder panel changes must preserve scroll: {scroll_contract}")
+for color_contract in (
+	".contactpanda-unified-color-popover{grid-template-columns:minmax(0,1fr) 18px 18px",
+	".contactpanda-unified-color-square{min-height:112px",
+):
+	if color_contract not in admin_css:
+		raise SystemExit(f"Missing compact shared color-field contract {color_contract}")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")

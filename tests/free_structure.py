@@ -6,6 +6,9 @@ plugin = root / "panda-seasons-free"
 main = (plugin / "panda-seasons-free.php").read_text()
 code = (plugin / "includes/class-panda-seasons-free-plugin.php").read_text()
 readme = (plugin / "readme.txt").read_text()
+admin_css = (plugin / "assets/admin.css").read_text()
+shared_css = (plugin / "assets/contactpanda-admin-ui.css").read_text()
+editor_ui = (plugin / "assets/panda-editor-ui.js").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
 assert "Version: 0.1.11" in main
@@ -38,6 +41,21 @@ assert "panda-seasons-free-dashboard__upgrade" in code
 assert "_ps_content_type', 'general'" in code
 assert "if ( $is_new )" in code
 assert "'panda-seasons/calendar'" in code
+for editor_contract in (
+    'data-panda-editor-tab="elements"',
+    'data-panda-editor-tab="edit"',
+    'data-panda-editor-panel="elements"',
+    'data-panda-editor-panel="edit"',
+    'data-panda-editor-element',
+    'panda-seasons-free-sidebar',
+):
+    assert editor_contract in code, editor_contract
+assert ".panda-seasons-free-sidebar" in admin_css
+assert ".panda-seasons-free-editor-door" in editor_ui
+assert "canvas.scrollTop = canvasScroll" in editor_ui
+assert "window.scrollTo(window.scrollX, pageScroll)" in editor_ui
+assert ".contactpanda-unified-color-popover{grid-template-columns:minmax(0,1fr) 18px 18px" in shared_css
+assert ".contactpanda-unified-color-square{width:100%!important;height:auto!important;min-height:112px!important;aspect-ratio:1}" in shared_css
 for forbidden in ("wc_get_product", "quiz_enabled", "contactpanda_available", "_ps_media_id", "_ps_door_image_id"):
     assert forbidden not in code, forbidden
 

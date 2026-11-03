@@ -1,1 +1,25 @@
-(function(){'use strict';if(window.PandaEditorUI)return;var r={};function b(t,d){if(t&&d)r[t]=Object.assign({},r[t]||{},d,{type:t});}function s(e,t){var c=e.querySelector('[data-panda-editor-canvas]'),y=c?c.scrollTop:0,p=window.scrollY;e.querySelectorAll('[data-panda-editor-tab]').forEach(function(a){var i=a.dataset.pandaEditorTab===t;a.classList.toggle('is-active',i);a.setAttribute('aria-selected',i?'true':'false');});e.querySelectorAll('[data-panda-editor-panel]').forEach(function(a){a.hidden=a.dataset.pandaEditorPanel!==t;});requestAnimationFrame(function(){if(c)c.scrollTop=y;window.scrollTo(window.scrollX,p);});}function h(e){if(!e||e.dataset.pandaEditorReady==='1')return;e.dataset.pandaEditorReady='1';e.querySelectorAll('[data-panda-editor-tab]').forEach(function(t){t.addEventListener('click',function(){s(e,t.dataset.pandaEditorTab);});});e.addEventListener('click',function(t){if(t.target.closest('[data-panda-editor-element], .panda-seasons-free-door'))s(e,'edit');});}['text','heading','image','button','divider','spacer','columns','container'].forEach(function(t){b(t,{label:t});});window.PandaEditorUI={version:'1.0.0',registry:r,registerBlock:b,registerBlocks:function(d){Object.keys(d||{}).forEach(function(t){b(t,d[t]);});},blocks:function(){return Object.keys(r).map(function(t){return r[t];});},enhance:h,switchPanel:s};document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-panda-editor]').forEach(h);});}());
+(function () {
+	'use strict';
+	if (window.PandaEditorUI) return;
+	var registry = {};
+	function registerBlock(type, definition) { if (type && definition) registry[type] = Object.assign({}, registry[type] || {}, definition, {type: type}); }
+	function registerBlocks(definitions) { Object.keys(definitions || {}).forEach(function (type) { registerBlock(type, definitions[type]); }); }
+	function blocks(context) { return Object.keys(registry).map(function (type) { return registry[type]; }).filter(function (definition) { return !definition.contexts || !definition.contexts.length || definition.contexts.indexOf(context) >= 0; }); }
+	function switchPanel(editor, target) {
+		var canvas = editor.querySelector('[data-panda-editor-canvas]'), canvasScroll = canvas ? canvas.scrollTop : 0, pageScroll = window.scrollY;
+		editor.querySelectorAll('[data-panda-editor-tab]').forEach(function (tab) { var active = tab.dataset.pandaEditorTab === target; tab.classList.toggle('is-active', active); tab.setAttribute('aria-selected', active ? 'true' : 'false'); });
+		editor.querySelectorAll('[data-panda-editor-panel]').forEach(function (panel) { panel.hidden = panel.dataset.pandaEditorPanel !== target; });
+		window.requestAnimationFrame(function () { if (canvas) canvas.scrollTop = canvasScroll; window.scrollTo(window.scrollX, pageScroll); });
+	}
+	function enhance(editor) {
+		if (!editor || editor.dataset.pandaEditorReady === '1') return;
+		editor.dataset.pandaEditorReady = '1';
+		editor.querySelectorAll('[data-panda-editor-tab]').forEach(function (tab) { tab.addEventListener('click', function () { switchPanel(editor, tab.dataset.pandaEditorTab); }); });
+		editor.addEventListener('click', function (event) { if (event.target.closest('[data-panda-editor-element], .panda-seasons-composer__door, .panda-seasons-design-layer, .panda-seasons-free-editor-door')) switchPanel(editor, 'edit'); });
+		var initial = editor.querySelector('[data-panda-editor-tab].is-active'); if (initial) switchPanel(editor, initial.dataset.pandaEditorTab);
+	}
+	function enhanceAll(root) { (root || document).querySelectorAll('[data-panda-editor]').forEach(enhance); }
+	registerBlocks({text:{label:'Text',icon:'editor-alignleft',group:'content'},heading:{label:'Heading',icon:'heading',group:'content'},image:{label:'Image',icon:'format-image',group:'media'},button:{label:'Button',icon:'button',group:'content'},divider:{label:'Divider',icon:'minus',group:'layout'},spacer:{label:'Spacer',icon:'image-flip-vertical',group:'layout'},columns:{label:'Columns',icon:'columns',group:'layout'},container:{label:'Container',icon:'layout',group:'layout'}});
+	window.PandaEditorUI = {version:'1.0.0',registry:registry,registerBlock:registerBlock,registerBlocks:registerBlocks,blocks:blocks,enhance:enhance,enhanceAll:enhanceAll,switchPanel:switchPanel};
+	document.addEventListener('DOMContentLoaded', function () { enhanceAll(document); new MutationObserver(function (records) { records.forEach(function (record) { record.addedNodes.forEach(function (node) { if (node.nodeType === 1) enhanceAll(node); }); }); }).observe(document.body,{childList:true,subtree:true}); });
+}());

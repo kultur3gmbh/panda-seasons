@@ -37,6 +37,7 @@
 		var state = 'closed';
 		var canvas = root.querySelector('[data-canvas]');
 		var inspector = root.querySelector('[data-inspector]');
+		var inspectorEmpty = root.querySelector('[data-inspector-empty]');
 		var contentId = 'panda_seasons_free_door_content';
 		root.querySelectorAll('.panda-seasons-free-color').forEach(function (field) { enhanceColorField(field, render); });
 
@@ -91,6 +92,7 @@
 
 		function loadInspector(door) {
 			selected = door;
+			if (inspectorEmpty) inspectorEmpty.hidden = true;
 			inspector.hidden = false;
 			inspector.querySelector('[data-door-title]').textContent = door.number || '';
 			inspector.querySelectorAll('[data-door-field]').forEach(function (input) {
@@ -230,6 +232,7 @@
 			doors = doors.filter(function (door) { return door !== selected; });
 			selected = null;
 			inspector.hidden = true;
+			if (inspectorEmpty) inspectorEmpty.hidden = false;
 			render();
 		});
 		root.querySelectorAll('[data-default],[data-calendar-color],[data-ratio]').forEach(function (input) { input.addEventListener('change', render); });

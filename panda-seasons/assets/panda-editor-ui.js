@@ -15,7 +15,7 @@
 		if (!editor || editor.dataset.pandaEditorReady === '1') return;
 		editor.dataset.pandaEditorReady = '1';
 		editor.querySelectorAll('[data-panda-editor-tab]').forEach(function (tab) { tab.addEventListener('click', function () { switchPanel(editor, tab.dataset.pandaEditorTab); }); });
-		editor.addEventListener('click', function (event) { if (event.target.closest('[data-panda-editor-element], .panda-seasons-composer__door, .panda-seasons-design-layer')) switchPanel(editor, 'edit'); });
+		editor.addEventListener('click', function (event) { if (event.target.closest('[data-panda-editor-element], .panda-seasons-composer__door, .panda-seasons-design-layer, .panda-seasons-free-editor-door')) switchPanel(editor, 'edit'); });
 		var initial = editor.querySelector('[data-panda-editor-tab].is-active'); if (initial) switchPanel(editor, initial.dataset.pandaEditorTab);
 	}
 	function enhanceAll(root) { (root || document).querySelectorAll('[data-panda-editor]').forEach(enhance); }

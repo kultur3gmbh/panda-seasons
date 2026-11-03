@@ -215,6 +215,23 @@ body.post-type-panda_calendar #poststuff #post-body.columns-2{margin-right:0}bod
 .panda-seasons-calendar-preview header{flex-wrap:wrap}.panda-seasons-calendar-preview__date{display:flex;align-items:end;gap:8px!important;margin-left:auto}.panda-seasons-calendar-preview__date label{display:grid;gap:3px;font-size:12px}.panda-seasons-calendar-preview__date input{min-height:30px}.panda-seasons-calendar-preview__date .button{min-height:30px}
 @media(max-width:900px){.panda-seasons-door-state-panel>.panda-seasons-door-frame-row,.panda-seasons-door-state-panel>.panda-seasons-label-typography-row,.panda-seasons-door-state-panel>.panda-seasons-label-shape-row,.panda-seasons-door-state-panel>.panda-seasons-label-size-row,.panda-seasons-door-state-panel>.panda-seasons-label-colors-row,.panda-seasons-popup-settings__grid{grid-template-columns:1fr!important}.panda-seasons-calendar-preview__date{order:3;width:100%;margin-left:0}.panda-seasons-cover-settings__row{grid-template-columns:1fr}}
 
+/* Shared two-column calendar builder: the canvas stays in place while the
+   right column switches between adding and editing elements. */
+.panda-seasons-editor-sidebar{grid-column:2;min-width:0;height:calc(100vh - 170px);box-sizing:border-box;overflow:hidden;border-left:1px solid #c3c4c7;background:#fff}
+.panda-seasons-editor-sidebar>.panda-editor-tabs{position:sticky;top:0;z-index:8;margin:0;padding:12px;border-bottom:1px solid #dcdcde;background:#fff}
+.panda-seasons-editor-sidebar>[data-panda-editor-panel]{height:calc(100% - 65px);min-height:0;box-sizing:border-box;overflow:auto}
+.panda-seasons-elements-panel{padding:16px}
+.panda-seasons-elements-panel__grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+.panda-seasons-elements-panel__grid .button{display:flex;align-items:center;justify-content:flex-start;gap:8px;width:100%;min-height:46px;padding:8px 12px;text-align:left}
+.panda-seasons-elements-panel__grid svg{flex:0 0 20px;width:20px;height:20px;fill:currentColor}
+.panda-seasons-edit-panel{position:relative}
+.panda-seasons-edit-panel>.panda-seasons-door-editor-empty{height:100%;border:0}
+.panda-seasons-edit-panel>.panda-seasons-door-modal{position:relative;inset:auto;z-index:1;width:100%;height:100%;max-height:none;margin:0;border:0}
+.panda-seasons-edit-panel>.panda-seasons-door-modal .panda-seasons-door-modal__dialog{width:100%;height:100%;max-height:none;margin:0;border:0;border-radius:0;box-shadow:none}
+.panda-seasons-edit-panel>.panda-seasons-door-modal .panda-seasons-door-modal__body{flex:1;min-height:0;overflow:auto}
+.panda-seasons-edit-panel>.panda-seasons-layer-editor{position:relative;inset:auto;width:100%;height:100%;max-height:none;box-sizing:border-box;overflow:auto;border:0;border-radius:0}
+@media(max-width:900px){.panda-seasons-editor-layout{display:block;min-height:0}.panda-seasons-editor-layout>.panda-seasons-composer,.panda-seasons-editor-sidebar{height:auto}.panda-seasons-editor-sidebar{border-top:1px solid #c3c4c7;border-left:0}.panda-seasons-editor-sidebar>[data-panda-editor-panel]{height:auto;max-height:none}.panda-seasons-edit-panel>.panda-seasons-door-editor-empty{min-height:260px}}
+
 /* 0.5.5: compact defaults, reliable grid and clearer editor actions. */
 .panda-seasons-defaults-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-column:1/-1;gap:12px}.panda-seasons-defaults-row label{display:grid;gap:5px}.panda-seasons-default-active-color{grid-column:1/-1!important;margin-bottom:10px;padding-bottom:14px;border-bottom:1px solid #dcdcde}.panda-seasons-default-state-tabs{margin-top:4px}
 .panda-seasons-cover-settings__row{grid-template-columns:minmax(0,2fr) minmax(180px,1fr)}.panda-seasons-cover-settings .panda-seasons-media-preview{aspect-ratio:1;min-height:0}.panda-seasons-cover-settings .panda-seasons-media-preview img{width:100%;height:100%;max-height:none;object-fit:cover}.panda-seasons-refresh-images{margin-top:0}

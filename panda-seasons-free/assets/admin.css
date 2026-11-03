@@ -2,3 +2,18 @@
 
 .panda-seasons-free-position{margin:0 0 18px;padding:14px;border:1px solid #dcdcde;border-radius:8px;background:#f8f9fa}.panda-seasons-free-position h4{margin:0 0 5px}.panda-seasons-free-position .description{margin:0 0 10px}.panda-seasons-free-position-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.panda-seasons-free-position-grid label{display:grid;gap:5px}.panda-seasons-free-position-grid label>span{font-size:12px;font-weight:600}.panda-seasons-free-position-grid input{box-sizing:border-box;width:100%;min-width:0}.panda-seasons-free-editor-door i{width:20px;height:20px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}@media(max-width:520px){.panda-seasons-free-position-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+/* Calendar builder sidebar: select new doors or edit the active door without
+   moving the canvas or resetting its scroll position. */
+.panda-seasons-free-sidebar{min-width:0;max-height:calc(100vh - 100px);overflow:hidden;border:1px solid #dcdcde;border-radius:10px;background:#fff;position:sticky;top:42px}
+.panda-seasons-free-sidebar>.panda-editor-tabs{position:sticky;top:0;z-index:4;margin:0;padding:12px;border-bottom:1px solid #dcdcde;background:#fff}
+.panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:calc(100vh - 165px);box-sizing:border-box;overflow:auto}
+.panda-seasons-free-elements-panel{padding:18px}
+.panda-seasons-free-elements-panel .button{display:flex;align-items:center;justify-content:flex-start;gap:8px;width:100%;min-height:46px;margin-top:14px;padding:8px 12px;text-align:left}
+.panda-seasons-free-edit-panel{min-height:280px}
+.panda-seasons-free-editor-empty{display:flex;min-height:280px;box-sizing:border-box;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;color:#646970}
+.panda-seasons-free-editor-empty[hidden]{display:none}
+.panda-seasons-free-editor-empty .dashicons{width:42px;height:42px;font-size:42px}
+.panda-seasons-free-editor-empty h3{margin:12px 0 4px}
+.panda-seasons-free-inspector{position:static;top:auto;border:0;border-radius:0}
+@media(max-width:1100px){.panda-seasons-free-sidebar{position:static;max-height:none}.panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:none}}
+

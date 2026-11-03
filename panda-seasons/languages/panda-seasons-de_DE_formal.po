@@ -703,6 +703,18 @@ msgstr "Standardfarbe bei geöffnetem Türe (RGBA)"
 msgid "Theme colors"
 msgstr "Theme-Farben"
 
+msgid "Calendar editor tools"
+msgstr "Werkzeuge des Kalendereditors"
+
+msgid "New elements"
+msgstr "Neue Elemente"
+
+msgid "Edit element"
+msgstr "Element bearbeiten"
+
+msgid "Add a door or a design element. You can then position it directly on the calendar."
+msgstr "Fügen Sie eine Türe oder ein Gestaltungselement hinzu. Danach können Sie es direkt im Kalender positionieren."
+
 msgid "First select the closed or opened color field, then choose a theme color."
 msgstr "Wählen Sie zuerst das Farbfeld für das geschlossene oder geöffnete Türe und anschließend eine Theme-Farbe aus."
 

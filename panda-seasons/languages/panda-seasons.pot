@@ -698,6 +698,18 @@ msgstr ""
 msgid "Default color when opened (RGBA)"
 msgstr ""
 
+msgid "Calendar editor tools"
+msgstr ""
+
+msgid "New elements"
+msgstr ""
+
+msgid "Edit element"
+msgstr ""
+
+msgid "Add a door or a design element. You can then position it directly on the calendar."
+msgstr ""
+
 msgid "Theme colors"
 msgstr ""
 

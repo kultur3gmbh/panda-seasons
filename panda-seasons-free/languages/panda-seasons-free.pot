@@ -287,3 +287,21 @@ msgstr ""
 msgid "Need more options for your campaign?"
 msgstr ""
 
+msgid "Calendar editor tools"
+msgstr ""
+
+msgid "New elements"
+msgstr ""
+
+msgid "Edit element"
+msgstr ""
+
+msgid "Add a door and then position it directly on the calendar."
+msgstr ""
+
+msgid "Select a door"
+msgstr ""
+
+msgid "Click a door in the calendar to edit its settings here."
+msgstr ""
+

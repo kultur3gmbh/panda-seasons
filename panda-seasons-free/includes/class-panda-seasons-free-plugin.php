@@ -444,13 +444,28 @@ final class Panda_Seasons_Free_Plugin {
 				</div>
 			</div>
 			<div class="panda-seasons-free-toolbar">
-				<div><button type="button" class="button button-primary" data-add-door draggable="true"><span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e( 'Add door', 'panda-seasons-free' ); ?></button><button type="button" class="button" data-layout="desktop" aria-pressed="true"><?php esc_html_e( 'Desktop', 'panda-seasons-free' ); ?></button><button type="button" class="button" data-layout="mobile" aria-pressed="false"><?php esc_html_e( 'Mobile', 'panda-seasons-free' ); ?></button><button type="button" class="button" data-state="closed" aria-pressed="true"><?php esc_html_e( 'All closed', 'panda-seasons-free' ); ?></button><button type="button" class="button" data-state="open" aria-pressed="false"><?php esc_html_e( 'All opened', 'panda-seasons-free' ); ?></button></div>
+				<div><button type="button" class="button" data-layout="desktop" aria-pressed="true"><?php esc_html_e( 'Desktop', 'panda-seasons-free' ); ?></button><button type="button" class="button" data-layout="mobile" aria-pressed="false"><?php esc_html_e( 'Mobile', 'panda-seasons-free' ); ?></button><button type="button" class="button" data-state="closed" aria-pressed="true"><?php esc_html_e( 'All closed', 'panda-seasons-free' ); ?></button><button type="button" class="button" data-state="open" aria-pressed="false"><?php esc_html_e( 'All opened', 'panda-seasons-free' ); ?></button></div>
 				<a class="button" href="<?php echo esc_url( $preview ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Preview', 'panda-seasons-free' ); ?></a>
 			</div>
 			<p class="description"><?php esc_html_e( 'Drag doors to position them. Use the handle in the lower-right corner to resize them. Desktop and mobile positions are saved separately.', 'panda-seasons-free' ); ?></p>
 			<div class="panda-seasons-free-workspace">
 				<div class="panda-seasons-free-canvas-wrap" data-panda-editor-canvas><div class="panda-seasons-free-canvas" data-canvas></div></div>
-				<aside class="panda-seasons-free-inspector" data-panda-editor-sidebar data-inspector hidden>
+				<aside class="panda-seasons-free-sidebar" data-panda-editor-sidebar>
+					<div class="panda-editor-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Calendar editor tools', 'panda-seasons-free' ); ?>">
+						<button type="button" class="is-active" role="tab" aria-selected="true" data-panda-editor-tab="elements"><?php esc_html_e( 'New elements', 'panda-seasons-free' ); ?></button>
+						<button type="button" role="tab" aria-selected="false" data-panda-editor-tab="edit"><?php esc_html_e( 'Edit element', 'panda-seasons-free' ); ?></button>
+					</div>
+					<section class="panda-seasons-free-elements-panel" data-panda-editor-panel="elements">
+						<p class="description"><?php esc_html_e( 'Add a door and then position it directly on the calendar.', 'panda-seasons-free' ); ?></p>
+						<button type="button" class="button" data-panda-editor-element data-add-door draggable="true"><span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span><?php esc_html_e( 'Add door', 'panda-seasons-free' ); ?></button>
+					</section>
+					<section class="panda-seasons-free-edit-panel" data-panda-editor-panel="edit" hidden>
+						<div class="panda-seasons-free-editor-empty" data-inspector-empty>
+							<span class="dashicons dashicons-edit" aria-hidden="true"></span>
+							<h3><?php esc_html_e( 'Select a door', 'panda-seasons-free' ); ?></h3>
+							<p><?php esc_html_e( 'Click a door in the calendar to edit its settings here.', 'panda-seasons-free' ); ?></p>
+						</div>
+				<aside class="panda-seasons-free-inspector" data-inspector hidden>
 					<h3><?php esc_html_e( 'Edit door', 'panda-seasons-free' ); ?> <span data-door-title></span></h3>
 					<section class="panda-seasons-free-position">
 						<h4><?php esc_html_e( 'Position and size', 'panda-seasons-free' ); ?> – <span data-position-layout><?php esc_html_e( 'Desktop', 'panda-seasons-free' ); ?></span></h4>
@@ -475,6 +490,8 @@ final class Panda_Seasons_Free_Plugin {
 					<label class="panda-seasons-free-content-heading"><span><?php esc_html_e( 'Content heading', 'panda-seasons-free' ); ?></span><input type="text" data-door-field="heading"></label>
 					<div class="panda-seasons-free-content-editor"><strong><?php esc_html_e( 'Text content', 'panda-seasons-free' ); ?></strong><?php wp_editor( '', 'panda_seasons_free_door_content', array( 'textarea_name' => 'panda_seasons_free_door_content_visual', 'textarea_rows' => 10, 'media_buttons' => false, 'teeny' => false, 'quicktags' => true, 'tinymce' => array( 'block_formats' => 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4', 'toolbar1' => 'formatselect,bold,italic,bullist,numlist,alignleft,aligncenter,alignright,link,unlink,undo,redo' ) ) ); ?></div>
 					<div class="panda-seasons-free-inspector-actions"><button type="button" class="button button-primary" data-apply-door><?php esc_html_e( 'Apply door', 'panda-seasons-free' ); ?></button><button type="button" class="button button-link-delete" data-delete-door><?php esc_html_e( 'Move door to trash', 'panda-seasons-free' ); ?></button></div>
+				</aside>
+					</section>
 				</aside>
 			</div>
 			<input type="hidden" name="panda_seasons_free_doors" data-doors-input>
