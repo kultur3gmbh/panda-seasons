@@ -45,7 +45,6 @@ register_activation_hook( __FILE__, 'panda_seasons_free_activate' );
 add_action(
 	'plugins_loaded',
 	static function () {
-		load_plugin_textdomain( 'panda-seasons-free', false, dirname( plugin_basename( PANDA_SEASONS_FREE_FILE ) ) . '/languages' );
 		if ( defined( 'PANDA_SEASONS_VERSION' ) ) {
 			add_action(
 				'admin_notices',

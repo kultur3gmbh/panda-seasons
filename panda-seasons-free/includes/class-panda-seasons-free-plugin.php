@@ -136,7 +136,21 @@ final class Panda_Seasons_Free_Plugin {
 					?>
 					<article class="panda-seasons-free-dashboard-card">
 						<a class="panda-seasons-free-dashboard-card__preview" href="<?php echo esc_url( get_edit_post_link( $calendar->ID ) ); ?>"><?php if ( $cover ) : ?><img src="<?php echo esc_url( $cover ); ?>" alt=""><?php else : ?><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span><?php endif; ?><span class="panda-seasons-free-dashboard-card__doors" aria-hidden="true"><i>4</i><i>11</i><i>19</i><i>23</i></span></a>
-						<div class="panda-seasons-free-dashboard-card__body"><h3><a href="<?php echo esc_url( get_edit_post_link( $calendar->ID ) ); ?>"><?php echo esc_html( get_the_title( $calendar->ID ) ?: sprintf( __( 'Calendar #%d', 'panda-seasons-free' ), $calendar->ID ) ); ?></a></h3><p><?php echo esc_html( sprintf( _n( '%d door', '%d doors', $door_count, 'panda-seasons-free' ), $door_count ) ); ?></p><a class="button button-primary" href="<?php echo esc_url( get_edit_post_link( $calendar->ID ) ); ?>"><?php esc_html_e( 'Edit', 'panda-seasons-free' ); ?></a></div>
+						<div class="panda-seasons-free-dashboard-card__body">
+							<h3><a href="<?php echo esc_url( get_edit_post_link( $calendar->ID ) ); ?>"><?php
+								$title = get_the_title( $calendar->ID );
+								if ( ! $title ) {
+									/* translators: %d: calendar post ID. */
+									$title = sprintf( __( 'Calendar #%d', 'panda-seasons-free' ), $calendar->ID );
+								}
+								echo esc_html( $title );
+							?></a></h3>
+							<p><?php
+								/* translators: %d: number of calendar doors. */
+								echo esc_html( sprintf( _n( '%d door', '%d doors', $door_count, 'panda-seasons-free' ), $door_count ) );
+							?></p>
+							<a class="button button-primary" href="<?php echo esc_url( get_edit_post_link( $calendar->ID ) ); ?>"><?php esc_html_e( 'Edit', 'panda-seasons-free' ); ?></a>
+						</div>
 					</article>
 					<?php endforeach; ?>
 				</div><?php endif; ?>
@@ -310,7 +324,7 @@ final class Panda_Seasons_Free_Plugin {
 	}
 
 	private static function doors( $calendar_id ) {
-		return get_posts(
+		return get_posts( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Door number is the persisted calendar order and is bounded to 100 rows.
 			array(
 				'post_type'      => self::DOOR_POST_TYPE,
 				'post_parent'    => absint( $calendar_id ),
@@ -480,28 +494,29 @@ final class Panda_Seasons_Free_Plugin {
 		$free_origin = 'free' === (string) get_post_meta( $post_id, '_ps_origin_edition', true );
 		update_post_meta( $post_id, '_ps_cover_desktop', $cover );
 		if ( $free_origin ) update_post_meta( $post_id, '_ps_cover_mobile', $cover );
-		update_post_meta( $post_id, '_ps_aspect_ratio', self::ratio( $_POST['panda_seasons_free_ratio'] ?? 1.5, 1.5 ) );
-		update_post_meta( $post_id, '_ps_mobile_aspect_ratio', self::ratio( $_POST['panda_seasons_free_mobile_ratio'] ?? .75, .75 ) );
-		$background = self::color( wp_unslash( $_POST['panda_seasons_free_background'] ?? '' ), '#f4f4f4' );
+		update_post_meta( $post_id, '_ps_aspect_ratio', self::ratio( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_ratio'] ?? '1.5' ) ), 1.5 ) );
+		update_post_meta( $post_id, '_ps_mobile_aspect_ratio', self::ratio( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_mobile_ratio'] ?? '.75' ) ), .75 ) );
+		$background = self::color( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_background'] ?? '' ) ), '#f4f4f4' );
 		update_post_meta( $post_id, '_ps_cover_desktop_background', $background );
 		if ( $free_origin ) update_post_meta( $post_id, '_ps_cover_mobile_background', $background );
 		$defaults = array(
-			'_ps_default_closed_background' => self::color( wp_unslash( $_POST['panda_seasons_free_closed_bg'] ?? '' ), 'rgba(44,62,80,.86)' ),
-			'_ps_default_closed_text_color' => self::color( wp_unslash( $_POST['panda_seasons_free_closed_color'] ?? '' ), '#ffffff' ),
-			'_ps_default_open_background'   => self::color( wp_unslash( $_POST['panda_seasons_free_open_bg'] ?? '' ), 'rgba(255,255,255,.80)' ),
-			'_ps_default_open_text_color'   => self::color( wp_unslash( $_POST['panda_seasons_free_open_color'] ?? '' ), '#1f2937' ),
-			'_ps_default_closed_border_color' => self::color( wp_unslash( $_POST['panda_seasons_free_closed_border_color'] ?? '' ), '#ffffff' ),
-			'_ps_default_open_border_color' => self::color( wp_unslash( $_POST['panda_seasons_free_open_border_color'] ?? '' ), '#ffffff' ),
+			'_ps_default_closed_background' => self::color( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_closed_bg'] ?? '' ) ), 'rgba(44,62,80,.86)' ),
+			'_ps_default_closed_text_color' => self::color( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_closed_color'] ?? '' ) ), '#ffffff' ),
+			'_ps_default_open_background'   => self::color( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_open_bg'] ?? '' ) ), 'rgba(255,255,255,.80)' ),
+			'_ps_default_open_text_color'   => self::color( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_open_color'] ?? '' ) ), '#1f2937' ),
+			'_ps_default_closed_border_color' => self::color( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_closed_border_color'] ?? '' ) ), '#ffffff' ),
+			'_ps_default_open_border_color' => self::color( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_open_border_color'] ?? '' ) ), '#ffffff' ),
 			'_ps_default_closed_border_width' => min( 20, absint( $_POST['panda_seasons_free_closed_border_width'] ?? 0 ) ),
 			'_ps_default_open_border_width' => min( 20, absint( $_POST['panda_seasons_free_open_border_width'] ?? 0 ) ),
 		);
-		$default_shape = self::shape( wp_unslash( $_POST['panda_seasons_free_default_shape'] ?? 'rounded' ) );
+		$default_shape = self::shape( sanitize_key( wp_unslash( $_POST['panda_seasons_free_default_shape'] ?? 'rounded' ) ) );
 		update_post_meta( $post_id, '_ps_default_shape', $default_shape );
-		$default_border_style = self::border_style( wp_unslash( $_POST['panda_seasons_free_border_style'] ?? 'none' ) );
+		$default_border_style = self::border_style( sanitize_key( wp_unslash( $_POST['panda_seasons_free_border_style'] ?? 'none' ) ) );
 		update_post_meta( $post_id, '_ps_default_border_style', $default_border_style );
 		foreach ( $defaults as $key => $value ) update_post_meta( $post_id, $key, $value );
 
-		$items = json_decode( wp_unslash( $_POST['panda_seasons_free_doors'] ?? '[]' ), true );
+		// The JSON contains formatted door content. Every field is validated below before persistence.
+		$items = json_decode( wp_unslash( $_POST['panda_seasons_free_doors'] ?? '[]' ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( ! is_array( $items ) ) $items = array();
 		$valid_ids = wp_list_pluck( self::doors( $post_id ), 'ID' );
 		foreach ( array_slice( $items, 0, 366 ) as $item ) {
@@ -514,6 +529,7 @@ final class Panda_Seasons_Free_Plugin {
 						'post_type'   => self::DOOR_POST_TYPE,
 						'post_status' => 'publish',
 						'post_parent' => $post_id,
+						/* translators: %d: calendar door number. */
 						'post_title'  => sprintf( __( 'Door %d', 'panda-seasons-free' ), absint( $item['number'] ?? 1 ) ),
 					)
 				);
@@ -524,7 +540,10 @@ final class Panda_Seasons_Free_Plugin {
 				'ID'           => $door_id,
 				'post_content' => wp_kses_post( (string) ( $item['content'] ?? '' ) ),
 			);
-			if ( $is_new ) $post_update['post_title'] = sprintf( __( 'Door %d', 'panda-seasons-free' ), $number );
+			if ( $is_new ) {
+				/* translators: %d: calendar door number. */
+				$post_update['post_title'] = sprintf( __( 'Door %d', 'panda-seasons-free' ), $number );
+			}
 			wp_update_post( wp_slash( $post_update ) );
 			update_post_meta( $door_id, '_ps_door_number', $number );
 			update_post_meta( $door_id, '_ps_unlock_date', self::date( $item['unlockDate'] ?? '' ) );
@@ -562,7 +581,7 @@ final class Panda_Seasons_Free_Plugin {
 				update_post_meta( $door_id, '_ps_shadow_enabled', 0 );
 			}
 		}
-		$deleted = json_decode( wp_unslash( $_POST['panda_seasons_free_deleted'] ?? '[]' ), true );
+		$deleted = json_decode( sanitize_text_field( wp_unslash( $_POST['panda_seasons_free_deleted'] ?? '[]' ) ), true );
 		foreach ( is_array( $deleted ) ? $deleted : array() as $door_id ) {
 			$door_id = absint( $door_id );
 			if ( $door_id && in_array( $door_id, $valid_ids, true ) ) wp_trash_post( $door_id );
@@ -675,11 +694,27 @@ final class Panda_Seasons_Free_Plugin {
 					$open_border_style = self::border_style( get_post_meta( $door->ID, '_ps_open_border_style', true ) ?: $default_border_style );
 					$shape = self::shape( get_post_meta( $door->ID, '_ps_shape', true ) ?: $default_shape );
 					$style = '--psf-x:' . $desktop['x'] . '%;--psf-y:' . $desktop['y'] . '%;--psf-w:' . $desktop['w'] . '%;--psf-h:' . $desktop['h'] . '%;--psf-mx:' . $mobile['x'] . '%;--psf-my:' . $mobile['y'] . '%;--psf-mw:' . $mobile['w'] . '%;--psf-mh:' . $mobile['h'] . '%;--psf-closed-bg:' . $closed_bg . ';--psf-closed-color:' . $closed_color . ';--psf-open-bg:' . $open_bg . ';--psf-open-color:' . $open_color . ';--psf-closed-border-color:' . $closed_border_color . ';--psf-open-border-color:' . $open_border_color . ';--psf-closed-border-width:' . $closed_border_width . 'px;--psf-open-border-width:' . $open_border_width . 'px;--psf-closed-border-style:' . $closed_border_style . ';--psf-open-border-style:' . $open_border_style . ';';
-					$heading = (string) get_post_meta( $door->ID, '_ps_content_heading', true ) ?: sprintf( __( 'Door %d', 'panda-seasons-free' ), $number );
+					$heading = (string) get_post_meta( $door->ID, '_ps_content_heading', true );
+					if ( '' === $heading ) {
+						/* translators: %d: calendar door number. */
+						$heading = sprintf( __( 'Door %d', 'panda-seasons-free' ), $number );
+					}
 					?>
 					<article class="panda-seasons-free__door panda-seasons-free__door--<?php echo esc_attr( $shape ); ?> <?php echo $available ? 'is-available' : 'is-locked'; ?>" style="<?php echo esc_attr( $style ); ?>" role="listitem">
-						<button type="button" aria-haspopup="dialog" aria-controls="panda-seasons-free-content-<?php echo esc_attr( $door->ID ); ?>" <?php disabled( ! $available ); ?>><span><?php echo esc_html( $number ); ?></span><span class="screen-reader-text"><?php echo esc_html( $available ? sprintf( __( 'Open door %d', 'panda-seasons-free' ), $number ) : sprintf( __( 'Door %d is not available yet', 'panda-seasons-free' ), $number ) ); ?></span></button>
-						<template id="panda-seasons-free-content-<?php echo esc_attr( $door->ID ); ?>"><h3><?php echo esc_html( $heading ); ?></h3><?php if ( $unlock ) : ?><p class="panda-seasons-free__date"><?php echo esc_html( wp_date( get_option( 'date_format' ), $unlock->getTimestamp(), wp_timezone() ) ); ?></p><?php endif; ?><div><?php echo apply_filters( 'the_content', $door->post_content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></template>
+						<button type="button" aria-haspopup="dialog" aria-controls="panda-seasons-free-content-<?php echo esc_attr( $door->ID ); ?>" <?php disabled( ! $available ); ?>><span><?php echo esc_html( $number ); ?></span><span class="screen-reader-text"><?php
+							if ( $available ) {
+								/* translators: %d: calendar door number. */
+								$door_state = sprintf( __( 'Open door %d', 'panda-seasons-free' ), $number );
+							} else {
+								/* translators: %d: calendar door number. */
+								$door_state = sprintf( __( 'Door %d is not available yet', 'panda-seasons-free' ), $number );
+							}
+							echo esc_html( $door_state );
+						?></span></button>
+						<template id="panda-seasons-free-content-<?php echo esc_attr( $door->ID ); ?>"><h3><?php echo esc_html( $heading ); ?></h3><?php if ( $unlock ) : ?><p class="panda-seasons-free__date"><?php echo esc_html( wp_date( get_option( 'date_format' ), $unlock->getTimestamp(), wp_timezone() ) ); ?></p><?php endif; ?><div><?php
+							// Core's content filter deliberately returns safe rendered post content.
+							echo apply_filters( 'the_content', $door->post_content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped
+						?></div></template>
 					</article>
 				<?php endforeach; ?>
 			</div>

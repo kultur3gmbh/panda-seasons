@@ -2,7 +2,7 @@
 Contributors: kultur3gmbh
 Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 0.1.11
 License: GPLv2 or later
