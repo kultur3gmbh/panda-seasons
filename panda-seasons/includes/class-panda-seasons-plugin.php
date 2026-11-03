@@ -446,7 +446,7 @@ final class Panda_Seasons_Plugin {
 	public static function import_template() {
 		check_admin_referer( 'panda_seasons_import_template' );
 		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to import calendar templates.', 'panda-seasons' ) );
-		$redirect = admin_url( 'edit.php?post_type=' . self::CALENDAR_POST_TYPE . '&page=panda-seasons-templates' );
+		$redirect = admin_url( 'admin.php?page=panda-seasons-templates' );
 		$file = $_FILES['panda_seasons_template'] ?? array();
 		if ( empty( $file['tmp_name'] ) || ! empty( $file['error'] ) || (int) ( $file['size'] ?? 0 ) > 5 * MB_IN_BYTES ) {
 			wp_safe_redirect( add_query_arg( 'panda_seasons_error', __( 'Please select a valid template file up to 5 MB.', 'panda-seasons' ), $redirect ) ); exit;
@@ -1020,7 +1020,7 @@ final class Panda_Seasons_Plugin {
 		check_admin_referer( 'panda_seasons_refresh_template_library' );
 		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to manage calendar templates.', 'panda-seasons' ) );
 		self::template_library( true );
-		wp_safe_redirect( admin_url( 'edit.php?post_type=' . self::CALENDAR_POST_TYPE . '&page=panda-seasons-templates' ) ); exit;
+		wp_safe_redirect( admin_url( 'admin.php?page=panda-seasons-templates' ) ); exit;
 	}
 
 	public static function import_library_template() {
