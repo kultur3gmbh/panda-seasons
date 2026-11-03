@@ -1505,6 +1505,7 @@
 	document.querySelectorAll('[data-default-door-color],[data-default-door-setting$="Color"],[data-default-door-setting$="Bg"],[data-default-door-setting$="Overlay"],[data-cover-background],[name="panda_seasons_popup_background"],[name="panda_seasons_popup_text_color"],[name="panda_seasons_popup_border_color"]').forEach(enhanceColorField);
 	var defaultsPanel=document.querySelector('.panda-seasons-default-colors');
 	var adminGrid=document.querySelector('.panda-seasons-settings-layout'),editorLayout=document.querySelector('.panda-seasons-editor-layout');
+	if(editorLayout){editorLayout.setAttribute('data-panda-editor','');if(composer)composer.setAttribute('data-panda-editor-canvas','');}
 	if(adminGrid&&editorLayout){
 		var mainTabs=document.createElement('div'),editorPanel=document.createElement('section'),settingsPanel=document.createElement('section'),emailPanel=document.createElement('section'),emailBox=document.getElementById('panda-seasons-email');
 		mainTabs.className='panda-seasons-main-tabs';mainTabs.setAttribute('role','tablist');

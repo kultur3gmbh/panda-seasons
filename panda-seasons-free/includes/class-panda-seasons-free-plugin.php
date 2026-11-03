@@ -187,8 +187,12 @@ final class Panda_Seasons_Free_Plugin {
 		wp_enqueue_style( 'panda-seasons-free-admin', PANDA_SEASONS_FREE_URL . 'assets/admin.css', array( 'wp-color-picker' ), PANDA_SEASONS_FREE_VERSION );
 		wp_enqueue_style( 'panda-seasons-free-ui', PANDA_SEASONS_FREE_URL . 'assets/free-ui.css', array( 'panda-seasons-free-admin' ), PANDA_SEASONS_FREE_VERSION );
 		wp_enqueue_style( 'contactpanda-admin-ui-contract', PANDA_SEASONS_FREE_URL . 'assets/contactpanda-admin-ui.css', array( 'panda-seasons-free-ui' ), PANDA_SEASONS_FREE_VERSION );
+		$shared_editor_ui  = WP_PLUGIN_DIR . '/contactpanda/assets/panda-editor-ui.js';
+		$shared_editor_css = WP_PLUGIN_DIR . '/contactpanda/assets/panda-editor-ui.css';
+		wp_enqueue_style( 'panda-editor-ui', file_exists( $shared_editor_css ) ? plugins_url( 'contactpanda/assets/panda-editor-ui.css' ) : PANDA_SEASONS_FREE_URL . 'assets/panda-editor-ui.css', array( 'contactpanda-admin-ui-contract' ), file_exists( $shared_editor_css ) ? (string) filemtime( $shared_editor_css ) : PANDA_SEASONS_FREE_VERSION );
+		wp_enqueue_script( 'panda-editor-ui', file_exists( $shared_editor_ui ) ? plugins_url( 'contactpanda/assets/panda-editor-ui.js' ) : PANDA_SEASONS_FREE_URL . 'assets/panda-editor-ui.js', array(), file_exists( $shared_editor_ui ) ? (string) filemtime( $shared_editor_ui ) : PANDA_SEASONS_FREE_VERSION, true );
 		$theme_colors = array_values( array_filter( array_column( self::theme_colors(), 'color' ) ) );
-		$dependencies = array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-resizable', 'wp-editor', 'wp-color-picker' );
+		$dependencies = array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-resizable', 'wp-editor', 'wp-color-picker', 'panda-editor-ui' );
 		$shared_ui    = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
 		if ( file_exists( $shared_ui ) ) {
 			wp_enqueue_script( 'contactpanda-admin-ui', plugins_url( 'contactpanda/assets/contactpanda-admin-ui.js' ), array( 'wp-api-fetch' ), (string) filemtime( $shared_ui ), true );
@@ -382,7 +386,7 @@ final class Panda_Seasons_Free_Plugin {
 		$doors = self::editor_doors( $post->ID );
 		$preview = wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_free_preview&calendar=' . $post->ID ), 'panda_seasons_free_preview_' . $post->ID );
 		?>
-		<div class="panda-seasons-free-editor" data-seasons-free-editor data-cover-url="<?php echo esc_url( $cover ); ?>">
+		<div class="panda-seasons-free-editor panda-editor" data-panda-editor data-seasons-free-editor data-cover-url="<?php echo esc_url( $cover ); ?>">
 			<div class="panda-seasons-free-settings-card">
 				<div class="contactpanda-image-picker<?php echo $cover ? ' has-image' : ''; ?>" data-cover-picker>
 					<button type="button" class="contactpanda-image-picker-drop" data-select-cover>
@@ -431,8 +435,8 @@ final class Panda_Seasons_Free_Plugin {
 			</div>
 			<p class="description"><?php esc_html_e( 'Drag doors to position them. Use the handle in the lower-right corner to resize them. Desktop and mobile positions are saved separately.', 'panda-seasons-free' ); ?></p>
 			<div class="panda-seasons-free-workspace">
-				<div class="panda-seasons-free-canvas-wrap"><div class="panda-seasons-free-canvas" data-canvas></div></div>
-				<aside class="panda-seasons-free-inspector" data-inspector hidden>
+				<div class="panda-seasons-free-canvas-wrap" data-panda-editor-canvas><div class="panda-seasons-free-canvas" data-canvas></div></div>
+				<aside class="panda-seasons-free-inspector" data-panda-editor-sidebar data-inspector hidden>
 					<h3><?php esc_html_e( 'Edit door', 'panda-seasons-free' ); ?> <span data-door-title></span></h3>
 					<section class="panda-seasons-free-position">
 						<h4><?php esc_html_e( 'Position and size', 'panda-seasons-free' ); ?> – <span data-position-layout><?php esc_html_e( 'Desktop', 'panda-seasons-free' ); ?></span></h4>
