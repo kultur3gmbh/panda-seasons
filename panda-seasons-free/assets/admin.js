@@ -273,8 +273,9 @@
 
 		root.querySelectorAll('[data-template]').forEach(function (button) { button.addEventListener('click', function () { applyTemplate(button.dataset.template); }); });
 
-		var mediaFrame;
 		var coverPicker = root.querySelector('[data-cover-picker]');
+		var sharedCoverPicker = null;
+		var syncingSharedCoverPicker = false;
 		function setCover(image) {
 			root.querySelector('[data-cover-id]').value = image.id || '';
 			root.dataset.coverUrl = image.url || (image.sizes && image.sizes.large ? image.sizes.large.url : '');
@@ -282,31 +283,28 @@
 			preview.innerHTML = root.dataset.coverUrl ? '<img src="' + escapeHtml(root.dataset.coverUrl) + '" alt="">' : '';
 			root.querySelector('[data-remove-cover]').hidden = !root.dataset.coverUrl;
 			coverPicker.classList.toggle('has-image', Boolean(root.dataset.coverUrl));
+			if (sharedCoverPicker && !syncingSharedCoverPicker) {
+				syncingSharedCoverPicker = true;
+				sharedCoverPicker.contactPandaSetImages(root.dataset.coverUrl ? [{id: image.id || 0, url: root.dataset.coverUrl, alt: ''}] : []);
+				syncingSharedCoverPicker = false;
+			}
 			render();
 		}
-		root.querySelector('[data-select-cover]').addEventListener('click', function () {
-			if (!mediaFrame) {
-				mediaFrame = wp.media({title: pandaSeasonsFreeAdmin.selectImage, button: {text: pandaSeasonsFreeAdmin.useImage}, multiple: false, library: {type: 'image'}});
-				mediaFrame.on('select', function () {
-					var image = mediaFrame.state().get('selection').first().toJSON();
-					setCover({id: image.id, url: image.sizes && image.sizes.large ? image.sizes.large.url : image.url});
-				});
-			}
-			mediaFrame.open();
-		});
-		coverPicker.addEventListener('dragover', function (event) { if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); coverPicker.classList.add('is-dragging'); } });
-		coverPicker.addEventListener('dragleave', function () { coverPicker.classList.remove('is-dragging'); });
-		coverPicker.addEventListener('drop', function (event) {
-			if (!event.dataTransfer || !event.dataTransfer.files.length) return;
-			event.preventDefault(); coverPicker.classList.remove('is-dragging');
-			var file = event.dataTransfer.files[0];
-			if (!/^image\//.test(file.type)) return;
-			uploadAttachment(file, function (image) { setCover({id: image.id, url: image.sizes && image.sizes.large ? image.sizes.large.url : image.url}); });
-		});
-		root.querySelector('[data-remove-cover]').addEventListener('click', function () {
-			setCover({id: '', url: ''});
-		});
-
+		if (coverPicker && window.ContactPandaAdminUI && typeof window.ContactPandaAdminUI.createImagePicker === 'function') {
+			sharedCoverPicker = window.ContactPandaAdminUI.createImagePicker({
+				dropLabel: pandaSeasonsFreeAdmin.selectImage,
+				attachmentId: Number(root.querySelector('[data-cover-id]').value || 0),
+				url: root.dataset.coverUrl || '',
+				onChange: function (image) {
+					if (syncingSharedCoverPicker) return;
+					syncingSharedCoverPicker = true;
+					setCover(image || {id: '', url: ''});
+					syncingSharedCoverPicker = false;
+				}
+			});
+			coverPicker.parentNode.insertBefore(sharedCoverPicker, coverPicker);
+			coverPicker.hidden = true;
+		}
 		var form = root.closest('form');
 		if (form) form.addEventListener('submit', function () {
 			syncInspector();

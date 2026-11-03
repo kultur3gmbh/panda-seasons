@@ -39,4 +39,6 @@ if command -v php >/dev/null 2>&1; then
 fi
 python3 "$repo_dir/tools/check_php_structure.py" "$free_dir"
 python3 "$repo_dir/tests/free_structure.py"
+grep -q "ContactPandaAdminUI.createImagePicker" "$free_dir/assets/admin.js"
+grep -q "ContactPandaAdminUI.createImagePicker" "$plugin_dir/assets/admin.js"
 echo "Panda Seasons checks passed."
