@@ -1,0 +1,1093 @@
+{
+  "format": "panda-seasons-template",
+  "format_version": 1,
+  "plugin_version": "0.8.21",
+  "calendar": {
+    "title": "Adventskalender – Geometrisches Markenraster",
+    "content": "",
+    "excerpt": "",
+    "meta": {
+      "_ps_aspect_ratio": "1.333333",
+      "_ps_mobile_aspect_ratio": "0.75",
+      "_ps_cover_desktop_background": "rgba(9, 59, 48, 1)",
+      "_ps_cover_mobile_background": "rgba(9, 59, 48, 1)",
+      "_ps_default_closed_background": "rgba(255, 255, 255, 0)",
+      "_ps_default_open_background": "rgba(255, 255, 255, 0)",
+      "_ps_default_closed_image_overlay": "rgba(0, 0, 0, 0)",
+      "_ps_default_open_image_overlay": "rgba(0, 0, 0, 0)",
+      "_ps_default_closed_border_color": "rgba(255, 255, 255, 0)",
+      "_ps_default_open_border_color": "rgba(255, 255, 255, 0)",
+      "_ps_default_closed_border_width": "0",
+      "_ps_default_open_border_width": "0",
+      "_ps_default_border_style": "none",
+      "_ps_default_closed_label_visible": "0",
+      "_ps_default_open_label_visible": "0",
+      "_ps_default_shape": "square",
+      "_ps_default_shadow_enabled": "0",
+      "_ps_default_shadow_blur": "0",
+      "_ps_default_shadow_color": "rgba(0, 0, 0, 0)",
+      "_ps_open_effect": "door-left",
+      "_ps_effect_speed": "normal",
+      "_ps_default_opening_mode": "auto-permanent"
+    },
+    "media": {}
+  },
+  "doors": [
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 13,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 0,
+          "y": 0,
+          "w": 25,
+          "h": 19.4291
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-13.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 7,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 25,
+          "y": 0,
+          "w": 25,
+          "h": 19.4291
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-7.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 2,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 50,
+          "y": 0,
+          "w": 25,
+          "h": 19.4291
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-2.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 10,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 75,
+          "y": 0,
+          "w": 25,
+          "h": 19.4291
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 14.1,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-10.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 8,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 0,
+          "y": 19.4291,
+          "w": 17.5414,
+          "h": 23.0203
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 14.1,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-8.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 15,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 17.5414,
+          "y": 19.4291,
+          "w": 17.5414,
+          "h": 23.0203
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 14.1,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-15.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 4,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 35.0829,
+          "y": 19.4291,
+          "w": 17.058,
+          "h": 23.0203
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 26.2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-4.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 11,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 52.1409,
+          "y": 19.4291,
+          "w": 13.2597,
+          "h": 23.0203
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 26.2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-11.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 1,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 65.4006,
+          "y": 19.4291,
+          "w": 17.2652,
+          "h": 23.0203
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 26.2,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-1.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 14,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 82.6657,
+          "y": 19.4291,
+          "w": 17.3343,
+          "h": 23.0203
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 38.3,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-14.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 9,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 0,
+          "y": 42.4494,
+          "w": 18.6464,
+          "h": 15.6538
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 38.3,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-9.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 18,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 18.6464,
+          "y": 42.4494,
+          "w": 10.9807,
+          "h": 15.6538
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 38.3,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-18.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 6,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 29.6271,
+          "y": 42.4494,
+          "w": 20.1657,
+          "h": 15.6538
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 50.4,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-6.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 23,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 49.7928,
+          "y": 42.4494,
+          "w": 17.058,
+          "h": 15.6538
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 50.4,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-23.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 12,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 66.8508,
+          "y": 42.4494,
+          "w": 11.8094,
+          "h": 15.6538
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 50.4,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-12.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 19,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 78.6602,
+          "y": 42.4494,
+          "w": 21.3398,
+          "h": 15.6538
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 62.5,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-19.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 24,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 0,
+          "y": 58.1031,
+          "w": 15.5387,
+          "h": 19.8895
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 62.5,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-24.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 3,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 15.5387,
+          "y": 58.1031,
+          "w": 14.0884,
+          "h": 19.8895
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 62.5,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-3.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 17,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 29.6271,
+          "y": 58.1031,
+          "w": 19.4061,
+          "h": 19.8895
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 74.6,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-17.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 5,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 49.0331,
+          "y": 58.1031,
+          "w": 19.6133,
+          "h": 19.8895
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 74.6,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-5.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 20,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 68.6464,
+          "y": 58.1031,
+          "w": 14.5028,
+          "h": 19.8895
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 74.6,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-20.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 16,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 83.1492,
+          "y": 58.1031,
+          "w": 16.8508,
+          "h": 19.8895
+        },
+        "_ps_position_mobile": {
+          "x": 2,
+          "y": 86.7,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-16.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 21,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 0,
+          "y": 77.9926,
+          "w": 24.8619,
+          "h": 22.0074
+        },
+        "_ps_position_mobile": {
+          "x": 34.5,
+          "y": 86.7,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-21.jpg"
+      }
+    },
+    {
+      "title": "",
+      "content": "",
+      "excerpt": "",
+      "meta": {
+        "_ps_door_number": 22,
+        "_ps_opening_mode": "auto-permanent",
+        "_ps_position_desktop": {
+          "x": 24.8619,
+          "y": 77.9926,
+          "w": 75.1381,
+          "h": 22.0074
+        },
+        "_ps_position_mobile": {
+          "x": 67,
+          "y": 86.7,
+          "w": 31,
+          "h": 10.5
+        },
+        "_ps_closed_background": "rgba(255, 255, 255, 0)",
+        "_ps_open_background": "rgba(255, 255, 255, 0)",
+        "_ps_closed_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_label_visible": 0,
+        "_ps_open_label_visible": 0,
+        "_ps_closed_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_open_border_color": "rgba(255, 255, 255, 0)",
+        "_ps_closed_border_width": 0,
+        "_ps_open_border_width": 0,
+        "_ps_closed_border_style": "none",
+        "_ps_open_border_style": "none",
+        "_ps_shape": "square",
+        "_ps_open_effect": "door-left",
+        "_ps_door_image_position": "center",
+        "_ps_closed_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_open_image_overlay": "rgba(0, 0, 0, 0)",
+        "_ps_shadow_enabled": 0,
+        "_ps_shadow_blur": 0,
+        "_ps_shadow_color": "rgba(0, 0, 0, 0)"
+      },
+      "media": {
+        "_ps_door_image_id": "https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/assets/04-geometrisches-markenraster/doors/door-22.jpg"
+      }
+    }
+  ]
+}

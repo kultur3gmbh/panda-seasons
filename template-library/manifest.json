@@ -10,6 +10,26 @@
       "sha256": "2e2f14ef0d56e9a6ae9b9976f02d7e78be0862dccefe986768f10d35cc1549fe",
       "min_plugin_version": "0.5.6",
       "has_images": false
+    },
+    {
+      "id": "skandinavisch-minimal-03",
+      "title": "Skandinavisch minimal",
+      "description": "24 echte, bildbasierte Türen im ruhigen skandinavischen Stil. Präzises Desktop-Layout, eigene Mobilanordnung und keine redaktionellen Inhalte.",
+      "thumbnail": "assets/03-skandinavisch-minimal/thumbnail.jpg",
+      "template": "03-skandinavisch-minimal.json",
+      "sha256": "0fad128ea6edecc298c9b6a46f2af3e981ff99ce262035b674a1d1b8a9f9a7f7",
+      "min_plugin_version": "0.8.21",
+      "has_images": true
+    },
+    {
+      "id": "geometrisches-markenraster-04",
+      "title": "Geometrisches Markenraster",
+      "description": "24 echte Türen in einem asymmetrischen geometrischen Raster mit Gold-, Grün- und Rotakzenten. Präzises Desktop-Layout, eigene Mobilanordnung und keine redaktionellen Inhalte.",
+      "thumbnail": "assets/04-geometrisches-markenraster/thumbnail.jpg",
+      "template": "04-geometrisches-markenraster.json",
+      "sha256": "a6d28f99cf379879c1d0321092a03ece1c364f312d03cf09e5f1a5e3f0078303",
+      "min_plugin_version": "0.8.21",
+      "has_images": true
     }
   ]
 }
