@@ -40,6 +40,66 @@
       "sha256": "f076a99ec06b2ee567e3439d00fb092953e359f39f85f66818a2043338ccff1e",
       "min_plugin_version": "0.8.25",
       "has_images": true
+    },
+    {
+      "id": "toskanisches-winterdorf-01",
+      "title": "Toskanisches Winterdorf",
+      "description": "Ein handgemaltes toskanisches Winterdorf mit 24 exakt in die Arkaden gesetzten Türen und getrennten Bildzuständen.",
+      "thumbnail": "assets/01-toskanisches-winterdorf/thumbnail.jpg",
+      "template": "01-toskanisches-winterdorf.json",
+      "sha256": "d596857d0115e8589bd448d0d5e15c6cc49ba70512c7eb17a0c6173a6a23bb85",
+      "min_plugin_version": "0.8.25",
+      "has_images": true
+    },
+    {
+      "id": "mediterrane-fotocollage-02",
+      "title": "Mediterrane Fotocollage",
+      "description": "Eine lebendige mediterrane Fotocollage mit 24 unterschiedlich großen Türen und eigenständigen Bildzuständen.",
+      "thumbnail": "assets/02-mediterrane-fotocollage/thumbnail.jpg",
+      "template": "02-mediterrane-fotocollage.json",
+      "sha256": "d64e6bcc98d848940e56be5c5a70b3154011e738e8d77624787be1468490a508",
+      "min_plugin_version": "0.8.25",
+      "has_images": true
+    },
+    {
+      "id": "winterlandschaft-06",
+      "title": "Winterlandschaft",
+      "description": "Eine stimmungsvolle winterliche Toskana mit 24 frei im Motiv angeordneten Türen und getrennten Bildzuständen.",
+      "thumbnail": "assets/06-winterlandschaft/thumbnail.jpg",
+      "template": "06-winterlandschaft.json",
+      "sha256": "a52d0aca335c1c2d26b79a09d04c460fc266048bd34dadb0d0b43a7b587f066b",
+      "min_plugin_version": "0.8.25",
+      "has_images": true
+    },
+    {
+      "id": "modern-editorial-07",
+      "title": "Modern Editorial",
+      "description": "Ein moderner redaktioneller Kalender mit großem Kopfbild, geometrischem 6 × 4-Raster und 24 getrennten Türzuständen.",
+      "thumbnail": "assets/07-modern-editorial/thumbnail.jpg",
+      "template": "07-modern-editorial.json",
+      "sha256": "eb85ebab41d1c2d6aa76e0b3ae347dc242ce5fef8abf341839394aa6931653e6",
+      "min_plugin_version": "0.8.25",
+      "has_images": true
+    },
+    {
+      "id": "light-botanical-08",
+      "title": "Light Botanical",
+      "description": "Ein heller botanischer Adventskalender mit 24 abgerundeten Türen, zarten Naturtönen und separaten Bildzuständen.",
+      "thumbnail": "assets/08-light-botanical/thumbnail.jpg",
+      "template": "08-light-botanical.json",
+      "sha256": "63d34d9477a167291df3f4c2a17b67a3fc76ea10c3a3f7bbbb58e6d1217dfbc3",
+      "min_plugin_version": "0.8.25",
+      "has_images": true
+    },
+    {
+      "id": "botanical-circles-09",
+      "title": "Botanical Circles",
+      "description": "Ein leichter botanischer Kalender mit 24 runden Türen, fein verteilten Zahlen und separaten Zustandsbildern.",
+      "thumbnail": "assets/09-botanical-circles/thumbnail.jpg",
+      "template": "09-botanical-circles.json",
+      "sha256": "7bfa3ce8ac12f289257b43f5b0f18cde3bcfa13e2c6fddba18dd6d017fd34b2e",
+      "min_plugin_version": "0.8.25",
+      "has_images": true
     }
   ]
 }
