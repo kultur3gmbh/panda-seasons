@@ -165,9 +165,17 @@ final class Panda_Seasons_Updater {
 	public function source( $source, $remote, $upgrader, $extra ) {
 		if ( ! $this->install_release || is_wp_error( $source ) ) return $source;
 		global $wp_filesystem;
-		if ( 'panda-seasons' !== basename( untrailingslashit( $source ) ) ) return $this->error( __( 'The update archive has an invalid folder.', 'panda-seasons' ) );
 		$entries = $wp_filesystem->dirlist( $remote );
-		if ( ! is_array( $entries ) || array_keys( $entries ) !== array( 'panda-seasons' ) ) return $this->error( __( 'The update archive has an invalid structure.', 'panda-seasons' ) );
+		if ( ! is_array( $entries ) || ! isset( $entries['panda-seasons'] ) || 'd' !== ( $entries['panda-seasons']['type'] ?? '' ) ) {
+			return $this->error( __( 'The update archive has an invalid structure.', 'panda-seasons' ) );
+		}
+		// WordPress and some filesystem transports may pass the temporary
+		// extraction directory instead of its single plugin child. Resolve the
+		// verified plugin directory explicitly instead of rejecting a harmless
+		// temporary folder name.
+		if ( 'panda-seasons' !== basename( untrailingslashit( $source ) ) ) {
+			$source = trailingslashit( $remote ) . 'panda-seasons/';
+		}
 		$main = $wp_filesystem->get_contents( trailingslashit( $source ) . 'panda-seasons.php' );
 		if ( ! is_string( $main ) || ! preg_match( '/^[ \t\/*#@]*Version:\s*([^\r\n]*)/mi', substr( $main, 0, 8192 ), $match ) || trim( $match[1] ) !== $this->install_release['version'] ) return $this->error( __( 'The update archive version is invalid.', 'panda-seasons' ) );
 		return $source;

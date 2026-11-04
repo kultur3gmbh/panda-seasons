@@ -3,7 +3,7 @@ Contributors: kultur3gmbh
 Tags: calendar, advent calendar, seasonal campaign, email calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.8.9
+Stable tag: 0.8.27
 License: GPLv2 or later
 
 Interactive seasonal calendars with freely positioned doors on responsive desktop and mobile images. Web calendars work independently; email delivery requires the free ContactPanda plugin.
@@ -15,6 +15,86 @@ Create multiple parallel calendars in a visual drag-and-drop composer, schedule 
 Use `[panda_seasons id="123"]` to display a published calendar. The optional attributes `show_title="no"`, `frame="yes"` and `shadow="yes"` control the presentation of each individual embed.
 
 == Changelog ==
+
+= 0.8.27 =
+* Redesigns the template library as a responsive card gallery with three previews per desktop row.
+* Places the image option and template installation action consistently below every real preview.
+* Adds the formal German label for installing a template.
+
+= 0.8.26 =
+* Make the update installer tolerate WordPress filesystem transports that expose the temporary extraction directory instead of the plugin child folder.
+
+= 0.8.25 =
+
+* Uses the shared responsive Panda image picker for calendar covers, design layers, and per-state door images.
+* Supports separate images for the closed and opened state of every door while retaining existing shared door images.
+* Completes template 3 with 48 individual door-state images and an equal, square desktop and mobile grid.
+
+= 0.8.24 =
+
+* Adopts the responsive Panda image picker for standalone calendar editing.
+* Keeps external images behind a compact link action instead of a permanent URL field.
+
+= 0.8.23 =
+
+* Publishes the Scandinavian and geometric calendar templates with 24 precisely positioned image doors each.
+* Fixes template-library refresh and import redirects in the Panda Seasons administration.
+* Makes the new templates available to compatible Panda Seasons 0.8.16 installations and newer.
+
+= 0.8.22 =
+
+* Adds a calendar screenshot preview as the first list column.
+* Aligns dashboard actions, active states, and icons with the shared Panda interface.
+* Keeps unrelated third-party notices out of Panda Seasons administration screens.
+
+= 0.8.21 =
+
+* Unifies the calendar builder into the shared two-column Panda editor with stable canvas scrolling.
+* Bounds calendar, door, composer, import, and MCP workloads and removes duplicate shared UI definitions.
+
+= 0.8.20 =
+
+* Adds the standalone shared Panda editor fallback and preserves editor scroll positions.
+* Aligns the calendar color controls with the compact family color picker.
+
+= 0.8.19 =
+* Consolidates neutral action controls, responsive color fields, and standalone media-library image handling.
+
+= 0.8.18 =
+
+* Unified administration actions with the grayscale Panda button system and centered icons, including standalone operation.
+
+= 0.8.17 =
+* Applies the neutral-grey action style to every large Panda Seasons administration button.
+* Detects action words anywhere in descriptive labels and adds the matching shared icon.
+
+= 0.8.16 =
+* Adds the shared neutral-grey Panda action system with a complete standalone fallback.
+* Standardizes labelled calendar actions without changing compact composer controls.
+
+= 0.8.15 =
+* Avoids loading the calendar selector on ordinary public requests.
+* Migrates calendars and doors in bounded batches instead of loading complete collections into memory.
+
+= 0.8.14 =
+* Adds lazy class loading and separates public calendars from administration, migration, and MCP workloads.
+* Bounds calendar, door, and mailer batches for predictable 256 MB operation.
+
+= 0.8.13 =
+* Adds the edition contract required for a safe switch between Panda Seasons Free and the complete Panda Seasons product.
+* Deactivates Panda Seasons Free when the complete edition is activated while preserving the shared calendars and doors.
+* Protects separate Pro desktop and mobile settings after a Free calendar is saved with the complete editor.
+
+= 0.8.12 =
+* Uses the protected ContactPanda update channel when ContactPanda is active, while retaining the standalone updater otherwise.
+
+= 0.8.11 =
+
+* Aligns the shared ContactPanda license-center registration with the final product structure.
+
+= 0.8.10 =
+* Restores calendar preview images on dashboard cards by using the canonical saved desktop cover image.
+* Falls back to the mobile cover and early test-calendar cover key when no desktop cover is available.
 
 = 0.8.9 =
 * Finalizes the Panda Seasons product, repository, package, and updater naming contract.

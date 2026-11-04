@@ -2,6 +2,7 @@
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent / "panda-seasons"
+main = (root / "panda-seasons.php").read_text(encoding="utf-8")
 required = [
     "panda-seasons.php",
     "includes/class-panda-seasons-plugin.php",
@@ -32,9 +33,24 @@ mcp = (root / "includes/class-panda-seasons-mcp.php").read_text(encoding="utf-8"
 subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_text(encoding="utf-8")
 admin_js = (root / "assets/admin.js").read_text(encoding="utf-8")
 admin_css = (root / "assets/editor.css").read_text(encoding="utf-8")
+editor_ui = (root / "assets/panda-editor-ui.js").read_text(encoding="utf-8")
+if ".panda-seasons-template-library__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))" not in admin_css:
+	raise SystemExit("The template library must show exactly three cards per desktop row")
 frontend_css = (root / "assets/calendar.css").read_text(encoding="utf-8")
+mailer = (root / "includes/class-panda-seasons-mailer.php").read_text(encoding="utf-8")
+if "panda_seasons_autoload" not in main:
+	raise SystemExit("The complete edition must lazy-load feature classes")
+if "if ( ! $is_backoffice ) return;" not in plugin:
+	raise SystemExit("Administration hooks must not load into ordinary frontend requests")
+if "'posts_per_page' => 366" not in runtime or "'no_found_rows'  => true" not in runtime:
+	raise SystemExit("Door rendering must use a bounded, count-free query")
+if "'posts_per_page' => 50" not in mailer or "'no_found_rows' => true" not in mailer:
+	raise SystemExit("Email processing must use a bounded calendar batch")
 if "panda_seasons" not in plugin or "_ps_cover_mobile" not in plugin + runtime:
     raise SystemExit("Calendar contract missing")
+dashboard_cover_lookup = "get_post_meta( $calendar_id, '_ps_cover_desktop', true )"
+if dashboard_cover_lookup not in plugin:
+	raise SystemExit("The dashboard must use the canonical desktop cover image for calendar previews")
 for composer_contract in ("_ps_position_desktop", "_ps_position_mobile", "data-door-modal", "panda-seasons__canvas"):
     if composer_contract not in plugin + runtime:
         raise SystemExit(f"Missing visual composer contract {composer_contract}")
@@ -48,6 +64,8 @@ for content_contract in (
     "_ps_email_content",
     "_ps_closed_background",
 	"_ps_door_image_id",
+	"_ps_closed_image_id",
+	"_ps_open_image_id",
 	"_ps_door_image_position",
 	"_ps_quiz_questions",
 	"panda_seasons_subscribe",
@@ -67,6 +85,9 @@ for content_contract in (
 ):
     if content_contract not in plugin + runtime:
         raise SystemExit(f"Missing door content contract {content_contract}")
+for state_image_contract in ("closedImageId", "closedImageUrl", "openImageId", "openImageUrl"):
+	if state_image_contract not in plugin + admin_js:
+		raise SystemExit(f"Missing state-specific door image contract {state_image_contract}")
 for scope in ("calendar", "all_calendars", "all_mailings"):
     if scope not in subscriptions:
         raise SystemExit(f"Missing unsubscribe scope {scope}")
@@ -158,6 +179,30 @@ for release_contract in ("panda-seasons-dashboard", "panda_seasons_track_door_cl
 		raise SystemExit(f"Missing 0.8.0 dashboard contract {release_contract}")
 if "historyLimit = 20" not in admin_js:
 	raise SystemExit("The editor must retain at least 20 undo steps")
+if "'numberposts' => -1" in mcp:
+	raise SystemExit("MCP calendar and door queries must stay explicitly bounded")
+for memory_contract in ("'posts_per_page' => 250", "'posts_per_page' => 366", "'maxItems' => 366", "array_slice( $items, 0, 366 )"):
+	if memory_contract not in plugin + runtime + mcp:
+		raise SystemExit(f"Missing bounded calendar-builder contract {memory_contract}")
+for editor_contract in (
+	'data-panda-editor-tab="elements"',
+	'data-panda-editor-tab="edit"',
+	'data-panda-editor-panel="elements"',
+	'data-panda-editor-panel="edit"',
+	'data-panda-editor-element',
+	'panda-seasons-editor-sidebar',
+):
+	if editor_contract not in plugin:
+		raise SystemExit(f"Missing shared calendar-builder contract {editor_contract}")
+for scroll_contract in ("canvas.scrollTop = canvasScroll", "window.scrollTo(window.scrollX, pageScroll)"):
+	if scroll_contract not in editor_ui:
+		raise SystemExit(f"Calendar-builder panel changes must preserve scroll: {scroll_contract}")
+for color_contract in (
+	".contactpanda-unified-color-popover{grid-template-columns:minmax(0,1fr) 18px 18px",
+	".contactpanda-unified-color-square{min-height:112px",
+):
+	if color_contract not in admin_css:
+		raise SystemExit(f"Missing compact shared color-field contract {color_contract}")
 for update_contract in ("releases/latest", "panda-seasons-update.json", "hash_file( 'sha256'", "upgrader_pre_download", "maybe_clear_forced_check_cache", "clear_update_cache", "version_compare( $version, $this->version, '>' )"):
     if update_contract not in updater:
         raise SystemExit(f"Missing standalone updater contract {update_contract}")

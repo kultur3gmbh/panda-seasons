@@ -136,7 +136,7 @@ final class Panda_Seasons_MCP {
 				'desktop_aspect_ratio' => array( 'type' => 'number', 'minimum' => 0.4, 'maximum' => 3 ),
 				'mobile_aspect_ratio' => array( 'type' => 'number', 'minimum' => 0.35, 'maximum' => 2 ),
 				'doors' => array( 'type' => 'array', 'minItems' => 1, 'maxItems' => 366, 'items' => $position ),
-				'mobile_doors' => array( 'type' => 'array', 'items' => $position ),
+				'mobile_doors' => array( 'type' => 'array', 'maxItems' => 366, 'items' => $position ),
 				'style' => array( 'type' => 'object', 'additionalProperties' => true ),
 			),
 			'required' => array( 'doors' ),
@@ -152,6 +152,7 @@ final class Panda_Seasons_MCP {
 				'import_mode' => array( 'type' => 'string', 'enum' => array( 'empty', 'merge', 'overwrite' ), 'default' => 'merge' ),
 				'doors' => array(
 					'type' => 'array',
+					'maxItems' => 366,
 					'items' => array(
 						'type' => 'object',
 						'properties' => array(
@@ -220,7 +221,7 @@ final class Panda_Seasons_MCP {
 
 	public static function list_calendars() {
 		$items = array();
-		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC' ) ) as $post ) {
+		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'no_found_rows' => true, 'orderby' => 'title', 'order' => 'ASC' ) ) as $post ) {
 			if ( ! current_user_can( 'edit_post', $post->ID ) ) continue;
 			$items[] = array( 'id' => $post->ID, 'title' => $post->post_title, 'status' => $post->post_status, 'shortcode' => '[panda_seasons id="' . $post->ID . '"]', 'modified' => get_post_modified_time( DATE_ATOM, true, $post ) );
 		}
@@ -230,7 +231,7 @@ final class Panda_Seasons_MCP {
 	public static function get_calendar( $input ) {
 		$id = self::input_id( $input, 'calendar_id' );
 		$post = get_post( $id );
-		$doors = get_posts( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $id, 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1, 'meta_key' => '_ps_door_number', 'orderby' => 'meta_value_num', 'order' => 'ASC' ) );
+		$doors = get_posts( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $id, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 366, 'no_found_rows' => true, 'meta_key' => '_ps_door_number', 'orderby' => 'meta_value_num', 'order' => 'ASC' ) );
 		return array( 'id' => $id, 'title' => $post->post_title, 'content' => $post->post_content, 'status' => $post->post_status, 'shortcode' => '[panda_seasons id="' . $id . '"]', 'settings' => self::post_meta( $id ), 'doors' => array_map( array( __CLASS__, 'door_data' ), $doors ) );
 	}
 
@@ -384,10 +385,10 @@ final class Panda_Seasons_MCP {
 		$mode = sanitize_key( (string) ( $input['import_mode'] ?? 'merge' ) );
 		if ( ! in_array( $mode, array( 'empty', 'merge', 'overwrite' ), true ) ) $mode = 'merge';
 		$existing = array();
-		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => array( 'publish', 'draft', 'private' ), 'numberposts' => -1 ) ) as $door ) $existing[ absint( get_post_meta( $door->ID, '_ps_door_number', true ) ) ] = $door->ID;
+		foreach ( get_posts( array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 366, 'no_found_rows' => true ) ) as $door ) $existing[ absint( get_post_meta( $door->ID, '_ps_door_number', true ) ) ] = $door->ID;
 		$updated = array();
 		$skipped = array();
-		foreach ( (array) ( $input['doors'] ?? array() ) as $item ) {
+		foreach ( array_slice( (array) ( $input['doors'] ?? array() ), 0, 366 ) as $item ) {
 			$number = min( 366, max( 1, absint( $item['number'] ?? 1 ) ) );
 			$door_id = $existing[ $number ] ?? 0;
 			if ( ! $door_id && empty( $input['create_missing_doors'] ) ) { $skipped[] = $number; continue; }

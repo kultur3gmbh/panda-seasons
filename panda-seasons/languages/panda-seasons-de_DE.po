@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.8.9\n"
+"Project-Id-Version: Panda Seasons 0.8.27\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +27,9 @@ msgstr "Bibliothek aktualisieren"
 
 msgid "Create calendar"
 msgstr "Kalender erstellen"
+
+msgid "Install template"
+msgstr "Vorlage installieren"
 
 msgid "Import images"
 msgstr "Bilder importieren"
@@ -702,6 +705,18 @@ msgstr "Standardfarbe bei geöffnetem Türe (RGBA)"
 
 msgid "Theme colors"
 msgstr "Theme-Farben"
+
+msgid "Calendar editor tools"
+msgstr "Werkzeuge des Kalendereditors"
+
+msgid "New elements"
+msgstr "Neue Elemente"
+
+msgid "Edit element"
+msgstr "Element bearbeiten"
+
+msgid "Add a door or a design element. You can then position it directly on the calendar."
+msgstr "Fügen Sie eine Türe oder ein Gestaltungselement hinzu. Danach können Sie es direkt im Kalender positionieren."
 
 msgid "First select the closed or opened color field, then choose a theme color."
 msgstr "Wählen Sie zuerst das Farbfeld für das geschlossene oder geöffnete Türe und anschließend eine Theme-Farbe aus."
@@ -1825,3 +1840,23 @@ msgstr "E-Mail-Vorlage von ContactPanda Basic noch nicht verfügbar"
 
 msgid "Panda Seasons will continue to send its existing HTML emails. Update ContactPanda Basic to use the central transactional email design for all calendar emails."
 msgstr "Panda Seasons versendet weiterhin die bisherigen HTML-E-Mails. Aktualisiere ContactPanda Basic, um das zentrale Design für Transaktions-E-Mails bei allen Kalender-E-Mails zu verwenden."
+msgid "Edit image"
+msgstr "Bild bearbeiten"
+
+msgid "Selected image"
+msgstr "Ausgewähltes Bild"
+
+msgid "JPG, PNG, WebP or SVG"
+msgstr "JPG, PNG, WebP oder SVG"
+
+msgid "Link external image"
+msgstr "Externes Bild verknüpfen"
+
+msgid "Enter the external image URL:"
+msgstr "URL des externen Bildes eingeben:"
+
+msgid "Image when closed"
+msgstr "Bild bei geschlossener Türe"
+
+msgid "Image when opened"
+msgstr "Bild bei geöffneter Türe"

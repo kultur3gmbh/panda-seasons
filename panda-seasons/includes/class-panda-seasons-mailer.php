@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 final class Panda_Seasons_Mailer {
 	public static function process() {
 		if ( ! Panda_Seasons_Plugin::contactpanda_available() ) return;
-		$calendars = get_posts( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => 'publish', 'numberposts' => -1, 'meta_key' => '_ps_email_enabled', 'meta_value' => '1' ) );
+		$calendars = get_posts( array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE, 'post_status' => 'publish', 'posts_per_page' => 50, 'no_found_rows' => true, 'meta_key' => '_ps_email_enabled', 'meta_value' => '1' ) );
 		foreach ( $calendars as $calendar ) self::process_calendar( $calendar );
 	}
 
