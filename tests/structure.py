@@ -34,6 +34,8 @@ subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_t
 admin_js = (root / "assets/admin.js").read_text(encoding="utf-8")
 admin_css = (root / "assets/editor.css").read_text(encoding="utf-8")
 editor_ui = (root / "assets/panda-editor-ui.js").read_text(encoding="utf-8")
+if ".panda-seasons-template-library__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))" not in admin_css:
+	raise SystemExit("The template library must show exactly three cards per desktop row")
 frontend_css = (root / "assets/calendar.css").read_text(encoding="utf-8")
 mailer = (root / "includes/class-panda-seasons-mailer.php").read_text(encoding="utf-8")
 if "panda_seasons_autoload" not in main:

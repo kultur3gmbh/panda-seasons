@@ -26,6 +26,9 @@ msgstr ""
 msgid "Create calendar"
 msgstr ""
 
+msgid "Install template"
+msgstr ""
+
 msgid "Import images"
 msgstr ""
 

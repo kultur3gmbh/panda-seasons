@@ -31,6 +31,9 @@ msgstr "Bibliothek aktualisieren"
 msgid "Create calendar"
 msgstr "Kalender erstellen"
 
+msgid "Install template"
+msgstr "Vorlage installieren"
+
 msgid "Import images"
 msgstr "Bilder importieren"
 

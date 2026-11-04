@@ -118,7 +118,8 @@ final class Panda_Seasons_Free_Plugin {
 				'order'          => 'DESC',
 			)
 		);
-		$pro_url = 'https://mycontactpanda.com/panda-seasons/';
+		$pro_url   = 'https://mycontactpanda.com/panda-seasons/';
+		$templates = self::pro_template_previews();
 		?>
 		<div class="wrap panda-seasons-free-dashboard">
 			<section class="panda-seasons-free-dashboard__hero">
@@ -163,8 +164,46 @@ final class Panda_Seasons_Free_Plugin {
 				</div>
 				<a class="button" href="<?php echo esc_url( $pro_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Discover Panda Seasons Pro', 'panda-seasons-free' ); ?></a>
 			</section>
+			<?php if ( $templates ) : ?>
+			<section class="panda-seasons-free-dashboard__section panda-seasons-free-dashboard__templates-showcase">
+				<div class="panda-seasons-free-dashboard__section-heading">
+					<div><p class="panda-seasons-free-dashboard__eyebrow">Panda Seasons Pro</p><h2><?php esc_html_e( 'Examples from the Pro template library', 'panda-seasons-free' ); ?></h2></div>
+				</div>
+				<div class="panda-seasons-free-dashboard__template-gallery">
+					<?php foreach ( $templates as $template ) : ?>
+					<article class="panda-seasons-free-dashboard-template">
+						<a class="panda-seasons-free-dashboard-template__preview" href="<?php echo esc_url( $template['thumbnail'] ); ?>" target="_blank" rel="noopener"><img src="<?php echo esc_url( $template['thumbnail'] ); ?>" alt="<?php echo esc_attr( $template['title'] ); ?>"></a>
+						<div><strong><?php echo esc_html( $template['title'] ); ?></strong><small><?php echo esc_html( $template['description'] ); ?></small><a class="button" href="<?php echo esc_url( $pro_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Discover Panda Seasons Pro', 'panda-seasons-free' ); ?></a></div>
+					</article>
+					<?php endforeach; ?>
+				</div>
+			</section>
+			<?php endif; ?>
 		</div>
 		<?php
+	}
+
+	private static function pro_template_previews() {
+		$cache_key = 'panda_seasons_free_template_previews_v1';
+		$cached    = get_transient( $cache_key );
+		if ( is_array( $cached ) ) return $cached;
+		$manifest_url = 'https://raw.githubusercontent.com/kultur3gmbh/panda-seasons/main/template-library/manifest.json';
+		$response     = wp_safe_remote_get( $manifest_url, array( 'timeout' => 8, 'redirection' => 2 ) );
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) return array();
+		$data = json_decode( wp_remote_retrieve_body( $response ), true );
+		if ( ! is_array( $data ) || 1 !== absint( $data['format_version'] ?? 0 ) || empty( $data['templates'] ) || ! is_array( $data['templates'] ) ) return array();
+		$base      = preg_replace( '~/[^/]*$~', '/', $manifest_url );
+		$templates = array();
+		foreach ( $data['templates'] as $item ) {
+			$id          = sanitize_key( $item['id'] ?? '' );
+			$title       = sanitize_text_field( $item['title'] ?? '' );
+			$thumbnail   = ltrim( (string) ( $item['thumbnail'] ?? '' ), '/' );
+			$description = sanitize_text_field( $item['description'] ?? '' );
+			if ( ! $id || ! $title || ! $thumbnail || preg_match( '~(?:^|/)\.\.(?:/|$)~', $thumbnail ) ) continue;
+			$templates[] = array( 'id' => $id, 'title' => $title, 'description' => $description, 'thumbnail' => esc_url_raw( $base . $thumbnail ) );
+		}
+		set_transient( $cache_key, $templates, 6 * HOUR_IN_SECONDS );
+		return $templates;
 	}
 
 	public static function meta_boxes() {
@@ -184,6 +223,7 @@ final class Panda_Seasons_Free_Plugin {
 		if ( ! $is_dashboard && ( ! $screen || self::CALENDAR_POST_TYPE !== $screen->post_type ) ) return;
 		if ( $is_dashboard ) {
 			wp_enqueue_style( 'panda-seasons-free-ui', PANDA_SEASONS_FREE_URL . 'assets/free-ui.css', array(), PANDA_SEASONS_FREE_VERSION );
+			wp_enqueue_style( 'panda-seasons-free-template-gallery', PANDA_SEASONS_FREE_URL . 'assets/template-gallery.css', array( 'panda-seasons-free-ui' ), PANDA_SEASONS_FREE_VERSION );
 			wp_enqueue_style( 'contactpanda-admin-ui-contract', PANDA_SEASONS_FREE_URL . 'assets/contactpanda-admin-ui.css', array( 'panda-seasons-free-ui' ), PANDA_SEASONS_FREE_VERSION );
 			$shared_ui = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
 			wp_enqueue_script(

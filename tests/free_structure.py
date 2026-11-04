@@ -9,6 +9,7 @@ readme = (plugin / "readme.txt").read_text()
 admin_css = (plugin / "assets/admin.css").read_text()
 shared_css = (plugin / "assets/contactpanda-admin-ui.css").read_text()
 free_ui = (plugin / "assets/free-ui.css").read_text()
+template_gallery_css = (plugin / "assets/template-gallery.css").read_text()
 editor_ui = (plugin / "assets/panda-editor-ui.js").read_text()
 
 assert "Plugin Name: Panda Seasons Free" in main
@@ -41,7 +42,12 @@ assert not (plugin / "includes/class-panda-seasons-free-updater.php").exists()
 assert "Panda Seasons', 'panda-seasons-free'" in code
 assert "data-template=\"classic\"" in code
 assert "data-template=\"modern\"" in code
-assert "panda-seasons-free-dashboard__template-gallery" not in code
+assert "panda-seasons-free-dashboard__template-gallery" in code
+assert "pro_template_previews" in code
+assert "template-library/manifest.json" in code
+assert "panda-seasons-free-template-gallery" in code
+assert "grid-template-columns:repeat(3,minmax(0,1fr))" in free_ui
+assert "object-fit: cover" in template_gallery_css
 assert "panda-seasons-free-dashboard__comparison-table" not in code
 assert "panda-seasons-free-dashboard__upgrade" in code
 assert "_ps_content_type', 'general'" in code
