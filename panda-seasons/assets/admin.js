@@ -1480,6 +1480,12 @@
 		applyDefaultsButton.addEventListener('click',openDefaultsDialog);
 		defaultsDialog.addEventListener('click',function(event){if(event.target.closest('[data-close-defaults-dialog]')){defaultsDialog.hidden=true;document.body.classList.remove('panda-seasons-modal-open');return;}if(event.target.closest('[data-select-all-defaults]'))defaultsDialog.querySelectorAll('[data-default-mapping]').forEach(function(box){box.checked=true;});if(event.target.closest('[data-select-no-defaults]'))defaultsDialog.querySelectorAll('[data-default-mapping]').forEach(function(box){box.checked=false;});if(event.target.closest('[data-apply-selected-defaults]')){var selected=defaultsDialog.querySelectorAll('[data-default-mapping]:checked');selected.forEach(function(box){var mapping=defaultMappings[+box.dataset.defaultMapping],input=document.querySelector(mapping.selector),value=inputValue(input);composer.getDoors().forEach(function(door){if(!door.deleted)mapping.props.forEach(function(prop){door[prop]=value;});});});composer.renderDoors();defaultsDialog.hidden=true;document.body.classList.remove('panda-seasons-modal-open');}});
 	}
+	document.addEventListener('click', function (event) {
+		var openSettings = event.target.closest('[data-open-main-settings]');
+		if (!openSettings) return;
+		var settingsTab = document.querySelector('[data-main-editor-tab="settings"]');
+		if (settingsTab) settingsTab.click();
+	});
 	var defaultPreview=document.querySelector('[data-default-door-preview]');
 	function defaultValue(name,fallback){var input=document.querySelector('[name="'+name+'"]');return input ? (input.type==='checkbox' ? input.checked : input.value) : fallback;}
 	function updateDefaultPreview(){

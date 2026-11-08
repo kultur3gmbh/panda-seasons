@@ -220,6 +220,8 @@ final class Panda_Seasons_Plugin {
 		if ( ! current_user_can( 'edit_posts' ) ) wp_die( esc_html__( 'You are not allowed to view the Panda Seasons dashboard.', 'panda-seasons' ) );
 		$calendars = get_posts( array( 'post_type' => self::CALENDAR_POST_TYPE, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 250, 'no_found_rows' => true, 'orderby' => 'modified', 'order' => 'DESC' ) );
 		$stats = self::dashboard_statistics();
+		$can_view_subscribers = current_user_can( 'manage_options' );
+		$subscribers = $can_view_subscribers ? self::dashboard_subscribers( wp_list_pluck( $calendars, 'ID' ) ) : array();
 		$contactpanda_active = self::contactpanda_available();
 		$contactpanda_installed = false;
 		$contactpanda_plugin = '';
@@ -252,26 +254,34 @@ final class Panda_Seasons_Plugin {
 					<div class="panda-seasons-dashboard__cards">
 						<?php foreach ( $calendars as $calendar ) :
 							$calendar_id = absint( $calendar->ID );
-							$cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop', true ) );
-							if ( ! $cover_id ) $cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_mobile', true ) );
-							if ( ! $cover_id ) $cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop_id', true ) ); // Legacy fallback for early test calendars.
-							$cover = $cover_id ? wp_get_attachment_image_url( $cover_id, 'medium_large' ) : '';
 							$calendar_stats = $stats[ $calendar_id ] ?? array( 'clicks' => 0, 'subscribers' => 0, 'leads' => 0 );
+							$calendar_subscribers = $subscribers[ $calendar_id ] ?? array();
 						?>
 						<article class="panda-seasons-dashboard-card">
 							<a class="panda-seasons-dashboard-card__preview" href="<?php echo esc_url( get_edit_post_link( $calendar_id ) ); ?>">
-								<?php if ( $cover ) : ?><img src="<?php echo esc_url( $cover ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Preview image for %s', 'panda-seasons' ), get_the_title( $calendar_id ) ) ); ?>"><?php else : ?><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span><?php endif; ?>
+								<?php self::render_dashboard_calendar_preview( $calendar_id ); ?>
 							</a>
 							<div class="panda-seasons-dashboard-card__body">
 								<h3><a href="<?php echo esc_url( get_edit_post_link( $calendar_id ) ); ?>"><?php echo esc_html( get_the_title( $calendar_id ) ?: sprintf( __( 'Calendar #%d', 'panda-seasons' ), $calendar_id ) ); ?></a></h3>
 								<div class="panda-seasons-dashboard-card__stats">
 									<div><strong><?php echo esc_html( number_format_i18n( $calendar_stats['clicks'] ) ); ?></strong><span><?php esc_html_e( 'Door clicks', 'panda-seasons' ); ?></span></div>
-									<div><strong><?php echo esc_html( number_format_i18n( $calendar_stats['subscribers'] ) ); ?></strong><span><?php esc_html_e( 'Email subscribers', 'panda-seasons' ); ?></span></div>
+									<?php if ( $can_view_subscribers ) : ?><button type="button" class="panda-seasons-dashboard-card__stat-button" data-subscriber-dialog-open="panda-seasons-subscribers-<?php echo esc_attr( $calendar_id ); ?>" aria-haspopup="dialog"><strong><?php echo esc_html( number_format_i18n( $calendar_stats['subscribers'] ) ); ?></strong><span><?php esc_html_e( 'Email subscribers', 'panda-seasons' ); ?></span></button><?php else : ?><div><strong><?php echo esc_html( number_format_i18n( $calendar_stats['subscribers'] ) ); ?></strong><span><?php esc_html_e( 'Email subscribers', 'panda-seasons' ); ?></span></div><?php endif; ?>
 									<div><strong><?php echo esc_html( number_format_i18n( $calendar_stats['leads'] ) ); ?></strong><span><?php esc_html_e( 'Leads', 'panda-seasons' ); ?></span></div>
 								</div>
 								<p class="panda-seasons-dashboard-card__actions"><a class="button button-primary" href="<?php echo esc_url( get_edit_post_link( $calendar_id ) ); ?>"><?php esc_html_e( 'Edit', 'panda-seasons' ); ?></a><?php if ( 'publish' === get_post_status( $calendar_id ) ) : ?> <a class="button" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_preview&calendar=' . $calendar_id ), 'panda_seasons_preview_' . $calendar_id ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></a><?php endif; ?></p>
 							</div>
 						</article>
+						<?php if ( $can_view_subscribers ) : ?>
+							<div class="panda-seasons-subscriber-dialog" id="panda-seasons-subscribers-<?php echo esc_attr( $calendar_id ); ?>" role="dialog" aria-modal="true" aria-labelledby="panda-seasons-subscribers-title-<?php echo esc_attr( $calendar_id ); ?>" hidden>
+								<div class="panda-seasons-subscriber-dialog__backdrop" data-subscriber-dialog-close></div>
+								<div class="panda-seasons-subscriber-dialog__panel" role="document">
+									<div class="panda-seasons-subscriber-dialog__header"><div><h2 id="panda-seasons-subscribers-title-<?php echo esc_attr( $calendar_id ); ?>"><?php echo esc_html( sprintf( __( 'Email subscribers for %s', 'panda-seasons' ), get_the_title( $calendar_id ) ?: sprintf( __( 'Calendar #%d', 'panda-seasons' ), $calendar_id ) ) ); ?></h2><p><?php esc_html_e( 'Only confirmed calendar subscriptions are shown here.', 'panda-seasons' ); ?></p></div><button type="button" class="button" data-subscriber-dialog-close aria-label="<?php esc_attr_e( 'Close subscriber list', 'panda-seasons' ); ?>"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button></div>
+									<?php if ( ! $calendar_subscribers ) : ?><p class="panda-seasons-subscriber-dialog__empty"><?php esc_html_e( 'There are no confirmed email subscribers for this calendar yet.', 'panda-seasons' ); ?></p><?php else : ?>
+										<div class="panda-seasons-subscriber-dialog__table-wrap"><table class="widefat striped"><thead><tr><th><?php esc_html_e( 'Name', 'panda-seasons' ); ?></th><th><?php esc_html_e( 'Email address', 'panda-seasons' ); ?></th><th><?php esc_html_e( 'Confirmed', 'panda-seasons' ); ?></th></tr></thead><tbody><?php foreach ( $calendar_subscribers as $subscriber ) : ?><tr><td><?php echo esc_html( trim( $subscriber['first_name'] . ' ' . $subscriber['last_name'] ) ?: '—' ); ?></td><td><a href="mailto:<?php echo esc_attr( $subscriber['email'] ); ?>"><?php echo esc_html( $subscriber['email'] ); ?></a></td><td><?php echo esc_html( $subscriber['confirmed_at'] ? mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $subscriber['confirmed_at'] ) : '—' ); ?></td></tr><?php endforeach; ?></tbody></table></div>
+									<?php endif; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 						<?php endforeach; ?>
 					</div>
 				<?php endif; ?>
@@ -309,6 +319,148 @@ final class Panda_Seasons_Plugin {
 		foreach ( $stats as &$row ) $row = wp_parse_args( $row, array( 'clicks' => 0, 'subscribers' => 0, 'leads' => 0 ) );
 		unset( $row );
 		return $stats;
+	}
+
+	private static function dashboard_subscribers( $calendar_ids ) {
+		$calendar_ids = array_values( array_filter( array_map( 'absint', (array) $calendar_ids ) ) );
+		if ( ! $calendar_ids ) return array();
+		global $wpdb;
+		$table = Panda_Seasons_Schema::tables()['subscriptions'];
+		$placeholders = implode( ',', array_fill( 0, count( $calendar_ids ), '%d' ) );
+		$query = $wpdb->prepare( "SELECT calendar_id,email,first_name,last_name,confirmed_at FROM `{$table}` WHERE status='active' AND calendar_id IN ({$placeholders}) ORDER BY last_name,first_name,email", $calendar_ids ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed internal table name and generated numeric placeholders.
+		$rows = $wpdb->get_results( $query, ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- prepared directly above.
+		$subscribers = array();
+		foreach ( (array) $rows as $row ) $subscribers[ absint( $row['calendar_id'] ) ][] = $row;
+		return $subscribers;
+	}
+
+	private static function render_dashboard_calendar_preview( $calendar_id ) {
+		$featured = get_the_post_thumbnail_url( $calendar_id, 'medium_large' );
+		if ( $featured ) {
+			echo '<img class="panda-seasons-dashboard-card__featured" src="' . esc_url( $featured ) . '" alt="' . esc_attr( sprintf( __( 'Automatically generated preview for %s', 'panda-seasons' ), get_the_title( $calendar_id ) ) ) . '">';
+			return;
+		}
+		$cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop', true ) );
+		if ( ! $cover_id ) $cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_mobile', true ) );
+		if ( ! $cover_id ) $cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop_id', true ) );
+		$cover = $cover_id ? wp_get_attachment_image_url( $cover_id, 'medium_large' ) : '';
+		$background = (string) get_post_meta( $calendar_id, '_ps_cover_desktop_background', true ) ?: 'rgba(23,32,51,1)';
+		$ratio = (float) get_post_meta( $calendar_id, '_ps_aspect_ratio', true );
+		if ( $ratio <= 0 ) $ratio = 1.5;
+		$style = 'background-color:' . $background . ';aspect-ratio:' . $ratio . ';';
+		if ( $cover ) $style .= 'background-image:url(' . esc_url_raw( $cover ) . ');';
+		$doors = get_posts( array( 'post_type' => self::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 100, 'no_found_rows' => true, 'orderby' => array( 'menu_order' => 'ASC', 'ID' => 'ASC' ) ) );
+		$default_bg = (string) get_post_meta( $calendar_id, '_ps_default_closed_background', true ) ?: 'rgba(99,99,99,.2)';
+		$default_color = (string) get_post_meta( $calendar_id, '_ps_default_closed_color', true ) ?: '#fff';
+		?>
+		<span class="panda-seasons-dashboard-card__calendar" style="<?php echo esc_attr( $style ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Automatically generated preview for %s', 'panda-seasons' ), get_the_title( $calendar_id ) ) ); ?>">
+			<?php foreach ( self::sanitize_design_layers( get_post_meta( $calendar_id, '_ps_design_layers', true ) ) as $layer ) :
+				$layer_position = $layer['desktop'];
+				$layer_style = 'left:' . (float) $layer_position['x'] . '%;top:' . (float) $layer_position['y'] . '%;width:' . (float) $layer_position['w'] . '%;height:' . (float) $layer_position['h'] . '%;z-index:' . absint( $layer['z'] ?? 1 ) . ';background:' . (string) ( $layer['background'] ?? 'transparent' ) . ';color:' . (string) ( $layer['color'] ?? '#1f2937' ) . ';';
+			?>
+				<span class="panda-seasons-dashboard-card__layer is-<?php echo esc_attr( $layer['type'] ); ?>" style="<?php echo esc_attr( $layer_style ); ?>"><?php if ( ! empty( $layer['imageUrl'] ) ) : ?><img src="<?php echo esc_url( $layer['imageUrl'] ); ?>" alt="" style="object-fit:<?php echo esc_attr( 'contain' === ( $layer['imageFit'] ?? '' ) ? 'contain' : 'cover' ); ?>;object-position:<?php echo esc_attr( str_replace( '-', ' ', $layer['imagePosition'] ?? 'center' ) ); ?>"><?php elseif ( 'text' === $layer['type'] ) : ?><span><?php echo wp_kses_post( $layer['text'] ); ?></span><?php endif; ?></span>
+			<?php endforeach; ?>
+			<?php foreach ( $doors as $index => $door ) :
+				$position = self::door_position( $door->ID, 'desktop', $index, count( $doors ) );
+				$image_id = absint( get_post_meta( $door->ID, '_ps_closed_image_id', true ) ) ?: absint( get_post_meta( $door->ID, '_ps_door_image_id', true ) );
+				$image = $image_id ? wp_get_attachment_image_url( $image_id, 'medium' ) : '';
+				$background_color = self::editor_background_color( $door->ID, 'closed', $default_bg );
+				$text_color = (string) get_post_meta( $door->ID, '_ps_closed_color', true ) ?: $default_color;
+				$border_color = (string) get_post_meta( $door->ID, '_ps_closed_border_color', true ) ?: 'rgba(255,255,255,.9)';
+				$border_width = '' !== get_post_meta( $door->ID, '_ps_closed_border_width', true ) ? min( 12, absint( get_post_meta( $door->ID, '_ps_closed_border_width', true ) ) ) : 2;
+				$border_style = (string) get_post_meta( $door->ID, '_ps_closed_border_style', true ) ?: 'solid';
+				if ( ! in_array( $border_style, array( 'solid', 'dashed', 'dotted', 'none' ), true ) ) $border_style = 'solid';
+				$shape = (string) get_post_meta( $door->ID, '_ps_shape', true ) ?: 'rounded';
+				$radius = 'round' === $shape ? '999px' : ( 'rounded' === $shape ? '8px' : '0' );
+				$door_style = 'left:' . (float) $position['x'] . '%;top:' . (float) $position['y'] . '%;width:' . (float) $position['w'] . '%;height:' . (float) $position['h'] . '%;background-color:' . $background_color . ';color:' . $text_color . ';border:' . $border_width . 'px ' . $border_style . ' ' . $border_color . ';border-radius:' . $radius . ';';
+				if ( $image ) $door_style .= 'background-image:url(' . esc_url_raw( $image ) . ');';
+				$label_visible = '' === get_post_meta( $door->ID, '_ps_closed_label_visible', true ) || (bool) get_post_meta( $door->ID, '_ps_closed_label_visible', true );
+				$label = (string) get_post_meta( $door->ID, '_ps_closed_label', true );
+				if ( '' === $label ) $label = (string) ( absint( get_post_meta( $door->ID, '_ps_door_number', true ) ) ?: ( $index + 1 ) );
+			?>
+				<span class="panda-seasons-dashboard-card__door" style="<?php echo esc_attr( $door_style ); ?>"><?php if ( $label_visible ) : ?><span><?php echo esc_html( $label ); ?></span><?php endif; ?></span>
+			<?php endforeach; ?>
+		</span>
+		<?php
+	}
+
+	private static function preview_rgba( $value, $fallback = array( 255, 255, 255, 1 ) ) {
+		$value = trim( (string) $value );
+		if ( preg_match( '/^#([a-f0-9]{3}|[a-f0-9]{6})$/i', $value, $match ) ) {
+			$hex = 3 === strlen( $match[1] ) ? $match[1][0] . $match[1][0] . $match[1][1] . $match[1][1] . $match[1][2] . $match[1][2] : $match[1];
+			return array( hexdec( substr( $hex, 0, 2 ) ), hexdec( substr( $hex, 2, 2 ) ), hexdec( substr( $hex, 4, 2 ) ), 1 );
+		}
+		if ( preg_match( '/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*([01]?(?:\.\d+)?))?\s*\)$/i', $value, $match ) ) return array( min( 255, (int) $match[1] ), min( 255, (int) $match[2] ), min( 255, (int) $match[3] ), isset( $match[4] ) && '' !== $match[4] ? max( 0, min( 1, (float) $match[4] ) ) : 1 );
+		return $fallback;
+	}
+
+	private static function preview_color( $image, $value, $fallback = array( 255, 255, 255, 1 ) ) {
+		$rgba = self::preview_rgba( $value, $fallback );
+		return imagecolorallocatealpha( $image, $rgba[0], $rgba[1], $rgba[2], 127 - (int) round( $rgba[3] * 127 ) );
+	}
+
+	private static function preview_draw_image( $canvas, $path, $x, $y, $width, $height ) {
+		if ( ! $path || ! is_readable( $path ) ) return;
+		$bytes = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local media file.
+		if ( ! $bytes ) return;
+		$source = @imagecreatefromstring( $bytes );
+		if ( ! $source ) return;
+		imagealphablending( $canvas, true );
+		imagecopyresampled( $canvas, $source, $x, $y, 0, 0, max( 1, $width ), max( 1, $height ), imagesx( $source ), imagesy( $source ) );
+		imagedestroy( $source );
+	}
+
+	private static function generate_calendar_featured_preview( $calendar_id ) {
+		if ( ! function_exists( 'imagecreatetruecolor' ) || ! current_user_can( 'edit_post', $calendar_id ) ) return 0;
+		$ratio = (float) get_post_meta( $calendar_id, '_ps_aspect_ratio', true );
+		if ( $ratio <= 0 ) $ratio = 1.5;
+		$width = 1200;
+		$height = max( 400, min( 1600, (int) round( $width / $ratio ) ) );
+		$canvas = imagecreatetruecolor( $width, $height );
+		imagesavealpha( $canvas, true );
+		imagealphablending( $canvas, true );
+		imagefilledrectangle( $canvas, 0, 0, $width, $height, self::preview_color( $canvas, get_post_meta( $calendar_id, '_ps_cover_desktop_background', true ), array( 23, 32, 51, 1 ) ) );
+		$cover_id = absint( get_post_meta( $calendar_id, '_ps_cover_desktop', true ) );
+		if ( $cover_id ) self::preview_draw_image( $canvas, get_attached_file( $cover_id ), 0, 0, $width, $height );
+		foreach ( self::sanitize_design_layers( get_post_meta( $calendar_id, '_ps_design_layers', true ) ) as $layer ) {
+			$position = $layer['desktop'];
+			$x = (int) round( $width * (float) $position['x'] / 100 ); $y = (int) round( $height * (float) $position['y'] / 100 );
+			$w = (int) round( $width * (float) $position['w'] / 100 ); $h = (int) round( $height * (float) $position['h'] / 100 );
+			imagefilledrectangle( $canvas, $x, $y, $x + $w, $y + $h, self::preview_color( $canvas, $layer['background'] ?? 'rgba(255,255,255,0)', array( 255, 255, 255, 0 ) ) );
+			if ( ! empty( $layer['imageId'] ) ) self::preview_draw_image( $canvas, get_attached_file( absint( $layer['imageId'] ) ), $x, $y, $w, $h );
+			elseif ( 'text' === ( $layer['type'] ?? '' ) ) imagestring( $canvas, 5, $x + 8, $y + 8, mb_substr( wp_strip_all_tags( $layer['text'] ?? '' ), 0, 120 ), self::preview_color( $canvas, $layer['color'] ?? '#1f2937', array( 31, 41, 55, 1 ) ) );
+		}
+		$doors = get_posts( array( 'post_type' => self::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => array( 'publish', 'draft', 'private' ), 'posts_per_page' => 366, 'no_found_rows' => true, 'orderby' => array( 'menu_order' => 'ASC', 'ID' => 'ASC' ) ) );
+		$default_bg = get_post_meta( $calendar_id, '_ps_default_closed_background', true ) ?: 'rgba(99,99,99,.2)';
+		$default_text = get_post_meta( $calendar_id, '_ps_default_closed_text_color', true ) ?: '#fff';
+		foreach ( $doors as $index => $door ) {
+			$position = self::door_position( $door->ID, 'desktop', $index, count( $doors ) );
+			$x = (int) round( $width * (float) $position['x'] / 100 ); $y = (int) round( $height * (float) $position['y'] / 100 );
+			$w = (int) round( $width * (float) $position['w'] / 100 ); $h = (int) round( $height * (float) $position['h'] / 100 );
+			imagefilledrectangle( $canvas, $x, $y, $x + $w, $y + $h, self::preview_color( $canvas, self::editor_background_color( $door->ID, 'closed', $default_bg ), array( 99, 99, 99, .2 ) ) );
+			$image_id = absint( get_post_meta( $door->ID, '_ps_closed_image_id', true ) ) ?: absint( get_post_meta( $door->ID, '_ps_door_image_id', true ) );
+			if ( $image_id ) self::preview_draw_image( $canvas, get_attached_file( $image_id ), $x, $y, $w, $h );
+			$label = (string) get_post_meta( $door->ID, '_ps_closed_label', true );
+			if ( '' === $label ) $label = (string) ( absint( get_post_meta( $door->ID, '_ps_door_number', true ) ) ?: $index + 1 );
+			imagestring( $canvas, 5, $x + max( 4, (int) ( $w / 2 ) - strlen( $label ) * 4 ), $y + max( 4, (int) ( $h / 2 ) - 7 ), $label, self::preview_color( $canvas, get_post_meta( $door->ID, '_ps_closed_color', true ) ?: $default_text, array( 255, 255, 255, 1 ) ) );
+		}
+		$uploads = wp_upload_dir();
+		if ( ! empty( $uploads['error'] ) ) { imagedestroy( $canvas ); return 0; }
+		$directory = trailingslashit( $uploads['basedir'] ) . 'panda-seasons-previews';
+		wp_mkdir_p( $directory );
+		$path = trailingslashit( $directory ) . 'calendar-' . absint( $calendar_id ) . '.png';
+		if ( ! imagepng( $canvas, $path, 8 ) ) { imagedestroy( $canvas ); return 0; }
+		imagedestroy( $canvas );
+		$attachment_id = absint( get_post_meta( $calendar_id, '_ps_preview_attachment_id', true ) );
+		if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) ) {
+			$attachment_id = wp_insert_attachment( array( 'post_mime_type' => 'image/png', 'post_title' => sprintf( __( '%s preview', 'panda-seasons' ), get_the_title( $calendar_id ) ), 'post_status' => 'inherit' ), $path, $calendar_id );
+			if ( is_wp_error( $attachment_id ) ) return 0;
+			update_post_meta( $calendar_id, '_ps_preview_attachment_id', $attachment_id );
+		} else update_attached_file( $attachment_id, $path );
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+		wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $path ) );
+		set_post_thumbnail( $calendar_id, $attachment_id );
+		return $attachment_id;
 	}
 
 	public static function track_door_click() {
@@ -693,7 +845,7 @@ final class Panda_Seasons_Plugin {
 		}
 		?>
 		<div class="panda-seasons-shortcodes-top"><?php self::calendar_shortcode_box( $post ); ?></div>
-		<div class="panda-seasons-composer__primary-actions panda-seasons-composer__primary-actions--global"><span class="panda-seasons-composer__history-actions"><button type="button" class="button" data-editor-undo disabled title="<?php esc_attr_e( 'Undo', 'panda-seasons' ); ?>"><span class="dashicons dashicons-undo" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Undo', 'panda-seasons' ); ?></span></button><button type="button" class="button" data-editor-redo disabled title="<?php esc_attr_e( 'Redo', 'panda-seasons' ); ?>"><span class="dashicons dashicons-redo" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Redo', 'panda-seasons' ); ?></span></button></span><span class="panda-seasons-composer__save-actions"><button type="button" class="button" data-open-template-dialog><span class="dashicons dashicons-layout" aria-hidden="true"></span><?php esc_html_e( 'Save as template', 'panda-seasons' ); ?></button><button type="button" class="button button-secondary panda-seasons-interactive-preview" data-open-calendar-preview data-preview-url="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_preview&calendar=' . $post->ID ), 'panda_seasons_preview_' . $post->ID ) ); ?>"><span class="dashicons dashicons-visibility" aria-hidden="true"></span><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></button><button type="button" class="button button-primary" data-save-calendar><span class="dashicons dashicons-saved" aria-hidden="true"></span><?php esc_html_e( 'Save calendar', 'panda-seasons' ); ?></button></span></div>
+		<div class="panda-seasons-composer__primary-actions panda-seasons-composer__primary-actions--global"><span class="panda-seasons-composer__history-actions"><button type="button" class="button" data-editor-undo disabled title="<?php esc_attr_e( 'Undo', 'panda-seasons' ); ?>"><span class="dashicons dashicons-undo" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Undo', 'panda-seasons' ); ?></span></button><button type="button" class="button" data-editor-redo disabled title="<?php esc_attr_e( 'Redo', 'panda-seasons' ); ?>"><span class="dashicons dashicons-redo" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Redo', 'panda-seasons' ); ?></span></button></span><span class="panda-seasons-composer__save-actions"><button type="button" class="button" data-open-template-dialog><span class="dashicons dashicons-layout" aria-hidden="true"></span><?php esc_html_e( 'Save as template', 'panda-seasons' ); ?></button><button type="button" class="button button-primary" data-save-calendar><span class="dashicons dashicons-saved" aria-hidden="true"></span><?php esc_html_e( 'Save calendar', 'panda-seasons' ); ?></button></span></div>
 		<p class="panda-seasons-editor-intro"><?php esc_html_e( 'Choose the calendar image and place every door directly on it. Click a door to edit its date and content.', 'panda-seasons' ); ?></p>
 		<div class="panda-seasons-settings-layout">
 			<div class="panda-seasons-cover-settings is-wide">
@@ -782,6 +934,7 @@ final class Panda_Seasons_Plugin {
 					<span class="panda-seasons-composer__toolbar-divider" aria-hidden="true"></span>
 					<button type="button" class="button button-primary" data-editor-view="desktop"><span class="dashicons dashicons-desktop" aria-hidden="true"></span><?php esc_html_e( 'Desktop', 'panda-seasons' ); ?></button>
 					<button type="button" class="button" data-editor-view="mobile"><span class="dashicons dashicons-smartphone" aria-hidden="true"></span><?php esc_html_e( 'Mobile', 'panda-seasons' ); ?></button>
+					<button type="button" class="button panda-seasons-interactive-preview" data-open-calendar-preview data-preview-url="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=panda_seasons_preview&calendar=' . $post->ID ), 'panda_seasons_preview_' . $post->ID ) ); ?>"><span class="dashicons dashicons-visibility" aria-hidden="true"></span><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></button>
 				</div>
 				</div>
 				<div class="panda-seasons-composer__toolbar-row panda-seasons-composer__toolbar-row--grid">
@@ -803,8 +956,9 @@ final class Panda_Seasons_Plugin {
 
 		<aside class="panda-seasons-editor-sidebar" data-panda-editor-sidebar>
 			<div class="panda-editor-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Calendar editor tools', 'panda-seasons' ); ?>">
-				<button type="button" class="is-active" role="tab" aria-selected="true" data-panda-editor-tab="elements"><?php esc_html_e( 'New elements', 'panda-seasons' ); ?></button>
+				<button type="button" class="is-active" role="tab" aria-selected="true" data-panda-editor-tab="elements"><?php esc_html_e( 'Add elements', 'panda-seasons' ); ?></button>
 				<button type="button" role="tab" aria-selected="false" data-panda-editor-tab="edit"><?php esc_html_e( 'Edit element', 'panda-seasons' ); ?></button>
+				<button type="button" role="tab" aria-selected="false" data-panda-editor-tab="settings"><?php esc_html_e( 'Basic settings', 'panda-seasons' ); ?></button>
 			</div>
 			<section class="panda-seasons-elements-panel" data-panda-editor-panel="elements">
 				<p class="description"><?php esc_html_e( 'Add a door or a design element. You can then position it directly on the calendar.', 'panda-seasons' ); ?></p>
@@ -970,12 +1124,17 @@ final class Panda_Seasons_Plugin {
 		</div>
 		<aside class="panda-seasons-layer-editor" data-layer-editor hidden><div class="panda-seasons-layer-editor__header"><h2><?php esc_html_e( 'Edit design element', 'panda-seasons' ); ?></h2><button type="button" class="button-link" data-close-layer-editor aria-label="<?php esc_attr_e( 'Close', 'panda-seasons' ); ?>"><span class="dashicons dashicons-no-alt"></span></button></div><div class="panda-seasons-layer-editor__body"><div data-layer-field-wrap="text"><strong><?php esc_html_e( 'Text', 'panda-seasons' ); ?></strong><?php wp_editor( '', 'panda_seasons_layer_text_editor', array( 'textarea_name' => 'panda_seasons_layer_text_editor', 'textarea_rows' => 8, 'media_buttons' => false, 'teeny' => false, 'quicktags' => true, 'tinymce' => array( 'block_formats' => 'Paragraph=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5', 'toolbar1' => 'formatselect,bold,italic,bullist,numlist,alignleft,aligncenter,alignright,link,unlink,undo,redo' ) ) ); ?></div><div data-layer-field-wrap="surface"><input type="hidden" data-layer-field="imageId"><input type="hidden" data-layer-field="imageUrl"><div class="panda-seasons-layer-media-dropzone" data-select-layer-image role="button" tabindex="0"><div data-layer-image-preview><span><?php esc_html_e( 'Select image or drop it here', 'panda-seasons' ); ?></span></div></div><div class="panda-seasons-inline-pair"><label><span><?php esc_html_e( 'Image position', 'panda-seasons' ); ?></span><select data-layer-field="imagePosition"><?php foreach ( self::image_position_options() as $position_value => $position_label ) : ?><option value="<?php echo esc_attr( $position_value ); ?>"><?php echo esc_html( $position_label ); ?></option><?php endforeach; ?></select></label><label><span><?php esc_html_e( 'Image fit', 'panda-seasons' ); ?></span><select data-layer-field="imageFit"><option value="cover"><?php esc_html_e( 'Cover', 'panda-seasons' ); ?></option><option value="contain"><?php esc_html_e( 'Contain', 'panda-seasons' ); ?></option></select></label></div></div><label><span><?php esc_html_e( 'Background color', 'panda-seasons' ); ?></span><input type="text" data-layer-field="background"></label><label data-layer-field-wrap="text"><span><?php esc_html_e( 'Text color', 'panda-seasons' ); ?></span><input type="text" data-layer-field="color"></label><label data-layer-field-wrap="text"><span><?php esc_html_e( 'Font size (px)', 'panda-seasons' ); ?></span><input type="number" min="8" max="160" data-layer-field="fontSize"></label><label data-layer-field-wrap="text"><span><?php esc_html_e( 'Inner spacing (px)', 'panda-seasons' ); ?></span><input type="number" min="0" max="100" data-layer-field="padding"></label><label class="panda-seasons-quiz-toggle"><input type="checkbox" data-layer-field="shadowEnabled"> <span><?php esc_html_e( 'Enable shadow', 'panda-seasons' ); ?></span></label><div class="panda-seasons-inline-pair"><label><span><?php esc_html_e( 'Shadow width (px)', 'panda-seasons' ); ?></span><input type="number" min="0" max="80" data-layer-field="shadowBlur"></label><label><span><?php esc_html_e( 'Shadow color', 'panda-seasons' ); ?></span><input type="text" data-layer-field="shadowColor"></label></div><label><span><?php esc_html_e( 'Layer order', 'panda-seasons' ); ?></span><input type="number" min="0" max="999" data-layer-field="z"></label><label><span><?php esc_html_e( 'Link URL', 'panda-seasons' ); ?></span><input type="url" data-layer-field="url" placeholder="https://"></label><label><span><?php esc_html_e( 'Corner radius (px)', 'panda-seasons' ); ?></span><input type="number" min="0" max="200" data-layer-field="radius"></label></div><div class="panda-seasons-layer-editor__footer"><div><button type="button" class="button button-primary" data-apply-layer-editor><?php esc_html_e( 'Apply changes', 'panda-seasons' ); ?></button><button type="button" class="button" data-close-layer-editor><?php esc_html_e( 'Cancel', 'panda-seasons' ); ?></button></div><button type="button" class="button panda-seasons-layer-delete" data-delete-layer><?php esc_html_e( 'Delete element', 'panda-seasons' ); ?></button><span class="panda-seasons-layer-save-status" data-layer-save-status aria-live="polite"></span></div></aside>
 			</section>
+			<section class="panda-seasons-basic-panel" data-panda-editor-panel="settings" hidden>
+				<h2><?php esc_html_e( 'Basic settings', 'panda-seasons' ); ?></h2>
+				<p><?php esc_html_e( 'Calendar-wide images, colors, door defaults and popup settings are managed in General settings.', 'panda-seasons' ); ?></p>
+				<button type="button" class="button" data-open-main-settings><?php esc_html_e( 'Open general settings', 'panda-seasons' ); ?></button>
+			</section>
 		</aside>
 		</div>
 		<div class="panda-seasons-calendar-preview" data-calendar-preview hidden>
 			<div class="panda-seasons-calendar-preview__backdrop" data-close-calendar-preview></div>
 			<div class="panda-seasons-calendar-preview__dialog" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Preview', 'panda-seasons' ); ?>">
-				<header><strong><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></strong><div class="panda-seasons-calendar-preview__date"><label><span><?php esc_html_e( 'Simulated date', 'panda-seasons' ); ?></span><input type="date" data-calendar-preview-date value="<?php echo esc_attr( wp_date( 'Y-m-d' ) ); ?>"></label><label><span><?php esc_html_e( 'Time', 'panda-seasons' ); ?></span><input type="time" data-calendar-preview-time value="<?php echo esc_attr( wp_date( 'H:i' ) ); ?>"></label><button type="button" class="button" data-calendar-preview-date-apply><?php esc_html_e( 'Apply', 'panda-seasons' ); ?></button></div><div><button type="button" class="button button-primary" data-calendar-preview-size="desktop"><span class="dashicons dashicons-desktop"></span></button><button type="button" class="button" data-calendar-preview-size="mobile"><span class="dashicons dashicons-smartphone"></span></button><button type="button" class="button-link" data-close-calendar-preview aria-label="<?php esc_attr_e( 'Close', 'panda-seasons' ); ?>"><span class="dashicons dashicons-no-alt"></span></button></div></header>
+				<header><strong><?php esc_html_e( 'Preview', 'panda-seasons' ); ?></strong><div class="panda-seasons-calendar-preview__date"><label><span><?php esc_html_e( 'Simulated date', 'panda-seasons' ); ?></span><input type="date" data-calendar-preview-date value="<?php echo esc_attr( wp_date( 'Y-m-d' ) ); ?>"></label><label><span><?php esc_html_e( 'Time', 'panda-seasons' ); ?></span><input type="time" data-calendar-preview-time value="<?php echo esc_attr( wp_date( 'H:i' ) ); ?>"></label><button type="button" class="button" data-calendar-preview-date-apply><?php esc_html_e( 'Apply', 'panda-seasons' ); ?></button></div><div><button type="button" class="button button-primary" data-calendar-preview-size="desktop" aria-label="<?php esc_attr_e( 'Desktop preview', 'panda-seasons' ); ?>"><span class="dashicons dashicons-desktop"></span></button><button type="button" class="button" data-calendar-preview-size="mobile" aria-label="<?php esc_attr_e( 'Mobile preview', 'panda-seasons' ); ?>"><span class="dashicons dashicons-smartphone"></span></button><button type="button" class="button" data-close-calendar-preview aria-label="<?php esc_attr_e( 'Close', 'panda-seasons' ); ?>"><span class="dashicons dashicons-no-alt"></span></button></div></header>
 				<iframe title="<?php esc_attr_e( 'Preview', 'panda-seasons' ); ?>"></iframe>
 			</div>
 		</div>
@@ -1518,11 +1677,13 @@ final class Panda_Seasons_Plugin {
 			if ( is_wp_error( $result ) ) wp_send_json_error( array( 'message' => $result->get_error_message() ), 500 );
 		}
 		$door_ids = self::save_calendar( $calendar_id );
+		$preview_attachment_id = self::generate_calendar_featured_preview( $calendar_id );
 		clean_post_cache( $calendar_id );
 		wp_send_json_success(
 			array(
 				'message' => __( 'Calendar saved.', 'panda-seasons' ),
 				'doorIds' => array_values( array_map( 'absint', (array) $door_ids ) ),
+				'previewAttachmentId' => absint( $preview_attachment_id ),
 				'savedAt' => current_time( 'mysql' ),
 			)
 		);
@@ -1791,8 +1952,9 @@ final class Panda_Seasons_Plugin {
 	public static function admin_assets( $hook ) {
 		$screen = get_current_screen();
 		$is_dashboard = 'toplevel_page_panda-seasons-dashboard' === $hook;
+		$is_templates = 'panda-seasons_page_panda-seasons-templates' === $hook;
 		$is_editor = $screen && in_array( $screen->post_type, array( self::CALENDAR_POST_TYPE, self::DOOR_POST_TYPE ), true );
-		if ( ! $is_dashboard && ! $is_editor ) return;
+		if ( ! $is_dashboard && ! $is_templates && ! $is_editor ) return;
 		if ( $is_editor ) wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'panda-seasons-admin', PANDA_SEASONS_URL . 'assets/editor.css', $is_editor ? array( 'wp-color-picker' ) : array(), PANDA_SEASONS_VERSION );
 		$shared_editor_ui = WP_PLUGIN_DIR . '/contactpanda/assets/panda-editor-ui.js';
@@ -1800,7 +1962,8 @@ final class Panda_Seasons_Plugin {
 		wp_enqueue_style( 'panda-editor-ui', file_exists( $shared_editor_css ) ? plugins_url( 'contactpanda/assets/panda-editor-ui.css' ) : PANDA_SEASONS_URL . 'assets/panda-editor-ui.css', array( 'panda-seasons-admin' ), file_exists( $shared_editor_css ) ? (string) filemtime( $shared_editor_css ) : PANDA_SEASONS_VERSION );
 		wp_enqueue_script( 'panda-editor-ui', file_exists( $shared_editor_ui ) ? plugins_url( 'contactpanda/assets/panda-editor-ui.js' ) : PANDA_SEASONS_URL . 'assets/panda-editor-ui.js', array(), file_exists( $shared_editor_ui ) ? (string) filemtime( $shared_editor_ui ) : PANDA_SEASONS_VERSION, true );
 		$shared_ui_file     = WP_PLUGIN_DIR . '/contactpanda/assets/contactpanda-admin-ui.js';
-		if ( $is_dashboard ) {
+		if ( $is_dashboard || $is_templates ) {
+			if ( $is_dashboard ) wp_enqueue_script( 'panda-seasons-dashboard', PANDA_SEASONS_URL . 'assets/dashboard.js', array(), PANDA_SEASONS_VERSION, true );
 			if ( file_exists( $shared_ui_file ) ) {
 				wp_enqueue_script( 'contactpanda-admin-ui', plugins_url( 'contactpanda/assets/contactpanda-admin-ui.js' ), array( 'wp-api-fetch' ), (string) filemtime( $shared_ui_file ), true );
 			} else {

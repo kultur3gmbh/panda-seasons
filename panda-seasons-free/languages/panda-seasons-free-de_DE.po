@@ -1,0 +1,529 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Panda Seasons Free 0.3.0\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Add calendar"
+msgstr "Kalender hinzufügen"
+
+msgid "Add door"
+msgstr "Türe hinzufügen"
+
+msgid "All closed"
+msgstr "Alle geschlossen"
+
+msgid "All opened"
+msgstr "Alle geöffnet"
+
+msgid "Apply door"
+msgstr "Türe übernehmen"
+
+msgid "Background"
+msgstr "Hintergrund"
+
+msgid "Background color"
+msgstr "Hintergrundfarbe"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Calendar door"
+msgstr "Kalendertüre"
+
+msgid "Calendar saved."
+msgstr "Kalender gespeichert."
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Closed background"
+msgstr "Hintergrund geschlossen"
+
+msgid "Closed door"
+msgstr "Türe geschlossen"
+
+msgid "Closed text"
+msgstr "Text geschlossen"
+
+msgid "Content heading"
+msgstr "Überschrift des Inhalts"
+
+msgid "Default door colors"
+msgstr "Standardfarben der Türen"
+
+msgid "Delete this door?"
+msgstr "Möchten Sie diese Türe löschen?"
+
+msgid "Desktop"
+msgstr "Desktop"
+
+msgid "Desktop aspect ratio"
+msgstr "Seitenverhältnis Desktop"
+
+msgid "Door"
+msgstr "Türe"
+
+msgid "Door %d"
+msgstr "Türe %d"
+
+msgid "Door %d is not available yet"
+msgstr "Türe %d ist noch nicht verfügbar"
+
+msgid "Door number"
+msgstr "Türnummer"
+
+msgid "Doors"
+msgstr "Türen"
+
+msgid "Drag doors to position them. Use the handle in the lower-right corner to resize them. Desktop and mobile positions are saved separately."
+msgstr "Ziehen Sie Türen an die gewünschte Position. Mit dem Griff rechts unten ändern Sie die Größe. Die Positionen für Desktop und Mobilgeräte werden getrennt gespeichert."
+
+msgid "Edit calendar"
+msgstr "Kalender bearbeiten"
+
+msgid "Edit door"
+msgstr "Türe bearbeiten"
+
+msgid "Mobile"
+msgstr "Mobil"
+
+msgid "Mobile aspect ratio"
+msgstr "Seitenverhältnis Mobilgeräte"
+
+msgid "Move door to trash"
+msgstr "Türe in den Papierkorb verschieben"
+
+msgid "Open door %d"
+msgstr "Türe %d öffnen"
+
+msgid "Opened background"
+msgstr "Hintergrund geöffnet"
+
+msgid "Opened door"
+msgstr "Türe geöffnet"
+
+msgid "Opened text"
+msgstr "Text geöffnet"
+
+msgid "Panda Seasons Free"
+msgstr "Panda Seasons Free"
+
+msgid "Panda Seasons Free is inactive while the complete Panda Seasons edition is active. Your calendars use the same saved data."
+msgstr "Panda Seasons Free ist inaktiv, solange die vollständige Version von Panda Seasons aktiv ist. Ihre Kalender verwenden dieselben gespeicherten Daten."
+
+msgid "Panda Seasons is already active"
+msgstr "Panda Seasons ist bereits aktiv"
+
+msgid "Please deactivate Panda Seasons before activating Panda Seasons Free. Both editions use the same calendar data and must not run at the same time."
+msgstr "Bitte deaktivieren Sie Panda Seasons, bevor Sie Panda Seasons Free aktivieren. Beide Versionen verwenden dieselben Kalenderdaten und dürfen nicht gleichzeitig aktiv sein."
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Remove background image"
+msgstr "Hintergrundbild entfernen"
+
+msgid "Seasons Free"
+msgstr "Seasons Free"
+
+msgid "Select calendar"
+msgstr "Kalender auswählen"
+
+msgid "Select calendar background"
+msgstr "Kalenderhintergrund auswählen"
+
+msgid "Select one general background image"
+msgstr "Ein allgemeines Hintergrundbild auswählen"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "Show title"
+msgstr "Titel anzeigen"
+
+msgid "Text color"
+msgstr "Textfarbe"
+
+msgid "Panda Seasons"
+msgstr "Panda Seasons"
+
+msgid "Select an image or drop it here"
+msgstr "Bild auswählen oder hierher ziehen"
+
+msgid "Open color picker"
+msgstr "Farbwähler öffnen"
+
+msgid "Transparency"
+msgstr "Transparenz"
+
+msgid "Apply this template? Existing text content is retained."
+msgstr "Diese Vorlage anwenden? Vorhandene Textinhalte bleiben erhalten."
+
+msgid "Default door shape"
+msgstr "Standard-Türform"
+
+msgid "Door shape"
+msgstr "Türform"
+
+msgid "Square"
+msgstr "Eckig"
+
+msgid "Rounded"
+msgstr "Abgerundet"
+
+msgid "Round"
+msgstr "Rund"
+
+msgid "Starter templates"
+msgstr "Startvorlagen"
+
+msgid "Apply a ready-made layout and color scheme. Existing door content is retained."
+msgstr "Wenden Sie ein fertiges Layout mit Farbschema an. Vorhandene Türinhalte bleiben erhalten."
+
+msgid "Classic grid"
+msgstr "Klassisches Raster"
+
+msgid "Modern circles"
+msgstr "Moderne Kreise"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Calendars"
+msgstr "Kalender"
+
+msgid "You are not allowed to view the Panda Seasons dashboard."
+msgstr "Sie dürfen das Panda-Seasons-Dashboard nicht anzeigen."
+
+msgid "Create simple seasonal calendars and upgrade to Pro whenever you need images, products, quizzes, email delivery and advanced design tools."
+msgstr "Erstellen Sie einfache Saisonkalender und wechseln Sie zu Pro, sobald Sie Bilder, Produkte, Quiz, E-Mail-Versand und erweiterte Gestaltungswerkzeuge benötigen."
+
+msgid "Create calendar"
+msgstr "Kalender erstellen"
+
+msgid "Your calendars"
+msgstr "Ihre Kalender"
+
+msgid "No calendar has been created yet."
+msgstr "Es wurde noch kein Kalender erstellt."
+
+msgid "Calendar #%d"
+msgstr "Kalender Nr. %d"
+
+msgid "%d door"
+msgid_plural "%d doors"
+msgstr[0] "%d Türe"
+msgstr[1] "%d Türen"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Turn your calendar into an interactive campaign"
+msgstr "Machen Sie Ihren Kalender zu einer interaktiven Kampagne"
+
+msgid "Use individual door images, design layers, products and discounts, quizzes, calls to action, newsletter forms, email delivery, imports and a growing template library."
+msgstr "Nutzen Sie individuelle Türbilder, Gestaltungsflächen, Produkte und Rabatte, Quiz, Call-to-Actions, Newsletter-Formulare, E-Mail-Versand, Importe und eine wachsende Vorlagenbibliothek."
+
+msgid "Discover Panda Seasons Pro"
+msgstr "Panda Seasons Pro entdecken"
+
+msgid "Examples from the Pro template library"
+msgstr "Beispiele aus der Pro-Vorlagenbibliothek"
+
+msgid "Text content"
+msgstr "Textinhalt"
+
+msgid "This calendar does not have any doors yet."
+msgstr "Dieser Kalender enthält noch keine Türen."
+
+msgid "Unlock date"
+msgstr "Freigabedatum"
+
+msgid "Unlock time"
+msgstr "Freigabezeit"
+
+msgid "Use this image"
+msgstr "Dieses Bild verwenden"
+
+msgid "Visual calendar editor"
+msgstr "Visueller Kalendereditor"
+
+msgid "You are not allowed to preview this calendar."
+msgstr "Sie dürfen diesen Kalender nicht in der Vorschau anzeigen."
+
+msgid "Theme colors"
+msgstr "Theme-Farben"
+
+msgid "Select color"
+msgstr "Farbe auswählen"
+
+msgid "Color value"
+msgstr "Farbwert"
+
+msgid "Enter a valid HEX, RGB or RGBA color."
+msgstr "Geben Sie eine gültige HEX-, RGB- oder RGBA-Farbe ein."
+
+msgid "Theme background"
+msgstr "Theme-Hintergrund"
+
+msgid "Theme text"
+msgstr "Theme-Text"
+
+msgid "Select image"
+msgstr "Bild auswählen"
+
+msgid "Remove image"
+msgstr "Bild entfernen"
+
+msgid "Uploading image…"
+msgstr "Bild wird hochgeladen …"
+
+msgid "The image could not be uploaded."
+msgstr "Das Bild konnte nicht hochgeladen werden."
+
+msgid "Closed border color"
+msgstr "Rahmenfarbe geschlossen"
+
+msgid "Closed border width (px)"
+msgstr "Rahmenbreite geschlossen (px)"
+
+msgid "Opened border color"
+msgstr "Rahmenfarbe geöffnet"
+
+msgid "Opened border width (px)"
+msgstr "Rahmenbreite geöffnet (px)"
+
+msgid "Border style"
+msgstr "Rahmenart"
+
+msgid "No border"
+msgstr "Kein Rahmen"
+
+msgid "Solid"
+msgstr "Durchgehend"
+
+msgid "Dashed"
+msgstr "Gestrichelt"
+
+msgid "Dotted"
+msgstr "Gepunktet"
+
+msgid "Border color"
+msgstr "Rahmenfarbe"
+
+msgid "Border width (px)"
+msgstr "Rahmenbreite (px)"
+
+msgid "Position and size"
+msgstr "Position und Größe"
+
+msgid "Move the door directly on the calendar or enter exact percentage values. Drag the blue handle in the lower-right corner to resize it."
+msgstr "Verschieben Sie die Türe direkt im Kalender oder geben Sie exakte Prozentwerte ein. Ziehen Sie am blauen Griff rechts unten, um die Größe zu ändern."
+
+msgid "Left (%)"
+msgstr "Links (%)"
+
+msgid "Top (%)"
+msgstr "Oben (%)"
+
+msgid "Width (%)"
+msgstr "Breite (%)"
+
+msgid "Height (%)"
+msgstr "Höhe (%)"
+
+msgid "Check for updates"
+msgstr "Auf Aktualisierungen prüfen"
+
+msgid "The update service could not be reached."
+msgstr "Der Aktualisierungsdienst konnte nicht erreicht werden."
+
+msgid "No valid published update was found."
+msgstr "Es wurde keine gültige veröffentlichte Aktualisierung gefunden."
+
+msgid "You are not allowed to check for updates."
+msgstr "Sie dürfen nicht nach Aktualisierungen suchen."
+
+msgid "Turn every door into a campaign that generates attention, contacts and sales"
+msgstr "Machen Sie jede Türe zu einer Kampagne, die Aufmerksamkeit, Kontakte und Verkäufe erzeugt"
+
+msgid "Free gives you a beautiful seasonal calendar. Pro turns it into a complete marketing tool: present products, collect newsletter registrations, create quizzes, deliver daily emails and measure the success of your campaign."
+msgstr "Free bietet Ihnen einen schönen Saisonkalender. Pro macht daraus ein vollständiges Marketingwerkzeug: Präsentieren Sie Produkte, sammeln Sie Newsletter-Anmeldungen, erstellen Sie Quizfragen, versenden Sie tägliche E-Mails und messen Sie den Erfolg Ihrer Kampagne."
+
+msgid "Individual images and content for every door"
+msgstr "Individuelle Bilder und Inhalte für jede Türe"
+
+msgid "Products, daily discounts and direct shop links"
+msgstr "Produkte, Tagesrabatte und direkte Shop-Links"
+
+msgid "Newsletter forms, double opt-in and daily calendar emails"
+msgstr "Newsletter-Formulare, Double-Opt-in und tägliche Kalender-E-Mails"
+
+msgid "Your existing calendars remain available after the upgrade."
+msgstr "Ihre bestehenden Kalender bleiben nach dem Upgrade erhalten."
+
+msgid "Selected templates for a professional start"
+msgstr "Ausgewählte Vorlagen für einen professionellen Start"
+
+msgid "These selected designs show how different a calendar can look. Pro gives you the creative tools and the growing template library for campaigns that match your brand."
+msgstr "Diese ausgewählten Designs zeigen, wie unterschiedlich ein Kalender aussehen kann. Pro bietet Ihnen die kreativen Werkzeuge und die wachsende Vorlagenbibliothek für Kampagnen, die zu Ihrer Marke passen."
+
+msgid "View Pro and templates"
+msgstr "Pro und Vorlagen ansehen"
+
+msgid "Winter village"
+msgstr "Winterdorf"
+
+msgid "Elegant night"
+msgstr "Elegante Nacht"
+
+msgid "Photo mosaic"
+msgstr "Fotomosaik"
+
+msgid "Botanical light"
+msgstr "Botanisch hell"
+
+msgid "Modern Nordic"
+msgstr "Modern nordisch"
+
+msgid "Botanical circles"
+msgstr "Botanische Kreise"
+
+msgid "Pro template preview"
+msgstr "Vorschau einer Pro-Vorlage"
+
+msgid "More than an Advent calendar"
+msgstr "Mehr als ein Adventkalender"
+
+msgid "What Pro adds to your campaign"
+msgstr "Was Pro Ihrer Kampagne hinzufügt"
+
+msgid "Creative freedom"
+msgstr "Kreative Freiheit"
+
+msgid "Use individual door images, design layers, text areas, overlays, shadows, fonts and opening effects."
+msgstr "Verwenden Sie individuelle Türbilder, Gestaltungsflächen, Textbereiche, Overlays, Schatten, Schriftarten und Öffnungseffekte."
+
+msgid "Sell products"
+msgstr "Produkte verkaufen"
+
+msgid "Connect WooCommerce products, use calendar-only discounts and guide visitors directly to the offer."
+msgstr "Verbinden Sie WooCommerce-Produkte, nutzen Sie exklusive Kalenderrabatte und führen Sie Besucher direkt zum Angebot."
+
+msgid "Grow your audience"
+msgstr "Reichweite aufbauen"
+
+msgid "Collect calendar and newsletter registrations with double opt-in and calendar-specific contact tags."
+msgstr "Sammeln Sie Kalender- und Newsletter-Anmeldungen mit Double-Opt-in und kalenderspezifischen Kontakt-Tags."
+
+msgid "Increase interaction"
+msgstr "Interaktion steigern"
+
+msgid "Add quizzes, downloads, videos, calls to action and linked content to individual doors."
+msgstr "Ergänzen Sie einzelne Türen um Quizfragen, Downloads, Videos, Handlungsaufforderungen und verknüpfte Inhalte."
+
+msgid "Automate delivery"
+msgstr "Versand automatisieren"
+
+msgid "Send each day automatically by email and remind contacts who have not yet confirmed their registration."
+msgstr "Versenden Sie jeden Tag automatisch per E-Mail und erinnern Sie Kontakte, die ihre Anmeldung noch nicht bestätigt haben."
+
+msgid "Understand results"
+msgstr "Ergebnisse verstehen"
+
+msgid "Track door clicks, registrations and generated leads directly for each calendar."
+msgstr "Erfassen Sie Tür-Klicks, Anmeldungen und generierte Leads direkt für jeden Kalender."
+
+msgid "Free or Pro?"
+msgstr "Free oder Pro?"
+
+msgid "Choose the edition that fits your goal"
+msgstr "Wählen Sie die Edition, die zu Ihrem Ziel passt"
+
+msgid "Stay with Free for a simple text calendar. Upgrade when the calendar should actively support marketing, sales and customer communication."
+msgstr "Bleiben Sie bei Free für einen einfachen Textkalender. Wechseln Sie zu Pro, wenn der Kalender Marketing, Verkauf und Kundenkommunikation aktiv unterstützen soll."
+
+msgid "Comparison of Free and Pro"
+msgstr "Vergleich von Free und Pro"
+
+msgid "Function"
+msgstr "Funktion"
+
+msgid "Colored doors and text content"
+msgstr "Farbige Türen und Textinhalte"
+
+msgid "Individual images and multimedia"
+msgstr "Individuelle Bilder und Multimedia"
+
+msgid "Products and calendar discounts"
+msgstr "Produkte und Kalenderrabatte"
+
+msgid "Quizzes, calls to action and downloads"
+msgstr "Quizfragen, Handlungsaufforderungen und Downloads"
+
+msgid "Email delivery and newsletter registration"
+msgstr "E-Mail-Versand und Newsletter-Anmeldung"
+
+msgid "Advanced templates and import/export"
+msgstr "Erweiterte Vorlagen und Import/Export"
+
+msgid "Ready for a calendar that does more?"
+msgstr "Bereit für einen Kalender, der mehr leistet?"
+
+msgid "Keep every calendar you have already created and unlock the complete campaign toolkit with Pro."
+msgstr "Behalten Sie alle bereits erstellten Kalender und schalten Sie mit Pro das vollständige Kampagnenwerkzeug frei."
+
+msgid "Upgrade to Panda Seasons Pro"
+msgstr "Auf Panda Seasons Pro upgraden"
+
+msgid "Create simple seasonal calendars with responsive doors and scheduled text content."
+msgstr "Erstellen Sie einfache saisonale Kalender mit responsiven Türen und zeitgesteuerten Textinhalten."
+
+msgid "Need more options for your campaign?"
+msgstr "Benötigen Sie mehr Möglichkeiten für Ihre Kampagne?"
+
+msgid "Calendar editor tools"
+msgstr "Werkzeuge des Kalendereditors"
+
+msgid "New elements"
+msgstr "Neue Elemente"
+
+msgid "Edit element"
+msgstr "Element bearbeiten"
+
+msgid "Add a door and then position it directly on the calendar."
+msgstr "Fügen Sie eine Türe hinzu und positionieren Sie sie danach direkt im Kalender."
+
+msgid "Select a door"
+msgstr "Türe auswählen"
+
+msgid "Click a door in the calendar to edit its settings here."
+msgstr "Klicken Sie im Kalender auf eine Türe, um ihre Einstellungen hier zu bearbeiten."
+
+msgid "Edit image"
+msgstr "Bild bearbeiten"
+
+msgid "Selected image"
+msgstr "Ausgewähltes Bild"
+
+msgid "JPG, PNG, WebP or SVG"
+msgstr "JPG, PNG, WebP oder SVG"
+
+msgid "Link external image"
+msgstr "Externes Bild verknüpfen"
+
+msgid "Enter the external image URL:"
+msgstr "URL des externen Bildes eingeben:"
+
+msgid "Add elements"
+msgstr "Elemente hinzufügen"
+
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+msgid "%s preview"
+msgstr "Vorschau für %s"

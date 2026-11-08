@@ -52,6 +52,7 @@ final class Panda_Seasons_Subscriptions {
 				<input type="hidden" name="action" value="panda_seasons_subscribe">
 				<input type="hidden" name="calendar_id" value="<?php echo esc_attr( $calendar_id ); ?>">
 				<?php wp_nonce_field( 'panda_seasons_subscribe_' . $calendar_id ); ?>
+				<?php if ( function_exists( 'contactpanda_spam_protection_fields' ) ) { echo contactpanda_spam_protection_fields( 'calendar_signup' ); } else { ?><input type="hidden" name="contactpanda_spam_started" value="<?php echo esc_attr( time() ); ?>"><div class="contactpanda-registration-trap" aria-hidden="true"><label>Website<input type="text" name="contactpanda_spam_website" tabindex="-1" autocomplete="off"></label></div><?php } // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ContactPanda returns escaped form markup. ?>
 				<label><span><?php esc_html_e( 'First name', 'panda-seasons' ); ?></span><input type="text" name="first_name" autocomplete="given-name" required></label>
 				<label><span><?php esc_html_e( 'Last name', 'panda-seasons' ); ?></span><input type="text" name="last_name" autocomplete="family-name" required></label>
 				<label><span><?php esc_html_e( 'Email address', 'panda-seasons' ); ?></span><input type="email" name="email" autocomplete="email" required></label>
@@ -75,6 +76,18 @@ final class Panda_Seasons_Subscriptions {
 		$calendar_id = absint( $_POST['calendar_id'] ?? 0 );
 		if ( ! $calendar_id || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ?? '' ) ), 'panda_seasons_subscribe_' . $calendar_id ) ) self::redirect( $calendar_id, 'error' );
 		if ( ! Panda_Seasons_Plugin::contactpanda_available() || ! get_post_meta( $calendar_id, '_ps_email_enabled', true ) || empty( $_POST['calendar_consent'] ) ) self::redirect( $calendar_id, 'error' );
+		if ( function_exists( 'contactpanda_verify_spam_protection' ) ) {
+			$spam = contactpanda_verify_spam_protection( 'calendar_signup', $_POST );
+			if ( ! is_array( $spam ) || 'allow' !== ( $spam['status'] ?? '' ) ) self::redirect( $calendar_id, 'error' );
+		} else {
+			$started = absint( $_POST['contactpanda_spam_started'] ?? 0 );
+			if ( ! empty( $_POST['contactpanda_spam_website'] ) || ! $started || time() - $started < 2 ) self::redirect( $calendar_id, 'error' );
+			$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ?? '' ) );
+			$key = 'panda_seasons_spam_' . md5( $calendar_id . '|' . $ip );
+			$count = absint( get_transient( $key ) );
+			if ( $count >= 8 ) self::redirect( $calendar_id, 'error' );
+			set_transient( $key, $count + 1, 15 * MINUTE_IN_SECONDS );
+		}
 		$email      = strtolower( sanitize_email( wp_unslash( $_POST['email'] ?? '' ) ) );
 		$first_name = sanitize_text_field( wp_unslash( $_POST['first_name'] ?? '' ) );
 		$last_name  = sanitize_text_field( wp_unslash( $_POST['last_name'] ?? '' ) );

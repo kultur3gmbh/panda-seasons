@@ -163,7 +163,8 @@ final class Panda_Seasons_Updater {
 	}
 
 	public function source( $source, $remote, $upgrader, $extra ) {
-		if ( ! $this->install_release || is_wp_error( $source ) ) return $source;
+		$plugins = array_merge( (array) ( $extra['plugins'] ?? array() ), empty( $extra['plugin'] ) ? array() : array( $extra['plugin'] ) );
+		if ( ! $this->install_release || is_wp_error( $source ) || ! in_array( $this->plugin, $plugins, true ) ) return $source;
 		global $wp_filesystem;
 		$entries = $wp_filesystem->dirlist( $remote );
 		if ( ! is_array( $entries ) || ! isset( $entries['panda-seasons'] ) || 'd' !== ( $entries['panda-seasons']['type'] ?? '' ) ) {

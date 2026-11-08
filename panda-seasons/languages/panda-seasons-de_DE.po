@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.8.27\n"
+"Project-Id-Version: Panda Seasons 0.9.2\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1860,3 +1860,39 @@ msgstr "Bild bei geschlossener Türe"
 
 msgid "Image when opened"
 msgstr "Bild bei geöffneter Türe"
+
+msgid "Email subscribers for %s"
+msgstr "E-Mail-Abonnenten für %s"
+
+msgid "Only confirmed calendar subscriptions are shown here."
+msgstr "Hier werden ausschließlich bestätigte Kalenderanmeldungen angezeigt."
+
+msgid "Close subscriber list"
+msgstr "Abonnentenliste schließen"
+
+msgid "There are no confirmed email subscribers for this calendar yet."
+msgstr "Für diesen Kalender gibt es noch keine bestätigten E-Mail-Abonnenten."
+
+msgid "Automatically generated preview for %s"
+msgstr "Automatisch erzeugte Vorschau für %s"
+
+msgid "Add elements"
+msgstr "Elemente hinzufügen"
+
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+msgid "Calendar-wide images, colors, door defaults and popup settings are managed in General settings."
+msgstr "Kalenderweite Bilder, Farben, Standardwerte für Türen und Pop-up-Einstellungen werden in den allgemeinen Einstellungen verwaltet."
+
+msgid "Open general settings"
+msgstr "Allgemeine Einstellungen öffnen"
+
+msgid "Desktop preview"
+msgstr "Desktop-Vorschau"
+
+msgid "Mobile preview"
+msgstr "Mobil-Vorschau"
+
+msgid "%s preview"
+msgstr "Vorschau für %s"
