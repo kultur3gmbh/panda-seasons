@@ -1,0 +1,330 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Panda Seasons Free 0.3.0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Add calendar"
+msgstr ""
+msgid "Add door"
+msgstr ""
+msgid "All closed"
+msgstr ""
+msgid "All opened"
+msgstr ""
+msgid "Apply door"
+msgstr ""
+msgid "Background"
+msgstr ""
+msgid "Background color"
+msgstr ""
+msgid "Calendar"
+msgstr ""
+msgid "Calendar door"
+msgstr ""
+msgid "Calendar saved."
+msgstr ""
+msgid "Close"
+msgstr ""
+msgid "Closed background"
+msgstr ""
+msgid "Closed door"
+msgstr ""
+msgid "Closed text"
+msgstr ""
+msgid "Content heading"
+msgstr ""
+msgid "Default door colors"
+msgstr ""
+msgid "Delete this door?"
+msgstr ""
+msgid "Desktop"
+msgstr ""
+msgid "Desktop aspect ratio"
+msgstr ""
+msgid "Door"
+msgstr ""
+msgid "Door %d"
+msgstr ""
+msgid "Door %d is not available yet"
+msgstr ""
+msgid "Door number"
+msgstr ""
+msgid "Doors"
+msgstr ""
+msgid "Drag doors to position them. Use the handle in the lower-right corner to resize them. Desktop and mobile positions are saved separately."
+msgstr ""
+msgid "Edit calendar"
+msgstr ""
+msgid "Edit door"
+msgstr ""
+msgid "Mobile"
+msgstr ""
+msgid "Mobile aspect ratio"
+msgstr ""
+msgid "Move door to trash"
+msgstr ""
+msgid "Open door %d"
+msgstr ""
+msgid "Opened background"
+msgstr ""
+msgid "Opened door"
+msgstr ""
+msgid "Opened text"
+msgstr ""
+msgid "Panda Seasons Free"
+msgstr ""
+msgid "Panda Seasons Free is inactive while the complete Panda Seasons edition is active. Your calendars use the same saved data."
+msgstr ""
+msgid "Panda Seasons is already active"
+msgstr ""
+msgid "Please deactivate Panda Seasons before activating Panda Seasons Free. Both editions use the same calendar data and must not run at the same time."
+msgstr ""
+msgid "Preview"
+msgstr ""
+msgid "Remove background image"
+msgstr ""
+msgid "Seasons Free"
+msgstr ""
+msgid "Select calendar"
+msgstr ""
+msgid "Select calendar background"
+msgstr ""
+msgid "Select one general background image"
+msgstr ""
+msgid "Shortcode"
+msgstr ""
+msgid "Show title"
+msgstr ""
+msgid "Text color"
+msgstr ""
+
+msgid "Panda Seasons"
+msgstr ""
+
+msgid "Select an image or drop it here"
+msgstr ""
+
+msgid "Open color picker"
+msgstr ""
+
+msgid "Transparency"
+msgstr ""
+
+msgid "Apply this template? Existing text content is retained."
+msgstr ""
+
+msgid "Default door shape"
+msgstr ""
+
+msgid "Door shape"
+msgstr ""
+
+msgid "Square"
+msgstr ""
+
+msgid "Rounded"
+msgstr ""
+
+msgid "Round"
+msgstr ""
+
+msgid "Starter templates"
+msgstr ""
+
+msgid "Apply a ready-made layout and color scheme. Existing door content is retained."
+msgstr ""
+
+msgid "Classic grid"
+msgstr ""
+
+msgid "Modern circles"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "Calendars"
+msgstr ""
+
+msgid "You are not allowed to view the Panda Seasons dashboard."
+msgstr ""
+
+msgid "Create simple seasonal calendars and upgrade to Pro whenever you need images, products, quizzes, email delivery and advanced design tools."
+msgstr ""
+
+msgid "Create calendar"
+msgstr ""
+
+msgid "Your calendars"
+msgstr ""
+
+msgid "No calendar has been created yet."
+msgstr ""
+
+msgid "Calendar #%d"
+msgstr ""
+
+msgid "%d door"
+msgid_plural "%d doors"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Turn your calendar into an interactive campaign"
+msgstr ""
+
+msgid "Use individual door images, design layers, products and discounts, quizzes, calls to action, newsletter forms, email delivery, imports and a growing template library."
+msgstr ""
+
+msgid "Discover Panda Seasons Pro"
+msgstr ""
+
+msgid "Examples from the Pro template library"
+msgstr ""
+msgid "Text content"
+msgstr ""
+msgid "This calendar does not have any doors yet."
+msgstr ""
+msgid "Unlock date"
+msgstr ""
+msgid "Unlock time"
+msgstr ""
+msgid "Use this image"
+msgstr ""
+msgid "Visual calendar editor"
+msgstr ""
+msgid "You are not allowed to preview this calendar."
+msgstr ""
+
++msgid "Theme colors"
+msgstr ""
+
+msgid "Select color"
+msgstr ""
+
+msgid "Color value"
+msgstr ""
+
+msgid "Enter a valid HEX, RGB or RGBA color."
+msgstr ""
+
+msgid "Theme background"
+msgstr ""
+
+msgid "Theme text"
+msgstr ""
+
+msgid "Select image"
+msgstr ""
+
+msgid "Remove image"
+msgstr ""
+
+msgid "Uploading image…"
+msgstr ""
+
+msgid "The image could not be uploaded."
+msgstr ""
+
+msgid "Closed border color"
+msgstr ""
+
+msgid "Closed border width (px)"
+msgstr ""
+
+msgid "Opened border color"
+msgstr ""
+
+msgid "Opened border width (px)"
+msgstr ""
+
+msgid "Border style"
+msgstr ""
+
+msgid "No border"
+msgstr ""
+
+msgid "Solid"
+msgstr ""
+
+msgid "Dashed"
+msgstr ""
+
+msgid "Dotted"
+msgstr ""
+
+msgid "Border color"
+msgstr ""
+
+msgid "Border width (px)"
+msgstr ""
+
+msgid "Position and size"
+msgstr ""
+
+msgid "Move the door directly on the calendar or enter exact percentage values. Drag the blue handle in the lower-right corner to resize it."
+msgstr ""
+
+msgid "Left (%)"
+msgstr ""
+
+msgid "Top (%)"
+msgstr ""
+
+msgid "Width (%)"
+msgstr ""
+
+msgid "Height (%)"
+msgstr ""
+
+msgid "Create simple seasonal calendars with responsive doors and scheduled text content."
+msgstr ""
+
+msgid "Need more options for your campaign?"
+msgstr ""
+
+msgid "Calendar editor tools"
+msgstr ""
+
+msgid "New elements"
+msgstr ""
+
+msgid "Edit element"
+msgstr ""
+
+msgid "Add a door and then position it directly on the calendar."
+msgstr ""
+
+msgid "Select a door"
+msgstr ""
+
+msgid "Click a door in the calendar to edit its settings here."
+msgstr ""
+
+msgid "Edit image"
+msgstr ""
+
+msgid "Selected image"
+msgstr ""
+
+msgid "JPG, PNG, WebP or SVG"
+msgstr ""
+
+msgid "Link external image"
+msgstr ""
+
+msgid "Enter the external image URL:"
+msgstr ""
+
+msgid "Add elements"
+msgstr ""
+
+msgid "Basic settings"
+msgstr ""
+
+msgid "%s preview"
+msgstr ""

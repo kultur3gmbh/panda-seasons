@@ -18,6 +18,7 @@ required = [
 	"includes/class-panda-seasons-mcp.php",
     "assets/calendar.css",
 	"assets/editor.css",
+	"assets/dashboard.js",
     "assets/frontend.js",
 	"assets/block-editor.js",
 	"assets/images/panda-seasons-dashboard.png",
@@ -34,8 +35,14 @@ subscriptions = (root / "includes/class-panda-seasons-subscriptions.php").read_t
 admin_js = (root / "assets/admin.js").read_text(encoding="utf-8")
 admin_css = (root / "assets/editor.css").read_text(encoding="utf-8")
 editor_ui = (root / "assets/panda-editor-ui.js").read_text(encoding="utf-8")
+dashboard_js = (root / "assets/dashboard.js").read_text(encoding="utf-8")
 if ".panda-seasons-template-library__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))" not in admin_css:
 	raise SystemExit("The template library must show exactly three cards per desktop row")
+for dashboard_contract in ("render_dashboard_calendar_preview", "dashboard_subscribers", "data-subscriber-dialog-open", "current_user_can( 'manage_options' )"):
+	if dashboard_contract not in plugin:
+		raise SystemExit(f"Missing 0.9.1 dashboard contract {dashboard_contract}")
+if "data-subscriber-dialog-close" not in dashboard_js:
+	raise SystemExit("Missing subscriber dialog behavior")
 frontend_css = (root / "assets/calendar.css").read_text(encoding="utf-8")
 mailer = (root / "includes/class-panda-seasons-mailer.php").read_text(encoding="utf-8")
 if "panda_seasons_autoload" not in main:
@@ -187,8 +194,10 @@ for memory_contract in ("'posts_per_page' => 250", "'posts_per_page' => 366", "'
 for editor_contract in (
 	'data-panda-editor-tab="elements"',
 	'data-panda-editor-tab="edit"',
+	'data-panda-editor-tab="settings"',
 	'data-panda-editor-panel="elements"',
 	'data-panda-editor-panel="edit"',
+	'data-panda-editor-panel="settings"',
 	'data-panda-editor-element',
 	'panda-seasons-editor-sidebar',
 ):
