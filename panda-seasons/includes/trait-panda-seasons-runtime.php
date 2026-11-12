@@ -9,7 +9,7 @@ trait Panda_Seasons_Runtime {
 	public static function register_frontend_assets() {
 		wp_register_style( 'panda-seasons', PANDA_SEASONS_URL . 'assets/calendar.css', array(), PANDA_SEASONS_VERSION );
 		wp_register_script( 'panda-seasons', PANDA_SEASONS_URL . 'assets/frontend.js', array(), PANDA_SEASONS_VERSION, true );
-		wp_localize_script( 'panda-seasons', 'pandaSeasonsFrontend', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ), 'clickNonce' => wp_create_nonce( 'panda_seasons_track_door_click' ) ) );
+		wp_localize_script( 'panda-seasons', 'pandaSeasonsFrontend', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ), 'clickNonce' => wp_create_nonce( 'panda_seasons_track_door_click' ), 'quizNonce' => wp_create_nonce( 'panda_seasons_quiz' ) ) );
 	}
 
 	public static function calendar_columns( $columns ) {
@@ -99,7 +99,7 @@ trait Panda_Seasons_Runtime {
 		$door = is_object( $door ) ? $door : get_post( absint( $door ) );
 		if ( ! $door || self::DOOR_POST_TYPE !== $door->post_type ) return '';
 
-		$html     = 'web' === $context ? '' : self::door_media_markup( $door, $context );
+		$html     = in_array( $context, array( 'web', 'preview' ), true ) ? '' : self::door_media_markup( $door, $context );
 		$content_type = (string) get_post_meta( $door->ID, '_ps_content_type', true ) ?: 'general';
 		if ( ! in_array( $content_type, array( 'general', 'video', 'product', 'quiz' ), true ) ) $content_type = 'general';
 		$download_id = absint( get_post_meta( $door->ID, '_ps_download_id', true ) );
@@ -115,7 +115,7 @@ trait Panda_Seasons_Runtime {
 
 		$product_id = absint( get_post_meta( $door->ID, '_ps_product_id', true ) );
 		if ( 'product' === $content_type && $product_id && function_exists( 'wc_get_product' ) && ( $product = wc_get_product( $product_id ) ) && $product->is_visible() ) {
-			$html .= '<aside class="panda-seasons__product">' . $product->get_image( 'woocommerce_thumbnail' ) . '<div><strong>' . esc_html( $product->get_name() ) . '</strong><p>' . wp_kses_post( $product->get_price_html() ) . '</p><a class="panda-seasons__door-button" href="' . esc_url( get_permalink( $product_id ) ) . '">' . esc_html__( 'View product', 'panda-seasons' ) . '</a></div></aside>';
+			$html .= Panda_Seasons_Offers::product_markup( $door->ID, $product, $context );
 		}
 		$related = array( 'event' => array( absint( get_post_meta( $door->ID, '_ps_event_id', true ) ), __( 'View event', 'panda-seasons' ) ) );
 		foreach ( 'general' === $content_type ? $related : array() as $type => $config ) {
@@ -125,21 +125,7 @@ trait Panda_Seasons_Runtime {
 		}
 		$coupon_id = absint( get_post_meta( $door->ID, '_ps_coupon_id', true ) );
 		if ( 'product' === $content_type && $coupon_id && 'publish' === get_post_status( $coupon_id ) ) $html .= '<p class="panda-seasons__coupon"><strong>' . esc_html__( 'Coupon code:', 'panda-seasons' ) . '</strong> <code>' . esc_html( get_the_title( $coupon_id ) ) . '</code></p>';
-		if ( 'quiz' === $content_type && 'web' === $context && get_post_meta( $door->ID, '_ps_quiz_enabled', true ) ) {
-			$questions = get_post_meta( $door->ID, '_ps_quiz_questions', true );
-			if ( is_array( $questions ) && $questions ) {
-				$html .= '<form class="panda-seasons__quiz" data-season-quiz data-success="' . esc_attr( get_post_meta( $door->ID, '_ps_quiz_success', true ) ?: __( 'Correct!', 'panda-seasons' ) ) . '" data-failure="' . esc_attr( get_post_meta( $door->ID, '_ps_quiz_failure', true ) ?: __( 'That is not correct yet.', 'panda-seasons' ) ) . '">';
-				foreach ( $questions as $question_index => $question ) {
-					$question_answers = array_values( array_filter( (array) ( $question['answers'] ?? array() ), 'strlen' ) );
-					$correct = absint( $question['correct'] ?? 0 );
-					if ( empty( $question['question'] ) || count( $question_answers ) < 2 || $correct < 1 || $correct > count( $question_answers ) ) continue;
-					$html .= '<fieldset data-quiz-question data-correct="' . esc_attr( $correct ) . '"><legend>' . esc_html( $question['question'] ) . '</legend>';
-					foreach ( $question_answers as $answer_index => $answer ) $html .= '<label><input type="radio" name="panda_seasons_quiz_' . esc_attr( $question_index ) . '" value="' . esc_attr( $answer_index + 1 ) . '" required> <span>' . esc_html( $answer ) . '</span></label>';
-					$html .= '</fieldset>';
-				}
-				$html .= '<button type="submit">' . esc_html__( 'Check answers', 'panda-seasons' ) . '</button><p class="panda-seasons__quiz-result" data-quiz-result role="status"></p></form>';
-			}
-		}
+		if ( 'quiz' === $content_type && in_array( $context, array( 'web', 'preview' ), true ) && get_post_meta( $door->ID, '_ps_quiz_enabled', true ) ) $html .= Panda_Seasons_Quiz::markup( $door, 'preview' === $context );
 
 		return $html;
 	}
@@ -221,7 +207,7 @@ trait Panda_Seasons_Runtime {
 
 		ob_start();
 		?>
-		<section class="panda-seasons panda-seasons--speed-<?php echo esc_attr( $effect_speed ); ?><?php echo $preview_mode ? ' is-preview' : ''; ?><?php echo $show_frame ? ' panda-seasons--has-frame' : ''; ?><?php echo $show_shadow ? ' panda-seasons--has-shadow' : ''; ?>" id="panda-seasons-<?php echo esc_attr( $id ); ?>" style="<?php echo esc_attr( $style ); ?>" data-calendar="<?php echo esc_attr( $id ); ?>" data-open-effect="<?php echo esc_attr( $open_effect ); ?>">
+		<section class="panda-seasons<?php echo Panda_Seasons_Settings::theme_styles() ? ' panda-seasons--theme' : ''; ?> panda-seasons--speed-<?php echo esc_attr( $effect_speed ); ?><?php echo $preview_mode ? ' is-preview' : ''; ?><?php echo $show_frame ? ' panda-seasons--has-frame' : ''; ?><?php echo $show_shadow ? ' panda-seasons--has-shadow' : ''; ?>" id="panda-seasons-<?php echo esc_attr( $id ); ?>" style="<?php echo esc_attr( $style ); ?>" data-calendar="<?php echo esc_attr( $id ); ?>" data-open-effect="<?php echo esc_attr( $open_effect ); ?>">
 			<?php if ( $preview_mode ) : ?><p class="panda-seasons__preview-notice"><?php echo esc_html( $preview_now ? sprintf( __( 'Preview for %s – external actions are disabled.', 'panda-seasons' ), wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $preview_now->getTimestamp(), wp_timezone() ) ) : __( 'Preview mode – external actions are disabled.', 'panda-seasons' ) ); ?></p><?php endif; ?>
 			<?php if ( $show_title || trim( (string) $post->post_content ) ) : ?><header class="panda-seasons__header"><?php if ( $show_title ) : ?><h2><?php echo esc_html( get_the_title( $id ) ); ?></h2><?php endif; ?><?php echo wp_kses_post( wpautop( $post->post_content ) ); ?></header><?php endif; ?>
 			<div class="panda-seasons__canvas" role="list">
@@ -303,13 +289,14 @@ trait Panda_Seasons_Runtime {
 						</button>
 						<?php
 						$content_heading = (string) get_post_meta( $door->ID, '_ps_content_heading', true );
+						if ( 'product' === get_post_meta( $door->ID, '_ps_content_type', true ) ) $content_heading = Panda_Seasons_Offers::heading( $door->ID );
 						if ( ! $content_heading ) $content_heading = $door->post_title ?: sprintf( __( 'Door %d', 'panda-seasons' ), $number );
 						$release = self::door_unlock_at( $door->ID );
 						$content_date = $release ? wp_date( get_option( 'date_format' ), $release->getTimestamp(), wp_timezone() ) : '';
 						$media_markup = self::door_media_markup( $door );
 						ob_start();
 						if ( 'general' === ( (string) get_post_meta( $door->ID, '_ps_content_type', true ) ?: 'general' ) ) echo apply_filters( 'the_content', $door->post_content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- standard filtered post content.
-						echo self::door_content_markup( $door ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped component markup.
+						echo self::door_content_markup( $door, $preview_mode ? 'preview' : 'web' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped component markup.
 						$text_markup = ob_get_clean();
 						?>
 						<template class="panda-seasons__door-content" id="panda-season-content-<?php echo esc_attr( $door->ID ); ?>"><h3><?php echo esc_html( $content_heading ); ?></h3><?php if ( $content_date ) : ?><p class="panda-seasons__content-date"><?php echo esc_html( $content_date ); ?></p><?php endif; ?><div class="panda-seasons__content-layout<?php echo $media_markup ? ' has-media' : ''; ?>"><?php if ( $media_markup ) : ?><div class="panda-seasons__content-media"><?php echo $media_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped component markup. ?></div><?php endif; ?><div class="panda-seasons__content-text"><?php echo $text_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped component markup. ?></div></div><?php echo self::door_cta_markup( $door ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped component markup. ?></template>

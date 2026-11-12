@@ -100,26 +100,20 @@
 	});
 
 	document.addEventListener('submit', function (event) {
-		if (event.target.closest('.panda-seasons.is-preview')) { event.preventDefault(); return; }
 		var quiz = event.target.closest('[data-season-quiz]');
 		if (!quiz) return;
 		event.preventDefault();
-		var questions = quiz.querySelectorAll('[data-quiz-question]');
-		var correct;
-		if (questions.length) {
-			correct = true;
-			questions.forEach(function (question) {
-				var selected = question.querySelector('input[type="radio"]:checked');
-				if (!selected || String(selected.value) !== String(question.dataset.correct)) correct = false;
-			});
-		} else {
-			var selected = quiz.querySelector('input[type="radio"]:checked');
-			if (!selected) return;
-			correct = String(selected.value) === String(quiz.dataset.correct);
-		}
-		var result = quiz.querySelector('[data-quiz-result]');
-		result.textContent = correct ? quiz.dataset.success : quiz.dataset.failure;
-		result.classList.toggle('is-correct', correct);
-		result.classList.toggle('is-wrong', !correct);
+		if (!window.pandaSeasonsFrontend || quiz.dataset.quizPreview === '1') return;
+		var button = quiz.querySelector('[type="submit"]'), result = quiz.querySelector('[data-quiz-result]');
+		var body = new FormData(quiz);
+		body.set('action', 'panda_seasons_quiz'); body.set('nonce', pandaSeasonsFrontend.quizNonce || ''); body.set('door', quiz.dataset.doorId);
+		button.disabled = true; result.textContent = '';
+		fetch(pandaSeasonsFrontend.ajaxUrl, {method:'POST', credentials:'same-origin', body:body}).then(function (response) { return response.json(); }).then(function (response) {
+			if (!response.success) throw new Error(response.data && response.data.message || 'Please try again.');
+			result.textContent = response.data.message || '';
+			result.classList.toggle('is-correct', !!response.data.correct); result.classList.toggle('is-wrong', !response.data.correct);
+			if (response.data.code) { var code = document.createElement('code'); code.textContent = response.data.code; result.appendChild(document.createTextNode(' ')); result.appendChild(code); }
+			if (response.data.expires) result.appendChild(document.createTextNode(' (' + response.data.expires + ')'));
+		}).catch(function (error) { result.textContent = error.message; }).finally(function () { button.disabled = false; });
 	});
 }());

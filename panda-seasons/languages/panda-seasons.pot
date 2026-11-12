@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.8.27\n"
+"Project-Id-Version: Panda Seasons 0.9.7\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1857,4 +1857,355 @@ msgid "Image when closed"
 msgstr ""
 
 msgid "Image when opened"
+msgstr ""
+
+msgid "Email subscribers for %s"
+msgstr ""
+
+msgid "Only confirmed calendar subscriptions are shown here."
+msgstr ""
+
+msgid "Close subscriber list"
+msgstr ""
+
+msgid "There are no confirmed email subscribers for this calendar yet."
+msgstr ""
+
+msgid "Automatically generated preview for %s"
+msgstr ""
+
+msgid "Add elements"
+msgstr ""
+
+msgid "Basic settings"
+msgstr ""
+
+msgid "Calendar-wide images, colors, door defaults and popup settings are managed in General settings."
+msgstr ""
+
+msgid "Open general settings"
+msgstr ""
+
+msgid "Desktop preview"
+msgstr ""
+
+msgid "Mobile preview"
+msgstr ""
+
+msgid "%s preview"
+msgstr ""
+
+msgid "Discount"
+msgstr ""
+
+msgid "No discount"
+msgstr ""
+
+msgid "Use existing coupon"
+msgstr ""
+
+msgid "Create daily coupon"
+msgstr ""
+
+msgid "Discount type"
+msgstr ""
+
+msgid "Percent"
+msgstr ""
+
+msgid "Amount per product"
+msgstr ""
+
+msgid "Discount value"
+msgstr ""
+
+msgid "Valid from (optional)"
+msgstr ""
+
+msgid "Valid through (optional)"
+msgstr ""
+
+msgid "Empty dates use the door opening day. Time zone: %s. Saving updates the same generated coupon. Existing coupons keep their own WooCommerce rules."
+msgstr ""
+
+msgid "WooCommerce management permission is required to change discounts."
+msgstr ""
+
+msgid "Check the product, discount value and valid dates. No discount has been activated."
+msgstr ""
+
+msgid "Another save is updating this coupon. Please save again."
+msgstr ""
+
+msgid "The generated coupon assignment is invalid. Please check it in WooCommerce."
+msgstr ""
+
+msgid "The coupon could not be saved."
+msgstr ""
+
+msgid "The calendar discount is no longer valid. Please check your cart."
+msgstr ""
+
+msgid "Preview – cart actions are disabled."
+msgstr ""
+
+msgid "Add to cart with %s discount"
+msgstr ""
+
+msgid "This discount is not currently available."
+msgstr ""
+
+msgid "Select product options and apply discount"
+msgstr ""
+
+msgid "The product or discount is not available. Please check the current offer."
+msgstr ""
+
+msgid "The calendar discount could not be applied. Please check the price in your cart."
+msgstr ""
+
+msgid "Door %1$d: %2$s"
+msgstr ""
+
+msgid "Choose an existing product coupon restricted to this product only. Generated calendar coupons belong to their original door."
+msgstr ""
+
+msgid "You cannot review this calendar."
+msgstr ""
+
+msgid "The calendar data is invalid."
+msgstr ""
+
+msgid "The linked product is not available."
+msgstr ""
+
+msgid "This door has no usable content."
+msgstr ""
+
+msgid "Set a valid opening date."
+msgstr ""
+
+msgid "The daily email has no content, including its door-content fallback."
+msgstr ""
+
+msgid "Check the discount value and validity dates."
+msgstr ""
+
+msgid "Select an available WooCommerce coupon."
+msgstr ""
+
+msgid "Calendar saved. Please check the discounts:"
+msgstr ""
+
+msgid "Product"
+msgstr ""
+
+msgid "Start time"
+msgstr ""
+
+msgid "End time"
+msgstr ""
+
+msgid "Buy now"
+msgstr ""
+
+msgid "This offer is not currently available."
+msgstr ""
+
+msgid "{date} – Today with {discount} discount: {product}"
+msgstr ""
+
+msgid "{date} – Today: {product}"
+msgstr ""
+
+msgid "%s discount"
+msgstr ""
+
+msgid "Valid from %1$s until %2$s (%3$s)"
+msgstr ""
+
+msgid "The WooCommerce coupon conditions apply."
+msgstr ""
+
+msgid "Valid until %s"
+msgstr ""
+
+msgid "Email heading"
+msgstr ""
+
+msgid "Panda Seasons settings"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "License number"
+msgstr ""
+
+msgid "Use theme styles"
+msgstr ""
+
+msgid "No – Panda style"
+msgstr ""
+
+msgid "Yes – active theme style"
+msgstr ""
+
+msgid "Save appearance"
+msgstr ""
+
+msgid "Active theme: %s"
+msgstr ""
+
+msgid "Inherit compatible typography, colors, fields and buttons from the active theme. Calendar geometry and individual door designs remain intact."
+msgstr ""
+
+msgid "License activated."
+msgstr ""
+
+msgid "License status refreshed."
+msgstr ""
+
+msgid "The license could not be activated. Please check the key."
+msgstr ""
+
+msgid "The license service could not be reached. Please try again."
+msgstr ""
+
+msgid "The license response could not be verified."
+msgstr ""
+
+msgid "Please check the license status below."
+msgstr ""
+
+msgid "No active Panda Seasons license"
+msgstr ""
+
+msgid "Uses the shared Panda license account. An existing activation is also recognised when ContactPanda is installed or removed."
+msgstr ""
+
+msgid "Activate or renew license"
+msgstr ""
+
+msgid "Check license"
+msgstr ""
+
+msgid "Activation sends technical license and website data to mycontactpanda.com, not calendar visitors or shop orders."
+msgstr ""
+
+msgid "After a successful quiz"
+msgstr ""
+
+msgid "Success message only"
+msgstr ""
+
+msgid "Unlock a coupon"
+msgstr ""
+
+msgid "Enter a prize draw"
+msgstr ""
+
+msgid "Coupon source"
+msgstr ""
+
+msgid "New personal coupon"
+msgstr ""
+
+msgid "Use existing coupon as template"
+msgstr ""
+
+msgid "Select coupon"
+msgstr ""
+
+msgid "Fixed cart amount"
+msgstr ""
+
+msgid "Valid for (days)"
+msgstr ""
+
+msgid "Answers are checked on the server. Rewards require an email address and are issued once per door and address. A template coupon is copied, never changed. Draw entries can be exported in Calendar results; a draw entry is not a guaranteed prize."
+msgstr ""
+
+msgid "Email address for your reward or draw entry"
+msgstr ""
+
+msgid "Used only for this reward or draw, not a newsletter subscription."
+msgstr ""
+
+msgid "Please wait before trying again."
+msgstr ""
+
+msgid "This quiz is not currently available. Preview cannot issue rewards."
+msgstr ""
+
+msgid "This quiz has no questions."
+msgstr ""
+
+msgid "All answers correct!"
+msgstr ""
+
+msgid "Enter a valid email address for the reward."
+msgstr ""
+
+msgid "Your reward is being prepared. Please try again shortly."
+msgstr ""
+
+msgid "Your reward could not be recorded. Please try again."
+msgstr ""
+
+msgid "WooCommerce is required for this reward."
+msgstr ""
+
+msgid "The reward assignment could not be verified."
+msgstr ""
+
+msgid "The reward coupon template is unavailable."
+msgstr ""
+
+msgid "The reward coupon template has expired."
+msgstr ""
+
+msgid "This coupon template is restricted to other email addresses."
+msgstr ""
+
+msgid "The quiz reward discount is invalid."
+msgstr ""
+
+msgid "Your prize draw entry has been recorded. This is not a guaranteed prize."
+msgstr ""
+
+msgid "Your personal one-use coupon:"
+msgstr ""
+
+msgid "The previously issued reward is unavailable. No additional coupon was issued."
+msgstr ""
+
+msgid "Active theme"
+msgstr ""
+
+msgid "%s theme style"
+msgstr ""
+
+msgid "Panda Seasons style"
+msgstr ""
+
+msgid "Panda Seasons can inherit the theme typography, colors, form fields, buttons, borders, and corner radii. Its functional layout remains intact."
+msgstr ""
+
+msgid "Use the neutral Panda Seasons design for calendars."
+msgstr ""
+
+msgid "Button preview"
+msgstr ""
+
+msgid "Example button"
+msgstr ""
+
+msgid "Inherit compatible typography, colors, fields, buttons, borders, and spacing from the active theme."
+msgstr ""
+
+msgid "Detected theme colors"
 msgstr ""

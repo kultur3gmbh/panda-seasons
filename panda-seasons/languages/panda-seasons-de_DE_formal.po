@@ -1,11 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.8.27\n"
+"Project-Id-Version: Panda Seasons 0.9.7\n"
 "Language: de_DE_formal\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Product"
+msgstr "Produkt"
 
 msgid "Default door shape"
 msgstr "Standard-Türform"
@@ -1860,3 +1863,351 @@ msgstr "Bild bei geschlossener Türe"
 
 msgid "Image when opened"
 msgstr "Bild bei geöffneter Türe"
+
+msgid "Email subscribers for %s"
+msgstr "E-Mail-Abonnenten für %s"
+
+msgid "Only confirmed calendar subscriptions are shown here."
+msgstr "Hier werden ausschließlich bestätigte Kalenderanmeldungen angezeigt."
+
+msgid "Close subscriber list"
+msgstr "Abonnentenliste schließen"
+
+msgid "There are no confirmed email subscribers for this calendar yet."
+msgstr "Für diesen Kalender gibt es noch keine bestätigten E-Mail-Abonnenten."
+
+msgid "Automatically generated preview for %s"
+msgstr "Automatisch erzeugte Vorschau für %s"
+
+msgid "Add elements"
+msgstr "Elemente hinzufügen"
+
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+msgid "Calendar-wide images, colors, door defaults and popup settings are managed in General settings."
+msgstr "Kalenderweite Bilder, Farben, Standardwerte für Türen und Pop-up-Einstellungen werden in den allgemeinen Einstellungen verwaltet."
+
+msgid "Open general settings"
+msgstr "Allgemeine Einstellungen öffnen"
+
+msgid "Desktop preview"
+msgstr "Desktop-Vorschau"
+
+msgid "Mobile preview"
+msgstr "Mobil-Vorschau"
+
+msgid "%s preview"
+msgstr "Vorschau für %s"
+
+msgid "Discount"
+msgstr "Rabatt"
+
+msgid "No discount"
+msgstr "Kein Rabatt"
+
+msgid "Use existing coupon"
+msgstr "Vorhandenen Gutschein verwenden"
+
+msgid "Create daily coupon"
+msgstr "Neuen Tagesgutschein anlegen"
+
+msgid "Discount type"
+msgstr "Rabattart"
+
+msgid "Percent"
+msgstr "Prozent"
+
+msgid "Amount per product"
+msgstr "Betrag je Produkt"
+
+msgid "Discount value"
+msgstr "Rabattwert"
+
+msgid "Valid from (optional)"
+msgstr "Gültig ab (optional)"
+
+msgid "Valid through (optional)"
+msgstr "Gültig bis (optional)"
+
+msgid "Empty dates use the door opening day. Time zone: %s. Saving updates the same generated coupon. Existing coupons keep their own WooCommerce rules."
+msgstr "Leere Datumsfelder verwenden den Öffnungstag der Türe. Zeitzone: %s. Beim Speichern wird derselbe erzeugte Gutschein aktualisiert. Vorhandene Gutscheine behalten ihre WooCommerce-Regeln."
+
+msgid "WooCommerce management permission is required to change discounts."
+msgstr "Zum Anlegen oder Ändern eines Tagesgutscheins wird die WooCommerce-Verwaltungsberechtigung benötigt."
+
+msgid "Check the product, discount value and valid dates. No discount has been activated."
+msgstr "Bitte Produkt, Rabattwert und Gültigkeitsdaten prüfen. Es wurde kein Rabatt aktiviert."
+
+msgid "Another save is updating this coupon. Please save again."
+msgstr "Ein anderer Speichervorgang aktualisiert diesen Gutschein. Bitte erneut speichern."
+
+msgid "The generated coupon assignment is invalid. Please check it in WooCommerce."
+msgstr "Die Zuordnung des erzeugten Gutscheins ist ungültig. Bitte in WooCommerce prüfen."
+
+msgid "The coupon could not be saved."
+msgstr "Der Gutschein konnte nicht gespeichert werden."
+
+msgid "The calendar discount is no longer valid. Please check your cart."
+msgstr "Der Kalenderrabatt ist nicht mehr gültig. Bitte den Warenkorb prüfen."
+
+msgid "Preview – cart actions are disabled."
+msgstr "Vorschau – Warenkorb-Aktionen sind deaktiviert."
+
+msgid "Add to cart with %s discount"
+msgstr "Mit %s Rabatt in den Warenkorb"
+
+msgid "This discount is not currently available."
+msgstr "Dieser Rabatt ist derzeit nicht verfügbar."
+
+msgid "Select product options and apply discount"
+msgstr "Produktoptionen auswählen und Rabatt übernehmen"
+
+msgid "The product or discount is not available. Please check the current offer."
+msgstr "Das Produkt oder der Rabatt ist nicht verfügbar. Bitte das aktuelle Angebot prüfen."
+
+msgid "The calendar discount could not be applied. Please check the price in your cart."
+msgstr "Der Kalenderrabatt konnte nicht übernommen werden. Bitte den Preis im Warenkorb prüfen."
+
+msgid "Door %1$d: %2$s"
+msgstr "Türe %1$d: %2$s"
+
+msgid "Choose an existing product coupon restricted to this product only. Generated calendar coupons belong to their original door."
+msgstr "Bitte einen vorhandenen Produktgutschein wählen, der ausschließlich für dieses Produkt gilt. Erzeugte Kalendergutscheine gehören zu ihrer ursprünglichen Türe."
+
+msgid "You cannot review this calendar."
+msgstr "Dieser Kalender darf mit der aktuellen Berechtigung nicht geprüft werden."
+
+msgid "The calendar data is invalid."
+msgstr "Die Kalenderdaten sind ungültig."
+
+msgid "The linked product is not available."
+msgstr "Das verknüpfte Produkt ist nicht verfügbar."
+
+msgid "This door has no usable content."
+msgstr "Diese Türe hat keinen nutzbaren Inhalt."
+
+msgid "Set a valid opening date."
+msgstr "Bitte ein gültiges Öffnungsdatum festlegen."
+
+msgid "The daily email has no content, including its door-content fallback."
+msgstr "Der Inhalt der Tagesmail fehlt; auch der ersatzweise verwendete Türeninhalt ist leer."
+
+msgid "Check the discount value and validity dates."
+msgstr "Bitte Rabattwert und Gültigkeitsdaten prüfen."
+
+msgid "Select an available WooCommerce coupon."
+msgstr "Bitte einen verfügbaren WooCommerce-Gutschein wählen."
+
+msgid "Calendar saved. Please check the discounts:"
+msgstr "Kalender gespeichert. Bitte die Rabatte prüfen:"
+
+msgid "Start time"
+msgstr "Beginn (Uhrzeit)"
+
+msgid "End time"
+msgstr "Ende (Uhrzeit)"
+
+msgid "Buy now"
+msgstr "Jetzt kaufen"
+
+msgid "This offer is not currently available."
+msgstr "Dieses Angebot ist derzeit nicht verfügbar."
+
+msgid "{date} – Today with {discount} discount: {product}"
+msgstr "{date} – Heute mit {discount} Rabatt: {product}"
+
+msgid "{date} – Today: {product}"
+msgstr "{date} – Heute: {product}"
+
+msgid "%s discount"
+msgstr "%s Rabatt"
+
+msgid "Valid from %1$s until %2$s (%3$s)"
+msgstr "Gültig von %1$s bis %2$s (%3$s)"
+
+msgid "The WooCommerce coupon conditions apply."
+msgstr "Es gelten die Bedingungen des WooCommerce-Gutscheins."
+
+msgid "Valid until %s"
+msgstr "Gültig bis %s"
+
+msgid "Email heading"
+msgstr "E-Mail-Überschrift"
+
+msgid "Panda Seasons settings"
+msgstr "Panda Seasons – Einstellungen"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "License"
+msgstr "Lizenz"
+
+msgid "License number"
+msgstr "Lizenznummer"
+
+msgid "Use theme styles"
+msgstr "Stile des Themes übernehmen"
+
+msgid "No – Panda style"
+msgstr "Nein – Panda-Stil"
+
+msgid "Yes – active theme style"
+msgstr "Ja – Stil des aktiven Themes"
+
+msgid "Save appearance"
+msgstr "Darstellung speichern"
+
+msgid "Active theme: %s"
+msgstr "Aktives Theme: %s"
+
+msgid "Inherit compatible typography, colors, fields and buttons from the active theme. Calendar geometry and individual door designs remain intact."
+msgstr "Kompatible Schriften, Farben, Formularfelder und Buttons vom aktiven Theme übernehmen. Kalenderraster und individuelle Türendesigns bleiben erhalten."
+
+msgid "License activated."
+msgstr "Lizenz aktiviert."
+
+msgid "License status refreshed."
+msgstr "Lizenzstatus aktualisiert."
+
+msgid "The license could not be activated. Please check the key."
+msgstr "Die Lizenz konnte nicht aktiviert werden. Bitte den Schlüssel prüfen."
+
+msgid "The license service could not be reached. Please try again."
+msgstr "Der Lizenzdienst ist nicht erreichbar. Bitte erneut versuchen."
+
+msgid "The license response could not be verified."
+msgstr "Die Lizenzantwort konnte nicht geprüft werden."
+
+msgid "Please check the license status below."
+msgstr "Bitte den unten angezeigten Lizenzstatus prüfen."
+
+msgid "No active Panda Seasons license"
+msgstr "Keine aktive Panda-Seasons-Lizenz"
+
+msgid "Uses the shared Panda license account. An existing activation is also recognised when ContactPanda is installed or removed."
+msgstr "Verwendet die gemeinsame Panda-Lizenzverwaltung. Eine bestehende Aktivierung bleibt auch beim Installieren oder Entfernen von ContactPanda erhalten."
+
+msgid "Activate or renew license"
+msgstr "Lizenz aktivieren oder erneuern"
+
+msgid "Check license"
+msgstr "Lizenz prüfen"
+
+msgid "Activation sends technical license and website data to mycontactpanda.com, not calendar visitors or shop orders."
+msgstr "Die Aktivierung übermittelt technische Lizenz- und Website-Daten an mycontactpanda.com, keine Kalenderbesucher oder Shopbestellungen."
+
+msgid "After a successful quiz"
+msgstr "Nach erfolgreichem Quiz"
+
+msgid "Success message only"
+msgstr "Nur Erfolgsmeldung"
+
+msgid "Unlock a coupon"
+msgstr "Gutschein freischalten"
+
+msgid "Enter a prize draw"
+msgstr "Teilnahme an einer Verlosung"
+
+msgid "Coupon source"
+msgstr "Gutscheinquelle"
+
+msgid "New personal coupon"
+msgstr "Neuer persönlicher Gutschein"
+
+msgid "Use existing coupon as template"
+msgstr "Vorhandenen Gutschein als Vorlage verwenden"
+
+msgid "Select coupon"
+msgstr "Gutschein auswählen"
+
+msgid "Fixed cart amount"
+msgstr "Fester Warenkorbbetrag"
+
+msgid "Valid for (days)"
+msgstr "Gültig für (Tage)"
+
+msgid "Answers are checked on the server. Rewards require an email address and are issued once per door and address. A template coupon is copied, never changed. Draw entries can be exported in Calendar results; a draw entry is not a guaranteed prize."
+msgstr "Antworten werden auf dem Server geprüft. Belohnungen benötigen eine E-Mail-Adresse und werden einmal je Türe und Adresse vergeben. Ein Vorlagengutschein wird kopiert und nicht verändert. Verlosungsteilnahmen sind unter Kalender-Auswertungen exportierbar; die Teilnahme ist kein garantierter Gewinn."
+
+msgid "Email address for your reward or draw entry"
+msgstr "E-Mail-Adresse für Belohnung oder Verlosungsteilnahme"
+
+msgid "Used only for this reward or draw, not a newsletter subscription."
+msgstr "Wird nur für diese Belohnung oder Verlosung verwendet; keine Newsletter-Anmeldung."
+
+msgid "Please wait before trying again."
+msgstr "Bitte vor dem nächsten Versuch etwas warten."
+
+msgid "This quiz is not currently available. Preview cannot issue rewards."
+msgstr "Dieses Quiz ist derzeit nicht verfügbar. Die Vorschau kann keine Belohnungen vergeben."
+
+msgid "This quiz has no questions."
+msgstr "Dieses Quiz enthält keine Fragen."
+
+msgid "All answers correct!"
+msgstr "Alle Antworten richtig!"
+
+msgid "Enter a valid email address for the reward."
+msgstr "Bitte eine gültige E-Mail-Adresse für die Belohnung eingeben."
+
+msgid "Your reward is being prepared. Please try again shortly."
+msgstr "Die Belohnung wird vorbereitet. Bitte gleich erneut versuchen."
+
+msgid "Your reward could not be recorded. Please try again."
+msgstr "Die Belohnung konnte nicht gespeichert werden. Bitte erneut versuchen."
+
+msgid "WooCommerce is required for this reward."
+msgstr "Für diese Belohnung ist WooCommerce erforderlich."
+
+msgid "The reward assignment could not be verified."
+msgstr "Die Belohnungszuordnung konnte nicht geprüft werden."
+
+msgid "The reward coupon template is unavailable."
+msgstr "Der Vorlagengutschein ist nicht verfügbar."
+
+msgid "The reward coupon template has expired."
+msgstr "Der Vorlagengutschein ist abgelaufen."
+
+msgid "This coupon template is restricted to other email addresses."
+msgstr "Dieser Vorlagengutschein ist auf andere E-Mail-Adressen beschränkt."
+
+msgid "The quiz reward discount is invalid."
+msgstr "Der Quiz-Belohnungsrabatt ist ungültig."
+
+msgid "Your prize draw entry has been recorded. This is not a guaranteed prize."
+msgstr "Deine Teilnahme an der Verlosung wurde gespeichert. Damit ist kein Gewinn garantiert."
+
+msgid "Your personal one-use coupon:"
+msgstr "Dein persönlicher Gutschein zur einmaligen Einlösung:"
+
+msgid "The previously issued reward is unavailable. No additional coupon was issued."
+msgstr "Die bereits vergebene Belohnung ist nicht verfügbar. Es wurde kein zusätzlicher Gutschein ausgegeben."
+
+msgid "Active theme"
+msgstr "Aktives Theme"
+
+msgid "%s theme style"
+msgstr "%s-Theme-Stil"
+
+msgid "Panda Seasons style"
+msgstr "Panda-Seasons-Stil"
+
+msgid "Panda Seasons can inherit the theme typography, colors, form fields, buttons, borders, and corner radii. Its functional layout remains intact."
+msgstr "Panda Seasons kann Typografie, Farben, Formularfelder, Schaltflächen, Rahmen und Rundungen des Themes übernehmen. Der funktionale Aufbau bleibt erhalten."
+
+msgid "Use the neutral Panda Seasons design for calendars."
+msgstr "Den neutralen Panda-Seasons-Stil für Kalender verwenden."
+
+msgid "Button preview"
+msgstr "Schaltflächenvorschau"
+
+msgid "Example button"
+msgstr "Beispielschaltfläche"
+
+msgid "Inherit compatible typography, colors, fields, buttons, borders, and spacing from the active theme."
+msgstr "Kompatible Typografie, Farben, Felder, Schaltflächen, Rahmen und Abstände vom aktiven Theme übernehmen."
+
+msgid "Detected theme colors"
+msgstr "Erkannte Theme-Farben"

@@ -223,8 +223,34 @@
 		root.append(drop,selected);root.contactPandaSetImages=function(items){select(items&&items[0]?items[0]:null);};render(false);return root;
 	}
 
+	function createFilePicker(options) {
+		options = options || {};
+		var fileMode = !!options.fileMode, item = null, de = (document.documentElement.lang || '').indexOf('de') === 0;
+		function label(german, english) { return de ? german : english; }
+		var root = document.createElement('div'); root.className = 'contactpanda-image-picker';
+		var drop = document.createElement('button'); drop.type = 'button'; drop.className = 'contactpanda-image-picker-drop';
+		drop.innerHTML = '<span class="dashicons dashicons-'+(fileMode?'media-document':'format-image')+'" aria-hidden="true"></span><span class="contactpanda-image-picker-drop-copy"><strong></strong><small></small></span><span class="contactpanda-image-picker-status" aria-live="polite"></span>';
+		drop.querySelector('strong').textContent = options.dropLabel || (fileMode ? label('Datei auswählen oder hier ablegen','Select file or drop it here') : label('Bild auswählen oder hier ablegen','Select image or drop it here'));
+		drop.querySelector('small').textContent = fileMode ? label('Von WordPress unterstützte Dateitypen','File types supported by WordPress') : 'JPG, PNG, WebP, SVG';
+		var selected = document.createElement('div'); selected.className = 'contactpanda-image-picker-selected';
+		selected.innerHTML = '<button type="button" class="contactpanda-image-picker-thumb"><img alt=""><span class="dashicons dashicons-media-document" aria-hidden="true"></span></button><span class="contactpanda-image-picker-details"><strong class="contactpanda-image-picker-name"></strong><small class="contactpanda-image-picker-meta"></small><span class="contactpanda-image-picker-actions"></span></span>';
+		selected.querySelector('.contactpanda-image-picker-thumb').setAttribute('aria-label', label('Datei ersetzen', 'Replace file'));
+		var actions = selected.querySelector('.contactpanda-image-picker-actions');
+		function action(kind, icon, title) { var button = document.createElement('button'); button.type='button'; button.className='contactpanda-image-picker-action contactpanda-image-picker-'+kind; button.title=title; button.setAttribute('aria-label',title); button.innerHTML='<span class="dashicons dashicons-'+icon+'" aria-hidden="true"></span><span class="contactpanda-image-picker-action-label"></span>'; button.querySelector('.contactpanda-image-picker-action-label').textContent=title; actions.appendChild(button); return button; }
+		var replace=action('replace','update',label('Ersetzen','Replace')),edit=action('edit','edit',label('Bearbeiten','Edit')),remove=action('remove','trash',label('Entfernen','Remove'));
+		function normalise(image) { if (!image) return null; var url=image.url||image.source_url||''; return {id:Number(image.id||image.attachment_id||0),url:url,alt:image.alt||image.alt_text||'',name:image.filename||image.name||decodeURIComponent(url.split('/').pop().split('?')[0]),mime:image.mime||image.mime_type||image.type||'',size:image.filesizeHumanReadable||image.filesize_human_readable||''}; }
+		function render(notify) { drop.hidden=!!item; selected.hidden=!item; if(item) { var image=selected.querySelector('img'); image.hidden=fileMode; if(!fileMode) { image.src=item.url; image.alt=item.alt; } selected.querySelector('.dashicons-media-document').hidden=!fileMode; selected.querySelector('.contactpanda-image-picker-name').textContent=item.name; selected.querySelector('.contactpanda-image-picker-meta').textContent=[item.mime,item.size].filter(Boolean).join(' · '); edit.hidden=!item.id; } if(notify&&options.onChange) options.onChange(item); }
+		function select(image) { item=normalise(image); if(item&&!item.url)item=null; render(true); }
+		function open() { if(!window.wp||!wp.media)return; var config={title:options.title||label(fileMode?'Datei auswählen':'Bild auswählen',fileMode?'Select file':'Select image'),button:{text:options.buttonLabel||label('Übernehmen','Use selection')},multiple:false}; if(!fileMode)config.library={type:'image'}; var frame=wp.media(config); frame.on('open',function(){if(item&&item.id)frame.state().get('selection').add(wp.media.attachment(item.id));}); frame.on('select',function(){select(frame.state().get('selection').first().toJSON());}); frame.open(); }
+		function upload(files) { var file=Array.prototype.find.call(files||[],function(candidate){return fileMode||candidate.type.indexOf('image/')===0;}); if(!file||!window.wp||!wp.apiFetch)return; var data=new FormData(); data.append('file',file,file.name); var status=drop.querySelector('[aria-live]'); status.textContent=label('Wird hochgeladen …','Uploading …'); wp.apiFetch({path:'/wp/v2/media',method:'POST',body:data}).then(select).catch(function(error){status.textContent=error.message||label('Upload fehlgeschlagen','Upload failed');}).finally(function(){if(item)status.textContent='';}); }
+		drop.addEventListener('click',open); drop.addEventListener('dragover',function(event){event.preventDefault();}); drop.addEventListener('drop',function(event){event.preventDefault();upload(event.dataTransfer.files);}); selected.querySelector('.contactpanda-image-picker-thumb').addEventListener('click',open); replace.addEventListener('click',open);
+		edit.addEventListener('click',function(){if(item&&item.id)window.open((window.ajaxurl||'').split('admin-ajax.php')[0]+'post.php'+'?post='+item.id+'&action=edit','_blank','noopener');}); remove.addEventListener('click',function(){select(null);});
+		root.append(drop,selected); root.contactPandaSetImages=function(items){select(items&&items[0]?items[0]:null);}; item=options.url?normalise({id:options.attachmentId,url:options.url,alt:options.alt}):null; render(false); return root;
+	}
+
 	window.ContactPandaAdminUI = window.ContactPandaAdminUI || {};
 	if (typeof window.ContactPandaAdminUI.createImagePicker !== 'function') window.ContactPandaAdminUI.createImagePicker = createImagePicker;
+	if (typeof window.ContactPandaAdminUI.createFilePicker !== 'function') window.ContactPandaAdminUI.createFilePicker = function(options) { return createFilePicker(Object.assign({},options,{fileMode:true})); };
 	window.ContactPandaAdminUI.enhanceLargeActions = window.ContactPandaAdminUI.enhanceLargeActions || scan;
 
 	document.addEventListener('DOMContentLoaded', function () {

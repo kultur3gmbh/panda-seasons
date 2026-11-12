@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Panda Seasons
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.8.27
+ * Version: 0.9.7
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.8.27' );
+define( 'PANDA_SEASONS_VERSION', '0.9.7' );
 define( 'PANDA_SEASONS_EDITION', 'full' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
@@ -32,6 +32,10 @@ function panda_seasons_autoload( $class ) {
 		'Panda_Seasons_Integrations'  => 'class-panda-seasons-integrations.php',
 		'Panda_Seasons_MCP'           => 'class-panda-seasons-mcp.php',
 		'Panda_Seasons_Updater'       => 'class-panda-seasons-updater.php',
+		'Panda_Seasons_Offers'        => 'class-panda-seasons-offers.php',
+		'Panda_Seasons_Review'        => 'class-panda-seasons-review.php',
+		'Panda_Seasons_Settings'      => 'class-panda-seasons-settings.php',
+		'Panda_Seasons_Quiz'          => 'class-panda-seasons-quiz.php',
 	);
 	if ( 'Panda_Seasons_Runtime' === $class ) require_once PANDA_SEASONS_PATH . 'includes/trait-panda-seasons-runtime.php';
 	if ( isset( $map[ $class ] ) ) require_once PANDA_SEASONS_PATH . 'includes/' . $map[ $class ];
@@ -63,6 +67,7 @@ add_filter( 'contactpanda_license_products', 'panda_seasons_contactpanda_license
 add_action(
 	'plugins_loaded',
 	static function () {
+		Panda_Seasons_Settings::load_license();
 		if ( class_exists( 'ContactPanda_Licensed_Updater' ) ) {
 			new ContactPanda_Licensed_Updater(
 				array(

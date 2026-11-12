@@ -1,0 +1,26 @@
+/* Shared ContactPanda settings components, bundled for standalone Seasons. */
+.contactpanda-card{background:#fff;border:1px solid #dfe5eb;border-radius:10px;padding:22px;box-shadow:0 1px 2px rgba(25,40,55,.04);margin:0 0 20px}
+.contactpanda-card h2{font-size:16px;margin:0 0 18px}
+.contactpanda-status-badge{display:inline-flex;align-items:center;border-radius:99px;padding:4px 10px;font-size:12px;font-weight:700}
+.contactpanda-status-badge.is-positive{background:#e7f7ee;color:#177341}
+.contactpanda-active-theme{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:14px 0;padding:14px;border:1px solid #dfe5eb;border-radius:8px;background:#f8fafb}
+.contactpanda-active-theme>span:first-child{display:grid;gap:3px}
+.contactpanda-active-theme small{color:#647386;font-size:13px}
+.contactpanda-style-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.contactpanda-style-option{display:flex;align-items:flex-start;gap:10px;padding:14px;border:1px solid #dfe5eb;border-radius:8px;background:#fff}
+.contactpanda-style-option:has(input:checked){border-color:#5266d4;background:#f4f6ff}
+.contactpanda-style-option span{display:grid;gap:3px}
+.contactpanda-style-option small{color:#647386}
+.contactpanda-style-theme-colors{display:flex!important;flex-wrap:wrap;gap:7px;margin-top:7px}
+.contactpanda-style-theme-colors i{display:block;width:20px;height:20px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #aeb7c1}
+.contactpanda-theme-button-sample{display:grid!important;justify-items:start;gap:6px!important;margin-top:10px}
+.contactpanda-theme-button-sample>small{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.contactpanda-theme-button-preview{display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box;min-height:38px;padding:8px 15px;border:1px solid transparent;border-radius:5px;font-size:13px;font-weight:700;line-height:1.2}
+.contactpanda-theme-button-preview.is-contactpanda{border-color:#5266d4;background:#5266d4;color:#fff}
+.contactpanda-theme-button-preview.is-theme{border-color:var(--button_border_color,var(--awb-color4,#34495a));border-radius:var(--button_border_radius,var(--button-border-radius,var(--awb-border-radius,4px)));background:var(--button_gradient_top_color,var(--button_accent_color,var(--awb-color4,#34495a)));color:var(--button_accent_color,var(--awb-color1,#fff));font-family:inherit;text-transform:inherit;letter-spacing:inherit;box-shadow:inherit}
+.panda-seasons-settings .contactpanda-card{max-width:none;margin:20px 0}
+.panda-seasons-settings .contactpanda-style-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.panda-seasons-settings .contactpanda-style-option{align-items:flex-start;padding:14px}
+.panda-seasons-settings .contactpanda-style-option>span{min-width:0}
+.panda-seasons-settings input[type=radio]:focus-visible{outline:2px solid #5c5c5c;outline-offset:3px}
+@media(max-width:700px){.panda-seasons-settings .contactpanda-style-switch{grid-template-columns:1fr}.panda-seasons-settings .contactpanda-active-theme{align-items:flex-start;flex-direction:column}}

@@ -68,3 +68,7 @@
 .panda-seasons__layer img{object-fit:var(--ps-layer-image-fit,cover)}
 .panda-seasons-signup-embed{box-sizing:border-box}.panda-seasons-signup-embed--has-frame{padding:clamp(12px,2vw,24px);border:1px solid #d8dde7;border-radius:16px}.panda-seasons-signup-embed--has-shadow{padding:clamp(12px,2vw,24px);border-radius:16px;box-shadow:0 16px 45px rgba(20,30,50,.18)}.panda-seasons-signup-embed>.panda-seasons__subscription{margin-top:0}
 .panda-seasons__door-number{line-height:1.2;vertical-align:middle}
+.panda-seasons.panda-seasons--theme{font-family:inherit;color:inherit}
+.panda-seasons--theme .panda-seasons__modal-dialog{font-family:inherit;color:var(--body_typography-color,var(--wp--preset--color--contrast,inherit));background:var(--content_bg_color,var(--wp--preset--color--base,#fff))}
+.panda-seasons--theme .panda-seasons__door-button,.panda-seasons--theme .panda-seasons__quiz button{font-family:inherit;border-radius:var(--button_border_radius,var(--button-border-radius,6px));background:var(--button_gradient_top_color,var(--wp--preset--color--primary,#5c5c5c));color:var(--button_accent_color,var(--wp--preset--color--base,#fff))}
+.panda-seasons__product .panda-seasons__product-image img{width:160px;max-width:100%;height:auto;object-fit:contain}.panda-seasons__product-description{margin:12px 0}.panda-seasons__offer-notice p{margin:6px 0}.panda-seasons__quiz input[type=email]{max-width:100%;box-sizing:border-box}

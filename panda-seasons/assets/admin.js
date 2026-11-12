@@ -19,6 +19,7 @@
 	var calendarSaving = false;
 	var pendingDoorHistory = null;
 	var doorImagePickers = {};
+	var downloadPicker = null, syncingDownloadPicker = false;
 	var syncingDoorImagePicker = false;
 	function calendarStatus(message, state) {
 		var status = document.querySelector('[data-calendar-save-state]');
@@ -187,6 +188,7 @@
 		}
 		if (downloadBox) {
 			var downloadUrl = modal.querySelector('[data-door-field="downloadUrl"]').value;
+			if (downloadPicker) { syncingDownloadPicker = true; downloadPicker.contactPandaSetImages(downloadUrl ? [{id:modal.querySelector('[data-door-field="downloadId"]').value,url:downloadUrl}] : []); syncingDownloadPicker = false; }
 			downloadBox.querySelector('[data-door-asset-preview]').innerHTML = downloadUrl ? '<span>' + escapeHtml(downloadUrl.split('/').pop()) + '</span><span class="dashicons dashicons-media-document" aria-hidden="true"></span>' : '<span>' + escapeHtml(adminText('selectDownload', 'Select a download file')) + '</span><span class="dashicons dashicons-media-document" aria-hidden="true"></span>';
 			downloadBox.querySelector('[data-remove-door-download]').hidden = !downloadUrl;
 		}
@@ -938,6 +940,12 @@
 			setStageAppearance();
 		};
 		root.getDoors = function () { return doors; };
+		root.openReviewDoor = function (index) {
+			var door = doors[index];
+			if (!door || door.deleted) return;
+			if (window.PandaEditorUI) window.PandaEditorUI.switchPanel(root.closest('[data-panda-editor]') || root, 'edit');
+			openDoorModal(door);
+		};
 		root.getView = function () { return view; };
 		root.captureHistory = recordHistory;
 		root.snapshotEditor = snapshotEditor;
@@ -994,6 +1002,12 @@
 		var colorDefaults = { closedBg: '#1f2937', closedColor: 'rgba(255, 255, 255, 1)', openBg: '#334fe8', openColor: 'rgba(255, 255, 255, 1)' };
 		modal.querySelectorAll('[data-door-field]').forEach(function (field) {
 			var value = door[field.dataset.doorField];
+			if (field.dataset.doorField === 'discountMode' && !value) value = door.couponId ? 'existing' : 'none';
+			if (field.dataset.doorField === 'discountType' && !value) value = 'percent';
+			if (field.dataset.doorField === 'discountStartTime' && !value) value = '00:00';
+			if (field.dataset.doorField === 'discountEndTime' && !value) value = '23:59';
+			var quizDefaults = {quizReward:'message',quizCouponMode:'new',quizRewardType:'percent',quizRewardAmount:'10',quizRewardDays:'7'};
+			if (Object.prototype.hasOwnProperty.call(quizDefaults,field.dataset.doorField) && (value == null || value === '')) value = quizDefaults[field.dataset.doorField];
 			if ((value == null || value === '') && field.type === 'color') value = colorDefaults[field.dataset.doorField] || '#ffffff';
 			if (field.type === 'checkbox') field.checked = Boolean(value);
 			else field.value = value == null ? '' : value;
@@ -1017,6 +1031,21 @@
 		updateCtaVisibility();
 	}
 
+	function suggestProductHeading() {
+		if (!activeDoor || activeDoor.offerHeadingInitialized || !modal) return;
+		var field = function(name) { return modal.querySelector('[data-door-field="'+name+'"]'); };
+		if (!field('contentType') || field('contentType').value !== 'product') return;
+		var product=field('productId'), date=field('unlockDate').value, mode=field('discountMode').value || 'none';
+		if (!product || !product.value || !date) return;
+		var de=(document.documentElement.lang||'').indexOf('de')===0, amount=field('discountAmount').value, discount='';
+		if (mode==='new') { if(!(Number(amount)>0))return; discount=amount+(field('discountType').value==='percent'?' %':' '+(window.pandaSeasonsAdmin.currency||'')); }
+		if (mode==='existing') return; // Server resolves existing WooCommerce coupon values on save.
+		var title=new Intl.DateTimeFormat(de?'de-AT':'en-GB',{day:'numeric',month:'long'}).format(new Date(date+'T12:00:00'))+' – '+(de?'Heute':'Today')+(discount?(de?' mit ':' with ')+discount+(de?' Rabatt':' discount'):'')+': '+product.options[product.selectedIndex].text;
+		['contentHeading','emailHeading','emailSubject'].forEach(function(name){var input=field(name);if(!input||input.value)return;if(name==='emailSubject'&&(document.querySelector('[name="panda_seasons_email_subject"]')||{}).value)return;input.value=title;activeDoor[name]=title;});
+		activeDoor.offerHeadingInitialized=true;
+	}
+	document.addEventListener('click',function(event){if(event.target.closest('[data-save-calendar],[data-save-door],[data-suggest-offer-heading]'))suggestProductHeading();},true);
+
 	function closeDoorModal(applyChanges) {
 		if (!modal) return;
 		if (activeDoor && !applyChanges && activeDoorSnapshot) {
@@ -1038,6 +1067,10 @@
 
 	function syncDoorPreview() {
 		if (!activeDoor || !modal) return;
+		['productId', 'couponId', 'discountMode', 'discountType', 'discountAmount', 'discountStart', 'discountEnd', 'discountStartTime', 'discountEndTime', 'emailHeading', 'quizReward', 'quizCouponMode', 'quizCouponId', 'quizRewardType', 'quizRewardAmount', 'quizRewardDays', 'quizSuccess', 'quizFailure'].forEach(function (name) {
+			var field = modal.querySelector('[data-door-field="' + name + '"]');
+			if (field) activeDoor[name] = /Id$/.test(name) ? Math.max(0, parseInt(field.value, 10) || 0) : field.value;
+		});
 		['number', 'contentType', 'contentHeading', 'unlockDate', 'unlockTime', 'openingMode', 'title', 'mediaId', 'mediaUrl', 'mediaType', 'downloadId', 'downloadUrl', 'downloadLabel', 'buttonLabel', 'buttonUrl', 'ctaMode', 'ctaEnabled', 'ctaTitle', 'ctaType', 'ctaLabel', 'ctaUrl', 'ctaShortcode', 'eventId', 'closedLabel', 'openLabel', 'closedBg', 'closedColor', 'openBg', 'openColor', 'closedLabelVisible', 'openLabelVisible', 'closedFont', 'openFont', 'closedFontSize', 'openFontSize', 'closedFontWeight', 'openFontWeight', 'closedTextAlign', 'openTextAlign', 'closedBorderColor', 'openBorderColor', 'closedBorderWidth', 'openBorderWidth', 'closedBorderStyle', 'openBorderStyle', 'closedLabelBg', 'openLabelBg', 'closedLabelBorderColor', 'openLabelBorderColor', 'closedLabelBorderWidth', 'openLabelBorderWidth', 'closedLabelShape', 'openLabelShape', 'closedLabelPosition', 'openLabelPosition', 'closedLabelWidthMode', 'openLabelWidthMode', 'closedLabelWidth', 'openLabelWidth', 'shape', 'openEffect', 'shadowEnabled', 'shadowBlur', 'shadowColor', 'imageId', 'imageUrl', 'closedImageId', 'closedImageUrl', 'openImageId', 'openImageUrl', 'imagePosition', 'closedImageOverlay', 'openImageOverlay'].forEach(function (name) {
 			var field = modal.querySelector('[data-door-field="' + name + '"]');
 			if (!field) return;
@@ -1135,6 +1168,20 @@
 
 	initializeSharedCoverImagePickers();
 	initializeSharedDoorImagePicker();
+	if (modal && window.ContactPandaAdminUI && typeof window.ContactPandaAdminUI.createFilePicker === 'function') {
+		var downloadBox = modal.querySelector('[data-door-asset="download"]');
+		if (downloadBox) {
+			downloadPicker = window.ContactPandaAdminUI.createFilePicker({onChange:function(file) {
+				if (syncingDownloadPicker) return;
+				modal.querySelector('[data-door-field="downloadId"]').value = file ? file.id : 0;
+				modal.querySelector('[data-door-field="downloadUrl"]').value = file ? file.url : '';
+				var caption = modal.querySelector('[data-door-field="downloadLabel"]'); if(file && caption && !caption.value) caption.value = file.name || '';
+				syncDoorPreview(); markCalendarDirty();
+			}});
+			downloadBox.querySelectorAll('[data-select-door-download],[data-remove-door-download]').forEach(function(node){node.hidden=true;});
+			downloadBox.insertBefore(downloadPicker,downloadBox.firstChild);
+		}
+	}
 
 	function selectDoorAttachment(kind) {
 		var config = kind === 'media' ? { type: ['image', 'video', 'audio'] } : {};
@@ -1480,6 +1527,12 @@
 		applyDefaultsButton.addEventListener('click',openDefaultsDialog);
 		defaultsDialog.addEventListener('click',function(event){if(event.target.closest('[data-close-defaults-dialog]')){defaultsDialog.hidden=true;document.body.classList.remove('panda-seasons-modal-open');return;}if(event.target.closest('[data-select-all-defaults]'))defaultsDialog.querySelectorAll('[data-default-mapping]').forEach(function(box){box.checked=true;});if(event.target.closest('[data-select-no-defaults]'))defaultsDialog.querySelectorAll('[data-default-mapping]').forEach(function(box){box.checked=false;});if(event.target.closest('[data-apply-selected-defaults]')){var selected=defaultsDialog.querySelectorAll('[data-default-mapping]:checked');selected.forEach(function(box){var mapping=defaultMappings[+box.dataset.defaultMapping],input=document.querySelector(mapping.selector),value=inputValue(input);composer.getDoors().forEach(function(door){if(!door.deleted)mapping.props.forEach(function(prop){door[prop]=value;});});});composer.renderDoors();defaultsDialog.hidden=true;document.body.classList.remove('panda-seasons-modal-open');}});
 	}
+	document.addEventListener('click', function (event) {
+		var openSettings = event.target.closest('[data-open-main-settings]');
+		if (!openSettings) return;
+		var settingsTab = document.querySelector('[data-main-editor-tab="settings"]');
+		if (settingsTab) settingsTab.click();
+	});
 	var defaultPreview=document.querySelector('[data-default-door-preview]');
 	function defaultValue(name,fallback){var input=document.querySelector('[name="'+name+'"]');return input ? (input.type==='checkbox' ? input.checked : input.value) : fallback;}
 	function updateDefaultPreview(){
@@ -1568,7 +1621,7 @@
 				if (composer && composer.commitSavedState) composer.commitSavedState();
 				if (activeDoor) activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
 				calendarDirty = false;
-				calendarStatus(result.data.message || adminText('calendarSaved', 'Calendar saved.'), 'saved');
+				calendarStatus(result.data.message || adminText('calendarSaved', 'Calendar saved.'), result.data.discountErrors && result.data.discountErrors.length ? 'error' : 'saved');
 				if (typeof afterSave === 'function') afterSave();
 			})
 			.catch(function (error) {

@@ -1,0 +1,10 @@
+{
+  "slug": "panda-seasons",
+  "version": "0.9.7",
+  "requires": "6.4",
+  "tested": "7.1.4",
+  "requires_php": "7.4",
+  "url": "https://github.com/kultur3gmbh/panda-seasons/releases/tag/v0.9.7",
+  "download_url": "https://github.com/kultur3gmbh/panda-seasons/releases/download/v0.9.7/panda-seasons-0.9.7.zip",
+  "sha256": "1c49cc7bccfb59bcd7d4709f77aca08eb34bd83cc280eb67b67afb07fcdfbe6c"
+}

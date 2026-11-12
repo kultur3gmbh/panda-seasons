@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 final class Panda_Seasons_Schema {
-	const VERSION = '1.2.0';
+	const VERSION = '1.4.0';
 	const OPTION  = 'panda_seasons_db_version';
 
 	public static function tables() {
@@ -13,6 +13,8 @@ final class Panda_Seasons_Schema {
 			'mail_log'      => $wpdb->prefix . 'ps_mail_log',
 			'events'        => $wpdb->prefix . 'ps_consent_events',
 			'door_clicks'   => $wpdb->prefix . 'ps_door_clicks',
+			'quiz_rewards'  => $wpdb->prefix . 'ps_quiz_rewards',
+			'quiz_participants' => $wpdb->prefix . 'ps_quiz_participants',
 		);
 	}
 
@@ -97,6 +99,29 @@ final class Panda_Seasons_Schema {
 			) $charset;"
 		);
 
+		$quiz_table = $wpdb->prefix . 'ps_quiz_rewards';
+		dbDelta( "CREATE TABLE {$quiz_table} (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			calendar_id bigint(20) unsigned NOT NULL,
+			door_id bigint(20) unsigned NOT NULL,
+			email_hash char(64) NOT NULL,
+			email varchar(190) NOT NULL,
+			kind varchar(20) NOT NULL,
+			coupon_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			created_at datetime NOT NULL,
+			PRIMARY KEY  (id),
+			UNIQUE KEY door_email (door_id,email_hash),
+			KEY calendar_kind (calendar_id,kind)
+		) $charset;" );
+		$participants = self::tables()['quiz_participants'];
+		dbDelta( "CREATE TABLE {$participants} (
+			calendar_id bigint(20) unsigned NOT NULL,
+			door_id bigint(20) unsigned NOT NULL,
+			session_hash char(64) NOT NULL,
+			created_at datetime NOT NULL,
+			PRIMARY KEY  (door_id,session_hash),
+			KEY calendar_id (calendar_id)
+		) $charset;" );
 		update_option( self::OPTION, self::VERSION, false );
 	}
 
