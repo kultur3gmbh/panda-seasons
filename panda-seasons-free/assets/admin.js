@@ -28,6 +28,24 @@
 	}
 
 	function start(root) {
+		var publishSlot = root.querySelector('[data-free-publish-slot]');
+		var publishBox = document.getElementById('submitdiv');
+		if (publishSlot && publishBox) {
+			publishSlot.appendChild(publishBox);
+			publishBox.classList.add('panda-seasons-free-inline-publish');
+			var sideContainer = document.getElementById('postbox-container-1');
+			if (sideContainer) sideContainer.hidden = true;
+		}
+		var settingsPanel = root.querySelector('[data-panda-editor-panel="settings"]');
+		if (settingsPanel) {
+			['.panda-seasons-free-settings-card', '.panda-seasons-free-defaults'].forEach(function (selector) {
+				var section = root.querySelector(selector);
+				if (section) settingsPanel.appendChild(section);
+			});
+		}
+		var elementsPanel = root.querySelector('[data-panda-editor-panel="elements"]');
+		var templates = root.querySelector('.panda-seasons-free-templates');
+		if (elementsPanel && templates) elementsPanel.appendChild(templates);
 		var json = root.querySelector('[data-doors-json]');
 		var doors = [];
 		try { doors = JSON.parse(json.textContent || '[]'); } catch (e) { doors = []; }
@@ -39,6 +57,8 @@
 		var inspector = root.querySelector('[data-inspector]');
 		var inspectorEmpty = root.querySelector('[data-inspector-empty]');
 		var contentId = 'panda_seasons_free_door_content';
+		var pointerState = null;
+		var dragged = false;
 		root.querySelectorAll('.panda-seasons-free-color').forEach(function (field) { enhanceColorField(field, render); });
 
 		function defaults() {
@@ -92,6 +112,9 @@
 
 		function loadInspector(door) {
 			selected = door;
+			if (window.PandaEditorUI && typeof window.PandaEditorUI.switchPanel === 'function') {
+				window.PandaEditorUI.switchPanel(root, 'edit');
+			}
 			if (inspectorEmpty) inspectorEmpty.hidden = true;
 			inspector.hidden = false;
 			inspector.querySelector('[data-door-title]').textContent = door.number || '';
@@ -135,35 +158,57 @@
 				el.innerHTML = '<span>' + String(door.number || '') + '</span><i aria-hidden="true"></i>';
 				el.addEventListener('click', function (event) {
 					event.stopPropagation();
+					if (dragged || event.target.closest('i')) return;
 					syncInspector();
 					loadInspector(door);
 					render();
 				});
 				canvas.appendChild(el);
-				$(el).draggable({
-					containment: 'parent',
-					stop: function (event, ui) {
-						var rect = canvas.getBoundingClientRect();
-						door[layout].x = Math.max(0, Math.min(100 - door[layout].w, ui.position.left / rect.width * 100));
-						door[layout].y = Math.max(0, Math.min(100 - door[layout].h, ui.position.top / rect.height * 100));
-						loadPositionFields();
-						render();
-					}
-				}).resizable({
-					handles: {se: el.querySelector('i')},
-					containment: 'parent',
-					minWidth: 28,
-					minHeight: 28,
-					stop: function (event, ui) {
-						var rect = canvas.getBoundingClientRect();
-						door[layout].w = Math.max(2, Math.min(100 - door[layout].x, ui.size.width / rect.width * 100));
-						door[layout].h = Math.max(2, Math.min(100 - door[layout].y, ui.size.height / rect.height * 100));
-						loadPositionFields();
-						render();
-					}
-				});
 			});
 		}
+
+		canvas.addEventListener('pointerdown', function (event) {
+			var element = event.target.closest('.panda-seasons-free-editor-door');
+			if (!element || event.button !== 0) return;
+			var door = doors.find(function (item) { return item.key === element.dataset.doorKey; });
+			if (!door || !door[layout]) return;
+			if (selected !== door) {
+				syncInspector();
+				loadInspector(door);
+				canvas.querySelectorAll('.panda-seasons-free-editor-door').forEach(function (item) { item.classList.toggle('is-selected', item === element); });
+			}
+			var rect = canvas.getBoundingClientRect();
+			pointerState = {door: door, element: element, resize: Boolean(event.target.closest('i')), startX: event.clientX, startY: event.clientY, start: Object.assign({}, door[layout]), width: rect.width, height: rect.height};
+			dragged = false;
+			element.setPointerCapture(event.pointerId);
+			event.preventDefault();
+		});
+
+		canvas.addEventListener('pointermove', function (event) {
+			if (!pointerState) return;
+			var deltaX = (event.clientX - pointerState.startX) / pointerState.width * 100;
+			var deltaY = (event.clientY - pointerState.startY) / pointerState.height * 100;
+			if (Math.abs(deltaX) > 0.2 || Math.abs(deltaY) > 0.2) dragged = true;
+			var position = pointerState.door[layout];
+			if (pointerState.resize) {
+				position.w = Math.max(2, Math.min(100 - position.x, pointerState.start.w + deltaX));
+				position.h = Math.max(2, Math.min(100 - position.y, pointerState.start.h + deltaY));
+			} else {
+				position.x = Math.max(0, Math.min(100 - position.w, pointerState.start.x + deltaX));
+				position.y = Math.max(0, Math.min(100 - position.h, pointerState.start.y + deltaY));
+			}
+			pointerState.element.style.cssText = positionStyle(position);
+			loadPositionFields();
+		});
+
+		function endPointer() {
+			if (!pointerState) return;
+			pointerState = null;
+			loadPositionFields();
+		}
+
+		canvas.addEventListener('pointerup', endPointer);
+		canvas.addEventListener('pointercancel', endPointer);
 
 		function nextNumber() {
 			return doors.reduce(function (highest, door) { return Math.max(highest, parseInt(door.number, 10) || 0); }, 0) + 1;
@@ -198,9 +243,18 @@
 		var addButton = root.querySelector('[data-add-door]');
 		addButton.addEventListener('click', function () { addDoor(); });
 		addButton.addEventListener('dragstart', function (event) { event.dataTransfer.setData('text/panda-seasons-free', 'door'); event.dataTransfer.effectAllowed = 'copy'; });
-		canvas.addEventListener('dragover', function (event) { if (Array.prototype.indexOf.call(event.dataTransfer.types, 'text/panda-seasons-free') !== -1) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; canvas.classList.add('is-door-drop-target'); } });
+		canvas.addEventListener('dragover', function (event) {
+			var types = Array.prototype.slice.call(event.dataTransfer.types || []);
+			if (types.indexOf('text/panda-seasons-free') !== -1 || types.indexOf('text/panda-seasons-free-template') !== -1) {
+				event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; canvas.classList.add('is-door-drop-target');
+			}
+		});
 		canvas.addEventListener('dragleave', function () { canvas.classList.remove('is-door-drop-target'); });
 		canvas.addEventListener('drop', function (event) {
+			var templateName = event.dataTransfer.getData('text/panda-seasons-free-template');
+			if (templateName) {
+				event.preventDefault(); canvas.classList.remove('is-door-drop-target'); applyTemplate(templateName); return;
+			}
 			if (event.dataTransfer.getData('text/panda-seasons-free') !== 'door') return;
 			event.preventDefault(); canvas.classList.remove('is-door-drop-target');
 			var rect = canvas.getBoundingClientRect();
@@ -271,7 +325,13 @@
 			render();
 		}
 
-		root.querySelectorAll('[data-template]').forEach(function (button) { button.addEventListener('click', function () { applyTemplate(button.dataset.template); }); });
+		root.querySelectorAll('[data-template]').forEach(function (button) {
+			button.addEventListener('click', function () { applyTemplate(button.dataset.template); });
+			button.addEventListener('dragstart', function (event) {
+				event.dataTransfer.setData('text/panda-seasons-free-template', button.dataset.template);
+				event.dataTransfer.effectAllowed = 'copy';
+			});
+		});
 
 		var coverPicker = root.querySelector('[data-cover-picker]');
 		var sharedCoverPicker = null;
