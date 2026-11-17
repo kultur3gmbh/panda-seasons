@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Panda Seasons Free
- * Plugin URI: https://mycontactpanda.com/panda-seasons/
+ * Plugin Name: Panda Seasons Lite
+ * Plugin URI: https://pandacosmo.com/
  * Description: Create simple responsive seasonal calendars with colored doors and text content.
- * Version: 0.1.15
+ * Version: 0.9.2
  * Author: Kultur3 GmbH
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -15,10 +15,15 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_FREE_VERSION', '0.1.15' );
+define( 'PANDA_SEASONS_FREE_VERSION', '0.9.2' );
 define( 'PANDA_SEASONS_FREE_FILE', __FILE__ );
 define( 'PANDA_SEASONS_FREE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PANDA_SEASONS_FREE_URL', plugin_dir_url( __FILE__ ) );
+
+// Included only in the GitHub distribution; WordPress.org remains independent.
+if ( is_readable( PANDA_SEASONS_FREE_PATH . 'includes/class-panda-public-bootstrap.php' ) ) {
+	require_once PANDA_SEASONS_FREE_PATH . 'includes/class-panda-public-bootstrap.php';
+}
 
 /** Load the editor and calendar implementation only when WordPress needs it. */
 function panda_seasons_free_autoload( $class ) {
@@ -34,8 +39,8 @@ function panda_seasons_free_activate() {
 	}
 	if ( is_plugin_active( 'panda-seasons/panda-seasons.php' ) ) {
 		wp_die(
-			esc_html__( 'Please deactivate Panda Seasons before activating Panda Seasons Free. Both editions use the same calendar data and must not run at the same time.', 'panda-seasons-free' ),
-			esc_html__( 'Panda Seasons is already active', 'panda-seasons-free' ),
+			esc_html__( 'Please deactivate Panda Seasons Full before activating Panda Seasons Lite. Both editions use the same calendar data and must not run at the same time.', 'panda-seasons-free' ),
+			esc_html__( 'Panda Seasons Full is already active', 'panda-seasons-free' ),
 			array( 'back_link' => true )
 		);
 	}
@@ -50,7 +55,7 @@ add_action(
 				'admin_notices',
 				static function () {
 					if ( current_user_can( 'activate_plugins' ) ) {
-						echo '<div class="notice notice-info"><p>' . esc_html__( 'Panda Seasons Free is inactive while the complete Panda Seasons edition is active. Your calendars use the same saved data.', 'panda-seasons-free' ) . '</p></div>';
+						echo '<div class="notice notice-info"><p>' . esc_html__( 'Panda Seasons Lite is inactive while the Panda Seasons Full edition is active. Your calendars use the same saved data.', 'panda-seasons-free' ) . '</p></div>';
 					}
 				}
 			);

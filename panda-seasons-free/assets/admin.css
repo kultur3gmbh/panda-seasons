@@ -6,6 +6,15 @@
    moving the canvas or resetting its scroll position. */
 .panda-seasons-free-sidebar{min-width:0;max-height:calc(100vh - 100px);overflow:hidden;border:1px solid #dcdcde;border-radius:10px;background:#fff;position:sticky;top:42px}
 .panda-seasons-free-sidebar>.panda-editor-tabs{position:sticky;top:0;z-index:4;margin:0;padding:12px;border-bottom:1px solid #dcdcde;background:#fff}
+
+/* 0.1.16: shared three-tab Panda editor navigation. */
+.panda-seasons-free-sidebar>.panda-editor-tabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:16px!important}
+.panda-seasons-free-sidebar>.panda-editor-tabs button{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:0;min-height:46px;margin:0;padding:9px 12px;border:1px solid #c3c7cc;border-radius:7px;background:#f6f7f7;color:#2c3338;font-size:14px;font-weight:600;line-height:1.25;cursor:pointer}
+.panda-seasons-free-sidebar>.panda-editor-tabs button:hover,.panda-seasons-free-sidebar>.panda-editor-tabs button:focus{border-color:#5c5c5c;background:#ececec;color:#1d2327;outline:0;box-shadow:0 0 0 2px rgba(92,92,92,.18)}
+.panda-seasons-free-sidebar>.panda-editor-tabs button.is-active{border-color:#5c5c5c;background:#5c5c5c;color:#fff;box-shadow:none}
+.panda-seasons-free-elements-panel>[data-add-door]{display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-height:46px!important;border-color:#c3c7cc!important;border-radius:7px!important;background:#fff!important;color:#2c3338!important;font-weight:600!important}
+.panda-seasons-free-settings-panel{display:block;padding:16px}.panda-seasons-free-settings-panel[hidden]{display:none}.panda-seasons-free-settings-panel>.panda-seasons-free-settings-card,.panda-seasons-free-settings-panel>.panda-seasons-free-defaults,.panda-seasons-free-settings-panel>.panda-seasons-free-templates{margin-bottom:14px}
+@media(max-width:782px){.panda-seasons-free-sidebar>.panda-editor-tabs{grid-template-columns:1fr}}
 .panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:calc(100vh - 165px);box-sizing:border-box;overflow:auto}
 .panda-seasons-free-elements-panel{padding:18px}
 .panda-seasons-free-elements-panel .button{display:flex;align-items:center;justify-content:flex-start;gap:8px;width:100%;min-height:46px;margin-top:14px;padding:8px 12px;text-align:left}
@@ -16,4 +25,32 @@
 .panda-seasons-free-editor-empty h3{margin:12px 0 4px}
 .panda-seasons-free-inspector{position:static;top:auto;border:0;border-radius:0}
 @media(max-width:1100px){.panda-seasons-free-sidebar{position:static;max-height:none}.panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:none}}
+
+/* 0.3.0: one-column WordPress shell with the same two-column editor as Pro. */
+.post-type-panda_calendar #poststuff #post-body.columns-2{margin-right:0}
+.post-type-panda_calendar #post-body-content,.post-type-panda_calendar #postbox-container-2{float:none;width:100%;min-width:0}
+.post-type-panda_calendar #postbox-container-1[hidden]{display:none!important}
+.post-type-panda_calendar #poststuff .postbox-container{box-sizing:border-box}
+.post-type-panda_calendar #screen-meta-links{display:none!important}
+.panda-seasons-free-publish-slot:empty{display:none}
+.panda-seasons-free-inline-publish{margin:0 0 16px!important;border:1px solid #dcdcde!important;border-radius:10px;box-shadow:none!important}
+.panda-seasons-free-inline-publish .postbox-header{display:none}
+.panda-seasons-free-inline-publish .inside{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin:0!important;padding:12px!important}
+.panda-seasons-free-inline-publish #minor-publishing,.panda-seasons-free-inline-publish #misc-publishing-actions{display:none}
+.panda-seasons-free-inline-publish #major-publishing-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;width:100%;padding:0;border:0;background:transparent}
+.panda-seasons-free-inline-publish #delete-action{margin-right:auto}
+.panda-seasons-free-inline-publish #publishing-action{float:none}
+.panda-seasons-free-inline-publish #publish{min-height:42px;border-color:#5c5c5c;background:#5c5c5c;color:#fff}
+.panda-seasons-free-workspace{grid-template-columns:minmax(0,1fr) minmax(380px,520px);gap:20px}
+.panda-seasons-free-sidebar>.panda-editor-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.panda-seasons-free-sidebar>.panda-editor-tabs button{min-height:48px;white-space:normal}
+.panda-seasons-free-toolbar .button[aria-pressed="true"]{border-color:#5c5c5c;background:#5c5c5c;color:#fff;box-shadow:none}
+.panda-seasons-free-editor [data-cover-picker][hidden]{display:none!important}
+.panda-seasons-free-settings-panel>.contactpanda-image-picker{margin-bottom:14px}
+@media(max-width:1180px){.panda-seasons-free-workspace{grid-template-columns:1fr}.panda-seasons-free-sidebar{position:static;max-height:none}.panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:none}}
+@media(max-width:600px){.panda-seasons-free-sidebar>.panda-editor-tabs{grid-template-columns:1fr!important}}
+
+/* Use the same direct pointer interaction as the full calendar editor. */
+.panda-seasons-free-editor-door{touch-action:none;user-select:none}
+.panda-seasons-free-editor-door i{z-index:2;touch-action:none}
 
