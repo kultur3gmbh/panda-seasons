@@ -92,17 +92,14 @@
 		var unlock=document.querySelector('[data-door-field="unlockDate"]');if(unlock)unlock.addEventListener('change',syncDateTimes);
 		var modal = document.querySelector('[data-door-modal]');
 		if (modal) new MutationObserver(function(){discountFields();syncDateTimes();}).observe(modal, {attributes: true, attributeFilter: ['hidden']});
-		['contentHeading','emailSubject','emailHeading'].forEach(function(name){
+		['emailSubject','emailHeading'].forEach(function(name){
 			var input=document.querySelector('[data-door-field="'+name+'"]'); if(!input)return;
 			var tokens=document.createElement('div');tokens.className='panda-seasons-offer-tokens';
 			function insert(value){var a=input.selectionStart||0,b=input.selectionEnd||0;input.value=input.value.slice(0,a)+value+input.value.slice(b);input.focus();input.setSelectionRange(a+value.length,a+value.length);input.dispatchEvent(new Event('input',{bubbles:true}));}
 			[['{date}',label('Datum','Date')],['{discount}',label('Rabatt','Discount')],['{product}',label('Produktname','Product name')]].forEach(function(entry){var chip=document.createElement('button');chip.type='button';chip.className='button';chip.textContent=entry[1]+' '+entry[0];chip.draggable=true;chip.addEventListener('click',function(){insert(entry[0]);});chip.addEventListener('dragstart',function(event){event.dataTransfer.setData('text/panda-offer-token',entry[0]);event.dataTransfer.setData('text/plain',entry[0]);});tokens.appendChild(chip);});
 			input.parentNode.appendChild(tokens);input.addEventListener('dragover',function(event){if(Array.from(event.dataTransfer.types).includes('text/panda-offer-token')){event.preventDefault();input.classList.add('is-token-drop-target');}});input.addEventListener('dragleave',function(){input.classList.remove('is-token-drop-target');});input.addEventListener('drop',function(event){var value=event.dataTransfer.getData('text/panda-offer-token');if(!value)return;event.preventDefault();input.classList.remove('is-token-drop-target');insert(value);});
 		});
-		var heading=document.querySelector('[data-door-field="contentHeading"]');
-		var basics=document.querySelector('[data-door-section="basics"] .panda-seasons-door-modal__section-grid');
-		if(heading&&basics)basics.appendChild(heading.closest('label'));
-		if(heading){var suggest=document.createElement('button');suggest.type='button';suggest.className='button';suggest.dataset.suggestOfferHeading='';suggest.textContent=label('Standard vorschlagen','Suggest default');heading.parentNode.appendChild(suggest);}
+
 		discountFields();
 	});
 })();

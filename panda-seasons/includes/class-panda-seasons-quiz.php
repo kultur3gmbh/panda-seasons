@@ -18,12 +18,12 @@ final class Panda_Seasons_Quiz {
 
 	public static function table() { global $wpdb; return $wpdb->prefix . 'ps_quiz_rewards'; }
 
-	public static function privacy_exporters( $exporters ) { $exporters['panda-seasons-quiz'] = array( 'exporter_friendly_name' => 'Panda Seasons quiz', 'callback' => array( __CLASS__, 'privacy_export' ) ); return $exporters; }
-	public static function privacy_erasers( $erasers ) { $erasers['panda-seasons-quiz'] = array( 'eraser_friendly_name' => 'Panda Seasons quiz', 'callback' => array( __CLASS__, 'privacy_erase' ) ); return $erasers; }
+	public static function privacy_exporters( $exporters ) { $exporters['panda-seasons-quiz'] = array( 'exporter_friendly_name' => 'Panda Seasons Full quiz', 'callback' => array( __CLASS__, 'privacy_export' ) ); return $exporters; }
+	public static function privacy_erasers( $erasers ) { $erasers['panda-seasons-quiz'] = array( 'eraser_friendly_name' => 'Panda Seasons Full quiz', 'callback' => array( __CLASS__, 'privacy_erase' ) ); return $erasers; }
 	public static function privacy_export( $email, $page = 1 ) {
 		global $wpdb; $table = self::table(); $offset = ( max( 1, absint( $page ) ) - 1 ) * 100;
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE email=%s ORDER BY id LIMIT 100 OFFSET %d", strtolower( sanitize_email( $email ) ), $offset ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- internal table.
-		$data = array(); foreach ( $rows as $row ) $data[] = array( 'group_id' => 'panda-seasons-quiz', 'group_label' => 'Panda Seasons quiz', 'item_id' => 'ps-quiz-' . $row->id, 'data' => array( array( 'name' => 'Email', 'value' => $row->email ), array( 'name' => 'Door', 'value' => (string) $row->door_id ), array( 'name' => 'Reward', 'value' => $row->kind ), array( 'name' => 'Created (UTC)', 'value' => $row->created_at ) ) );
+		$data = array(); foreach ( $rows as $row ) $data[] = array( 'group_id' => 'panda-seasons-quiz', 'group_label' => 'Panda Seasons Full quiz', 'item_id' => 'ps-quiz-' . $row->id, 'data' => array( array( 'name' => 'Email', 'value' => $row->email ), array( 'name' => 'Door', 'value' => (string) $row->door_id ), array( 'name' => 'Reward', 'value' => $row->kind ), array( 'name' => 'Created (UTC)', 'value' => $row->created_at ) ) );
 		return array( 'data' => $data, 'done' => count( $rows ) < 100 );
 	}
 	public static function privacy_erase( $email, $page = 1 ) {

@@ -114,7 +114,7 @@ final class Panda_Seasons_Subscriptions {
 			'source_id'    => (string) $calendar_id,
 			'source_title' => get_the_title( $calendar_id ),
 			'source_url'   => $source_url,
-			'tag'          => (string) get_post_meta( $calendar_id, '_ps_contact_tag', true ) ?: sprintf( __( 'Panda Seasons – %s', 'panda-seasons' ), get_the_title( $calendar_id ) ),
+			'tag'          => (string) get_post_meta( $calendar_id, '_ps_contact_tag', true ) ?: sprintf( __( 'Panda Seasons Full – %s', 'panda-seasons' ), get_the_title( $calendar_id ) ),
 			'form'         => 'calendar_email_signup',
 			'subscribed_at'=> current_time( 'mysql' ),
 		), $row );
@@ -217,7 +217,7 @@ final class Panda_Seasons_Subscriptions {
 			$status = 'all_mailings' === $scope ? 'global_unsubscribed' : 'all_calendars_unsubscribed';
 			$wpdb->query( $wpdb->prepare( "UPDATE `{$tables['subscriptions']}` SET status=%s,unsubscribed_at=%s,unsubscribe_scope=%s,updated_at=%s WHERE email_hash=%s", $status, $now, $scope, $now, $row['email_hash'] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- internal table.
 			if ( 'all_mailings' === $scope && $row['contact_id'] && method_exists( 'ContactPanda_Plugin', 'extension_unsubscribe_contact' ) ) {
-				ContactPanda_Plugin::extension_unsubscribe_contact( $row['contact_id'], 'panda_seasons', sprintf( 'All mailings unsubscribed through Panda Seasons at %s.', $now ), $row['email'] );
+				ContactPanda_Plugin::extension_unsubscribe_contact( $row['contact_id'], 'panda_seasons', sprintf( 'All mailings unsubscribed through Panda Seasons Full at %s.', $now ), $row['email'] );
 			}
 		}
 		self::log_event( $row, 'unsubscribed', $scope, 'email_link' );
@@ -275,7 +275,7 @@ final class Panda_Seasons_Subscriptions {
 	private static function subscription_context( $row ) {
 		$calendar_id = absint( $row['calendar_id'] ?? 0 );
 		$tag = (string) get_post_meta( $calendar_id, '_ps_contact_tag', true );
-		if ( ! $tag ) $tag = sprintf( __( 'Panda Seasons – %s', 'panda-seasons' ), get_the_title( $calendar_id ) );
+		if ( ! $tag ) $tag = sprintf( __( 'Panda Seasons Full – %s', 'panda-seasons' ), get_the_title( $calendar_id ) );
 		return apply_filters(
 			'panda_seasons_contact_subscription_context',
 			array(

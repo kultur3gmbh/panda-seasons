@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Panda Seasons 0.9.7\n"
+"Project-Id-Version: Panda Seasons Full 0.9.8\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "This text is shown on the door. Leave it empty to display the door number automatically. You may use a different label for the closed and opened state."
 msgstr ""
 
-msgid "Panda Seasons"
+msgid "Panda Seasons Full"
 msgstr ""
 
 msgid "Email delivery and signups"
@@ -767,7 +767,7 @@ msgstr ""
 msgid "The update source is invalid."
 msgstr ""
 
-msgid "Updates are disabled for Panda Seasons."
+msgid "Updates are disabled for Panda Seasons Full."
 msgstr ""
 
 msgid "You are not allowed to check for updates."
@@ -899,7 +899,7 @@ msgstr ""
 msgid "Opening preview"
 msgstr ""
 
-msgid "Panda Seasons calendar"
+msgid "Panda Seasons Full calendar"
 msgstr ""
 
 msgid "Select a calendar"
@@ -1041,7 +1041,7 @@ msgstr ""
 msgid "Please select a valid template file up to 5 MB."
 msgstr ""
 
-msgid "The selected file is not a supported Panda Seasons template."
+msgid "The selected file is not a supported Panda Seasons Full template."
 msgstr ""
 
 msgid "Imported calendar"
@@ -1375,7 +1375,7 @@ msgstr ""
 msgid "ContactPanda uses this tag and the calendar origin details for people who sign up through this calendar."
 msgstr ""
 
-msgid "Panda Seasons – %s"
+msgid "Panda Seasons Full – %s"
 msgstr ""
 
 msgid "Saving door…"
@@ -1489,7 +1489,7 @@ msgstr ""
 
 msgid "Save email settings"
 msgstr ""
-msgid "Panda Seasons calendar signup"
+msgid "Panda Seasons Full calendar signup"
 msgstr ""
 
 msgid "Number of reminders"
@@ -1653,13 +1653,13 @@ msgstr ""
 
 msgid "The image could not be uploaded."
 msgstr ""
-msgid "Panda Seasons dashboard"
+msgid "Panda Seasons Full dashboard"
 msgstr ""
 
 msgid "Dashboard"
 msgstr ""
 
-msgid "You are not allowed to view the Panda Seasons dashboard."
+msgid "You are not allowed to view the Panda Seasons Full dashboard."
 msgstr ""
 
 msgid "Create interactive seasonal calendars, manage registrations and keep an eye on the most important results."
@@ -1668,7 +1668,7 @@ msgstr ""
 msgid "Open templates"
 msgstr ""
 
-msgid "Panda Seasons calendar illustration"
+msgid "Panda Seasons Full calendar illustration"
 msgstr ""
 
 msgid "Your calendars"
@@ -1836,7 +1836,7 @@ msgstr ""
 msgid "ContactPanda Basic email template not yet available"
 msgstr ""
 
-msgid "Panda Seasons will continue to send its existing HTML emails. Update ContactPanda Basic to use the central transactional email design for all calendar emails."
+msgid "Panda Seasons Full will continue to send its existing HTML emails. Update ContactPanda Basic to use the central transactional email design for all calendar emails."
 msgstr ""
 msgid "Edit image"
 msgstr ""
@@ -2033,7 +2033,7 @@ msgstr ""
 msgid "Email heading"
 msgstr ""
 
-msgid "Panda Seasons settings"
+msgid "Panda Seasons Full settings"
 msgstr ""
 
 msgid "Settings"
@@ -2081,7 +2081,7 @@ msgstr ""
 msgid "Please check the license status below."
 msgstr ""
 
-msgid "No active Panda Seasons license"
+msgid "No active Panda Seasons Full license"
 msgstr ""
 
 msgid "Uses the shared Panda license account. An existing activation is also recognised when ContactPanda is installed or removed."
@@ -2093,7 +2093,7 @@ msgstr ""
 msgid "Check license"
 msgstr ""
 
-msgid "Activation sends technical license and website data to mycontactpanda.com, not calendar visitors or shop orders."
+msgid "Activation sends technical license and website data to pandacosmo.com, not calendar visitors or shop orders."
 msgstr ""
 
 msgid "After a successful quiz"
@@ -2189,13 +2189,13 @@ msgstr ""
 msgid "%s theme style"
 msgstr ""
 
-msgid "Panda Seasons style"
+msgid "Panda Seasons Full style"
 msgstr ""
 
-msgid "Panda Seasons can inherit the theme typography, colors, form fields, buttons, borders, and corner radii. Its functional layout remains intact."
+msgid "Panda Seasons Full can inherit the theme typography, colors, form fields, buttons, borders, and corner radii. Its functional layout remains intact."
 msgstr ""
 
-msgid "Use the neutral Panda Seasons design for calendars."
+msgid "Use the neutral Panda Seasons Full design for calendars."
 msgstr ""
 
 msgid "Button preview"
@@ -2208,4 +2208,73 @@ msgid "Inherit compatible typography, colors, fields, buttons, borders, and spac
 msgstr ""
 
 msgid "Detected theme colors"
+msgstr ""
+
+msgid "You do not have permission."
+msgstr ""
+
+msgid "Appearance"
+msgstr ""
+
+msgid "The license service rejected the product assignment."
+msgstr ""
+
+msgid "The website limit is reached. Disconnect an existing website in the customer account first."
+msgstr ""
+
+msgid "The license key was not found."
+msgstr ""
+
+msgid "The license is blocked or the trial has ended."
+msgstr ""
+
+msgid "The website identity could not be verified."
+msgstr ""
+
+msgid "License active"
+msgstr ""
+
+msgid "Unlock date and time"
+msgstr ""
+
+msgid "Available placeholders: {date}, {discount}, {product}."
+msgstr ""
+
+msgid "This file is offered as a download, not displayed as an image in the door content."
+msgstr ""
+
+msgid "File to download"
+msgstr ""
+
+msgid "Changes saved."
+msgstr ""
+
+msgid "Change image"
+msgstr ""
+
+msgid "A valid Panda Seasons license is required to save these changes."
+msgstr ""
+
+msgid "Size (px)"
+msgstr ""
+
+msgid "Select file or drop it here"
+msgstr ""
+
+msgid "Use file"
+msgstr ""
+
+msgid "Replace file"
+msgstr ""
+
+msgid "Edit file"
+msgstr ""
+
+msgid "Remove file"
+msgstr ""
+
+msgid "Selected file"
+msgstr ""
+
+msgid "File types supported by WordPress"
 msgstr ""

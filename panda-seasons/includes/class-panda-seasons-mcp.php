@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Exposes Panda Seasons through the WordPress Abilities API and MCP Adapter.
+ * Exposes Panda Seasons Full through the WordPress Abilities API and MCP Adapter.
  * WordPress versions before 6.9 simply ignore these hooks.
  */
 final class Panda_Seasons_MCP {
@@ -29,7 +29,7 @@ final class Panda_Seasons_MCP {
 		wp_register_ability_category(
 			self::CATEGORY,
 			array(
-				'label'       => __( 'Panda Seasons', 'panda-seasons' ),
+				'label'       => __( 'Panda Seasons Full', 'panda-seasons' ),
 				'description' => __( 'Securely read and manage seasonal calendars and their doors.', 'panda-seasons' ),
 			)
 		);
@@ -37,9 +37,9 @@ final class Panda_Seasons_MCP {
 
 	private static function ability( $name, $label, $description, $callback, $permission, $input_schema = null, $readonly = false, $destructive = false ) {
 		// The category registry may already have been initialized by another plugin
-		// before Panda Seasons is loaded. In that case WordPress no longer fires the
+		// before Panda Seasons Full is loaded. In that case WordPress no longer fires the
 		// category registration hook, so use the built-in category instead of
-		// silently losing every Panda Seasons ability.
+		// silently losing every Panda Seasons Full ability.
 		$category = function_exists( 'wp_has_ability_category' ) && wp_has_ability_category( self::CATEGORY )
 			? self::CATEGORY
 			: self::FALLBACK_CATEGORY;
@@ -78,13 +78,13 @@ final class Panda_Seasons_MCP {
 			'properties' => array( 'calendar_id' => array( 'type' => 'integer', 'minimum' => 1 ) ),
 			'required'   => array( 'calendar_id' ),
 		);
-		self::ability( 'list-calendars', __( 'List calendars', 'panda-seasons' ), __( 'Lists Panda Seasons calendars the current WordPress user may edit. No subscriber data is returned.', 'panda-seasons' ), 'list_calendars', 'can_list', array( 'type' => 'object', 'properties' => array() ), true );
+		self::ability( 'list-calendars', __( 'List calendars', 'panda-seasons' ), __( 'Lists Panda Seasons Full calendars the current WordPress user may edit. No subscriber data is returned.', 'panda-seasons' ), 'list_calendars', 'can_list', array( 'type' => 'object', 'properties' => array() ), true );
 		self::ability( 'get-calendar', __( 'Get calendar', 'panda-seasons' ), __( 'Returns one editable calendar with its settings and doors. No subscriber data is returned.', 'panda-seasons' ), 'get_calendar', 'can_edit_calendar', $id_schema, true );
 		self::ability( 'save-calendar', __( 'Create or update calendar', 'panda-seasons' ), __( 'Creates a calendar or updates its title, content, status and supported settings.', 'panda-seasons' ), 'save_calendar', 'can_save_calendar', self::calendar_input_schema() );
 		self::ability( 'save-door', __( 'Create or update door', 'panda-seasons' ), __( 'Creates a door in a calendar or updates an existing door and its supported settings.', 'panda-seasons' ), 'save_door', 'can_save_door', self::door_input_schema() );
 		self::ability( 'duplicate-door', __( 'Duplicate door', 'panda-seasons' ), __( 'Duplicates an existing door in the same calendar.', 'panda-seasons' ), 'duplicate_door', 'can_edit_door', array( 'type' => 'object', 'properties' => array( 'door_id' => array( 'type' => 'integer', 'minimum' => 1 ) ), 'required' => array( 'door_id' ) ) );
 		self::ability( 'delete-door', __( 'Move door to trash', 'panda-seasons' ), __( 'Moves one calendar door to the WordPress trash.', 'panda-seasons' ), 'delete_door', 'can_delete_door', array( 'type' => 'object', 'properties' => array( 'door_id' => array( 'type' => 'integer', 'minimum' => 1 ) ), 'required' => array( 'door_id' ) ), false, true );
-		self::ability( 'export-template', __( 'Export calendar template', 'panda-seasons' ), __( 'Returns a portable Panda Seasons template object without subscriber data.', 'panda-seasons' ), 'export_template', 'can_edit_calendar', $id_schema, true );
+		self::ability( 'export-template', __( 'Export calendar template', 'panda-seasons' ), __( 'Returns a portable Panda Seasons Full template object without subscriber data.', 'panda-seasons' ), 'export_template', 'can_edit_calendar', $id_schema, true );
 		self::ability( 'create-layout-draft', __( 'Create layout-only calendar draft', 'panda-seasons' ), __( 'Creates a draft calendar from an analyzed reference image, door rectangles and visual defaults. Door content may be added later.', 'panda-seasons' ), 'create_layout_draft', 'can_create_layout', self::layout_input_schema() );
 		self::ability( 'apply-document-content', __( 'Apply document content to calendar', 'panda-seasons' ), __( 'Adds normalized content from a document to existing doors by door number without changing their layout.', 'panda-seasons' ), 'apply_document_content', 'can_apply_document_content', self::document_input_schema() );
 	}
@@ -180,7 +180,7 @@ final class Panda_Seasons_MCP {
 	}
 	public static function can_save_calendar( $input ) {
 		$id = self::input_id( $input, 'calendar_id' );
-		return $id ? self::can_edit_calendar( $input ) : current_user_can( 'edit_posts' );
+		return Panda_Seasons_Settings::allows( 'write', $id ) && ( $id ? self::can_edit_calendar( $input ) : current_user_can( 'edit_posts' ) );
 	}
 	public static function can_edit_door( $input ) {
 		$id = self::input_id( $input, 'door_id' );
@@ -190,13 +190,13 @@ final class Panda_Seasons_MCP {
 		$calendar_id = self::input_id( $input, 'calendar_id' );
 		$door_id = self::input_id( $input, 'door_id' );
 		if ( ! $calendar_id || Panda_Seasons_Plugin::CALENDAR_POST_TYPE !== get_post_type( $calendar_id ) || ! current_user_can( 'edit_post', $calendar_id ) ) return false;
-		return ! $door_id || ( self::can_edit_door( $input ) && absint( wp_get_post_parent_id( $door_id ) ) === $calendar_id );
+		return Panda_Seasons_Settings::allows( 'write', $door_id ) && ( ! $door_id || ( self::can_edit_door( $input ) && absint( wp_get_post_parent_id( $door_id ) ) === $calendar_id ) );
 	}
 	public static function can_delete_door( $input ) {
 		$id = self::input_id( $input, 'door_id' );
 		return self::can_edit_door( $input ) && current_user_can( 'delete_post', $id );
 	}
-	public static function can_create_layout() { return current_user_can( 'edit_posts' ); }
+	public static function can_create_layout() { return current_user_can( 'edit_posts' ) && Panda_Seasons_Settings::allows( 'write' ); }
 	public static function can_apply_document_content( $input ) { return self::can_edit_calendar( $input ); }
 
 	private static function post_meta( $post_id ) {
@@ -272,6 +272,7 @@ final class Panda_Seasons_MCP {
 
 	public static function save_calendar( $input ) {
 		$id = self::input_id( $input, 'calendar_id' );
+		if ( ! Panda_Seasons_Settings::allows( 'write', $id ) ) return ContactPanda_License::operation_error();
 		$data = array( 'post_type' => Panda_Seasons_Plugin::CALENDAR_POST_TYPE );
 		if ( $id ) $data['ID'] = $id;
 		$data['post_title'] = sanitize_text_field( (string) ( $input['title'] ?? ( $id ? get_the_title( $id ) : __( 'New calendar', 'panda-seasons' ) ) ) );
@@ -288,6 +289,7 @@ final class Panda_Seasons_MCP {
 	public static function save_door( $input ) {
 		$calendar_id = self::input_id( $input, 'calendar_id' );
 		$door_id = self::input_id( $input, 'door_id' );
+		if ( ! Panda_Seasons_Settings::allows( 'write', $door_id ) ) return ContactPanda_License::operation_error();
 		$data = array( 'post_type' => Panda_Seasons_Plugin::DOOR_POST_TYPE, 'post_parent' => $calendar_id, 'post_status' => 'publish' );
 		if ( $door_id ) $data['ID'] = $door_id;
 		$data['post_title'] = sanitize_text_field( (string) ( $input['title'] ?? ( $door_id ? get_the_title( $door_id ) : __( 'New door', 'panda-seasons' ) ) ) );

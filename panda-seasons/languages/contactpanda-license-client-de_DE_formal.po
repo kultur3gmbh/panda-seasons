@@ -1,0 +1,477 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE_formal\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: PandaCosmo family\n"
+"PO-Revision-Date: 2026-11-17 12:00+0100\n"
+"Last-Translator: Kultur3 GmbH\n"
+"Language-Team: German\n"
+
+
+msgid "Licenses"
+msgstr "Lizenzen"
+
+msgid "ContactPanda Basic"
+msgstr "ContactPanda Basic"
+
+msgid "The license has been activated. Product permissions and dates are shown below."
+msgstr "Die Lizenz wurde aktiviert. Produktfreigaben und Laufzeiten stehen unten."
+
+msgid "The website was disconnected from this license. Other active licenses are retained."
+msgstr "Die Website wurde von dieser Lizenz getrennt. Andere aktive Lizenzen bleiben erhalten."
+
+msgid "The license information was updated."
+msgstr "Die Lizenzinformationen wurden aktualisiert."
+
+msgid "The license could not be activated. Please check the license key and try again."
+msgstr "Die Lizenz konnte nicht aktiviert werden. Bitte prüfen Sie den Lizenzschlüssel und versuchen Sie es erneut."
+
+msgid "The license service could not be reached. No existing feature or license information was changed."
+msgstr "Der Lizenzdienst konnte nicht erreicht werden. Vorhandene Funktionen und Lizenzinformationen wurden nicht verändert."
+
+msgid "The license response could not be verified. No existing license information was changed."
+msgstr "Die Lizenzantwort konnte nicht verifiziert werden. Bestehende Lizenzinformationen wurden nicht verändert."
+
+msgid "The license service rejected the product assignment. Update the license server or contact support."
+msgstr "Der Lizenzdienst hat die Produktzuordnung abgelehnt. Bitte den Lizenzserver aktualisieren oder den Support kontaktieren."
+
+msgid "The website limit is reached. Disconnect an existing website in the customer account first."
+msgstr "Die Websitegrenze ist erreicht. Bitte zuerst eine bestehende Website im Kundenkonto trennen."
+
+msgid "The license key was not found. Check the complete key."
+msgstr "Der Lizenzschlüssel wurde nicht gefunden. Bitte den vollständigen Schlüssel prüfen."
+
+msgid "This license is blocked or its trial has ended. Check the customer account."
+msgstr "Diese Lizenz ist gesperrt oder ihre Testphase ist beendet. Bitte das Kundenkonto prüfen."
+
+msgid "The website address or installation identity could not be verified."
+msgstr "Die Websiteadresse oder Installationskennung konnte nicht geprüft werden."
+
+msgid "The license server could not save the website activation. No existing license was replaced."
+msgstr "Der Lizenzserver konnte die Websiteaktivierung nicht speichern. Keine bestehende Lizenz wurde ersetzt."
+
+msgid "Advanced newsletter"
+msgstr "Erweiterter Newsletter"
+
+msgid "ContactPanda licenses"
+msgstr "ContactPanda-Lizenzen"
+
+msgid "Activate separate product keys or one MasterKey for several products and plans. The license server decides which signed product permissions a MasterKey grants. The entered key is never stored after activation."
+msgstr "Aktivieren Sie einzelne Produktschlüssel oder einen MasterKey für mehrere Produkte und Tarife. Der Lizenzserver legt verbindlich fest, welche signierten Produktberechtigungen ein MasterKey gewährt. Der eingegebene Schlüssel wird nach der Aktivierung nicht gespeichert."
+
+msgid "ContactPanda license"
+msgstr "ContactPanda-Lizenz"
+
+msgid "Free license active"
+msgstr "Kostenlose Lizenz aktiv"
+
+msgid "The license service is temporarily unavailable. Cached permissions remain active and ContactPanda will retry automatically."
+msgstr "Der Lizenzdienst ist vorübergehend nicht erreichbar. Zwischengespeicherte Berechtigungen bleiben aktiv und ContactPanda versucht die Prüfung automatisch erneut."
+
+msgid "Activated licenses"
+msgstr "Aktivierte Lizenzen"
+
+msgid "All modules"
+msgstr "Alle Module"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Modules"
+msgstr "Module"
+
+msgid "No modules assigned"
+msgstr "Keine Module zugeordnet"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Updates until"
+msgstr "Updates bis"
+
+msgid "Last checked"
+msgstr "Zuletzt geprüft"
+
+msgid "Disconnect this website"
+msgstr "Diese Website trennen"
+
+msgid "Products and plans"
+msgstr "Produkte und Tarife"
+
+msgid "Free product active"
+msgstr "Gratisprodukt aktiv"
+
+msgid "License active"
+msgstr "Lizenz aktiv"
+
+msgid "Updates and support expired"
+msgstr "Updates und Support abgelaufen"
+
+msgid "License blocked"
+msgstr "Lizenz gesperrt"
+
+msgid "No license activated"
+msgstr "Keine Lizenz aktiviert"
+
+msgid "Installed version: %s"
+msgstr "Installierte Version: %s"
+
+msgid "Updates"
+msgstr "Updates"
+
+msgid "Included"
+msgstr "Enthalten"
+
+msgid "Not available"
+msgstr "Nicht verfügbar"
+
+msgid "Support"
+msgstr "Support"
+
+msgid "Not specified"
+msgstr "Nicht angegeben"
+
+msgid "Website usage"
+msgstr "Website-Nutzung"
+
+msgid "Module status"
+msgstr "Modulstatus"
+
+msgid "ContactPanda Plus Complete"
+msgstr "ContactPanda Plus Komplett"
+
+msgid "ContactPanda Business"
+msgstr "ContactPanda Business"
+
+msgid "Enabled"
+msgstr "Aktiviert"
+
+msgid "Not enabled"
+msgstr "Nicht freigeschaltet"
+
+msgid "Add or renew a license"
+msgstr "Lizenz hinzufügen oder verlängern"
+
+msgid "Enter either an individual product key or a MasterKey. Additional keys can be activated one after another."
+msgstr "Geben Sie entweder einen einzelnen Produktschlüssel oder einen MasterKey ein. Weitere Schlüssel können nacheinander aktiviert werden."
+
+msgid "License key"
+msgstr "Lizenzschlüssel"
+
+msgid "Activate or renew license"
+msgstr "Lizenz aktivieren oder erneuern"
+
+msgid "Check licenses now"
+msgstr "Lizenzen jetzt prüfen"
+
+msgid "Only technical license and installation data is sent to pandacosmo.com. Contacts, orders, messages, and newsletter content are never transmitted."
+msgstr "An pandacosmo.com werden nur technische Lizenz- und Installationsdaten gesendet. Kontakte, Bestellungen, Nachrichten und Newsletter-Inhalte werden niemals übertragen."
+
+msgid "MasterKey"
+msgstr "MasterKey"
+
+msgid "Customer license"
+msgstr "Kundenlizenz"
+
+msgid "Partner license"
+msgstr "Partnerlizenz"
+
+msgid "Module license"
+msgstr "Modullizenz"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Updates expired — modules remain usable"
+msgstr "Updates abgelaufen – Module bleiben nutzbar"
+
+msgid "Blocked"
+msgstr "Blockiert"
+
+msgid "Disconnected"
+msgstr "Getrennt"
+
+msgid "Unknown"
+msgstr "Unbekannt"
+
+msgid "You do not have permission."
+msgstr "Keine Berechtigung."
+
+msgid "The ContactPanda license service has not been reachable for more than seven days."
+msgstr "Der ContactPanda-Lizenzdienst ist seit mehr als sieben Tagen nicht erreichbar."
+
+msgid "Cached permissions remain active and all installed functions continue to work. Automatic checks will continue."
+msgstr "Zwischengespeicherte Berechtigungen bleiben aktiv und alle installierten Funktionen arbeiten weiter. Die automatischen Prüfungen werden fortgesetzt."
+
+msgid "Active licenses"
+msgstr "Aktive Lizenzen"
+
+msgid "Archive"
+msgstr "Archiv"
+
+msgid "Confirm disconnection of the listed products"
+msgstr "Trennung der aufgeführten Produkte bestätigen"
+
+msgid "Disconnect website"
+msgstr "Website trennen"
+
+msgid "Enter a product key or an All-in key once. Covered installed products share the same activation."
+msgstr "Einen Produktschlüssel oder All-in-Schlüssel einmal eingeben. Enthaltene installierte Produkte verwenden dieselbe Aktivierung."
+
+msgid "Existing calendars, published doors and scheduled deliveries continue. New calendars and extensions require an active license unless permanent use was purchased."
+msgstr "Bestehende Kalender, veröffentlichte Türchen und geplante Aussendungen laufen weiter. Neue Kalender und Erweiterungen benötigen eine aktive Lizenz, sofern kein dauerhaftes Nutzungsrecht gekauft wurde."
+
+msgid "Existing customer licenses, validation, protected downloads and billing continue. New license models and new grants require an active license."
+msgstr "Bestehende Kundenlizenzen, Prüfungen, geschützte Downloads und Abrechnungen laufen weiter. Neue Lizenzmodelle und Vergaben benötigen eine aktive Lizenz."
+
+msgid "Existing customer portals, support processes and agreements continue. New projects and service configurations require an active license."
+msgstr "Bestehende Kundenportale, Supportabläufe und Vereinbarungen laufen weiter. Neue Projekte und Dienstkonfigurationen benötigen eine aktive Lizenz."
+
+msgid "Existing forms, newsletters and automations continue. New forms, templates, automations, premium imports and extensions require an active license."
+msgstr "Bestehende Formulare, Newsletter und Automatisierungen laufen weiter. Neue Formulare, Vorlagen, Automatisierungen, Premiumimporte und Erweiterungen benötigen eine aktive Lizenz."
+
+msgid "Existing languages, published translations and configured translation processes continue. New languages and multilingual setups require an active license."
+msgstr "Bestehende Sprachen, veröffentlichte Übersetzungen und eingerichtete Übersetzungsabläufe laufen weiter. Neue Sprachen und mehrsprachige Einrichtungen benötigen eine aktive Lizenz."
+
+msgid "Existing offers, subscriptions, renewal billing and payment recovery continue. New subscription models and commercial setups require an active license."
+msgstr "Bestehende Angebote, Abonnements, Folgeabrechnungen und die Bearbeitung von Zahlungsproblemen laufen weiter. Neue Abomodelle und kommerzielle Einrichtungen benötigen eine aktive Lizenz."
+
+msgid "Existing setups and automatic billing continue. An active license is required for new paid setups, duplication, imports and extensions. Existing data and necessary management remain available."
+msgstr "Bestehende Einrichtungen und automatische Abrechnungen laufen weiter. Neue kostenpflichtige Einrichtungen, Duplikate, Importe und Erweiterungen benötigen eine aktive Lizenz. Vorhandene Daten und notwendige Verwaltung bleiben verfügbar."
+
+msgid "Existing setups and automatic processes continue. New paid setups and extensions require an active license."
+msgstr "Bestehende Einrichtungen und automatische Abläufe laufen weiter. Neue kostenpflichtige Einrichtungen und Erweiterungen benötigen eine aktive Lizenz."
+
+msgid "Existing setups only"
+msgstr "Bestehende Einrichtungen"
+
+msgid "Existing setups, published content, automatic processes and billing continue. Renew to add new paid setups or extensions. Existing data and necessary management remain available. Updates and support end with their paid entitlement; free features remain available."
+msgstr "Bestehende Einrichtungen, veröffentlichte Inhalte, automatische Abläufe und Abrechnungen laufen weiter. Für neue kostenpflichtige Einrichtungen und Erweiterungen ist eine Verlängerung erforderlich. Vorhandene Daten und notwendige Verwaltung bleiben verfügbar. Updates und Support enden mit ihrer bezahlten Berechtigung; kostenlose Funktionen bleiben verfügbar."
+
+msgid "License grace period"
+msgstr "Übergangsfrist der Lizenz"
+
+msgid "Manage license"
+msgstr "Lizenz verwalten"
+
+msgid "Masked; suffix not available"
+msgstr "Maskiert; Endziffern nicht verfügbar"
+
+msgid "No active license"
+msgstr "Keine aktive Lizenz"
+
+msgid "Paid period ends: %1$s. New setups restricted from: %2$s."
+msgstr "Bezahlte Laufzeit endet: %1$s. Neue Einrichtungen eingeschränkt ab: %2$s."
+
+msgid "Panda licenses"
+msgstr "Panda-Lizenzen"
+
+msgid "Permission denied."
+msgstr "Zugriff verweigert."
+
+msgid "Product license"
+msgstr "Produktlizenz"
+
+msgid "Product license active"
+msgstr "Produktlizenz aktiv"
+
+msgid "Stored licenses"
+msgstr "Hinterlegte Lizenzen"
+
+msgid "Support until"
+msgstr "Support bis"
+
+msgid "The existing assistant and support handoff continue. New assistant configurations and knowledge-source extensions require an active license. Provider services remain separately payable."
+msgstr "Der bestehende Assistent und die Supportübergabe laufen weiter. Neue Assistentenkonfigurationen und Erweiterungen der Wissensquellen benötigen eine aktive Lizenz. Anbieterleistungen sind weiterhin gesondert zu bezahlen."
+
+msgid "This disconnects this key for all products listed above. Other independent keys remain unchanged."
+msgstr "Dieser Schlüssel wird für alle oben aufgeführten Produkte von der Website getrennt. Andere unabhängige Schlüssel bleiben unverändert."
+
+msgid "Updates and support end with the paid entitlement. Existing setups, automatic processes and billing continue after the grace period; new paid setups require renewal."
+msgstr "Updates und Support enden mit der bezahlten Berechtigung. Bestehende Einrichtungen, automatische Abläufe und Abrechnungen laufen nach der Übergangsfrist weiter; neue kostenpflichtige Einrichtungen benötigen eine Verlängerung."
+
+msgid "Via All-in / shared license"
+msgstr "Über All-in / gemeinsame Lizenz"
+
+msgid "Communication"
+msgstr "Kommunikation"
+
+msgid "Purchase archive"
+msgstr "Kaufarchiv"
+
+msgid "Company relationships"
+msgstr "Firmenzuordnungen"
+
+msgid "Main company contact"
+msgstr "Firma als Hauptkontakt"
+
+msgid "Authorized primary contact"
+msgstr "Berechtigte Hauptansprechperson"
+
+msgid "Company roles are assigned by the administrator. Changing a billing company does not grant access to company licenses."
+msgstr "Firmenrollen werden durch die Administration vergeben. Die Änderung einer Rechnungsfirma gewährt keinen Zugriff auf Firmenlizenzen."
+
+msgid "Evaluation ends"
+msgstr "Evaluierung endet"
+
+msgid "Evaluation expired"
+msgstr "Evaluierung abgelaufen"
+
+msgid "Evaluation license"
+msgstr "Evaluierungslizenz"
+
+msgid "The cached license status remains in effect. Automatic checks will continue."
+msgstr "Der zwischengespeicherte Lizenzstatus gilt weiterhin. Die automatischen Prüfungen werden fortgesetzt."
+
+msgid "License archive"
+msgstr "Lizenzarchiv"
+
+msgid "Upgrade to All-in"
+msgstr "Auf All-in erweitern"
+
+msgid "All-in offer"
+msgstr "All-in-Angebot"
+
+msgid "Preview upgrade and credit"
+msgstr "Upgrade und Anrechnung ansehen"
+
+msgid "Review All-in upgrade"
+msgstr "All-in-Upgrade prüfen"
+
+msgid "Annual price excluding tax"
+msgstr "Jahrespreis ohne Umsatzsteuer"
+
+msgid "Unused paid period credit excluding tax"
+msgstr "Anrechnung der ungenutzten bezahlten Laufzeit ohne Umsatzsteuer"
+
+msgid "Amount due excluding tax"
+msgstr "Zu zahlender Betrag ohne Umsatzsteuer"
+
+msgid "Taxes are calculated at payment. The existing key and website connections are retained. The new twelve-month period begins after successful payment. The previous subscription, if present, is replaced; future renewals use the full annual price."
+msgstr "Die Umsatzsteuer wird bei der Zahlung berechnet. Der vorhandene Schlüssel und die Websiteverbindungen bleiben erhalten. Die neue Laufzeit von zwölf Monaten beginnt nach erfolgreicher Zahlung. Ein bisheriges Abonnement wird gegebenenfalls ersetzt; für weitere Verlängerungen gilt der volle Jahrespreis."
+
+msgid "I confirm the upgrade, credit and new annual period."
+msgstr "Ich bestätige das Upgrade, die Anrechnung und die neue Jahreslaufzeit."
+
+msgid "Continue to payment"
+msgstr "Weiter zur Zahlung"
+
+msgid "The license changed after the upgrade was quoted. The paid upgrade requires review; no license was changed."
+msgstr "Die Lizenz hat sich seit der Upgrade-Vorschau geändert. Das bezahlte Upgrade muss geprüft werden; keine Lizenz wurde geändert."
+
+msgid "This upgrade is unavailable or the quote has changed. Please request a new preview or contact support."
+msgstr "Dieses Upgrade ist nicht verfügbar oder das Angebot hat sich geändert. Bitte fordern Sie eine neue Vorschau an oder wenden Sie sich an den Support."
+
+msgid "This website is blocked for this key. Unblocking permits a new activation; it does not reserve a slot or reactivate the website."
+msgstr "Diese Website ist für diesen Schlüssel gesperrt. Die Freigabe erlaubt eine neue Aktivierung; sie reserviert keinen Platz und aktiviert die Website nicht automatisch."
+
+msgid "Blocking disconnects this website and frees its slot. A changed installation identifier cannot reactivate it until you unblock it. Other websites and licenses are unaffected."
+msgstr "Die Sperre trennt diese Website und gibt ihren Platz frei. Auch mit einer geänderten Installationskennung kann sie bis zur Freigabe nicht erneut aktiviert werden. Andere Websites und Lizenzen bleiben unverändert."
+
+msgid "I confirm this website change for all products on this key."
+msgstr "Ich bestätige diese Websiteänderung für alle Produkte dieses Schlüssels."
+
+msgid "Unblock website"
+msgstr "Website freigeben"
+
+msgid "Block website"
+msgstr "Website sperren"
+
+msgid "This website is blocked for this license key."
+msgstr "Diese Website ist für diesen Lizenzschlüssel gesperrt."
+
+msgid "This website is blocked for this key. Unblock it in the customer account before activating it again."
+msgstr "Diese Website ist für diesen Schlüssel gesperrt. Geben Sie sie im Kundenkonto frei, bevor Sie sie erneut aktivieren."
+
+msgid "Extended duplicate review"
+msgstr "Erweiterte Dublettenprüfung"
+
+msgid "Same full name, including reordered names or academic titles — review required"
+msgstr "Gleicher vollständiger Name, auch mit anderer Reihenfolge oder akademischen Titeln – Prüfung erforderlich"
+
+msgid "Plus also compares complete names without requiring a postal code, including reordered words and leading academic titles. Identical names can belong to different people: review each candidate and every conflicting value before confirming a merge. The full inventory is scanned in bounded batches; nothing is merged automatically."
+msgstr "Plus vergleicht vollständige Namen auch ohne Postleitzahl, mit anderer Wortreihenfolge und vorangestellten akademischen Titeln. Gleiche Namen können zu verschiedenen Personen gehören: Prüfen Sie jeden Vorschlag und alle abweichenden Werte vor der Zusammenführung. Der gesamte Bestand wird in kleinen Paketen geprüft; nichts wird automatisch zusammengeführt."
+
+msgid "The database upgrade could not be completed. Existing data has been retained."
+msgstr "Die Datenbankaktualisierung konnte nicht abgeschlossen werden. Vorhandene Daten bleiben erhalten."
+
+msgid "Website suspended; local data retained"
+msgstr "Website gesperrt; lokale Daten bleiben erhalten"
+
+msgid "The website could not prove its address. Use its public HTTPS address and allow the Panda license verification endpoint through the firewall. Existing licenses are unchanged."
+msgstr "Die Website konnte ihre Adresse nicht bestätigen. Verwenden Sie ihre öffentliche HTTPS-Adresse und erlauben Sie den Panda-Lizenzprüfungs-Endpunkt in der Firewall. Bestehende Lizenzen bleiben unverändert."
+
+msgid "License disconnected. A new key can now be entered."
+msgstr "Lizenz getrennt. Ein neuer Schlüssel kann jetzt eingegeben werden."
+
+msgid "License activated. The listed products use this key."
+msgstr "Lizenz aktiviert. Die aufgeführten Produkte verwenden diesen Schlüssel."
+
+msgid "License scope and restrictions"
+msgstr "Lizenzumfang und Einschränkungen"
+
+msgid "Installed products"
+msgstr "Installierte Produkte"
+
+msgid "Automatic bounce inbox (Plus)"
+msgstr "Automatische Postfachverarbeitung (Plus)"
+
+msgid "Bounce address / envelope sender"
+msgstr "Rücksendeadresse / technischer Absender"
+
+msgid "Check bounce inbox now"
+msgstr "Postfach jetzt prüfen"
+
+msgid "ContactPanda checks a dedicated mailbox every 15 minutes. Delivery delays are recorded but do not block the address. Only final failures and repeated temporary failures are suppressed."
+msgstr "ContactPanda prüft alle 15 Minuten ein eigenes Postfach. Zustellverzögerungen werden erfasst, sperren die Adresse aber nicht. Nur endgültige Fehler und wiederholte vorübergehende Fehler führen zu einer Sperre."
+
+msgid "Enable automatic inbox processing"
+msgstr "Automatische Postfachverarbeitung aktivieren"
+
+msgid "Every 15 minutes"
+msgstr "Alle 15 Minuten"
+
+msgid "Folder"
+msgstr "Ordner"
+
+msgid "IMAP server"
+msgstr "IMAP-Server"
+
+msgid "Last mailbox check: %1$s — %2$s"
+msgstr "Letzte Postfachprüfung: %1$s — %2$s"
+
+msgid "Mailbox connection failed."
+msgstr "Die Verbindung zum Postfach ist fehlgeschlagen."
+
+msgid "Mailbox settings are incomplete."
+msgstr "Die Postfacheinstellungen sind unvollständig."
+
+msgid "PHP IMAP is unavailable."
+msgstr "Die PHP-IMAP-Erweiterung ist nicht verfügbar."
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Save the selected roles and the resulting permissions for this account?"
+msgstr "Ausgewählte Rollen und die daraus entstehenden Berechtigungen für dieses Konto speichern?"
+
+msgid "Shared security key for delivery-service event notifications. Configure the same key in the external webhook connection. This is not your mailbox password and is not required for IMAP inbox processing."
+msgstr "Gemeinsamer Sicherheitsschlüssel für Ereignismeldungen des Versanddienstes. Tragen Sie denselben Schlüssel in dessen Webhook-Verbindung ein. Für die IMAP-Postfachverarbeitung wird dieser Schlüssel nicht benötigt; er ist kein Postfachpasswort."
+
+msgid "System email customisation"
+msgstr "System-E-Mails gestalten"
+
+msgid "The PHP IMAP extension is not available on this server. Webhooks continue to work, but the mailbox cannot be checked automatically."
+msgstr "Die PHP-IMAP-Erweiterung ist auf diesem Server nicht verfügbar. Webhooks funktionieren weiterhin; das Postfach kann jedoch nicht automatisch geprüft werden."
+
+msgid "The roles could not be saved."
+msgstr "Die Rollen konnten nicht gespeichert werden."
+
+msgid "Webhook security key"
+msgstr "Webhook-Sicherheitsschlüssel"
+
+msgid "completed"
+msgstr "abgeschlossen"

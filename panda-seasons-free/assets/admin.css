@@ -1,0 +1,142 @@
+.panda-seasons-free-editor{--psf-blue:#3858e9;color:#1d2327}.panda-seasons-free-settings-card,.panda-seasons-free-defaults{border:1px solid #dcdcde;border-radius:10px;padding:18px;margin:0 0 16px;background:#fff}.panda-seasons-free-background-picker{border:1px dashed #9ca3af;border-radius:8px;cursor:pointer;overflow:hidden;margin-bottom:16px}.panda-seasons-free-background-picker [data-cover-preview]{min-height:180px;background-position:center;background-size:cover;display:grid;place-items:center;color:#50575e;font-size:15px}.panda-seasons-free-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.panda-seasons-free-settings-grid.is-four{grid-template-columns:repeat(4,minmax(0,1fr))}.panda-seasons-free-settings-grid .is-wide{grid-column:1/-1}.panda-seasons-free-settings-grid label,.panda-seasons-free-state-colors label{display:grid;gap:6px}.panda-seasons-free-settings-grid label>span,.panda-seasons-free-state-colors label>span{font-weight:600}.panda-seasons-free-settings-grid input,.panda-seasons-free-state-colors input{width:100%;min-height:40px}.panda-seasons-free-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 10px}.panda-seasons-free-toolbar>div{display:flex;gap:8px;flex-wrap:wrap}.panda-seasons-free-toolbar .dashicons{vertical-align:middle}.panda-seasons-free-toolbar [aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--psf-blue);color:var(--psf-blue)}.panda-seasons-free-workspace{display:grid;grid-template-columns:minmax(0,3fr) minmax(300px,2fr);gap:18px;align-items:start}.panda-seasons-free-canvas-wrap{background:#eef0f3;border-radius:10px;padding:16px;overflow:auto}.panda-seasons-free-canvas{position:relative;width:100%;aspect-ratio:1.5;background-position:center;background-size:cover;border-radius:8px;overflow:hidden;min-height:360px}.panda-seasons-free-editor-door{position:absolute;border:0;border-radius:6px;display:grid;place-items:center;font-weight:700;font-size:clamp(15px,2vw,30px);cursor:move;padding:0;box-shadow:none}.panda-seasons-free-editor-door.is-selected{outline:3px solid #2271b1;outline-offset:-3px}.panda-seasons-free-editor-door i{position:absolute;right:0;bottom:0;width:16px;height:16px;background:#2271b1;border:2px solid #fff;border-radius:3px;cursor:nwse-resize}.panda-seasons-free-inspector{border:1px solid #dcdcde;border-radius:10px;background:#fff;padding:18px;position:sticky;top:42px}.panda-seasons-free-inspector h3{margin-top:0}.panda-seasons-free-state-colors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.panda-seasons-free-state-colors h4{grid-column:1/-1;margin:4px 0 0}.panda-seasons-free-content-editor{display:grid;gap:8px}.panda-seasons-free-inspector-actions{display:flex;justify-content:space-between;gap:12px;margin-top:16px}.panda-seasons-free-inspector-actions .button-link-delete{color:#b32d2e}.panda-seasons-free-inspector-actions .button-link-delete:hover{color:#8a2424}.panda-seasons-free-editor .ui-resizable-handle:not(.ui-resizable-se){display:none!important}@media(max-width:1100px){.panda-seasons-free-settings-grid.is-four{grid-template-columns:repeat(2,minmax(0,1fr))}.panda-seasons-free-workspace{grid-template-columns:1fr}.panda-seasons-free-inspector{position:static}}@media(max-width:782px){.panda-seasons-free-settings-grid,.panda-seasons-free-settings-grid.is-four,.panda-seasons-free-state-colors{grid-template-columns:1fr}.panda-seasons-free-toolbar{align-items:stretch;flex-direction:column}.panda-seasons-free-canvas{min-height:300px}}
+
+.panda-seasons-free-position{margin:0 0 18px;padding:14px;border:1px solid #dcdcde;border-radius:8px;background:#f8f9fa}.panda-seasons-free-position h4{margin:0 0 5px}.panda-seasons-free-position .description{margin:0 0 10px}.panda-seasons-free-position-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.panda-seasons-free-position-grid label{display:grid;gap:5px}.panda-seasons-free-position-grid label>span{font-size:12px;font-weight:600}.panda-seasons-free-position-grid input{box-sizing:border-box;width:100%;min-width:0}.panda-seasons-free-editor-door i{width:20px;height:20px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}@media(max-width:520px){.panda-seasons-free-position-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Calendar builder sidebar: select new doors or edit the active door without
+   moving the canvas or resetting its scroll position. */
+.panda-seasons-free-sidebar{min-width:0;max-height:calc(100vh - 100px);overflow:hidden;border:1px solid #dcdcde;border-radius:10px;background:#fff;position:sticky;top:42px}
+.panda-seasons-free-sidebar>.panda-editor-tabs{position:sticky;top:0;z-index:4;margin:0;padding:12px;border-bottom:1px solid #dcdcde;background:#fff}
+
+/* 0.1.16: shared three-tab Panda editor navigation. */
+.panda-seasons-free-sidebar>.panda-editor-tabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:16px!important}
+.panda-seasons-free-sidebar>.panda-editor-tabs button{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:0;min-height:46px;margin:0;padding:9px 12px;border:1px solid #c3c7cc;border-radius:7px;background:#f6f7f7;color:#2c3338;font-size:14px;font-weight:600;line-height:1.25;cursor:pointer}
+.panda-seasons-free-sidebar>.panda-editor-tabs button:hover,.panda-seasons-free-sidebar>.panda-editor-tabs button:focus{border-color:#5c5c5c;background:#ececec;color:#1d2327;outline:0;box-shadow:0 0 0 2px rgba(92,92,92,.18)}
+.panda-seasons-free-sidebar>.panda-editor-tabs button.is-active{border-color:#5c5c5c;background:#5c5c5c;color:#fff;box-shadow:none}
+.panda-seasons-free-elements-panel>[data-add-door]{display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-height:46px!important;border-color:#c3c7cc!important;border-radius:7px!important;background:#fff!important;color:#2c3338!important;font-weight:600!important}
+.panda-seasons-free-settings-panel{display:block;padding:16px}.panda-seasons-free-settings-panel[hidden]{display:none}.panda-seasons-free-settings-panel>.panda-seasons-free-settings-card,.panda-seasons-free-settings-panel>.panda-seasons-free-defaults,.panda-seasons-free-settings-panel>.panda-seasons-free-templates{margin-bottom:14px}
+@media(max-width:782px){.panda-seasons-free-sidebar>.panda-editor-tabs{grid-template-columns:1fr}}
+.panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:calc(100vh - 165px);box-sizing:border-box;overflow:auto}
+.panda-seasons-free-elements-panel{padding:18px}
+.panda-seasons-free-elements-panel .button{display:flex;align-items:center;justify-content:flex-start;gap:8px;width:100%;min-height:46px;margin-top:14px;padding:8px 12px;text-align:left}
+.panda-seasons-free-edit-panel{min-height:280px}
+.panda-seasons-free-editor-empty{display:flex;min-height:280px;box-sizing:border-box;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;color:#646970}
+.panda-seasons-free-editor-empty[hidden]{display:none}
+.panda-seasons-free-editor-empty .dashicons{width:42px;height:42px;font-size:42px}
+.panda-seasons-free-editor-empty h3{margin:12px 0 4px}
+.panda-seasons-free-inspector{position:static;top:auto;border:0;border-radius:0}
+@media(max-width:1100px){.panda-seasons-free-sidebar{position:static;max-height:none}.panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:none}}
+
+/* 0.3.0: one-column WordPress shell with the same two-column editor as Pro. */
+.post-type-panda_calendar #poststuff #post-body.columns-2{margin-right:0}
+.post-type-panda_calendar #post-body-content,.post-type-panda_calendar #postbox-container-2{float:none;width:100%;min-width:0}
+.post-type-panda_calendar #postbox-container-1[hidden]{display:none!important}
+.post-type-panda_calendar #poststuff .postbox-container{box-sizing:border-box}
+.post-type-panda_calendar #screen-meta-links{display:none!important}
+.panda-seasons-free-publish-slot:empty{display:none}
+.panda-seasons-free-inline-publish{margin:0 0 16px!important;border:1px solid #dcdcde!important;border-radius:10px;box-shadow:none!important}
+.panda-seasons-free-inline-publish .postbox-header{display:none}
+.panda-seasons-free-inline-publish .inside{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin:0!important;padding:12px!important}
+.panda-seasons-free-inline-publish #minor-publishing,.panda-seasons-free-inline-publish #misc-publishing-actions{display:none}
+.panda-seasons-free-inline-publish #major-publishing-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;width:100%;padding:0;border:0;background:transparent}
+.panda-seasons-free-inline-publish #delete-action{margin-right:auto}
+.panda-seasons-free-inline-publish #publishing-action{float:none}
+.panda-seasons-free-inline-publish #publish{min-height:42px;border-color:#5c5c5c;background:#5c5c5c;color:#fff}
+.panda-seasons-free-workspace{grid-template-columns:minmax(0,1fr) minmax(380px,520px);gap:20px}
+.panda-seasons-free-sidebar>.panda-editor-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.panda-seasons-free-sidebar>.panda-editor-tabs button{min-height:48px;white-space:normal}
+.panda-seasons-free-toolbar .button[aria-pressed="true"]{border-color:#5c5c5c;background:#5c5c5c;color:#fff;box-shadow:none}
+.panda-seasons-free-editor [data-cover-picker][hidden]{display:none!important}
+.panda-seasons-free-settings-panel>.contactpanda-image-picker{margin-bottom:14px}
+@media(max-width:1180px){.panda-seasons-free-workspace{grid-template-columns:1fr}.panda-seasons-free-sidebar{position:static;max-height:none}.panda-seasons-free-sidebar>[data-panda-editor-panel]{max-height:none}}
+@media(max-width:600px){.panda-seasons-free-sidebar>.panda-editor-tabs{grid-template-columns:1fr!important}}
+
+/* Use the same direct pointer interaction as the full calendar editor. */
+.panda-seasons-free-editor-door{touch-action:none;user-select:none}
+.panda-seasons-free-editor-door i{z-index:2;touch-action:none}
+/* Panda shared choice controls: keep the control beside the start of its label. */
+:where(.contactpanda-wrap,.contactpanda-detail-wrap,.contactpanda-admin-modal,.contactpanda-portal,.contactpanda-registration,.contactpanda-registration-form,.contactpanda-newsletter-signup,.contactpanda-account-section,.contactpanda-business-service-modal,.contactpanda-helpdesk,.cpb-modal,.cpb-account,.cpls-wrap,.cpls-customer-portal,.cpls-customer-licenses,.cpls-account,.pm-wrap,.pm-widget,.pandawoo-pro-admin,.pandawoo-pro,.pandawoo-pro-wrap,.panda-seasons-dashboard,.panda-seasons-settings,.panda-seasons-templates-page,.panda-seasons-editor,.panda-seasons-free-dashboard,.panda-seasons-calendar,.pandatranslate-admin,.panda-license-center,.woocommerce-account,#cpq,.pwq) label:not([hidden]):has(>input:is([type="checkbox"],[type="radio"]):not([hidden])){display:flex!important;flex-direction:row!important;align-items:flex-start!important;justify-content:flex-start!important;gap:8px!important;min-height:0!important;line-height:1.5;white-space:normal!important}
+:where(.contactpanda-wrap,.contactpanda-detail-wrap,.contactpanda-admin-modal,.contactpanda-portal,.contactpanda-registration,.contactpanda-registration-form,.contactpanda-newsletter-signup,.contactpanda-account-section,.contactpanda-business-service-modal,.contactpanda-helpdesk,.cpb-modal,.cpb-account,.cpls-wrap,.cpls-customer-portal,.cpls-customer-licenses,.cpls-account,.pm-wrap,.pm-widget,.pandawoo-pro-admin,.pandawoo-pro,.pandawoo-pro-wrap,.panda-seasons-dashboard,.panda-seasons-settings,.panda-seasons-templates-page,.panda-seasons-editor,.panda-seasons-free-dashboard,.panda-seasons-calendar,.pandatranslate-admin,.panda-license-center,.woocommerce-account,#cpq,.pwq) input:is([type="checkbox"],[type="radio"]):not([hidden]){box-sizing:border-box!important;display:inline-block!important;flex:0 0 18px!important;width:18px!important;min-width:18px!important;max-width:18px!important;height:18px!important;min-height:18px!important;max-height:18px!important;margin:2px 0 0!important;padding:0!important;vertical-align:top;align-self:flex-start}
+:where(.contactpanda-wrap,.contactpanda-detail-wrap,.contactpanda-admin-modal,.contactpanda-portal,.contactpanda-registration,.contactpanda-registration-form,.contactpanda-newsletter-signup,.contactpanda-account-section,.contactpanda-business-service-modal,.contactpanda-helpdesk,.cpb-modal,.cpb-account,.cpls-wrap,.cpls-customer-portal,.cpls-customer-licenses,.cpls-account,.pm-wrap,.pm-widget,.pandawoo-pro-admin,.pandawoo-pro,.pandawoo-pro-wrap,.panda-seasons-dashboard,.panda-seasons-settings,.panda-seasons-templates-page,.panda-seasons-editor,.panda-seasons-free-dashboard,.panda-seasons-calendar,.pandatranslate-admin,.panda-license-center,.woocommerce-account,#cpq,.pwq) label:has(>input:is([type="checkbox"],[type="radio"]))>span{min-width:0;max-width:100%;flex:1;line-height:inherit}
+:where(.contactpanda-wrap,.contactpanda-detail-wrap,.contactpanda-admin-modal,.contactpanda-portal,.contactpanda-registration,.contactpanda-registration-form,.contactpanda-newsletter-signup,.contactpanda-account-section,.contactpanda-business-service-modal,.contactpanda-helpdesk,.cpb-modal,.cpb-account,.cpls-wrap,.cpls-customer-portal,.cpls-customer-licenses,.cpls-account,.pm-wrap,.pm-widget,.pandawoo-pro-admin,.pandawoo-pro,.pandawoo-pro-wrap,.panda-seasons-dashboard,.panda-seasons-settings,.panda-seasons-templates-page,.panda-seasons-editor,.panda-seasons-free-dashboard,.panda-seasons-calendar,.pandatranslate-admin,.panda-license-center,.woocommerce-account,#cpq,.pwq) input:is([type="checkbox"],[type="radio"])[hidden]{display:none!important}
+:where(.contactpanda-wrap,.contactpanda-detail-wrap,.contactpanda-admin-modal,.contactpanda-portal,.contactpanda-registration,.contactpanda-registration-form,.contactpanda-newsletter-signup,.contactpanda-account-section,.contactpanda-business-service-modal,.contactpanda-helpdesk,.cpb-modal,.cpb-account,.cpls-wrap,.cpls-customer-portal,.cpls-customer-licenses,.cpls-account,.pm-wrap,.pm-widget,.pandawoo-pro-admin,.pandawoo-pro,.pandawoo-pro-wrap,.panda-seasons-dashboard,.panda-seasons-settings,.panda-seasons-templates-page,.panda-seasons-editor,.panda-seasons-free-dashboard,.panda-seasons-calendar,.pandatranslate-admin,.panda-license-center,.woocommerce-account,#cpq,.pwq) input:is([type="checkbox"],[type="radio"]):focus-visible{outline:2px solid #2271b1;outline-offset:2px}
+:where(.contactpanda-wrap,.contactpanda-detail-wrap,.contactpanda-admin-modal,.contactpanda-portal,.contactpanda-registration,.contactpanda-registration-form,.contactpanda-newsletter-signup,.contactpanda-account-section,.contactpanda-business-service-modal,.contactpanda-helpdesk,.cpb-modal,.cpb-account,.cpls-wrap,.cpls-customer-portal,.cpls-customer-licenses,.cpls-account,.pm-wrap,.pm-widget,.pandawoo-pro-admin,.pandawoo-pro,.pandawoo-pro-wrap,.panda-seasons-dashboard,.panda-seasons-settings,.panda-seasons-templates-page,.panda-seasons-editor,.panda-seasons-free-dashboard,.panda-seasons-calendar,.pandatranslate-admin,.panda-license-center,.woocommerce-account,#cpq,.pwq) input:is([type="checkbox"],[type="radio"]):disabled{opacity:.5;cursor:not-allowed}
+:where(.contactpanda-wrap,.contactpanda-detail-wrap,.contactpanda-admin-modal,.contactpanda-portal,.contactpanda-registration,.contactpanda-registration-form,.contactpanda-newsletter-signup,.contactpanda-account-section,.contactpanda-business-service-modal,.contactpanda-helpdesk,.cpb-modal,.cpb-account,.cpls-wrap,.cpls-customer-portal,.cpls-customer-licenses,.cpls-account,.pm-wrap,.pm-widget,.pandawoo-pro-admin,.pandawoo-pro,.pandawoo-pro-wrap,.panda-seasons-dashboard,.panda-seasons-settings,.panda-seasons-templates-page,.panda-seasons-editor,.panda-seasons-free-dashboard,.panda-seasons-calendar,.pandatranslate-admin,.panda-license-center,.woocommerce-account,#cpq,.pwq) [hidden]{display:none!important}
+/* End Panda shared choice controls */
+/* Local canvas editor preview: shared layout with the full edition. */
+.panda-seasons-free-workspace{display:block!important;grid-template-columns:1fr!important}
+.panda-seasons-free-workspace[hidden],.panda-seasons-free-sidebar[hidden],.panda-seasons-free-canvas-modal[hidden]{display:none!important}
+.panda-seasons-free-canvas-wrap{max-height:none!important;width:100%!important;box-sizing:border-box}
+.panda-seasons-free-canvas-tabs{display:flex;gap:8px;margin:16px 0}
+.panda-seasons-free-canvas-palette{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px;border:1px solid #ddd;background:#fff;margin:0!important}
+.panda-seasons-free-canvas-palette[hidden]{display:none!important}
+.panda-seasons-free-canvas-palette>[data-add-door]{width:auto!important;flex:0 0 auto!important}
+.panda-canvas-drop-marker{position:absolute;z-index:100;pointer-events:none;width:18%;height:18%;display:grid;place-items:center;box-sizing:border-box;border:2px dashed #5c5c5c;border-radius:6px;background:rgba(255,255,255,.8);color:#333;font-size:14px;text-align:center}
+.panda-canvas-drop-marker[hidden]{display:none!important}
+.panda-seasons-free-canvas-palette>p{margin:0;flex:1 1 280px}
+.panda-seasons-free-canvas-modal{position:fixed;inset:0;z-index:100100;display:grid;place-items:center;padding:24px;box-sizing:border-box;background:rgba(15,23,42,.55)}
+.panda-seasons-free-canvas-modal>[data-inspector]{position:relative!important;display:block!important;width:min(700px,100%)!important;max-height:calc(100dvh - 48px)!important;overflow:auto!important;box-sizing:border-box;padding:24px!important;margin:0!important;background:#fff;border-radius:12px;box-shadow:0 20px 80px rgba(0,0,0,.3)}
+.panda-seasons-free-canvas-modal .panda-seasons-free-settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.panda-seasons-free-canvas-modal .panda-seasons-free-position-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.panda-seasons-free-canvas-modal .panda-seasons-free-inspector-actions{position:sticky;bottom:-24px;display:flex;flex-wrap:wrap;gap:10px;padding:16px 0;background:#fff;border-top:1px solid #ddd;z-index:2}
+.panda-seasons-free-canvas-modal .panda-seasons-free-inspector-actions [data-delete-door]{margin-left:auto}
+.panda-seasons-free-canvas-tabs .button-primary{background:#5c5c5c!important;border-color:#5c5c5c!important;color:#fff!important}
+body.panda-seasons-free-canvas-dialog-open{overflow:hidden}
+.panda-seasons-free-template-drawer{flex:1 1 100%;border-top:1px solid #ddd;padding-top:10px}
+.panda-seasons-free-template-drawer>summary{cursor:pointer;font-weight:600}
+.panda-seasons-free-template-drawer .panda-seasons-free-templates{margin:12px 0 0}
+.panda-seasons-free-template-drawer .panda-seasons-free-templates>h3{display:none}
+@media(max-width:700px){.panda-seasons-free-canvas-modal{padding:8px}.panda-seasons-free-canvas-modal>[data-inspector]{max-height:calc(100dvh - 16px)!important;padding:16px!important}.panda-seasons-free-canvas-modal .panda-seasons-free-settings-grid,.panda-seasons-free-canvas-modal .panda-seasons-free-position-grid{grid-template-columns:1fr!important}}
+/* Canvas test 2: phone-width forms and footer actions stack vertically. */
+@media(max-width:782px),(max-height:500px){
+ .panda-seasons-free-canvas-modal{padding:8px}
+ .panda-seasons-free-canvas-modal>[data-inspector]{max-height:calc(100dvh - 16px)!important;padding:12px!important;overscroll-behavior:contain}
+ .panda-seasons-free-canvas-modal .panda-seasons-free-settings-grid,.panda-seasons-free-canvas-modal .panda-seasons-free-position-grid{grid-template-columns:minmax(0,1fr)!important}
+ .panda-seasons-free-canvas-modal .panda-seasons-free-settings-grid>*{grid-column:1!important;min-width:0}
+ .panda-seasons-free-canvas-modal .panda-seasons-free-inspector-actions{bottom:-12px;flex-direction:column;align-items:stretch;gap:8px;padding:12px 0}
+ .panda-seasons-free-canvas-modal .panda-seasons-free-inspector-actions .button{width:100%;white-space:normal;line-height:1.3;min-height:42px;margin:0!important;justify-content:center}
+ .panda-seasons-free-canvas-modal input,.panda-seasons-free-canvas-modal select,.panda-seasons-free-canvas-modal textarea{min-width:0!important;max-width:100%!important;box-sizing:border-box}
+ .panda-seasons-free-canvas-modal .contactpanda-unified-color,.panda-seasons-free-canvas-modal .wp-editor-wrap{min-width:0!important;max-width:100%!important}
+}
+@media(max-height:500px){.panda-seasons-free-canvas-modal .panda-seasons-free-inspector-actions{position:static}}
+
+/* Canvas release: same compact basics and save confirmation as Full. */
+.panda-seasons-free-canvas-modal [hidden]{display:none!important}
+.ps-free-title-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:12px;margin:14px 0}
+.ps-free-title-row label{display:grid;gap:6px;min-width:0}
+.ps-free-savebar{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin:12px 0}
+.ps-free-save-status[data-state=saved]{color:#16733c;font-weight:600}
+.ps-free-save-status[data-state=error]{color:#b32d2e}
+.panda-seasons-free-canvas-palette{margin:8px 0!important}
+@media(max-width:782px),(max-height:500px){.ps-free-title-row{grid-template-columns:minmax(0,1fr)}}
+
+/* Compact horizontal family image/file chooser. */
+.panda-seasons-canvas-modal .contactpanda-image-picker,.panda-seasons-canvas-layer-shell .contactpanda-image-picker,.panda-seasons-free-editor .contactpanda-image-picker{width:100%!important;max-width:100%!important;min-width:0;box-sizing:border-box}
+.panda-seasons-canvas-modal .contactpanda-image-picker-drop,.panda-seasons-canvas-layer-shell .contactpanda-image-picker-drop,.panda-seasons-free-editor .contactpanda-image-picker-drop{display:grid!important;grid-template-columns:64px minmax(0,1fr) auto!important;min-height:96px!important;padding:12px!important;gap:12px!important;box-sizing:border-box;align-items:center!important}
+.panda-seasons-canvas-modal .contactpanda-image-picker-drop>.dashicons,.panda-seasons-canvas-layer-shell .contactpanda-image-picker-drop>.dashicons,.panda-seasons-free-editor .contactpanda-image-picker-drop>.dashicons{width:64px!important;height:64px!important;font-size:40px!important;display:grid;place-items:center;grid-row:1!important;grid-column:1!important}
+.panda-seasons-canvas-modal .contactpanda-image-picker-drop-copy,.panda-seasons-canvas-layer-shell .contactpanda-image-picker-drop-copy,.panda-seasons-free-editor .contactpanda-image-picker-drop-copy{grid-row:1!important;grid-column:2!important;min-width:0}
+.panda-seasons-canvas-modal .contactpanda-image-picker-empty-actions,.panda-seasons-canvas-layer-shell .contactpanda-image-picker-empty-actions,.panda-seasons-free-editor .contactpanda-image-picker-empty-actions{grid-column:3!important;grid-row:1!important;align-self:center!important;margin:0!important}
+.panda-seasons-canvas-modal .contactpanda-image-picker-selected,.panda-seasons-canvas-layer-shell .contactpanda-image-picker-selected,.panda-seasons-free-editor .contactpanda-image-picker-selected{display:grid!important;grid-template-columns:80px minmax(0,1fr)!important;gap:12px!important;padding:12px!important;min-width:0!important;box-sizing:border-box}
+.panda-seasons-canvas-modal .contactpanda-image-picker-thumb,.panda-seasons-canvas-layer-shell .contactpanda-image-picker-thumb,.panda-seasons-free-editor .contactpanda-image-picker-thumb{width:80px!important;height:80px!important;min-width:0!important;padding:0!important}
+.panda-seasons-canvas-modal .contactpanda-image-picker-thumb img,.panda-seasons-canvas-layer-shell .contactpanda-image-picker-thumb img,.panda-seasons-free-editor .contactpanda-image-picker-thumb img{width:100%!important;height:100%!important;object-fit:contain!important}
+.contactpanda-image-picker-details{min-width:0!important}.contactpanda-image-picker-name{overflow-wrap:anywhere}.contactpanda-image-picker-actions{display:flex!important;flex-wrap:wrap!important;gap:6px!important}.contactpanda-image-picker-action{min-width:32px!important;width:auto!important;height:auto!important;white-space:normal!important;box-sizing:border-box!important}.contactpanda-image-picker.has-image>.contactpanda-image-picker-drop{display:none!important}.contactpanda-image-picker:not(.has-image)>.contactpanda-image-picker-selected{display:none!important}
+@media(max-width:450px){.contactpanda-image-picker-action-label{display:none!important}}
+.ps-free-border-row{display:grid;grid-template-columns:minmax(0,50fr) minmax(0,35fr) minmax(0,15fr);gap:10px;grid-column:1/-1}
+.ps-free-border-row>label{grid-column:auto!important;min-width:0}
+@media(max-width:782px),(max-height:500px){.ps-free-border-row{grid-template-columns:minmax(0,1fr)}}
+.panda-seasons-free-canvas-modal .panda-seasons-free-inspector-actions [data-delete-door]{border:1px solid #c7cbd0!important;background:#fff!important;color:#2d3339!important}
+
+/* Canvas 0.9.6: paired phone fields and exclusive state/view controls. */
+.panda-seasons-free-editor button:is([data-layout],[data-state])[aria-pressed="false"]{background:#fff!important;color:#2d3339!important;border-color:#c7cbd0!important;box-shadow:none!important}
+.panda-seasons-free-editor button:is([data-layout],[data-state])[aria-pressed="true"]{background:#5c5c5c!important;color:#fff!important;border-color:#5c5c5c!important;box-shadow:none!important}
+@media(max-width:782px),(max-height:500px){
+ .panda-seasons-free-canvas-modal :is(.ps-free-title-row,.panda-seasons-free-settings-grid,.panda-seasons-free-position-grid,.ps-free-border-row){grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .panda-seasons-free-canvas-modal .panda-seasons-free-settings-grid>*{grid-column:auto!important}
+ .panda-seasons-free-canvas-modal label{min-width:0;overflow-wrap:anywhere}
+ .panda-seasons-free-canvas-modal input[type="datetime-local"]{font-size:12px;padding-inline:4px}
+}
+
+@media(max-width:782px),(max-height:500px){
+ :is(.panda-seasons-canvas-modal,.panda-seasons-canvas-layer-shell,.panda-seasons-free-canvas-modal) .contactpanda-unified-color-summary{grid-template-columns:28px minmax(0,1fr) 28px!important;width:100%!important;min-width:0!important;box-sizing:border-box}
+ :is(.panda-seasons-canvas-modal,.panda-seasons-canvas-layer-shell,.panda-seasons-free-canvas-modal) :is(.contactpanda-unified-color-preview,.contactpanda-unified-color-theme){width:28px!important;min-width:0!important;max-width:28px!important;padding:0!important;box-sizing:border-box}
+ :is(.panda-seasons-canvas-modal,.panda-seasons-canvas-layer-shell,.panda-seasons-free-canvas-modal) .contactpanda-unified-color-text{font-size:11px!important;width:100%!important;min-width:0!important;padding-inline:4px!important;box-sizing:border-box}
+}

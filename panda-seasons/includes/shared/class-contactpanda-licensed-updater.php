@@ -69,7 +69,7 @@ final class ContactPanda_Licensed_Updater {
 			'slug'         => $this->config['slug'],
 			'plugin'       => $this->config['plugin'],
 			'new_version'  => sanitize_text_field( $version ),
-			'url'          => esc_url_raw( $data['homepage'] ?? 'https://mycontactpanda.com/' ),
+			'url'          => esc_url_raw( $data['homepage'] ?? 'https://pandacosmo.com/' ),
 			'package'      => $package,
 			'requires'     => sanitize_text_field( $data['requires'] ?? '' ),
 			'requires_php' => sanitize_text_field( $data['requires_php'] ?? '' ),

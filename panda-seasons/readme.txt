@@ -1,9 +1,9 @@
-=== Panda Seasons ===
+=== Panda Seasons Full ===
 Contributors: kultur3gmbh
 Tags: calendar, advent calendar, seasonal campaign, email calendar
 Requires at least: 6.4
 Requires PHP: 7.4
-Stable tag: 0.9.7
+Stable tag: 0.9.15
 License: GPLv2 or later
 
 Interactive seasonal calendars with freely positioned doors on responsive desktop and mobile images. Web calendars work independently; email delivery requires the free ContactPanda plugin.
@@ -15,6 +15,40 @@ Create multiple parallel calendars in a visual drag-and-drop composer, schedule 
 Use `[panda_seasons id="123"]` to display a published calendar. The optional attributes `show_title="no"`, `frame="yes"` and `shadow="yes"` control the presentation of each individual embed.
 
 == Changelog ==
+
+= 0.9.15 =
+* Unambiguous Canvas view switches, compact paired phone fields and consistent media/file selection.
+* Refined label settings order and shorter field captions.
+
+
+= 0.9.14 =
+* Full-width Canvas editor with compact dialogs, responsive single-column phone forms and inline save confirmation.
+* Combined unlock date and time, compact field groups and preserved existing calendar data.
+
+
+= 0.9.13 =
+* Shared compact checkbox and radio controls preserve inline labels, keyboard focus and responsive layout.
+
+
+= 0.9.12 =
+* Shared license fields, visible activation feedback, customer-selection checks and consistent action alignment.
+
+= 0.9.11 =
+* Unified PandaCosmo product presentation and shared controls.
+* Shared license lifecycle, existing-workflow continuity and centralized license management.
+
+
+= 0.9.10 =
+* Consistent PandaCosmo product names and cross-references; existing technical identifiers and saved data are retained.
+
+
+= 0.9.9 =
+* Unify customer license ownership and product-neutral activation with visible account feedback.
+
+
+= 0.9.8 =
+* Moves full-edition website, license service and update-homepage addresses to pandacosmo.com.
+* Keeps the Panda Seasons Full name, plugin identifiers and Free edition unchanged.
 
 = 0.9.7 =
 * Adds separate door/content titles and quiz participant counts in calendar results.
@@ -49,7 +83,7 @@ Use `[panda_seasons id="123"]` to display a published calendar. The optional att
 * Opens the confirmed email subscribers for a calendar from its dashboard statistic in an administrator-only dialog.
 
 = 0.9.0 =
-* Coordinates Panda Seasons with the current shared Panda administration, media, and responsive editor contracts.
+* Coordinates Panda Seasons Full with the current shared Panda administration, media, and responsive editor contracts.
 
 = 0.8.27 =
 * Redesigns the template library as a responsive card gallery with three previews per desktop row.
@@ -73,14 +107,14 @@ Use `[panda_seasons id="123"]` to display a published calendar. The optional att
 = 0.8.23 =
 
 * Publishes the Scandinavian and geometric calendar templates with 24 precisely positioned image doors each.
-* Fixes template-library refresh and import redirects in the Panda Seasons administration.
-* Makes the new templates available to compatible Panda Seasons 0.8.16 installations and newer.
+* Fixes template-library refresh and import redirects in the Panda Seasons Full administration.
+* Makes the new templates available to compatible Panda Seasons Full 0.8.16 installations and newer.
 
 = 0.8.22 =
 
 * Adds a calendar screenshot preview as the first list column.
 * Aligns dashboard actions, active states, and icons with the shared Panda interface.
-* Keeps unrelated third-party notices out of Panda Seasons administration screens.
+* Keeps unrelated third-party notices out of Panda Seasons Full administration screens.
 
 = 0.8.21 =
 
@@ -100,7 +134,7 @@ Use `[panda_seasons id="123"]` to display a published calendar. The optional att
 * Unified administration actions with the grayscale Panda button system and centered icons, including standalone operation.
 
 = 0.8.17 =
-* Applies the neutral-grey action style to every large Panda Seasons administration button.
+* Applies the neutral-grey action style to every large Panda Seasons Full administration button.
 * Detects action words anywhere in descriptive labels and adds the matching shared icon.
 
 = 0.8.16 =
@@ -116,8 +150,8 @@ Use `[panda_seasons id="123"]` to display a published calendar. The optional att
 * Bounds calendar, door, and mailer batches for predictable 256 MB operation.
 
 = 0.8.13 =
-* Adds the edition contract required for a safe switch between Panda Seasons Free and the complete Panda Seasons product.
-* Deactivates Panda Seasons Free when the complete edition is activated while preserving the shared calendars and doors.
+* Adds the edition contract required for a safe switch between Panda Seasons Lite and the complete Panda Seasons Full product.
+* Deactivates Panda Seasons Lite when the complete edition is activated while preserving the shared calendars and doors.
 * Protects separate Pro desktop and mobile settings after a Free calendar is saved with the complete editor.
 
 = 0.8.12 =
@@ -132,10 +166,10 @@ Use `[panda_seasons id="123"]` to display a published calendar. The optional att
 * Falls back to the mobile cover and early test-calendar cover key when no desktop cover is available.
 
 = 0.8.9 =
-* Finalizes the Panda Seasons product, repository, package, and updater naming contract.
+* Finalizes the Panda Seasons Full product, repository, package, and updater naming contract.
 
 = 0.8.8 =
-* Registers Panda Seasons in ContactPanda's shared product and MasterKey license center when Basic is active.
+* Registers Panda Seasons Full in ContactPanda's shared product and MasterKey license center when Basic is active.
 * Keeps standalone web calendars fully usable without ContactPanda or a competing license endpoint.
 
 = 0.8.7 =
@@ -171,14 +205,14 @@ Use `[panda_seasons id="123"]` to display a published calendar. The optional att
 * Uses only the shared ContactPanda image picker UI and hides the replaced legacy selectors while retaining click, drop, preview, replace and remove actions.
 * Moves template, preview and save actions above the editor tabs and arranges grid and creation tools in dedicated rows.
 * Removes fixed shadows from the calendar canvas and doors; an optional shadow now applies only to the complete embedded calendar block.
-* Opens the Panda Seasons dashboard from the main menu and hides the separate door-list submenu while door editing remains inside each calendar.
+* Opens the Panda Seasons Full dashboard from the main menu and hides the separate door-list submenu while door editing remains inside each calendar.
 
 = 0.8.0 =
-* Adds a dedicated responsive Panda Seasons dashboard with three calendar cards per desktop row, cover previews and direct edit and preview actions.
+* Adds a dedicated responsive Panda Seasons Full dashboard with three calendar cards per desktop row, cover previews and direct edit and preview actions.
 * Shows separate per-calendar counts for door clicks, active email subscribers and generated leads.
 * Records only aggregate daily door-click totals without visitor identifiers or raw IP addresses.
 * Adds contextual onboarding for the free ContactPanda Basic plugin and a link to ContactPanda Plus.
-* Includes the Panda Seasons dashboard illustration locally in the plugin instead of loading it from the marketing website.
+* Includes the Panda Seasons Full dashboard illustration locally in the plugin instead of loading it from the marketing website.
 * Expands undo and redo history from three to twenty editor steps.
 * Continues to use the central ContactPanda color and image components with the standalone Seasons fallback.
 * Synchronizes calendar-specific tags and consent states with ContactPanda Basic 0.8.48 while keeping general newsletter consent separate.
@@ -350,10 +384,10 @@ Use `[panda_seasons id="123"]` to display a published calendar. The optional att
 * Extends the MCP document workflow with the same merge modes and content-type setting.
 
 = 0.4.9 =
-* Ensures Panda Seasons MCP abilities remain available when another plugin initializes WordPress ability categories early.
+* Ensures Panda Seasons Full MCP abilities remain available when another plugin initializes WordPress ability categories early.
 
 = 0.4.8 =
-* Register Panda Seasons abilities early enough for MCP discovery on WordPress 6.9 and newer.
+* Register Panda Seasons Full abilities early enough for MCP discovery on WordPress 6.9 and newer.
 
 = 0.4.7 =
 * Adds an MCP workflow for creating a layout-only draft from an analyzed reference image and normalized door rectangles.

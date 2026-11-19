@@ -11,12 +11,26 @@
 
 	var composer = document.querySelector('[data-panda-seasons-composer]');
 	var modal = document.querySelector('[data-door-modal]');
+	// Canvas preview: retain the original editor model and controls, move their
+	// containers before TinyMCE and the composer attach their event handlers.
+	if (composer && modal) {
+		var palette = document.querySelector('.panda-seasons-elements-panel');
+		if (palette) { palette.removeAttribute('data-panda-editor-panel'); palette.hidden=false; palette.classList.add('panda-seasons-canvas-palette'); var stage=composer.querySelector('.panda-seasons-composer__stage');if(stage)stage.parentElement.before(palette);else composer.appendChild(palette); }
+		var owner = composer.closest('form') || composer.parentNode;
+		owner.appendChild(modal); modal.classList.add('panda-seasons-canvas-modal');
+		var dialog = modal.querySelector('.panda-seasons-door-modal__dialog'); dialog.setAttribute('role','dialog'); dialog.setAttribute('aria-modal','true'); dialog.setAttribute('aria-labelledby','panda-seasons-door-modal-title');
+		var layer = document.querySelector('[data-layer-editor]');
+		if(layer){var layerShell=document.createElement('div');layerShell.className='panda-seasons-canvas-layer-shell';layerShell.hidden=true;owner.appendChild(layerShell);layerShell.appendChild(layer);layer.setAttribute('role','dialog');layer.setAttribute('aria-modal','true');var layerTitle=layer.querySelector('h2');layerTitle.id='panda-seasons-canvas-layer-title';layer.setAttribute('aria-labelledby',layerTitle.id);new MutationObserver(function(){layerShell.hidden=layer.hidden;}).observe(layer,{attributes:true,attributeFilter:['hidden']});layerShell.addEventListener('click',function(e){if(e.target===layerShell)layer.querySelector('[data-close-layer-editor]').click();});}
+		var oldSidebar=document.querySelector('.panda-seasons-editor-sidebar');if(oldSidebar)oldSidebar.hidden=true;
+	}
+	configureCanvasFields();
 	var activeDoor = null;
 	var activeDoorSnapshot = null;
 	var returnFocus = null;
 	var calendarForm = document.getElementById('post');
 	var calendarDirty = false;
 	var calendarSaving = false;
+	if (new URLSearchParams(window.location.search).get('message') === '1') calendarStatus(adminText('calendarSaved', 'Changes saved.'), 'saved');
 	var pendingDoorHistory = null;
 	var doorImagePickers = {};
 	var downloadPicker = null, syncingDownloadPicker = false;
@@ -56,6 +70,10 @@
 		shortcodeBox.classList.remove('closed');
 	}
 
+	function setCanvasChoice(button, active) {
+		['button-primary','is-primary','is-active'].forEach(function(name){button.classList.toggle(name,active);});
+		button.setAttribute('aria-pressed',active?'true':'false');
+	}
 	function number(value, fallback) {
 		var parsed = parseFloat(value);
 		return Number.isFinite(parsed) ? parsed : fallback;
@@ -363,7 +381,7 @@
 			if (!layerEditor || !activeLayer) return;
 			layerEditor.querySelectorAll('[data-layer-field]').forEach(function (field) {
 				var value = activeLayer[field.dataset.layerField];
-				if (field.type === 'checkbox') field.checked = Boolean(value); else field.value = value == null ? '' : value;
+				if (field.type === 'checkbox') field.checked = Boolean(value); else field.value = /LabelWidthMode$/.test(field.dataset.doorField) ? 'content' : (value == null ? '' : value);
 				if (field.dataset.rgbaEnhanced) field.dispatchEvent(new Event('input', { bubbles: false }));
 			});
 			layerEditor.querySelectorAll('[data-layer-field-wrap]').forEach(function (wrap) { wrap.hidden = wrap.dataset.layerFieldWrap !== activeLayer.type; });
@@ -478,7 +496,12 @@
 			root.setAttribute('data-view', view);
 		}
 
+		function syncCanvasChoices() {
+			root.querySelectorAll('button[data-editor-view]').forEach(function(button){setCanvasChoice(button,button.dataset.editorView===view);});
+			root.querySelectorAll('button[data-preview-state]').forEach(function(button){setCanvasChoice(button,button.dataset.previewState===previewState);});
+		}
 		function render() {
+			syncCanvasChoices();
 			stage.querySelectorAll('[data-editor-door]').forEach(function (element) { element.remove(); });
 			renderLayers();
 			currentDoors().forEach(function (door) {
@@ -509,7 +532,7 @@
 				element.style.setProperty('--ps-door-label-bg', isOpen ? (door.openLabelBg || 'rgba(10,18,30,.76)') : (door.closedLabelBg || 'rgba(10,18,30,.76)'));
 				element.style.setProperty('--ps-door-label-border-color', isOpen ? (door.openLabelBorderColor || '#fff') : (door.closedLabelBorderColor || '#fff'));
 				element.style.setProperty('--ps-door-label-border-width', (isOpen ? (door.openLabelBorderWidth == null ? 1 : door.openLabelBorderWidth) : (door.closedLabelBorderWidth == null ? 1 : door.closedLabelBorderWidth)) + 'px');
-				var labelWidthMode = isOpen ? door.openLabelWidthMode : door.closedLabelWidthMode;
+				var labelWidthMode = 'content';
 				var labelWidth = isOpen ? door.openLabelWidth : door.closedLabelWidth;
 					var labelPadding = 4;
 				var labelSize = labelWidth || 60;
@@ -882,12 +905,13 @@
 			layerEditor.addEventListener('change', function (event) { var field = event.target.closest('[data-layer-field]'); if (!field || !activeLayer) return; if (pendingLayerHistory) { recordHistory(pendingLayerHistory); pendingLayerHistory = null; } activeLayer[field.dataset.layerField] = field.type === 'checkbox' ? field.checked : field.value; render(); });
 			layerEditor.addEventListener('click', function (event) {
 				if (event.target.closest('[data-delete-layer]') && activeLayer) { recordHistory(); activeLayer.deleted = true; closeLayerEditor(true); return; }
-				if (event.target.closest('[data-apply-layer-editor]')) { saveLayerEditor(); return; }
+				if (event.target.closest('[data-apply-layer-editor]')) { saveLayerEditor(); closeLayerEditor(true); return; }
 				if (event.target.closest('[data-close-layer-editor]')) closeLayerEditor(false);
 			});
 		}
 
 		var addButton = root.querySelector('[data-add-door]');
+		if(window.PandaCanvasEditor){if(addButton)PandaCanvasEditor.bindPaletteDrag(addButton,stage,addDoor);root.querySelectorAll('[data-add-layer]').forEach(function(button){PandaCanvasEditor.bindPaletteDrag(button,stage,function(position){addLayer(button.dataset.addLayer,position);});});}
 		if (addButton) {
 			addButton.draggable = true;
 			addButton.addEventListener('dragstart', function (event) { event.dataTransfer.setData('text/panda-seasons-door', 'new'); event.dataTransfer.effectAllowed = 'copy'; });
@@ -1029,6 +1053,7 @@
 		if (composer && composer.syncDoorDimensionFields) composer.syncDoorDimensionFields(door);
 		updateContentTypeVisibility();
 		updateCtaVisibility();
+		refreshCanvasFields();
 	}
 
 	function suggestProductHeading() {
@@ -1090,7 +1115,7 @@
 		var fields = modal.querySelector('.panda-seasons-door-modal__fields');
 		if (!fields) return;
 		var findSection = function (selector) { var field=modal.querySelector(selector); return field && field.closest('details, .panda-seasons-content-type'); };
-		var ordered = [findSection('[data-door-section="basics"]'), findSection('[data-door-section="appearance"]'), findSection('[data-door-section="content-type"]'), findSection('[data-content-type-panel="general video"]'), findSection('[data-content-type-panel="product"]'), findSection('[data-content-type-panel="quiz"]'), findSection('[data-door-section="button"]'), findSection('[data-door-field="ctaEnabled"]'), findSection('[data-door-field="emailSubject"]')];
+		var ordered = [findSection('[data-door-section="basics"]'), findSection('[data-door-section="appearance"]'), modal.querySelector('[data-door-section="content-heading"]'), findSection('[data-door-section="content-type"]'), findSection('[data-content-type-panel="general video"]'), findSection('[data-content-type-panel="product"]'), findSection('[data-content-type-panel="quiz"]'), findSection('[data-door-section="button"]'), findSection('[data-door-field="ctaEnabled"]'), findSection('[data-door-field="emailSubject"]')];
 		ordered.forEach(function (section) { if (section) fields.appendChild(section); });
 	}
 	arrangeDoorEditorSections();
@@ -1179,7 +1204,7 @@
 				syncDoorPreview(); markCalendarDirty();
 			}});
 			downloadBox.querySelectorAll('[data-select-door-download],[data-remove-door-download]').forEach(function(node){node.hidden=true;});
-			downloadBox.insertBefore(downloadPicker,downloadBox.firstChild);
+			downloadBox.querySelector('.description').after(downloadPicker);
 		}
 	}
 
@@ -1328,7 +1353,7 @@
 			return;
 		}
 		var stateTab = event.target.closest('[data-door-state-tab]');
-		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); button.setAttribute('aria-selected',button===stateTab?'true':'false'); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); inspectorState.doorStateTab=stateTab.dataset.doorStateTab;saveInspectorState();if(composer&&composer.setPreviewState)composer.setPreviewState(stateTab.dataset.doorStateTab); return; }
+		if (stateTab) { modal.querySelectorAll('[data-door-state-tab]').forEach(function (button) { button.classList.toggle('button-primary', button === stateTab); button.setAttribute('aria-selected',button===stateTab?'true':'false'); }); modal.querySelectorAll('[data-door-state-panel]').forEach(function (panel) { panel.hidden = panel.dataset.doorStatePanel !== stateTab.dataset.doorStateTab; }); inspectorState.doorStateTab=stateTab.dataset.doorStateTab;refreshCanvasFields(false);saveInspectorState();if(composer&&composer.setPreviewState)composer.setPreviewState(stateTab.dataset.doorStateTab); return; }
 		if (event.target.closest('[data-add-quiz-question]')) { var questions = collectQuizQuestions(); questions.push({ question: '', answers: ['', ''], correct: 1 }); renderQuizQuestions(questions); return; }
 		var removeQuestion = event.target.closest('[data-remove-quiz-question]');
 		if (removeQuestion) { var remaining = collectQuizQuestions(); remaining.splice(Array.prototype.indexOf.call(modal.querySelectorAll('[data-quiz-question-editor]'), removeQuestion.closest('[data-quiz-question-editor]')), 1); renderQuizQuestions(remaining); return; }
@@ -1356,6 +1381,7 @@
 			activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
 			markCalendarDirty();
 			if (status) { status.textContent = adminText('elementApplied', 'Changes applied. Save the calendar to store them permanently.'); window.setTimeout(function () { status.textContent = ''; }, 3200); }
+			closeDoorModal(true);
 		}
 
 		if (event.target.closest('[data-delete-door]') && activeDoor) {
@@ -1476,7 +1502,7 @@
 	document.querySelectorAll('[data-door-field$="LabelWidthMode"],[data-default-door-setting="labelWidthMode"]').forEach(updateLabelWidthVisibility);
 	if (modal) {
 		var doorFields = modal.querySelector('.panda-seasons-door-modal__fields');
-		['basics', 'appearance', 'content-type', 'content', 'button', 'product', 'quiz', 'cta', 'email'].forEach(function (section) {
+		['basics', 'appearance', 'content-heading', 'content-type', 'content', 'button', 'product', 'quiz', 'cta', 'email'].forEach(function (section) {
 			var sectionElement = doorFields && doorFields.querySelector('[data-door-section="' + section + '"]');
 			if (sectionElement) doorFields.appendChild(sectionElement);
 		});
@@ -1601,6 +1627,57 @@
 		var size=event.target.closest('[data-calendar-preview-size]');if(size){var shell=size.closest('[data-calendar-preview]');shell.classList.toggle('is-mobile',size.dataset.calendarPreviewSize==='mobile');shell.querySelectorAll('[data-calendar-preview-size]').forEach(function(button){button.classList.toggle('button-primary',button===size);});}
 	});
 
+	function submitCalendar() { saveCalendar(); }
+	function configureCanvasFields() {
+		if (!modal) return;
+		var field = function(name){return modal.querySelector('[data-door-field="'+name+'"]');};
+		var label = function(name){var input=field(name);return input&&input.closest('label');};
+		function row(parent, names, cls) { var box=document.createElement('div');box.className='is-wide ps-canvas-row '+cls;names.forEach(function(name){var el=label(name);if(el){el.classList.remove('is-wide');box.appendChild(el);}});parent.appendChild(box);return box; }
+		var basics=modal.querySelector('[data-door-section="basics"] .panda-seasons-door-modal__section-grid');
+		row(basics,['number','title'],'ps-canvas-title-row');
+		var opening=row(basics,['openingMode'],'ps-canvas-half-row');
+		var date=field('unlockDate'),time=field('unlockTime');
+		var combined=document.createElement('label'),caption=document.createElement('span'),input=document.createElement('input');caption.textContent=modal.dataset.unlockLabel;input.type='datetime-local';input.dataset.canvasUnlock='';combined.append(caption,input);opening.appendChild(combined);
+		date.closest('label').hidden=true;time.closest('label').hidden=true;
+		input.addEventListener('change',function(){var parts=input.value.split('T');date.value=parts[0]||'';time.value=parts[1]||'00:00';date.dispatchEvent(new Event('change',{bubbles:true}));time.dispatchEvent(new Event('change',{bubbles:true}));});
+		var oldDates=basics.querySelector('.panda-seasons-door-modal__date-time');if(oldDates){oldDates.hidden=true;basics.prepend(oldDates);}
+		var dims=basics.querySelector('.panda-seasons-door-dimensions');basics.appendChild(dims);
+		var appearance=modal.querySelector('[data-door-section="appearance"]');basics.closest('details').after(appearance);
+		var shape=label('shape'),position=label('imagePosition');position.classList.remove('is-wide');shape.after(position);
+		var effect=label('openEffect');effect.hidden=true;var calendarEffect=document.querySelector('[name="panda_seasons_open_effect"]');if(calendarEffect)calendarEffect.closest('label').hidden=true;document.querySelectorAll('[name="panda_seasons_default_label_width_mode"],[name="panda_seasons_default_label_width"]').forEach(function(el){el.closest('label').hidden=true;});
+		var heading=label('contentHeading');heading.classList.add('ps-canvas-content-heading');heading.dataset.doorSection='content-heading';var hint=document.createElement('small');hint.textContent=modal.dataset.tokenHint;heading.appendChild(hint);appearance.after(heading);
+		var type=modal.querySelector('[data-door-section="content-type"]');heading.after(type);
+		modal.querySelectorAll('[data-suggest-offer-heading],[data-offer-heading-token]').forEach(function(el){el.remove();});
+		['closed','open'].forEach(function(state){
+			var panel=modal.querySelector('[data-door-state-panel="'+state+'"]');
+			var toggle=field(state+'LabelVisible'), start=label(state+'Label'), end=label(state+'ImageOverlay');
+			var box=document.createElement('div');box.className='is-wide ps-canvas-label-fields';start.before(box);
+			var node=start;while(node&&node!==end){var next=node.nextElementSibling;box.appendChild(node);node=next;}
+			box.querySelectorAll('.panda-seasons-label-size-row').forEach(function(el){el.hidden=true;});
+			field(state+'LabelWidthMode').value='content';
+			var colors=box.querySelector('.panda-seasons-label-colors-row');
+			row(colors,[state+'Color'],'ps-canvas-half-row ps-canvas-single-row');
+			row(colors,[state+'LabelBg'],'ps-canvas-half-row ps-canvas-single-row');
+			var shapeRow=box.querySelector('.panda-seasons-label-shape-row');
+			shapeRow.prepend(label(state+'LabelPosition'));
+			colors.appendChild(shapeRow);
+			row(colors,[state+'LabelBorderColor',state+'LabelBorderWidth'],'ps-canvas-half-row');
+			panel.querySelector('.panda-seasons-label-heading').before(end);
+
+			toggle.addEventListener('change',function(){box.hidden=!toggle.checked;});
+		});
+		var download=modal.querySelector('[data-door-asset="download"]');var title=document.createElement('strong'),note=document.createElement('p');title.textContent=modal.dataset.downloadLabel;note.textContent=modal.dataset.downloadHint;note.className='description';download.prepend(title,note);
+		var status=document.querySelector('[data-calendar-save-state]'),save=document.querySelector('[data-save-calendar]');if(status&&save){save.parentElement.after(status);status.setAttribute('role','status');}
+		modal.addEventListener('change',function(){refreshCanvasFields(false);});
+	}
+	function refreshCanvasFields(syncDate) {
+		if (!modal) return;
+		var combined=modal.querySelector('[data-canvas-unlock]');
+		if(combined&&syncDate!==false){var date=modal.querySelector('[data-door-field="unlockDate"]'),time=modal.querySelector('[data-door-field="unlockTime"]');combined.value=date.value?date.value+'T'+(time.value||'00:00'):'';}
+		['closed','open'].forEach(function(state){var panel=modal.querySelector('[data-door-state-panel="'+state+'"]');var toggle=panel.querySelector('[data-door-field="'+state+'LabelVisible"]');panel.querySelector('.ps-canvas-label-fields').hidden=!toggle.checked;});
+		modal.querySelectorAll('[data-door-state-tab]').forEach(function(button){var active=button.dataset.doorStateTab===(inspectorState.doorStateTab||'closed');button.classList.toggle('button-primary',active);button.classList.toggle('is-active',active);button.classList.toggle('is-primary',active);button.setAttribute('aria-selected',active?'true':'false');});
+	}
+
 	function prepareCalendarState() {
 		if (activeDoor) syncDoorPreview();
 		if (composer && composer.prepareForSave) composer.prepareForSave();
@@ -1609,26 +1686,27 @@
 		if (!calendarForm || calendarSaving) return;
 		prepareCalendarState();
 		calendarSaving = true;
+		document.querySelector('[data-save-calendar]').disabled = true;
 		calendarStatus(adminText('savingCalendar', 'Saving calendar…'), 'saving');
 		var data = new FormData(calendarForm);
 		data.set('action', 'panda_seasons_save_calendar');
 		data.set('calendar_id', window.pandaSeasonsAdmin && pandaSeasonsAdmin.calendarId ? pandaSeasonsAdmin.calendarId : data.get('post_ID'));
 		fetch(window.pandaSeasonsAdmin && pandaSeasonsAdmin.ajaxUrl ? pandaSeasonsAdmin.ajaxUrl : window.ajaxurl, { method: 'POST', credentials: 'same-origin', body: data })
-			.then(function (response) { return response.json(); })
+			.then(function (response) { return response.json().catch(function () { throw new Error(adminText('calendarSaveFailed', 'The calendar could not be saved. Please try again.')); }); })
 			.then(function (result) {
 				if (!result || !result.success) throw new Error(result && result.data && result.data.message ? result.data.message : adminText('calendarSaveFailed', 'The calendar could not be saved. Please try again.'));
 				if (composer && composer.applySavedDoorIds) composer.applySavedDoorIds(result.data.doorIds || []);
 				if (composer && composer.commitSavedState) composer.commitSavedState();
 				if (activeDoor) activeDoorSnapshot = JSON.parse(JSON.stringify(activeDoor));
 				calendarDirty = false;
-				calendarStatus(result.data.message || adminText('calendarSaved', 'Calendar saved.'), result.data.discountErrors && result.data.discountErrors.length ? 'error' : 'saved');
+				calendarStatus(result.data.discountErrors && result.data.discountErrors.length ? result.data.message : adminText('calendarSaved', 'Changes saved.'), result.data.discountErrors && result.data.discountErrors.length ? 'error' : 'saved');
 				if (typeof afterSave === 'function') afterSave();
 			})
 			.catch(function (error) {
 				calendarDirty = true;
 				calendarStatus(error && error.message ? error.message : adminText('calendarSaveFailed', 'The calendar could not be saved. Please try again.'), 'error');
 			})
-			.finally(function () { calendarSaving = false; });
+			.finally(function () { calendarSaving = false; document.querySelector('[data-save-calendar]').disabled = false; });
 	}
 	if (calendarForm) {
 		calendarForm.addEventListener('input', function (event) { if (!event.target.closest('#submitdiv')) markCalendarDirty(); });
@@ -1647,7 +1725,7 @@
 		if (!ready && attempt < 30) window.setTimeout(function () { bindDoorRichTextDirtyState(attempt + 1); }, 250);
 	}(0));
 	document.addEventListener('click', function (event) {
-		if (event.target.closest('[data-save-calendar]')) { saveCalendar(); return; }
+		if (event.target.closest('[data-save-calendar]')) { event.preventDefault(); submitCalendar(); return; }
 		if (event.target.closest('[data-add-door],[data-add-layer],[data-delete-stage-door],[data-delete-stage-layer],[data-delete-door],[data-delete-layer],[data-align-grid],[data-duplicate-door],[data-duplicate-layer]')) markCalendarDirty();
 		var templateOpen = event.target.closest('[data-open-template-dialog]'), templateClose = event.target.closest('[data-close-template-dialog]'), dialog = document.querySelector('[data-template-dialog]');
 		if (templateOpen && dialog) { if (calendarDirty) { window.alert(adminText('saveBeforeTemplate','Save the calendar before creating a template.')); return; } dialog.hidden = false; document.body.classList.add('panda-seasons-modal-open'); return; }
@@ -1657,5 +1735,9 @@
 	if (window.jQuery && window.jQuery.fn && window.jQuery.fn.sortable) {
 		window.jQuery('.post-type-panda_calendar .meta-box-sortables').each(function () { try { window.jQuery(this).sortable('disable'); } catch (ignore) {} });
 	}
-	window.addEventListener('beforeunload', function (event) { if (!calendarDirty) return; event.preventDefault(); event.returnValue = ''; });
+	window.addEventListener('beforeunload', function (event) { if (!calendarDirty || calendarSaving) return; event.preventDefault(); event.returnValue = ''; });
+	function currentCanvasDialog(){var door=document.querySelector('[data-door-modal]:not([hidden])');if(door)return door.querySelector('.panda-seasons-door-modal__dialog');var layer=document.querySelector('[data-layer-editor]:not([hidden])');return layer;}
+	var canvasDialogObserver=new MutationObserver(function(){var dialog=currentCanvasDialog();document.body.classList.toggle('panda-seasons-canvas-dialog-open',!!dialog);if(dialog&&!dialog.contains(document.activeElement)){var focus=dialog.querySelector('input:not([type=hidden]),button,select,textarea');if(focus)focus.focus();}});
+	[modal,document.querySelector('[data-layer-editor]')].filter(Boolean).forEach(function(node){canvasDialogObserver.observe(node,{attributes:true,attributeFilter:['hidden']});});
+	document.addEventListener('keydown',function(event){var dialog=currentCanvasDialog();if(!dialog)return;if(Array.from(document.querySelectorAll('.media-modal')).some(function(media){return media.getClientRects().length>0;}))return;if(event.key==='Escape'&&dialog.matches('[data-layer-editor]'))dialog.querySelector('[data-close-layer-editor]').click();if(event.key!=='Tab')return;var nodes=Array.from(dialog.querySelectorAll('button,input:not([type=hidden]),select,textarea,a[href],[tabindex="0"]')).filter(function(node){return !node.disabled&&node.getClientRects().length;});if(!nodes.length)return;var first=nodes[0],last=nodes[nodes.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
 }());

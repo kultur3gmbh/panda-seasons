@@ -71,7 +71,7 @@ final class Panda_Seasons_Updater {
 
 	public function release( $force = false ) {
 		if ( ! $this->enabled() ) {
-			return $this->error( __( 'Updates are disabled for Panda Seasons.', 'panda-seasons' ) );
+			return $this->error( __( 'Updates are disabled for Panda Seasons Full.', 'panda-seasons' ) );
 		}
 		if ( ! $force ) {
 			$cached = get_site_transient( self::CACHE );
@@ -142,7 +142,7 @@ final class Panda_Seasons_Updater {
 		if ( 'plugin_information' !== $action || 'panda-seasons' !== ( $args->slug ?? '' ) ) return $result;
 		$release = $this->release();
 		if ( is_wp_error( $release ) ) return $release;
-		return (object) array( 'name' => 'Panda Seasons', 'slug' => 'panda-seasons', 'version' => $release['version'], 'author' => 'Kultur3 GmbH', 'requires' => $release['requires'], 'requires_php' => $release['requires_php'], 'tested' => $release['tested'], 'download_link' => $this->asset_url( $release['asset_id'] ) );
+		return (object) array( 'name' => 'Panda Seasons Full', 'slug' => 'panda-seasons', 'version' => $release['version'], 'author' => 'Kultur3 GmbH', 'requires' => $release['requires'], 'requires_php' => $release['requires_php'], 'tested' => $release['tested'], 'download_link' => $this->asset_url( $release['asset_id'] ) );
 	}
 
 	public function download( $reply, $package, $upgrader, $extra ) {

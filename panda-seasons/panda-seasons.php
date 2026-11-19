@@ -1,8 +1,9 @@
 <?php
 /**
- * Plugin Name: Panda Seasons
+ * Plugin Name: Panda Seasons Full
+ * Plugin URI: https://pandacosmo.com/
  * Description: Interactive seasonal calendars with responsive cover images and optional ContactPanda email delivery.
- * Version: 0.9.7
+ * Version: 0.9.15
  * Update URI: https://github.com/kultur3gmbh/panda-seasons
  * Author: Kultur3 GmbH
  * Text Domain: panda-seasons
@@ -13,7 +14,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PANDA_SEASONS_VERSION', '0.9.7' );
+define( 'PANDA_SEASONS_VERSION', '0.9.15' );
 define( 'PANDA_SEASONS_EDITION', 'full' );
 define( 'PANDA_SEASONS_FILE', __FILE__ );
 define( 'PANDA_SEASONS_PATH', plugin_dir_path( __FILE__ ) );
@@ -48,14 +49,14 @@ add_action( 'wp_abilities_api_init', array( 'Panda_Seasons_MCP', 'register_abili
 
 /** Integrate Seasons into ContactPanda's shared license center when Basic is active. */
 function panda_seasons_contactpanda_license_modules( $modules ) {
-	$modules['seasons'] = __( 'Panda Seasons', 'panda-seasons' );
+	$modules['seasons'] = __( 'Panda Seasons Full', 'panda-seasons' );
 	return $modules;
 }
 add_filter( 'contactpanda_license_modules', 'panda_seasons_contactpanda_license_modules' );
 
 function panda_seasons_contactpanda_license_product( $products ) {
 	$products['panda-seasons'] = array(
-		'label'       => __( 'Panda Seasons', 'panda-seasons' ),
+		'label'       => __( 'Panda Seasons Full', 'panda-seasons' ),
 		'entitlement' => 'seasons',
 		'version'     => PANDA_SEASONS_VERSION,
 		'modules'     => array( 'seasons' ),
@@ -75,7 +76,7 @@ add_action(
 					'entitlement' => 'seasons',
 					'plugin'      => plugin_basename( PANDA_SEASONS_FILE ),
 					'slug'        => 'panda-seasons',
-					'name'        => 'Panda Seasons',
+					'name'        => 'Panda Seasons Full',
 					'version'     => PANDA_SEASONS_VERSION,
 					'channel'     => defined( 'CONTACTPANDA_UPDATE_CHANNEL' ) ? CONTACTPANDA_UPDATE_CHANNEL : 'stable',
 				)
@@ -89,7 +90,7 @@ add_action(
 );
 
 /**
- * The complete product replaces Panda Seasons Free instead of running beside
+ * The complete product replaces Panda Seasons Lite instead of running beside
  * it. Both editions intentionally share the same calendar data contract.
  */
 function panda_seasons_activate_full_edition() {
@@ -104,3 +105,7 @@ register_activation_hook( __FILE__, 'panda_seasons_activate_full_edition' );
 register_deactivation_hook( __FILE__, array( 'Panda_Seasons_Plugin', 'deactivate' ) );
 
 add_action( 'plugins_loaded', array( 'Panda_Seasons_Plugin', 'boot' ), 40 );
+
+// Shared family license center: bundled fallback, no additional client plugin.
+require_once __DIR__ . '/includes/shared/class-panda-license-center.php';
+Panda_License_Center::register( 'panda-seasons', array( 'label' => 'Panda Seasons Full', 'entitlement' => 'seasons', 'version' => PANDA_SEASONS_VERSION ) );

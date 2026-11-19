@@ -7,7 +7,7 @@
 		return el('small', { style: { display: 'block', marginTop: '6px', color: '#6b7280', fontSize: '11px' } }, text);
 	}
 	blocks.registerBlockType('panda-seasons/calendar', {
-		title: (window.pandaSeasonsBlock && pandaSeasonsBlock.title) || 'Panda Seasons calendar',
+		title: (window.pandaSeasonsBlock && pandaSeasonsBlock.title) || 'Panda Seasons Full calendar',
 		icon: 'calendar-alt',
 		category: 'widgets',
 		attributes: { id: { type: 'integer', default: 0 }, showTitle: { type: 'boolean', default: true }, showSignup: { type: 'boolean', default: true }, frame: { type: 'boolean', default: false }, shadow: { type: 'boolean', default: false }, marginTop: { type: 'string', default: '' }, marginBottom: { type: 'string', default: '' } },
@@ -28,7 +28,7 @@
 		save: function () { return null; }
 	});
 	blocks.registerBlockType('panda-seasons/signup', {
-		title: (window.pandaSeasonsBlock && pandaSeasonsBlock.signupTitle) || 'Panda Seasons calendar signup',
+		title: (window.pandaSeasonsBlock && pandaSeasonsBlock.signupTitle) || 'Panda Seasons Full calendar signup',
 		icon: 'email-alt',
 		category: 'widgets',
 		attributes: { id: { type: 'integer', default: 0 }, heading: { type: 'string', default: '' }, frame: { type: 'boolean', default: false }, shadow: { type: 'boolean', default: false }, marginTop: { type: 'string', default: '' }, marginBottom: { type: 'string', default: '' } },

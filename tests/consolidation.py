@@ -43,4 +43,4 @@ for legacy in (
     if re.search(r"['\"]" + re.escape(legacy) + r"['\"]", runtime):
         raise SystemExit(f"Legacy field is still used at runtime: {legacy}")
 
-print("Panda Seasons consolidation checks passed.")
+print("Panda Seasons Full consolidation checks passed.")

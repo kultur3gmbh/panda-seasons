@@ -1,16 +1,17 @@
 <?php
 
 defined( 'ABSPATH' ) || exit;
+require_once __DIR__ . '/class-panda-license-lifecycle.php';
 
 /**
  * Provider-neutral ContactPanda license client.
  *
- * Licenses may grant one or more durable module entitlements. A normal expiry
- * ends updates and support but never disables an already granted module.
+ * Licenses may grant one or more durable module entitlements. Signed server policy controls paid grace and archive operation rights.
  * Explicitly blocked licenses are excluded from the effective entitlements.
  */
 final class ContactPanda_License {
-	const OPTION           = 'contactpanda_license_state';
+	private static $booted = false;
+	const OPTION           = 'panda_license_state';
 	const INSTALLATION     = 'contactpanda_installation_id';
 	const PRODUCT          = 'contactpanda-suite';
 	const CHECK_HOOK       = 'contactpanda_license_daily_check';
@@ -18,6 +19,10 @@ final class ContactPanda_License {
 	const OFFLINE_GRACE_DAYS = 7;
 
 	public static function boot() {
+		if ( self::$booted ) return;
+		self::$booted = true;
+		add_action( 'init', array( __CLASS__, 'load_translations' ), 20 );
+		add_action( 'rest_api_init', array( __CLASS__, 'register_domain_proof' ) );
 		add_filter( 'contactpanda_general_settings_sections', array( __CLASS__, 'settings_section' ), 20 );
 		add_action( 'contactpanda_render_general_settings_section_license', array( __CLASS__, 'render_settings' ) );
 		add_action( 'admin_post_contactpanda_activate_license', array( __CLASS__, 'activate' ) );
@@ -25,8 +30,18 @@ final class ContactPanda_License {
 		add_action( 'admin_post_contactpanda_check_licenses', array( __CLASS__, 'manual_check' ) );
 		add_action( self::CHECK_HOOK, array( __CLASS__, 'scheduled_check' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'render_offline_notice' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'render_lifecycle_notices' ) );
 		if ( ! wp_next_scheduled( self::CHECK_HOOK ) ) {
 			wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', self::CHECK_HOOK );
+		}
+	}
+
+	/** Supplement shared-client strings without requiring another family plugin. */
+	public static function load_translations() {
+		$locale = determine_locale();
+		foreach ( array( dirname( __DIR__ ) . '/languages/', dirname( __DIR__, 2 ) . '/languages/' ) as $directory ) {
+			$file = $directory . 'contactpanda-license-client-' . $locale . '.mo';
+			if ( is_readable( $file ) ) { load_textdomain( 'contactpanda', $file ); break; }
 		}
 	}
 
@@ -107,7 +122,11 @@ final class ContactPanda_License {
 				'activation_id'    => '',
 				'activation_token' => '',
 				'license_label'    => '',
+				'license_key_last4' => '',
+				'transport' => array(),
 				'license_type'     => 'customer',
+				'features_until' => '',
+				'lifecycle' => array(),
 				'entitlements'     => array(),
 				'limits'           => array(),
 				'updates_until'    => '',
@@ -117,9 +136,12 @@ final class ContactPanda_License {
 				'status'           => 'valid',
 			)
 		);
+		if ( ! empty( $license['activation_token_encrypted'] ) ) $license['activation_token'] = self::decrypt_token( $license['activation_token_encrypted'] );
+		$license['license_key_last4'] = self::key_suffix( $license );
 		$license['activation_id']    = sanitize_text_field( $license['activation_id'] );
 		$license['activation_token'] = sanitize_text_field( $license['activation_token'] );
 		$license['license_label']    = sanitize_text_field( $license['license_label'] );
+		$license['features_until'] = sanitize_text_field( $license['features_until'] );
 		$license['license_type']     = sanitize_key( $license['license_type'] );
 		$license['entitlements']     = array_values( array_unique( array_filter( array_map( array( __CLASS__, 'normalize_entitlement' ), (array) $license['entitlements'] ) ) ) );
 		$license['limits']           = is_array( $license['limits'] ) ? self::sanitize_limits( $license['limits'] ) : array();
@@ -173,14 +195,14 @@ final class ContactPanda_License {
 	}
 
 	/**
-	 * Normal expiry is deliberately ignored here. Only an explicit block revokes.
+	 * Read access remains available in archive mode. Mutations use allows().
 	 */
 	public static function entitled( $module ) {
 		$module = sanitize_key( $module );
 		$state  = self::state();
-		$grants = $state['legacy_grants'];
+		$grants = empty( $state['licenses'] ) ? $state['legacy_grants'] : array();
 		foreach ( $state['licenses'] as $license ) {
-			if ( 'blocked' === $license['status'] ) {
+			if ( ! self::features_available( $license ) ) {
 				continue;
 			}
 			$grants = array_merge( $grants, $license['entitlements'] );
@@ -192,6 +214,33 @@ final class ContactPanda_License {
 			$granted = in_array( 'plus', $grants, true );
 		}
 		return (bool) apply_filters( 'contactpanda_license_entitled', $granted, $module, $state );
+	}
+
+	/** Trial expiry is exact and remains enforceable without network access. */
+	public static function features_available( $license ) {
+		if ( in_array( $license['status'] ?? '', array( 'blocked', 'disconnected', 'deactivated', 'inactive', 'archived' ), true ) ) return false;
+		if ( 'trial' !== ( $license['license_type'] ?? '' ) ) return true;
+		$deadline = strtotime( (string) ( $license['features_until'] ?? '' ) . ' UTC' );
+		return $deadline && $deadline > time() && ! in_array( $license['status'] ?? '', array( 'disconnected', 'deactivated', 'expired' ), true );
+	}
+
+	/** Per-product operation rights: an active independent license wins only for its own grants. */
+	public static function allows( $module, $operation = 'read', array $context = array() ) {
+		$module = self::normalize_entitlement( $module );
+		$state = self::state();
+		foreach ( $state['licenses'] as $license ) {
+			$grants = array_map( array( __CLASS__, 'normalize_entitlement' ), $license['entitlements'] );
+			$business_features = array( 'support_desk', 'helpdesk', 'project_management', 'customer_management', 'contract_management', 'subscription_management', 'payment_management', 'software_licensing' );
+			$match = ( in_array( $module, $business_features, true ) && in_array( 'business', $grants, true ) ) || in_array( 'all', $grants, true ) || in_array( $module, $grants, true ) || ( in_array( $module, self::plus_features(), true ) && in_array( 'plus', $grants, true ) );
+			if ( $match && self::features_available( $license ) && Panda_License_Lifecycle_V1::allows( $license, $operation, null, $context ) ) return true;
+		}
+		return empty( $state['licenses'] ) && self::entitled( $module );
+	}
+	public static function operation_error() { return Panda_License_Lifecycle_V1::error( 'contactpanda' ); }
+	public static function render_lifecycle_notices() {
+		if ( ! current_user_can( self::capability() ) ) return;
+		if ( 'panda-licenses' === sanitize_key( wp_unslash( $_GET['page'] ?? '' ) ) ) return;
+		foreach ( self::state()['licenses'] as $license ) Panda_License_Lifecycle_V1::notice( $license, 'contactpanda' );
 	}
 
 	/** The reduced newsletter is part of free ContactPanda. */
@@ -214,6 +263,7 @@ final class ContactPanda_License {
 				'modules'     => array(),
 			),
 		);
+		if ( ! defined( 'CONTACTPANDA_VERSION' ) ) unset( $products['contactpanda-basic'] );
 		$products = (array) apply_filters( 'contactpanda_license_products', $products );
 		$clean = array();
 		foreach ( $products as $id => $product ) {
@@ -284,7 +334,7 @@ final class ContactPanda_License {
 		$module = sanitize_key( $module );
 		$state  = self::state();
 		foreach ( $state['licenses'] as $license ) {
-			if ( in_array( $license['status'], array( 'blocked', 'disconnected' ), true ) || ! self::update_entitlement_matches( $license['entitlements'], $module ) ) {
+			if ( in_array( $license['status'], array( 'blocked', 'disconnected', 'website_blocked' ), true ) || ! self::update_entitlement_matches( $license['entitlements'], $module ) ) {
 				continue;
 			}
 			if ( 'expired' !== $license['status'] && ( empty( $license['updates_until'] ) || strtotime( $license['updates_until'] . ' 23:59:59 UTC' ) >= time() ) ) {
@@ -299,7 +349,7 @@ final class ContactPanda_License {
 	}
 
 	private static function endpoint( $action = 'activate' ) {
-		$base = defined( 'CONTACTPANDA_LICENSE_ENDPOINT' ) ? CONTACTPANDA_LICENSE_ENDPOINT : 'https://mycontactpanda.com/wp-json/contactpanda-license/v1/activate';
+		$base = defined( 'CONTACTPANDA_LICENSE_ENDPOINT' ) ? CONTACTPANDA_LICENSE_ENDPOINT : 'https://pandacosmo.com/wp-json/contactpanda-license/v1/activate';
 		$base = preg_replace( '#/(?:activate|check|deactivate|updates/check)/?$#', '', (string) $base );
 		$base = trailingslashit( $base ) . implode( '/', array_map( 'sanitize_key', explode( '/', trim( (string) $action, '/' ) ) ) );
 		return esc_url_raw( apply_filters( 'contactpanda_license_endpoint', $base, $action ) );
@@ -325,7 +375,7 @@ final class ContactPanda_License {
 		$last_error       = new WP_Error( 'contactpanda_update_not_licensed' );
 
 		foreach ( $state['licenses'] as $license ) {
-			if ( empty( $license['activation_id'] ) || empty( $license['activation_token'] ) || in_array( $license['status'], array( 'blocked', 'disconnected', 'expired' ), true ) ) {
+			if ( empty( $license['activation_id'] ) || empty( $license['activation_token'] ) || in_array( $license['status'], array( 'blocked', 'disconnected', 'expired', 'website_blocked' ), true ) ) {
 				continue;
 			}
 			if ( ! self::update_entitlement_matches( $license['entitlements'], $entitlement ) ) {
@@ -342,7 +392,8 @@ final class ContactPanda_License {
 					'update_product'   => $product,
 					'installed_version'=> $installed_version,
 					'channel'          => $channel,
-				)
+				),
+				$license
 			);
 			if ( is_wp_error( $data ) ) {
 				$last_error = $data;
@@ -353,106 +404,29 @@ final class ContactPanda_License {
 		return $last_error;
 	}
 
-	private static function status_message( $code ) {
+	public static function status_message( $code ) {
 		$messages = array(
-			'activated'    => __( 'The ContactPanda license has been activated. Granted modules remain available after the update and support period ends.', 'contactpanda' ),
-			'disconnected' => __( 'The website was disconnected from the license server. Previously granted modules remain available.', 'contactpanda' ),
+			'activated'    => __( 'The license has been activated. Product permissions and dates are shown below.', 'contactpanda' ),
+			'disconnected' => __( 'The website was disconnected from this license. Other active licenses are retained.', 'contactpanda' ),
 			'checked'      => __( 'The license information was updated.', 'contactpanda' ),
 			'invalid'      => __( 'The license could not be activated. Please check the license key and try again.', 'contactpanda' ),
 			'network'      => __( 'The license service could not be reached. No existing feature or license information was changed.', 'contactpanda' ),
 			'signature'    => __( 'The license response could not be verified. No existing license information was changed.', 'contactpanda' ),
+			'wrong_product' => __( 'The license service rejected the product assignment. Update the license server or contact support.', 'contactpanda' ),
+			'site_limit_reached' => __( 'The website limit is reached. Disconnect an existing website in the customer account first.', 'contactpanda' ),
+			'website_blocked' => __( 'This website is blocked for this key. Unblock it in the customer account before activating it again.', 'contactpanda' ),
+			'license_not_found' => __( 'The license key was not found. Check the complete key.', 'contactpanda' ),
+			'blocked' => __( 'This license is blocked or its trial has ended. Check the customer account.', 'contactpanda' ),
+			'invalid_site_identity' => __( 'The website address or installation identity could not be verified.', 'contactpanda' ),
+			'activation_storage_error' => __( 'The license server could not save the website activation. No existing license was replaced.', 'contactpanda' ),
 		);
+		if ( 0 === strpos( $code, 'domain_proof_' ) ) return __( 'The website could not prove its address. Use its public HTTPS address and allow the Panda license verification endpoint through the firewall. Existing licenses are unchanged.', 'contactpanda' );
 		return $messages[ $code ] ?? '';
 	}
 
 	public static function render_settings() {
-		if ( ! current_user_can( self::capability() ) ) {
-			return;
-		}
-		$state  = self::state();
-		$offline = self::offline_status( $state );
-		$notice = sanitize_key( wp_unslash( $_GET['license_notice'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only result code.
-		if ( $notice && self::status_message( $notice ) ) {
-			$class = in_array( $notice, array( 'activated', 'disconnected', 'checked' ), true ) ? 'notice-success' : 'notice-error';
-			echo '<div class="notice ' . esc_attr( $class ) . ' is-dismissible"><p>' . esc_html( self::status_message( $notice ) ) . '</p></div>';
-		}
-
-		$catalog = apply_filters( 'contactpanda_license_modules', array( 'advanced_newsletter' => __( 'Advanced newsletter', 'contactpanda' ) ) );
-		echo '<section class="contactpanda-card contactpanda-settings-card"><h2>' . esc_html__( 'ContactPanda licenses', 'contactpanda' ) . '</h2>';
-		echo '<p>' . esc_html__( 'Activate separate product keys or one MasterKey for several products and plans. The license server decides which signed product permissions a MasterKey grants. The entered key is never stored after activation.', 'contactpanda' ) . '</p>';
-		echo '<div class="contactpanda-license-status"><p><strong>' . esc_html__( 'ContactPanda license', 'contactpanda' ) . ':</strong> ' . esc_html__( 'Free license active', 'contactpanda' ) . '</p></div>';
-		if ( $offline['failed'] && ! $offline['overdue'] ) {
-			echo '<p class="description">' . esc_html__( 'The license service is temporarily unavailable. Cached permissions remain active and ContactPanda will retry automatically.', 'contactpanda' ) . '</p>';
-		}
-
-		if ( $state['licenses'] ) {
-			echo '<h3>' . esc_html__( 'Activated licenses', 'contactpanda' ) . '</h3>';
-			foreach ( $state['licenses'] as $id => $license ) {
-				$labels = array();
-				foreach ( $license['entitlements'] as $module ) {
-					$labels[] = $catalog[ $module ] ?? ( 'all' === $module ? __( 'All modules', 'contactpanda' ) : $module );
-				}
-				echo '<div class="contactpanda-card contactpanda-license-entry">';
-				echo '<h4>' . esc_html( $license['license_label'] ?: __( 'ContactPanda license', 'contactpanda' ) ) . '</h4>';
-				echo '<p><strong>' . esc_html__( 'Type', 'contactpanda' ) . ':</strong> ' . esc_html( self::type_label( $license['license_type'] ) ) . '<br>';
-				echo '<strong>' . esc_html__( 'Modules', 'contactpanda' ) . ':</strong> ' . esc_html( $labels ? implode( ', ', $labels ) : __( 'No modules assigned', 'contactpanda' ) ) . '<br>';
-				echo '<strong>' . esc_html__( 'Status', 'contactpanda' ) . ':</strong> ' . esc_html( self::status_label( $license['status'] ) );
-				if ( $license['updates_until'] ) {
-					echo '<br><strong>' . esc_html__( 'Updates until', 'contactpanda' ) . ':</strong> ' . esc_html( mysql2date( get_option( 'date_format' ), $license['updates_until'] . ' 00:00:00' ) );
-				}
-				if ( $license['last_checked_at'] ) {
-					echo '<br><strong>' . esc_html__( 'Last checked', 'contactpanda' ) . ':</strong> ' . esc_html( mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $license['last_checked_at'] ) );
-				}
-				echo '</p>';
-				if ( $license['activation_id'] && $license['activation_token'] ) {
-					echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '"><input type="hidden" name="action" value="contactpanda_disconnect_license"><input type="hidden" name="license_id" value="' . esc_attr( $id ) . '">';
-					wp_nonce_field( 'contactpanda_disconnect_license_' . $id );
-					echo '<button class="button">' . esc_html__( 'Disconnect this website', 'contactpanda' ) . '</button></form>';
-				}
-				echo '</div>';
-			}
-		}
-
-		echo '<h3>' . esc_html__( 'Products and plans', 'contactpanda' ) . '</h3><div class="contactpanda-license-products">';
-		foreach ( self::products() as $product ) {
-			$summary = self::product_license_summary( $product, $state );
-			$status_labels = array( 'free' => __( 'Free product active', 'contactpanda' ), 'valid' => __( 'License active', 'contactpanda' ), 'expired' => __( 'Updates and support expired', 'contactpanda' ), 'blocked' => __( 'License blocked', 'contactpanda' ), 'unlicensed' => __( 'No license activated', 'contactpanda' ) );
-			echo '<section class="contactpanda-license-product"><div><h4>' . esc_html( $product['label'] ) . '</h4>';
-			if ( $product['version'] ) echo '<p class="description">' . esc_html( sprintf( __( 'Installed version: %s', 'contactpanda' ), $product['version'] ) ) . '</p>';
-			echo '</div><p><span class="contactpanda-status-badge ' . ( in_array( $summary['status'], array( 'free', 'valid' ), true ) ? 'is-positive' : '' ) . '">' . esc_html( $status_labels[ $summary['status'] ] ) . '</span></p><dl>';
-			echo '<div><dt>' . esc_html__( 'Updates', 'contactpanda' ) . '</dt><dd>' . esc_html( $summary['updates'] ? mysql2date( get_option( 'date_format' ), $summary['updates'] . ' 00:00:00' ) : ( $product['free'] ? __( 'Included', 'contactpanda' ) : __( 'Not available', 'contactpanda' ) ) ) . '</dd></div>';
-			echo '<div><dt>' . esc_html__( 'Support', 'contactpanda' ) . '</dt><dd>' . esc_html( $summary['support'] ? mysql2date( get_option( 'date_format' ), $summary['support'] . ' 00:00:00' ) : __( 'Not specified', 'contactpanda' ) ) . '</dd></div>';
-			$usage = $summary['site_limit'] ? sprintf( '%1$s / %2$s', $summary['site_used'] ?: '0', $summary['site_limit'] ) : ( $summary['site_used'] ?: __( 'Not specified', 'contactpanda' ) );
-			echo '<div><dt>' . esc_html__( 'Website usage', 'contactpanda' ) . '</dt><dd>' . esc_html( $usage ) . '</dd></div></dl></section>';
-		}
-		echo '</div>';
-
-		echo '<h3>' . esc_html__( 'Module status', 'contactpanda' ) . '</h3><div class="contactpanda-license-groups">';
-		$groups = array(
-			'plus'     => array( 'label' => __( 'ContactPanda Plus Complete', 'contactpanda' ), 'modules' => array( 'advanced_newsletter', 'forms_editor', 'automations', 'advanced_integrations', 'form_migration' ) ),
-			'business' => array( 'label' => __( 'ContactPanda Business', 'contactpanda' ), 'modules' => array( 'support_desk', 'project_management', 'customer_management', 'contract_management', 'subscription_management', 'payment_management', 'software_licensing' ) ),
-		);
-		foreach ( $groups as $group_key => $group ) {
-			$package_enabled = self::entitled( $group_key );
-			echo '<section class="contactpanda-license-group"><h4>' . esc_html( $group['label'] ) . ( $package_enabled ? ' <span class="contactpanda-status-badge is-positive">' . esc_html__( 'Complete package enabled', 'contactpanda' ) . '</span>' : '' ) . '</h4>';
-			foreach ( $group['modules'] as $module ) {
-				if ( ! isset( $catalog[ $module ] ) ) continue;
-				$enabled = $package_enabled || self::entitled( $module );
-				echo '<p><strong>' . esc_html( $catalog[ $module ] ) . '</strong>: ' . esc_html( $enabled ? __( 'Enabled', 'contactpanda' ) : __( 'Not enabled', 'contactpanda' ) ) . '</p>';
-			}
-			echo '</section>';
-		}
-		echo '</div>';
-
-		echo '<h3>' . esc_html__( 'Add or renew a license', 'contactpanda' ) . '</h3><p class="description">' . esc_html__( 'Enter either an individual product key or a MasterKey. Additional keys can be activated one after another.', 'contactpanda' ) . '</p><form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="contactpanda-settings-grid"><input type="hidden" name="action" value="contactpanda_activate_license">';
-		wp_nonce_field( 'contactpanda_activate_license' );
-		echo '<label><span>' . esc_html__( 'License key', 'contactpanda' ) . '</span><input type="password" name="license_key" autocomplete="off" required value="" placeholder="CP-…"></label><p><button class="button button-primary">' . esc_html__( 'Activate or renew license', 'contactpanda' ) . '</button></p></form>';
-		if ( array_filter( wp_list_pluck( $state['licenses'], 'activation_token' ) ) ) {
-			echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '"><input type="hidden" name="action" value="contactpanda_check_licenses">';
-			wp_nonce_field( 'contactpanda_check_licenses' );
-			echo '<button class="button">' . esc_html__( 'Check licenses now', 'contactpanda' ) . '</button></form>';
-		}
-		echo '<p class="description">' . esc_html__( 'Only technical license and installation data is sent to mycontactpanda.com. Contacts, orders, messages, and newsletter content are never transmitted.', 'contactpanda' ) . '</p></section>';
+		if ( ! class_exists( 'Panda_License_Center', false ) ) require_once __DIR__ . '/class-panda-license-center.php';
+		Panda_License_Center::render();
 	}
 
 	private static function type_label( $type ) {
@@ -469,6 +443,7 @@ final class ContactPanda_License {
 			'valid'        => __( 'Active', 'contactpanda' ),
 			'expired'      => __( 'Updates expired — modules remain usable', 'contactpanda' ),
 			'blocked'      => __( 'Blocked', 'contactpanda' ),
+			'website_blocked' => __( 'Website suspended; local data retained', 'contactpanda' ),
 			'disconnected' => __( 'Disconnected', 'contactpanda' ),
 		);
 		return $labels[ $status ] ?? __( 'Unknown', 'contactpanda' );
@@ -491,8 +466,11 @@ final class ContactPanda_License {
 		);
 	}
 
-	private static function request( $action, $payload ) {
-		$body = array_merge( self::telemetry(), $payload );
+	private static function request( $action, $payload, array $license = array() ) {
+		$transport = (array) ( $license['transport'] ?? array() );
+		$body = array_merge( self::telemetry(), array_intersect_key( $transport, array_flip( array( 'installation_id' ) ) ), $payload, array( 'trial_protocol' => 1 ) );
+		$url = empty( $transport['endpoint'] ) ? self::endpoint( $action ) : rtrim( preg_replace( '#/(?:activate|check|deactivate|updates/check)/?$#', '', $transport['endpoint'] ), '/' ) . '/' . $action;
+		if ( 'https' !== wp_parse_url( $url, PHP_URL_SCHEME ) ) return new WP_Error( 'contactpanda_license_invalid_endpoint' );
 
 		/*
 		 * A WordPress installation that also hosts Panda License must not make an
@@ -505,11 +483,11 @@ final class ContactPanda_License {
 			return $local;
 		}
 		if ( is_array( $local ) ) {
-			return self::verified_data( $local );
+			return self::maybe_prove_domain( self::verified_data( $local ), $action, $payload, $license );
 		}
 
 		$response = wp_safe_remote_post(
-			self::endpoint( $action ),
+			$url,
 			array(
 				'timeout'     => 20,
 				'redirection' => 0,
@@ -530,17 +508,39 @@ final class ContactPanda_License {
 		if ( $code < 200 || $code >= 500 || ! is_array( $data ) ) {
 			return new WP_Error( 'contactpanda_license_invalid' );
 		}
-		return self::verified_data( $data );
+		return self::maybe_prove_domain( self::verified_data( $data ), $action, $payload, $license );
+	}
+
+
+	/** Publish only a signed server-issued random challenge; no key or account data. */
+	public static function register_domain_proof() {
+		register_rest_route( 'panda-license-client/v1', '/site-proof', array( 'methods' => 'GET', 'permission_callback' => '__return_true', 'callback' => array( __CLASS__, 'domain_proof_response' ) ) );
+	}
+	public static function domain_proof_response( WP_REST_Request $request ) {
+		$proof = (array) get_option( 'panda_license_domain_proof', array() );
+		$nonce = (string) $request->get_param( 'challenge' );
+		$valid = preg_match( '/^[a-f0-9]{64}$/D', $nonce ) && (int) ( $proof['expires_at'] ?? 0 ) >= time() && is_string( $proof['nonce'] ?? null ) && hash_equals( $proof['nonce'], $nonce );
+		$response = new WP_REST_Response( $valid ? array( 'challenge' => $nonce ) : array( 'status' => 'not_found' ), $valid ? 200 : 404 );
+		$response->header( 'Cache-Control', 'no-store, private' );
+		return $response;
+	}
+	private static function maybe_prove_domain( $data, $action, $payload, array $license ) {
+		if ( is_wp_error( $data ) || 'activate' !== $action || isset( $payload['domain_challenge'] ) || 'domain_proof_required' !== ( $data['status'] ?? '' ) ) return $data;
+		$proof = (array) ( $data['domain_proof'] ?? array() );
+		if ( ! preg_match( '/^[a-f0-9]{64}$/D', (string) ( $proof['nonce'] ?? '' ) ) || (int) ( $proof['expires_at'] ?? 0 ) < time() || (int) $proof['expires_at'] > time() + 600 ) return new WP_Error( 'contactpanda_license_domain_proof' );
+		update_option( 'panda_license_domain_proof', $proof, false );
+		try { return self::request( $action, array_merge( $payload, array( 'domain_challenge' => $proof['nonce'] ) ), $license ); }
+		finally { delete_option( 'panda_license_domain_proof' ); }
 	}
 
 	/**
 	 * Verify Ed25519 payloads when the deployment public key is configured.
 	 * TLS remains mandatory. CONTACTPANDA_LICENSE_REQUIRE_SIGNATURE can enforce
-	 * signatures after mycontactpanda.com has been provisioned.
+	 * signatures after pandacosmo.com has been provisioned.
 	 */
 	private static function verified_data( $data ) {
-		$public_key = defined( 'CONTACTPANDA_LICENSE_PUBLIC_KEY' ) ? trim( (string) CONTACTPANDA_LICENSE_PUBLIC_KEY ) : '';
-		$required   = defined( 'CONTACTPANDA_LICENSE_REQUIRE_SIGNATURE' ) && CONTACTPANDA_LICENSE_REQUIRE_SIGNATURE;
+		$public_key = self::trusted_public_key();
+		$required = true;
 		if ( empty( $data['signature'] ) ) {
 			return $required ? new WP_Error( 'contactpanda_license_signature' ) : $data;
 		}
@@ -556,11 +556,31 @@ final class ContactPanda_License {
 		$canonical = self::canonical_json( $payload );
 		$valid     = false;
 		if ( 'ed25519' === $algorithm && function_exists( 'sodium_crypto_sign_verify_detached' ) && false !== $signature && false !== $key ) {
-			$valid = sodium_crypto_sign_verify_detached( $signature, $canonical, $key );
+			$valid = 64 === strlen( $signature ) && 32 === strlen( $key ) && sodium_crypto_sign_verify_detached( $signature, $canonical, $key );
 		} elseif ( 'rsa-sha256' === $algorithm && function_exists( 'openssl_verify' ) && defined( 'OPENSSL_ALGO_SHA256' ) && false !== $signature && false !== $key ) {
 			$valid = 1 === openssl_verify( $canonical, $signature, $key, OPENSSL_ALGO_SHA256 );
 		}
 		return $valid ? $payload : new WP_Error( 'contactpanda_license_signature' );
+	}
+
+	/** Trust only configured keys or metadata fetched directly from the configured HTTPS operator. */
+	private static function trusted_public_key() {
+		foreach ( array( 'CONTACTPANDA_LICENSE_PUBLIC_KEY', 'PANDATRANSLATE_MULTILINGUAL_LICENSE_PUBLIC_KEY', 'PANDAMERCURY_LICENSE_PUBLIC_KEY', 'PANDAWOO_PRO_LICENSE_PUBLIC_KEY' ) as $constant ) if ( defined( $constant ) && constant( $constant ) ) return trim( (string) constant( $constant ) );
+		$url = self::endpoint( 'verification-key' );
+		$cache = 'panda_license_public_key_' . substr( hash( 'sha256', $url ), 0, 24 );
+		$stored = get_option( $cache, '' ); if ( $stored ) return (string) $stored;
+		if ( 'https' !== wp_parse_url( $url, PHP_URL_SCHEME ) ) return '';
+		if ( class_exists( 'CPLS_Crypto', false ) && wp_parse_url( $url, PHP_URL_HOST ) === wp_parse_url( home_url( '/' ), PHP_URL_HOST ) ) $info = CPLS_Crypto::public_info();
+		else {
+			$response = wp_safe_remote_get( $url, array( 'timeout' => 15, 'redirection' => 0, 'sslverify' => true, 'limit_response_size' => 16384 ) );
+			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) return '';
+			$info = json_decode( wp_remote_retrieve_body( $response ), true );
+		}
+		if ( ! is_array( $info ) || ! in_array( $info['algorithm'] ?? '', array( 'ed25519', 'rsa-sha256' ), true ) || empty( $info['public_key'] ) ) return '';
+		$key = base64_decode( $info['public_key'], true );
+		if ( false === $key || ( 'ed25519' === $info['algorithm'] && 32 !== strlen( $key ) ) || strlen( $key ) > 8192 ) return '';
+		update_option( $cache, $info['public_key'], false );
+		return $info['public_key'];
 	}
 
 	private static function canonical_json( $value ) {
@@ -592,27 +612,30 @@ final class ContactPanda_License {
 		if ( '' === $key || strlen( $key ) > 190 ) {
 			self::redirect( 'invalid' );
 		}
-		$data = self::request( 'activate', array( 'license_key' => $key ) );
+		$data = self::request( 'activate', array( 'license_key' => $key, 'activation_scope' => 'key' ) );
 		if ( is_wp_error( $data ) ) {
 			self::redirect( 'contactpanda_license_signature' === $data->get_error_code() ? 'signature' : 'network' );
 		}
 		if ( empty( $data['valid'] ) || empty( $data['activation_id'] ) || empty( $data['activation_token'] ) ) {
-			self::redirect( 'invalid' );
+			$reason = sanitize_key( $data['status'] ?? 'invalid' );
+			self::redirect( self::status_message( $reason ) ? $reason : 'invalid' );
 		}
-		$license = self::license_from_response( $data );
+		$state = self::state();
+		$id = sanitize_text_field( $data['license_id'] ?? $data['activation_id'] );
+		$data['license_key_last4'] = strlen( $key ) >= 4 ? substr( preg_replace( '/[^A-Za-z0-9]/', '', $key ), -4 ) : '';
+		$license = self::license_from_response( $data, $state['licenses'][ $id ] ?? array() );
 		if ( empty( $license['entitlements'] ) ) {
 			self::redirect( 'invalid' );
 		}
-		$state = self::state();
-		$id    = sanitize_text_field( $data['license_id'] ?? $data['activation_id'] );
 		$state['licenses'][ $id ] = $license;
 		$state['last_checked_at']          = current_time( 'mysql', true );
 		$state['last_successful_check_at'] = $state['last_checked_at'];
 		$state['last_failed_check_at']     = '';
 		$state['check_failure_since']      = '';
-		update_option( self::OPTION, $state, false );
+		$saved = self::save_state( $state );
+		if ( true !== $saved ) self::redirect( 'network' );
 		self::clear_update_caches();
-		self::redirect( 'activated' );
+		self::redirect( 'activated', $id );
 	}
 
 	private static function license_from_response( $data, $existing = array() ) {
@@ -625,7 +648,11 @@ final class ContactPanda_License {
 				'activation_id'    => sanitize_text_field( $data['activation_id'] ?? $existing['activation_id'] ),
 				'activation_token' => sanitize_text_field( $data['activation_token'] ?? $existing['activation_token'] ),
 				'license_label'    => sanitize_text_field( $data['license_label'] ?? $existing['license_label'] ),
+				'license_key_last4' => self::key_suffix( $data ) ?: self::key_suffix( $existing ),
+				'transport' => $existing['transport'] ?? array(),
 				'license_type'     => sanitize_key( $data['license_type'] ?? $existing['license_type'] ),
+				'features_until' => sanitize_text_field( $data['features_until'] ?? $existing['features_until'] ),
+				'lifecycle' => Panda_License_Lifecycle_V1::normalize( $data['lifecycle'] ?? $existing['lifecycle'] ),
 				'entitlements'     => $entitlements,
 				'limits'           => is_array( $data['limits'] ?? null ) ? $data['limits'] : $existing['limits'],
 				'updates_until'    => self::date_value( $data['updates_until'] ?? $existing['updates_until'] ),
@@ -664,7 +691,8 @@ final class ContactPanda_License {
 				array(
 					'activation_id'    => $license['activation_id'],
 					'activation_token' => $license['activation_token'],
-				)
+				),
+				$license
 			);
 			if ( is_wp_error( $data ) || ! isset( $data['valid'] ) ) {
 				continue;
@@ -672,8 +700,8 @@ final class ContactPanda_License {
 			$had_success = true;
 			if ( empty( $data['valid'] ) ) {
 				// A rotated or revoked key invalidates every former activation token.
-				$state['licenses'][ $id ]['activation_token'] = '';
-				$state['licenses'][ $id ]['status'] = 'disconnected';
+				if ( 'blocked' !== ( $data['status'] ?? '' ) ) $state['licenses'][ $id ]['activation_token'] = '';
+				$state['licenses'][ $id ]['status'] = 'blocked' === ( $data['status'] ?? '' ) ? 'blocked' : 'disconnected';
 				$state['licenses'][ $id ]['last_checked_at'] = current_time( 'mysql', true );
 			} elseif ( ! empty( $data['valid'] ) || 'blocked' === ( $data['status'] ?? '' ) ) {
 				$state['licenses'][ $id ] = self::license_from_response( $data, $license );
@@ -684,7 +712,7 @@ final class ContactPanda_License {
 			$state['last_successful_check_at']   = $state['last_checked_at'];
 			$state['last_failed_check_at']       = '';
 			$state['check_failure_since']        = '';
-			update_option( self::OPTION, $state, false );
+			if ( true !== self::save_state( $state ) ) return new WP_Error( 'panda_license_storage' );
 			self::clear_update_caches();
 			return true;
 		}
@@ -692,7 +720,7 @@ final class ContactPanda_License {
 		if ( ! $state['check_failure_since'] ) {
 			$state['check_failure_since'] = $state['last_failed_check_at'];
 		}
-		update_option( self::OPTION, $state, false );
+		self::save_state( $state );
 		return new WP_Error( 'contactpanda_license_network' );
 	}
 
@@ -716,7 +744,7 @@ final class ContactPanda_License {
 		if ( ! $status['overdue'] ) {
 			return;
 		}
-		echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'The ContactPanda license service has not been reachable for more than seven days.', 'contactpanda' ) . '</strong> ' . esc_html__( 'Cached permissions remain active and all installed functions continue to work. Automatic checks will continue.', 'contactpanda' ) . '</p>';
+		echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'The ContactPanda license service has not been reachable for more than seven days.', 'contactpanda' ) . '</strong> ' . esc_html__( 'The cached license status remains in effect. Automatic checks will continue.', 'contactpanda' ) . '</p>';
 		echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '"><input type="hidden" name="action" value="contactpanda_check_licenses">';
 		wp_nonce_field( 'contactpanda_check_licenses' );
 		echo '<p><button class="button">' . esc_html__( 'Check licenses now', 'contactpanda' ) . '</button></p></form></div>';
@@ -733,20 +761,24 @@ final class ContactPanda_License {
 			self::redirect( 'invalid' );
 		}
 		$license = $state['licenses'][ $id ];
+		if ( empty( $_POST['confirm_disconnect'] ) ) wp_die( esc_html__( 'Confirm disconnection of the listed products', 'contactpanda' ), '', array( 'response' => 400 ) );
 		if ( $license['activation_id'] && $license['activation_token'] ) {
-			self::request(
+			$result = self::request(
 				'deactivate',
 				array(
 					'activation_id'    => $license['activation_id'],
 					'activation_token' => $license['activation_token'],
-				)
+				),
+				$license
 			);
 		}
+		if ( isset( $result ) && ( is_wp_error( $result ) || 'deactivated' !== ( $result['status'] ?? '' ) || false !== ( $result['valid'] ?? null ) ) ) self::redirect( 'network' );
 		$state['licenses'][ $id ]['activation_token'] = '';
 		$state['licenses'][ $id ]['status']           = 'disconnected';
-		update_option( self::OPTION, $state, false );
+		$saved = self::save_state( $state );
+		if ( true !== $saved ) self::redirect( 'network' );
 		self::clear_update_caches();
-		self::redirect( 'disconnected' );
+		self::redirect( 'disconnected', $id );
 	}
 
 	/** Clear public and protected update results after every license change. */
@@ -762,12 +794,56 @@ final class ContactPanda_License {
 		return preg_match( '/^\d{4}-\d{2}-\d{2}$/D', $value ) ? $value : '';
 	}
 
-	private static function masked_key( $key ) {
-		return strlen( $key ) > 8 ? substr( $key, 0, 4 ) . '…' . substr( $key, -4 ) : '••••••••';
+	public static function key_suffix( array $license ) {
+		foreach ( array( 'license_key_last4', 'key_last4' ) as $field ) if ( preg_match( '/^[A-Za-z0-9]{4}$/D', (string) ( $license[ $field ] ?? '' ) ) ) return strtoupper( $license[ $field ] );
+		$hint = (string) ( $license['key_hint'] ?? '' );
+		return preg_match( '/(?:[•*…]|\.\.\.)[^A-Za-z0-9]*([A-Za-z0-9]{4,5})$/uD', $hint, $match ) ? strtoupper( substr( $match[1], -4 ) ) : '';
+	}
+	private static function encrypt_token( $token ) {
+		if ( ! $token ) return '';
+		if ( ! function_exists( 'openssl_encrypt' ) ) return new WP_Error( 'panda_license_crypto' );
+		$iv = random_bytes( 12 ); $tag = '';
+		$value = openssl_encrypt( $token, 'aes-256-gcm', hash( 'sha256', wp_salt( 'auth' ) . '|panda-licenses', true ), OPENSSL_RAW_DATA, $iv, $tag );
+		return false === $value ? new WP_Error( 'panda_license_crypto' ) : 'v1:' . base64_encode( $iv . $tag . $value );
+	}
+	private static function decrypt_token( $value ) {
+		if ( ! function_exists( 'openssl_decrypt' ) || 0 !== strpos( $value, 'v1:' ) ) return '';
+		$raw = base64_decode( substr( $value, 3 ), true );
+		if ( false === $raw || strlen( $raw ) <= 28 ) return '';
+		$value = openssl_decrypt( substr( $raw, 28 ), 'aes-256-gcm', hash( 'sha256', wp_salt( 'auth' ) . '|panda-licenses', true ), OPENSSL_RAW_DATA, substr( $raw, 0, 12 ), substr( $raw, 12, 16 ) );
+		return false === $value ? '' : $value;
+	}
+	public static function save_state( array $state ) {
+		foreach ( $state['licenses'] as &$license ) {
+			$cipher = self::encrypt_token( $license['activation_token'] ?? '' );
+			if ( is_wp_error( $cipher ) ) return $cipher;
+			$license['activation_token_encrypted'] = $cipher;
+			unset( $license['activation_token'] );
+		}
+		unset( $license );
+		$result = update_option( self::OPTION, $state, false );
+		return $result || get_option( self::OPTION ) === $state;
 	}
 
-	private static function redirect( $notice ) {
-		wp_safe_redirect( admin_url( 'admin.php?page=contactpanda-settings&tab=general&general_section=license&license_notice=' . sanitize_key( $notice ) ) );
+	/** A matching record, including a disconnected one, prevents old option data from bypassing revocation. */
+	public static function state_for_product( $product ) {
+		$best = null; $best_score = -1;
+		foreach ( self::state()['licenses'] as $license ) {
+			if ( ! self::update_entitlement_matches( $license['entitlements'], $product ) ) continue;
+			$score = self::features_available( $license ) ? ( Panda_License_Lifecycle_V1::allows( $license, 'write' ) ? 3 : ( Panda_License_Lifecycle_V1::allows( $license, 'read' ) ? 2 : 0 ) ) : 0;
+			if ( $score > $best_score ) { $best = $license; $best_score = $score; }
+		}
+		return $best;
+	}
+
+	private static function masked_key( $key ) {
+		return strlen( $key ) >= 4 ? '••••-' . substr( $key, -4 ) : '••••';
+	}
+
+	private static function redirect( $notice, $license_id = '' ) {
+		$args = array( 'page' => 'panda-licenses', 'license_notice' => sanitize_key( $notice ) );
+		if ( $license_id ) $args['license_result'] = sanitize_text_field( $license_id );
+		wp_safe_redirect( add_query_arg( $args, admin_url( 'options-general.php' ) ) . '#contactpanda-license-feedback' );
 		exit;
 	}
 }

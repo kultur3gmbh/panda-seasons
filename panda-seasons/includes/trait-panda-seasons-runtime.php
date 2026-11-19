@@ -190,7 +190,7 @@ trait Panda_Seasons_Runtime {
 			if ( $desktop ) $desktop = add_query_arg( 'ps_refresh', rawurlencode( (string) $atts['cache_bust'] ), $desktop );
 			if ( $mobile ) $mobile = add_query_arg( 'ps_refresh', rawurlencode( (string) $atts['cache_bust'] ), $mobile );
 		}
-		$open_effect  = (string) get_post_meta( $id, '_ps_open_effect', true ) ?: 'door-left';
+		$open_effect = 'none'; // Canvas doors open without an animation.
 		$effect_speed = (string) get_post_meta( $id, '_ps_effect_speed', true ) ?: 'normal';
 		if ( ! in_array( $open_effect, array( 'none', 'door-left', 'door-right', 'page' ), true ) ) $open_effect = 'door-left';
 		if ( ! in_array( $effect_speed, array( 'fast', 'normal', 'slow' ), true ) ) $effect_speed = 'normal';
@@ -252,7 +252,7 @@ trait Panda_Seasons_Runtime {
 						$label_bg = (string) get_post_meta( $door->ID, '_ps_' . $state . '_label_background', true ) ?: 'rgba(10,18,30,.76)';
 						$label_border_color = (string) get_post_meta( $door->ID, '_ps_' . $state . '_label_border_color', true ) ?: 'rgba(255,255,255,1)';
 						$label_border_width = '' !== get_post_meta( $door->ID, '_ps_' . $state . '_label_border_width', true ) ? min( 20, absint( get_post_meta( $door->ID, '_ps_' . $state . '_label_border_width', true ) ) ) : 1;
-						$label_width_mode = (string) get_post_meta( $door->ID, '_ps_' . $state . '_label_width_mode', true );
+						$label_width_mode = 'content'; // Canvas labels size to their text.
 						if ( ! in_array( $label_width_mode, array( 'content', 'px', 'percent' ), true ) ) $label_width_mode = 'content';
 						$label_width = min( 'px' === $label_width_mode ? 300 : 100, max( 10, absint( get_post_meta( $door->ID, '_ps_' . $state . '_label_width', true ) ) ?: 60 ) );
 						$label_shape = (string) get_post_meta( $door->ID, '_ps_' . $state . '_label_shape', true );
@@ -279,7 +279,7 @@ trait Panda_Seasons_Runtime {
 					}
 					$shape = get_post_meta( $door->ID, '_ps_shape', true );
 					if ( ! in_array( $shape, array( 'square', 'rounded', 'round' ), true ) ) $shape = 'rounded';
-					$door_effect = (string) get_post_meta( $door->ID, '_ps_open_effect', true );
+					$door_effect = 'none';
 					if ( ! in_array( $door_effect, array( 'none', 'door-left', 'door-right', 'page' ), true ) ) $door_effect = $open_effect;
 					?>
 					<article class="panda-seasons__door panda-seasons__door--<?php echo esc_attr( $shape ); ?><?php echo $available ? ' is-available' : ' is-locked'; ?><?php echo $visually_open ? ' is-open-visual' : ' is-closed-visual'; ?><?php echo $available && 'manual-day' === $opening_mode ? ' is-current' : ''; ?>" role="listitem" style="<?php echo esc_attr( $item_style ); ?>" id="panda-season-door-<?php echo esc_attr( $door->ID ); ?>" data-door-id="<?php echo esc_attr( $door->ID ); ?>" data-door-effect="<?php echo esc_attr( $door_effect ); ?>">
