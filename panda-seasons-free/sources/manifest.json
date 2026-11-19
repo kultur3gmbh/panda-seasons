@@ -1,0 +1,53 @@
+{
+  "formatter": "Prettier 3.6.2",
+  "options": {
+    "parser": "babel",
+    "singleQuote": true,
+    "useTabs": true,
+    "printWidth": 100
+  },
+  "files": [
+    {
+      "runtime": "assets/admin.js",
+      "readable": "sources/admin.js",
+      "runtime_sha256": "1d0d7e2df3ff7fec139e068330a8c813766d5d05e5a63e0b7d18eac1c5ca78fc",
+      "readable_sha256": "708f7b95311e7b679438441027237c2615c54a0ab95bae4932a63668176626aa",
+      "syntax_tree_matches": true
+    },
+    {
+      "runtime": "assets/block.js",
+      "readable": "sources/block.js",
+      "runtime_sha256": "486283bb656a50dfc4746b1e0541cfc76f02268ef7fcb97814ce86d25cd0f36f",
+      "readable_sha256": "099d15cfc3b999e4ffafa84c78785d5d61368b5e70f2efc4d9384c0133899884",
+      "syntax_tree_matches": true
+    },
+    {
+      "runtime": "assets/contactpanda-admin-ui.js",
+      "readable": "sources/contactpanda-admin-ui.js",
+      "runtime_sha256": "1e6511e4ef808a194383a0fa92ada90c73e00ce3022c4ebad1acbd79ba8e08eb",
+      "readable_sha256": "ac13c5487bd60ba7fe786fa1897cbafe31590bb1b34a67d2607f1c717dede8f1",
+      "syntax_tree_matches": true
+    },
+    {
+      "runtime": "assets/frontend.js",
+      "readable": "sources/frontend.js",
+      "runtime_sha256": "f24efe639c9a9ca8c1f3a09f63efc06b814a9261486cc3b00d9624b9836e6122",
+      "readable_sha256": "5a667246b5b81fdfac5833f495fba7ca3477e8656a668a5fe19cac327f33dfd7",
+      "syntax_tree_matches": true
+    },
+    {
+      "runtime": "assets/panda-canvas-editor.js",
+      "readable": "sources/panda-canvas-editor.js",
+      "runtime_sha256": "1d5d17f19b2b49d0e46a068834c3e694d4af3b17cf4f90acee2733b118eb8c23",
+      "readable_sha256": "d7ccbf8247fdda2b3bcf25658f3ed5235f2b7a3c0fd1d0f58a2d57309345b14a",
+      "syntax_tree_matches": true
+    },
+    {
+      "runtime": "assets/panda-editor-ui.js",
+      "readable": "sources/panda-editor-ui.js",
+      "runtime_sha256": "619d50b14f98fa90e1b62c9e6d6d3025be2a43fa18f8afdbef99e27e59751955",
+      "readable_sha256": "8f76e77b188aefafc2da04c81402155976f9893aeb9ea6659bac1b652b2f75f4",
+      "syntax_tree_matches": true
+    }
+  ]
+}

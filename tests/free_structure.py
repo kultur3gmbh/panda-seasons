@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import re
+import hashlib
+import json
 
 root = Path(__file__).resolve().parents[1]
 plugin = root / "panda-seasons-free"
@@ -83,7 +85,12 @@ for forbidden in ("wc_get_product", "quiz_enabled", "contactpanda_available", "_
 
 readable_source = (plugin / "sources/contactpanda-admin-ui.js").read_text()
 runtime_source = (plugin / "assets/contactpanda-admin-ui.js").read_text()
-assert re.sub(r"\s", "", readable_source) == re.sub(r"\s", "", runtime_source), "Bundled readable source must track the shared runtime"
+source_manifest = json.loads((plugin / "sources/manifest.json").read_text())
+assert {item["runtime"] for item in source_manifest["files"]} == {str(path.relative_to(plugin)) for path in (plugin / "assets").glob("*.js")}
+for item in source_manifest["files"]:
+    for key in ("runtime", "readable"):
+        assert hashlib.sha256((plugin / item[key]).read_bytes()).hexdigest() == item[key + "_sha256"], "Readable-source manifest is stale"
+    assert item["syntax_tree_matches"] is True
 assert "sources/contactpanda-admin-ui.js" in readme
 print("Panda Seasons Lite structure checks passed")
 

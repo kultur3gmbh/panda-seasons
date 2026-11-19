@@ -4,7 +4,7 @@ Tags: advent calendar, seasonal calendar, christmas calendar, calendar
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.9.6
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,9 @@ Panda Seasons Lite is a complete, lightweight calendar for seasonal campaigns an
 * Use one general background image or a background color for the complete calendar.
 * Embed calendars with the Panda Seasons Lite block or `[panda_seasons id="123"]`.
 
-The free edition does not include images inside individual doors, design layers, advanced frames and shadows, quizzes, downloads, shop integrations, email delivery or newsletter functions. The Panda Seasons Full edition can replace Panda Seasons Lite without converting your calendars. Plus-specific data is preserved when a calendar is temporarily edited in the free edition.
+The Lite edition does not include images inside individual doors, design layers, advanced frames and shadows, quizzes, downloads, shop integrations, email delivery or newsletter functions. The Panda Seasons Full edition can replace Panda Seasons Lite without converting your calendars. Full-specific data is preserved when a calendar is temporarily edited in the Lite edition.
+
+Panda Seasons is a PandaCosmo project developed by Kultur3 GmbH. Panda Seasons Lite is the free edition; Panda Seasons Full is the separate paid edition.
 
 == Privacy ==
 
@@ -31,7 +33,7 @@ Panda Seasons Lite does not automatically contact an external service or load re
 
 All PHP, JavaScript and CSS source is included in this plugin. The scripts are maintained directly: no npm, webpack, transpilation or minification build is required to run or modify them.
 
-The shared Panda administration controls are in assets/contactpanda-admin-ui.js. A complete, expanded readable copy is included in sources/contactpanda-admin-ui.js, including the compact tag-selection helper. The two files differ only in whitespace. The shared runtime component is retained unchanged to avoid a product-specific fork. Other JavaScript sources are the files directly inside assets/.
+Complete, expanded readable copies of every JavaScript file in assets/ are included in sources/, including sources/contactpanda-admin-ui.js and its tag-selection helper. The shared runtime components are retained unchanged to avoid product-specific forks. Formatting instructions and the runtime-to-source mapping are in sources/README.txt and sources/manifest.json. The readable and runtime files have matching JavaScript syntax trees; formatting may also normalize quotes and optional semicolons.
 
 The plugin and its bundled source are distributed under GPLv2 or later. Translation source catalogs remain maintained in the development workspace. The WordPress.org submission omits bundled PO/MO translations and uses WordPress language packs; until a language pack is available, untranslated strings fall back to English. The POT template remains included.
 
@@ -55,6 +57,12 @@ Yes. Deactivate Panda Seasons Lite, install and activate Panda Seasons Full. Exi
 They remain stored. Panda Seasons Lite does not display or overwrite advanced media, shop, quiz, CTA, email or design-layer fields.
 
 == Changelog ==
+
+= 1.1.0 =
+* Prepare the revised WordPress.org submission under the Panda Seasons Lite name.
+* Include complete readable JavaScript sources and an updated translation template.
+* Exclude custom update code and bundled translations from this submission variant.
+* Keep preview-image cleanup compatible with PHP 8.5.
 
 = 0.9.6 =
 * Unambiguous Canvas view switches, compact paired phone fields and consistent media/file selection.

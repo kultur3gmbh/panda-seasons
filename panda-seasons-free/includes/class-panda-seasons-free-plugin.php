@@ -662,6 +662,14 @@ final class Panda_Seasons_Free_Plugin {
 		catch ( \Throwable $error ) { return 0; }
 	}
 
+	private static function release_preview_image( $image ) {
+		// PHP 8 uses automatically managed GD objects; imagedestroy() is deprecated
+		// in PHP 8.5. Only PHP 7.4 still needs its resource released explicitly.
+		if ( PHP_VERSION_ID < 80000 ) {
+			imagedestroy( $image );
+		}
+	}
+
 	private static function render_featured_preview( $calendar_id ) {
 		if ( ! function_exists( 'imagecreatetruecolor' ) || ! current_user_can( 'edit_post', $calendar_id ) ) return 0;
 		$ratio = (float) get_post_meta( $calendar_id, '_ps_aspect_ratio', true );
@@ -675,7 +683,7 @@ final class Panda_Seasons_Free_Plugin {
 			if ( $path && is_readable( $path ) ) {
 				$bytes = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local media file.
 				$source = $bytes ? @imagecreatefromstring( $bytes ) : false;
-				if ( $source ) { imagecopyresampled( $canvas, $source, 0, 0, 0, 0, $width, $height, imagesx( $source ), imagesy( $source ) ); imagedestroy( $source ); }
+				if ( $source ) { imagecopyresampled( $canvas, $source, 0, 0, 0, 0, $width, $height, imagesx( $source ), imagesy( $source ) ); self::release_preview_image( $source ); }
 			}
 		}
 		$doors = self::doors( $calendar_id );
@@ -686,9 +694,9 @@ final class Panda_Seasons_Free_Plugin {
 			$number = (string) ( absint( get_post_meta( $door->ID, '_ps_door_number', true ) ) ?: $index + 1 );
 			imagestring( $canvas, 5, $x + max( 4, (int) ( $w / 2 ) - strlen( $number ) * 4 ), $y + max( 4, (int) ( $h / 2 ) - 7 ), $number, self::preview_color( $canvas, get_post_meta( $door->ID, '_ps_closed_color', true ), array( 255, 255, 255, 1 ) ) );
 		}
-		$uploads = wp_upload_dir(); if ( ! empty( $uploads['error'] ) ) { imagedestroy( $canvas ); return 0; }
+		$uploads = wp_upload_dir(); if ( ! empty( $uploads['error'] ) ) { self::release_preview_image( $canvas ); return 0; }
 		$directory = trailingslashit( $uploads['basedir'] ) . 'panda-seasons-previews'; wp_mkdir_p( $directory ); $path = trailingslashit( $directory ) . 'calendar-' . absint( $calendar_id ) . '.png';
-		if ( ! imagepng( $canvas, $path, 8 ) ) { imagedestroy( $canvas ); return 0; } imagedestroy( $canvas );
+		if ( ! imagepng( $canvas, $path, 8 ) ) { self::release_preview_image( $canvas ); return 0; } self::release_preview_image( $canvas );
 		$attachment_id = absint( get_post_meta( $calendar_id, '_ps_preview_attachment_id', true ) );
 		if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) ) {
 			/* translators: %s: Calendar title. */
